@@ -26,6 +26,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.2",
     "jest": "^24.8.0",
+    "nodemon": "^1.19.1",
     "sequelize-auto": "^0.4.29"
   }
 }
