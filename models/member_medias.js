@@ -5,6 +5,7 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: 'member',
         key: 'id'

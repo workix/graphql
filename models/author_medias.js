@@ -1,12 +1,13 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('author_medias', {
+  return sequelize.define('Media', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
+      primaryKey: true,
       references: {
-        model: 'author',
+        model: 'Author',
         key: 'id'
       }
     },
