@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from "express";
 import { graphqlHTTP } from "express-graphql";
 import { makeExecutableSchema } from "graphql-tools";
@@ -7,8 +8,14 @@ import typeDefs from "./schemas";
 
 
 import "express-async-errors";
+import db from './models/index';
+
+import { DataLoaderFactory } from './dataloader';
+import { RequestedFiels } from './RequestedFields';
 
 const app = express();
+const dataLoaderFactory = new DataLoaderFactory(db);
+const requestedFields = new RequestedFiels();
 
 app.use(express.json());
 
@@ -18,12 +25,19 @@ const schema = makeExecutableSchema({
   typeDefs,
 });
 
-app.use(
-  "/graphql",
-  graphqlHTTP({
+app.use("/graphql",
+(req, res, next) => {
+  req["context"] = {}
+  req["context"]['orm'] = db;
+  req["context"]['dataloaders'] = dataLoaderFactory.getLoaders();
+  req["context"]['requestedFields'] = requestedFields;
+  next();
+},
+  graphqlHTTP(req => ({
     schema,
     graphiql: true,
-  })
+    context: req['context']
+  }))
 );
 
 app.use(
