@@ -1,0 +1,17 @@
+scalar Date
+
+type Query {
+    hello: String
+    allAuthors: [Author]    
+  }
+
+  type Author {
+    id: ID,
+    createdAt: String
+    updatedAt: String
+    uuid: String
+    version: Int
+    aboutText: String
+    name: String
+    picture: String    
+  }  

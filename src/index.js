@@ -1,41 +1,39 @@
-var express = require('express');
-var graphqlHTTP = require('express-graphql');
-var { buildSchema } = require('graphql');
-const {Author} = require('./models');
+import express from "express";
+import { graphqlHTTP } from "express-graphql";
+import { makeExecutableSchema } from "graphql-tools";
 
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
-  type Query {
-    hello: String
-    allAuthors: [Author]    
-  },
-  type Author {
-    id: ID,
-    createdAt: String
-    updatedAt: String
-    uuid: String
-    version: Int
-    aboutText: String
-    name: String
-    picture: String    
-  }  
-`);
+import resolvers from "./resolvers";
+import typeDefs from "./schemas";
 
-// The root provides a resolver function for each API endpoint
-var root = {
-  hello: () => {
-    return 'Hello world!';
-  },
-  allAuthors: async () => {
-    return await Author.findAll();
+
+import "express-async-errors";
+
+const app = express();
+
+app.use(express.json());
+
+
+const schema = makeExecutableSchema({
+  resolvers,
+  typeDefs,
+});
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+);
+
+app.use(
+  (error, request, response, next) => {
+    if (error instanceof Error) {
+      return response.status(400).json({message: error.message});
+    }
+
+    return response.status(500).json(error);
   }
-};
+);
 
-var app = express();
-app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  rootValue: root,
-  graphiql: true,
-}));
-app.listen(4000);
-console.log('Running a GraphQL API server at http://localhost:4000/graphql');
+app.listen(4000, () => console.log("Server is running"));
