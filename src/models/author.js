@@ -18,11 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     uuid: {
       type: DataTypes.STRING(255),
       allowNull: false
-    },
-    version: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true
-    },
+    },    
     aboutText: {
       type: DataTypes.STRING(255),
       allowNull: false
@@ -36,6 +32,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'author'
+    tableName: 'authors'
   });
 };
