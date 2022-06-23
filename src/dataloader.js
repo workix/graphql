@@ -235,6 +235,40 @@ class CommentLoader {
         response = response.map(i => i == undefined ? [] : i)
         return Promise.resolve(response);
     }
+
+    static async batchOwner(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        // let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog"] })        
+        // let sql = `SELECT ${fields.toString()}, c.id as comment_id, bc.Blog_id as blog_id FROM comments c INNER JOIN blogs_comments bc on c.id = bc.comments_id WHERE Blog_id IN (${idsString}) ORDER BY id ASC;`
+        let sql = `select c.id as comment_id, bc.Blog_id as blog_id from comments c 
+        inner join blogs_comments bc on c.id = bc.comments_id WHERE c.id IN (${idsString}) ORDER BY comment_id ASC`
+
+        let owners;
+
+        try {
+            owners = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        const ordened = new Map()
+
+        owners.forEach(owner => {
+            ordened.set(owner.comment_id, [])
+        })
+
+        let id;
+        owners.forEach(owner => {
+            id = owner.comment_id
+            ordened.get(id).push(owner)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
 }
 
 export class DataLoaderFactory {
@@ -265,6 +299,9 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             blogsLoader: new DataLoader(params => {
                 return BlogLoader.batchBlogs(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            commentsOwnerLoader: new DataLoader(params => {
+                return CommentLoader.batchOwner(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key })
         }
     }

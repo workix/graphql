@@ -47,12 +47,10 @@ const blogsResolvers = {
     }
   },
   Comment:{
-    blog: async (parent, args, ctx, info) => {        
-      const sql = `select c.id as comment_id, bc.Blog_id as blog_id from comments c 
-      inner join blogs_comments bc on c.id = bc.comments_id WHERE c.id = ${parent.id};`
+    blog: async (parent, args, ctx, info) => {            
 
-      const rows = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
-      const blogId = rows[0].blog_id
+      const owners = await ctx.dataloaders.commentsOwnerLoader.load({key: parent.id, info})
+      const blogId = owners[0].blog_id      
 
       const blogs = await ctx.dataloaders.blogsLoader.load({key: blogId, info})      
       return blogs[0];
