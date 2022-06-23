@@ -4,7 +4,7 @@ import { Blog, Comment } from '../../../models';
 const blogsResolvers = {
   Query: {
     allBlogs: async (parent, args, ctx, info) => {
-      const fields = ctx.requestedFields.getFields(info, { keep: ["author_id"], exclude: ["author", "comments", "pictures"] })
+      const fields = ctx.requestedFields.getFields(info, { keep: ["author_id"], exclude: ["author", "comments", "pictures", "tags"] })
       const sql = `SELECT ${fields.toString()} FROM blogs ORDER BY id ASC`
       const blogs = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
       return blogs;
@@ -28,6 +28,10 @@ const blogsResolvers = {
     pictures: async (parent, args, ctx, info) => {
       const pictures = await ctx.dataloaders.picturesLoader.load({ key: parent.id, info })
       return pictures;
+    },
+    tags: async (parent, args, ctx, info) => {
+      const tags = await ctx.dataloaders.tagsLoader.load({ key: parent.id, info })
+      return tags;
     }
   }
 };

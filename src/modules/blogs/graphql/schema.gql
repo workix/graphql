@@ -10,6 +10,10 @@ type Picture {
     pictures: String
 }
 
+type Tag {
+    name: String
+}
+
 type Blog {
     id: ID,
     createdAt: DateTime
@@ -24,6 +28,7 @@ type Blog {
     author: Author
     comments: [Comment]  
     pictures: [Picture]
+    tags: [Tag]
 }
 
 type Comment {
