@@ -1,0 +1,19 @@
+scalar Date
+
+type Query {
+    allBlogs: [Blog]
+}
+
+type Blog {
+    id: ID,
+    createdAt: String
+    updatedAt: String
+    uuid: String
+    category: String
+    citation: String
+    content: String
+    date: Date
+    resume: String
+    title: String
+    author: Author  
+}

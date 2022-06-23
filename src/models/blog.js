@@ -18,11 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     uuid: {
       type: DataTypes.STRING(255),
       allowNull: false
-    },
-    version: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true
-    },
+    },    
     category: {
       type: DataTypes.STRING(255),
       allowNull: true
@@ -56,6 +52,6 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    tableName: 'blog'
+    tableName: 'blogs'
   });
 };
