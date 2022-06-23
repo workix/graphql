@@ -207,7 +207,7 @@ class CommentLoader {
     static async batchComments(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [""] })        
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog"] })        
         let sql = `SELECT ${fields.toString()}, c.id as comment_id, bc.Blog_id as blog_id FROM comments c INNER JOIN blogs_comments bc on c.id = bc.comments_id WHERE Blog_id IN (${idsString}) ORDER BY id ASC;`
 
         let comments;

@@ -10,7 +10,7 @@ const blogsResolvers = {
       return blogs;
     },
     allComments: async (parent, args, ctx, info) => {
-      const fields = ctx.requestedFields.getFields(info, { keep: [""], exclude: ["", ""] })
+      const fields = ctx.requestedFields.getFields(info, { keep: [""], exclude: ["blog", ""] })
       const sql = `SELECT ${fields.toString()} FROM comments ORDER BY id ASC`
       const comments = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
       return comments;
@@ -43,6 +43,18 @@ const blogsResolvers = {
   Picture:{
     blog: async (parent, args, ctx, info) => {        
       const blogs = await ctx.dataloaders.blogsLoader.load({key: parent.id, info})
+      return blogs[0];
+    }
+  },
+  Comment:{
+    blog: async (parent, args, ctx, info) => {        
+      const sql = `select c.id as comment_id, bc.Blog_id as blog_id from comments c 
+      inner join blogs_comments bc on c.id = bc.comments_id WHERE c.id = ${parent.id};`
+
+      const rows = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
+      const blogId = rows[0].blog_id
+
+      const blogs = await ctx.dataloaders.blogsLoader.load({key: blogId, info})      
       return blogs[0];
     }
   }
