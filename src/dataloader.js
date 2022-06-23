@@ -5,7 +5,7 @@ class MediaLoader {
     static async batchDlcs(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [""] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["author"] })
         let sql = `SELECT ${fields.toString()} FROM authors_medias WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let medias;

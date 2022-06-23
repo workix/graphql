@@ -9,8 +9,7 @@ type Query {
     id: ID,
     createdAt: String
     updatedAt: String
-    uuid: String
-    version: Int
+    uuid: String    
     aboutText: String
     name: String
     picture: String,
