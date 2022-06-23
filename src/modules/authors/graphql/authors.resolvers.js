@@ -18,9 +18,8 @@ const authorsResolvers = {
 
     },*/
     Author:{
-      medias: async (parent, args, ctx, info) => {
-        const sql = `SELECT * FROM authors_medias WHERE id = ${parent.id} ORDER BY id ASC`
-        const medias = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
+      medias: async (parent, args, ctx, info) => {        
+        const medias = await ctx.dataloaders.mediaLoader.load(parent.id)
         return medias;
       }
     }
