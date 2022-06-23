@@ -13,5 +13,12 @@ type Query {
     version: Int
     aboutText: String
     name: String
-    picture: String    
+    picture: String,
+    medias: [Media]
+  }
+
+  type Media {
+    author: Author,
+    media: String,
+    url: String
   }  
