@@ -1,8 +1,43 @@
 import DataLoader from "dataloader"
 const { QueryTypes } = require('sequelize');
 
+class AuthorLoader {
+    static async batchAuthors(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["medias"] })
+        let sql = `SELECT ${fields.toString()} FROM authors WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let authors;
+
+        try {
+            authors = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        const ordened = new Map()
+
+        authors.forEach(author => {
+            ordened.set(author.id, [])
+        })
+
+        let id;
+        authors.forEach(author => {
+            id = author.id
+            ordened.get(id).push(author)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
+
 class MediaLoader {
-    static async batchDlcs(connection, params, requestedFields) {
+    static async batchMedias(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
         let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["author"] })
@@ -80,7 +115,10 @@ export class DataLoaderFactory {
                 return DLCLoader.batchDlcs(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
             mediaLoader: new DataLoader(params => {
-                return MediaLoader.batchDlcs(this.db, params, this.requestedFields)
+                return MediaLoader.batchMedias(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            authorLoader: new DataLoader(params => {
+                return AuthorLoader.batchAuthors(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key })
         }
     }
