@@ -2,14 +2,16 @@ import DataLoader from "dataloader"
 const { QueryTypes } = require('sequelize');
 
 class MediaLoader {
-    static async batchDlcs(connection, ids) {
+    static async batchDlcs(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let sql = `SELECT * FROM authors_medias WHERE id IN (${idsString}) ORDER BY id ASC;`;        
-        
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [""] })
+        let sql = `SELECT ${fields.toString()} FROM authors_medias WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
         let medias;
 
         try {
-            medias = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });       
+            medias = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
         } catch (error) {
             console.error(error);
         }
@@ -17,7 +19,7 @@ class MediaLoader {
 
         const ordened = new Map()
 
-        medias.forEach(media=>{
+        medias.forEach(media => {
             ordened.set(media.id, [])
         })
 
@@ -37,12 +39,12 @@ class MediaLoader {
 class DLCLoader {
     static async batchDlcs(connection, ids) {
         let idsString = ids.map(v => `'${v}'`).toString();
-        let sql = `SELECT * FROM "DLC" WHERE app_id IN (${idsString}) ORDER BY app_id ASC;`;        
-        
+        let sql = `SELECT * FROM "DLC" WHERE app_id IN (${idsString}) ORDER BY app_id ASC;`;
+
         let dlcs;
 
         try {
-            dlcs = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });       
+            dlcs = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
         } catch (error) {
             console.error(error);
         }
@@ -50,7 +52,7 @@ class DLCLoader {
 
         const ordened = new Map()
 
-        dlcs.forEach(dlc=>{
+        dlcs.forEach(dlc => {
             ordened.set(dlc.app_id, [])
         })
 
@@ -67,18 +69,19 @@ class DLCLoader {
 }
 
 export class DataLoaderFactory {
-    constructor(connection) {
+    constructor(connection, requestedFields) {
         this.db = connection;
+        this.requestedFields = requestedFields;
     }
 
     getLoaders() {
         return {
-            dlcLoader: new DataLoader(ids => {
-                return DLCLoader.batchDlcs(this.db, ids)
-            }),
-            mediaLoader: new DataLoader(ids => {
-                return MediaLoader.batchDlcs(this.db, ids)
-            })
+            dlcLoader: new DataLoader(params => {
+                return DLCLoader.batchDlcs(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            mediaLoader: new DataLoader(params => {
+                return MediaLoader.batchDlcs(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key })
         }
     }
 }

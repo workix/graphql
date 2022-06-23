@@ -14,8 +14,9 @@ import { DataLoaderFactory } from './dataloader';
 import { RequestedFiels } from './RequestedFields';
 
 const app = express();
-const dataLoaderFactory = new DataLoaderFactory(db);
 const requestedFields = new RequestedFiels();
+const dataLoaderFactory = new DataLoaderFactory(db, requestedFields);
+
 
 app.use(express.json());
 
