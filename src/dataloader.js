@@ -74,7 +74,7 @@ class PictureLoader {
     static async batchPictures(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["", ""] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog", ""] })
         let sql = `SELECT ${fields.toString()} FROM blogs_pictures WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let pictures;
@@ -108,7 +108,7 @@ class TagLoader {
     static async batchTags(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["", ""] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog", ""] })
         let sql = `SELECT ${fields.toString()} FROM blogs_tags WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let tags;
@@ -129,6 +129,39 @@ class TagLoader {
         tags.forEach(tag => {
             id = tag.id
             ordened.get(id).push(tag)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
+class BlogLoader {
+    static async batchBlogs(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["", ""] })
+        let sql = `SELECT ${fields.toString()} FROM blogs WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let blogs;
+
+        try {
+            blogs = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        blogs.forEach(blog => {
+            ordened.set(blog.id, [])
+        })
+
+        let id;
+        blogs.forEach(blog => {
+            id = blog.id
+            ordened.get(id).push(blog)
         })
 
         let response = ids.map(id => ordened.get(id))
@@ -229,6 +262,9 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             tagsLoader: new DataLoader(params => {
                 return TagLoader.batchTags(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            blogsLoader: new DataLoader(params => {
+                return BlogLoader.batchBlogs(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key })
         }
     }

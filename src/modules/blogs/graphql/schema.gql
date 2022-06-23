@@ -7,10 +7,12 @@ type Query {
 }
 
 type Picture {
+    blog: Blog
     pictures: String
 }
 
 type Tag {
+    blog: Blog
     name: String
 }
 
@@ -39,4 +41,5 @@ type Comment {
     email: String
     name: String
     text: String
+    blog: Blog
 }
