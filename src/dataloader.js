@@ -70,6 +70,40 @@ class MediaLoader {
     }
 }
 
+class PictureLoader {
+    static async batchPictures(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["", ""] })
+        let sql = `SELECT ${fields.toString()} FROM blogs_pictures WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let pictures;
+
+        try {
+            pictures = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        const ordened = new Map()
+
+        pictures.forEach(picture => {
+            ordened.set(picture.id, [])
+        })
+
+        let id;
+        pictures.forEach(picture => {
+            id = picture.id
+            ordened.get(id).push(picture)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
 
 class DLCLoader {
     static async batchDlcs(connection, ids) {
@@ -156,6 +190,9 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             commentsLoader: new DataLoader(params => {
                 return CommentLoader.batchComments(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            picturesLoader: new DataLoader(params => {
+                return PictureLoader.batchPictures(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key })
         }
     }

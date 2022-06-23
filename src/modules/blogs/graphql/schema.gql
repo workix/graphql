@@ -6,6 +6,10 @@ type Query {
     allComments: [Comment]
 }
 
+type Picture {
+    pictures: String
+}
+
 type Blog {
     id: ID,
     createdAt: DateTime
@@ -19,6 +23,7 @@ type Blog {
     title: String
     author: Author
     comments: [Comment]  
+    pictures: [Picture]
 }
 
 type Comment {
