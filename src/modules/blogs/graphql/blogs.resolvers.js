@@ -1,22 +1,31 @@
 const { QueryTypes } = require('sequelize');
-import {Blog} from '../../../models';
+import { Blog, Comment } from '../../../models';
 
 const blogsResolvers = {
-    Query: {
-        allBlogs: async (parent, args, ctx, info) => {
-            const fields = ctx.requestedFields.getFields(info, { keep: ["author_id"], exclude: ["author", ""] })            
-            const sql = `SELECT ${fields.toString()} FROM blogs ORDER BY id ASC`
-            const blogs = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
-            return blogs;
-          }
-          
+  Query: {
+    allBlogs: async (parent, args, ctx, info) => {
+      const fields = ctx.requestedFields.getFields(info, { keep: ["author_id"], exclude: ["author", "comments"] })
+      const sql = `SELECT ${fields.toString()} FROM blogs ORDER BY id ASC`
+      const blogs = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
+      return blogs;
     },
-    Blog:{
-        author: async (parent, args, ctx, info) => {        
-          const authors = await ctx.dataloaders.authorLoader.load({key: parent.author_id, info})
-          return authors[0];
-        }
-      }   
-  };
-  
-  export default blogsResolvers;
+    allComments: async (parent, args, ctx, info) => {
+      const fields = ctx.requestedFields.getFields(info, { keep: [""], exclude: ["", ""] })
+      const sql = `SELECT ${fields.toString()} FROM comments ORDER BY id ASC`
+      const comments = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
+      return comments;
+    }
+  },
+  Blog: {
+    author: async (parent, args, ctx, info) => {
+      const authors = await ctx.dataloaders.authorLoader.load({ key: parent.author_id, info })
+      return authors[0];
+    },
+    comments: async(parent, args, ctx, info) => {
+      const comments = await ctx.dataloaders.commentsLoader.load({ key: parent.id, info })
+      return comments;
+    }
+  }
+};
+
+export default blogsResolvers;

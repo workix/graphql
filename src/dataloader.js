@@ -103,6 +103,41 @@ class DLCLoader {
     }
 }
 
+class CommentLoader {
+    static async batchComments(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [""] })
+        //let sql = `SELECT ${fields.toString()} FROM authors WHERE id IN (${idsString}) ORDER BY id ASC;`;
+        let sql = `SELECT ${fields.toString()} FROM comments INNER JOIN blogs_comments bc on comments.id = bc.comments_id WHERE Blog_id IN (${idsString}) ORDER BY id ASC;`
+
+        let comments;
+
+        try {
+            comments = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        const ordened = new Map()
+
+        comments.forEach(comment => {
+            ordened.set(comment.id, [])
+        })
+
+        let id;
+        comments.forEach(comment => {
+            id = comment.id
+            ordened.get(id).push(comment)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
 export class DataLoaderFactory {
     constructor(connection, requestedFields) {
         this.db = connection;
@@ -119,6 +154,9 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             authorLoader: new DataLoader(params => {
                 return AuthorLoader.batchAuthors(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            commentsLoader: new DataLoader(params => {
+                return CommentLoader.batchComments(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key })
         }
     }

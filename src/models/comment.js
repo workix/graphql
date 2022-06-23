@@ -18,11 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     uuid: {
       type: DataTypes.STRING(255),
       allowNull: false
-    },
-    version: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true
-    },
+    },    
     email: {
       type: DataTypes.STRING(255),
       allowNull: false
@@ -34,16 +30,8 @@ module.exports = function(sequelize, DataTypes) {
     text: {
       type: DataTypes.TEXT,
       allowNull: false
-    },
-    blog_id: {
-      type: DataTypes.BIGINT,
-      allowNull: true,
-      references: {
-        model: 'blog',
-        key: 'id'
-      }
-    }
+    }    
   }, {
-    tableName: 'comment'
+    tableName: 'comments'
   });
 };

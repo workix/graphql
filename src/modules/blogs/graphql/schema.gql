@@ -1,13 +1,15 @@
 scalar Date
+scalar DateTime
 
 type Query {
     allBlogs: [Blog]
+    allComments: [Comment]
 }
 
 type Blog {
     id: ID,
-    createdAt: String
-    updatedAt: String
+    createdAt: DateTime
+    updatedAt: DateTime
     uuid: String
     category: String
     citation: String
@@ -15,5 +17,16 @@ type Blog {
     date: Date
     resume: String
     title: String
-    author: Author  
+    author: Author
+    comments: [Comment]  
+}
+
+type Comment {
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    email: String
+    name: String
+    text: String
 }
