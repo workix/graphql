@@ -104,6 +104,40 @@ class MediaLoader {
     }
 }
 
+class CompanyMediaLoader {
+    static async batchMedias(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [""] })
+        let sql = `SELECT ${fields.toString()} FROM companies_medias WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let medias;
+
+        try {
+            medias = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        const ordened = new Map()
+
+        medias.forEach(media => {
+            ordened.set(media.id, [])
+        })
+
+        let id;
+        medias.forEach(media => {
+            id = media.id
+            ordened.get(id).push(media)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
 class PictureLoader {
     static async batchPictures(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
@@ -339,6 +373,9 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             usersLoader: new DataLoader(params => {
                 return UserLoader.batchUsers(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            companyMediaLoader: new DataLoader(params => {
+                return CompanyMediaLoader.batchMedias(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
         }
     }

@@ -23,4 +23,10 @@ type Company {
     logo: String
     segment: String
     user: User
+    medias: [CompanyMedia]
 }
+
+  type CompanyMedia {    
+    media: String,
+    url: String
+  }  
