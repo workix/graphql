@@ -1,0 +1,17 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    allUsers: [User]
+}
+
+type User {
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    active: Boolean
+    email: String
+    firebaseMessageToken: String
+    firebaseUUID: String
+}

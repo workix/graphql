@@ -35,6 +35,40 @@ class AuthorLoader {
     }
 }
 
+class UserLoader {
+    static async batchUsers(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [""] })
+        let sql = `SELECT ${fields.toString()} FROM users WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let users;
+
+        try {
+            users = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        const ordened = new Map()
+
+        users.forEach(user => {
+            ordened.set(user.id, [])
+        })
+
+        let id;
+        users.forEach(user => {
+            id = user.id
+            ordened.get(id).push(user)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
 
 class MediaLoader {
     static async batchMedias(connection, params, requestedFields) {
@@ -302,7 +336,10 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             commentsOwnerLoader: new DataLoader(params => {
                 return CommentLoader.batchOwner(this.db, params, this.requestedFields)
-            }, { cacheKeyFn: param => param.key })
+            }, { cacheKeyFn: param => param.key }),
+            usersLoader: new DataLoader(params => {
+                return UserLoader.batchUsers(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
         }
     }
 }
