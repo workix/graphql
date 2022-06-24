@@ -13,10 +13,10 @@ type Query {
     aboutText: String
     name: String
     picture: String,
-    medias: [Media]
+    medias: [AuthorMedia]
   }
 
-  type Media {
+  type AuthorMedia {
     author: Author,
     media: String,
     url: String
