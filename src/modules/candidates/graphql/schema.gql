@@ -1,0 +1,23 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    allCandidates: [Candidate]
+}
+
+type Candidate {
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    mobilePhone: Int
+    city: String
+    estate: String
+    neighborhood: String
+    number: String
+    street: String
+    zipCode: Int
+    name: String
+    birthDate: Date
+    cpf: Int    
+}
