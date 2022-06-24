@@ -1,0 +1,26 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    allCompanies: [Company]
+}
+
+type Company {
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    mobilePhone: Int
+    city: String
+    estate: String
+    neighborhood: String
+    number: String
+    street: String
+    zipCode: Int
+    name: String
+    cnpj: Int
+    description: String
+    logo: String
+    segment: String
+    user: User
+}
