@@ -10,6 +10,14 @@
  - [x] - Candidate
  - [x] - Company
  - [x] - Company Medias
+ - [x] - Form
+ - [x] - JAAS Role
+ - [x] - JAAS Roles
+ - [x] - JAAS User
+ - [x] - Job
+ - [x] - Job Candidates
+ - [x] - Member
+ - [x] - Member Medias
 
 ## Author Fields
   - [x] - id
@@ -109,6 +117,66 @@
   - [x] - id -> references Company(id)
   - [x] - media
   - [x] - url
+
+## Form
+ - [x] - id
+ - [x] - createdAt
+ - [x] - updatedAt
+ - [x] - uuid
+ - [x] - email
+ - [x] - message
+ - [x] - name
+ - [x] - subject
+
+ ## JAAS Role
+ - [x] - name
+
+ ## JAAS Roles
+ - [x] - id -> references User(id)
+ - [x] - role_name -> references JAAS Role(name)
+
+ ## JAAS User
+ - [x] - id
+ - [x] - login
+ - [x] - password
+
+ ## Job
+ - [x] - id
+ - [x] - createdAt
+ - [x] - updatedAt
+ - [x] - uuid
+ - [x] - active
+ - [x] - benefits
+ - [x] - description
+ - [x] - feature
+ - [x] - jobCategory
+ - [x] - jobType
+ - [x] - maxPayment
+ - [x] - minPayment
+ - [x] - requirement
+ - [x] - title
+ - [x] - company_id
+
+ ## Job Candidates
+ - [x] - Job_id
+ - [x] - candidates_id
+
+ ## Member
+ - [x] - id
+ - [x] - createdAt
+ - [x] - updatedAt
+ - [x] - uuid
+ - [x] - name
+ - [x] - occupation
+ - [x] - picture
+ - [x] - shortText
+
+  ## Member
+ - [x] - id -> references Member(id)
+ - [x] - media
+ - [x] - url
+ 
+
 
  
 
