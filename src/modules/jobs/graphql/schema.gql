@@ -1,0 +1,25 @@
+scalar Date
+scalar DateTime
+
+type Query{
+    allJobs: [Job]
+}
+
+type Job {
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    active: Boolean
+    benefits: String
+    description: String
+    feature: Boolean
+    jobCategory: String
+    jobType: String
+    maxPayment: Float
+    minPayment: Float
+    requirement: String
+    title: String
+    company: Company
+    candidates: [Candidate]
+}

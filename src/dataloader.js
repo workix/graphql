@@ -39,7 +39,7 @@ class UserLoader {
     static async batchUsers(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [""] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
         let sql = `SELECT ${fields.toString()} FROM users WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let users;
@@ -108,7 +108,7 @@ class CompanyMediaLoader {
     static async batchMedias(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [""] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
         let sql = `SELECT ${fields.toString()} FROM companies_medias WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let medias;
@@ -142,7 +142,7 @@ class PictureLoader {
     static async batchPictures(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog", ""] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog"] })
         let sql = `SELECT ${fields.toString()} FROM blogs_pictures WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let pictures;
@@ -176,7 +176,7 @@ class TagLoader {
     static async batchTags(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog", ""] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog"] })
         let sql = `SELECT ${fields.toString()} FROM blogs_tags WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let tags;
@@ -209,7 +209,7 @@ class BlogLoader {
     static async batchBlogs(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["", ""] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
         let sql = `SELECT ${fields.toString()} FROM blogs WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let blogs;
@@ -237,6 +237,104 @@ class BlogLoader {
         return Promise.resolve(response);
     }
 }
+
+class CompanyLoader {
+    static async batchCompanies(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let sql = `SELECT ${fields.toString()} FROM companies WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let companies;
+
+        try {
+            companies = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        companies.forEach(company => {
+            ordened.set(company.id, [])
+        })
+
+        let id;
+        companies.forEach(company => {
+            id = company.id
+            ordened.get(id).push(company)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
+class CandidateLoader {
+    static async batchCandidates(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let sql = `SELECT ${fields.toString()} FROM candidates WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let candidates;
+
+        try {
+            candidates = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        candidates.forEach(candidate => {
+            ordened.set(candidate.id, [])
+        })
+
+        let id;
+        candidates.forEach(candidate => {
+            id = candidate.id
+            ordened.get(id).push(candidate)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+
+    static async batchSubscribers(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();        
+        
+        let sql = `SELECT Job_id as job_id, candidates_id as candidate_id FROM jobs_candidates WHERE Job_id IN (${idsString}) ORDER BY Job_id ASC;`;
+
+        let candidates;
+
+        try {
+            candidates = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        candidates.forEach(candidate => {
+            ordened.set(candidate.job_id, [])
+        })
+
+        let id;
+        candidates.forEach(candidate => {
+            id = candidate.job_id
+            ordened.get(id).push(candidate)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
 
 
 class JAASRoleLoader {
@@ -381,6 +479,15 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             rolesLoader: new DataLoader(params => {
                 return JAASRoleLoader.batchRoles(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            companiesLoader: new DataLoader(params => {
+                return CompanyLoader.batchCompanies(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            candidatesLoader: new DataLoader(params => {
+                return CandidateLoader.batchCandidates(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            candidatesSubscribedJobsLoader: new DataLoader(params => {
+                return CandidateLoader.batchSubscribers(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
         }
     }
