@@ -239,15 +239,17 @@ class BlogLoader {
 }
 
 
-class DLCLoader {
-    static async batchDlcs(connection, ids) {
+class JAASRoleLoader {
+    static async batchRoles(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let sql = `SELECT * FROM "DLC" WHERE app_id IN (${idsString}) ORDER BY app_id ASC;`;
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["name"] })
+        let sql = `SELECT ${fields.toString()}, role_name FROM JAAS_Roles WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
-        let dlcs;
+        let roles;
 
         try {
-            dlcs = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+            roles = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
         } catch (error) {
             console.error(error);
         }
@@ -255,14 +257,14 @@ class DLCLoader {
 
         const ordened = new Map()
 
-        dlcs.forEach(dlc => {
-            ordened.set(dlc.app_id, [])
+        roles.forEach(role => {
+            ordened.set(role.id, [])
         })
 
         let id;
-        dlcs.forEach(dlc => {
-            id = dlc.app_id
-            ordened.get(id).push(dlc)
+        roles.forEach(role => {
+            id = role.id
+            ordened.get(id).push(role)
         })
 
         let response = ids.map(id => ordened.get(id))
@@ -376,6 +378,9 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             companyMediaLoader: new DataLoader(params => {
                 return CompanyMediaLoader.batchMedias(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            rolesLoader: new DataLoader(params => {
+                return JAASRoleLoader.batchRoles(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
         }
     }

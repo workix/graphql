@@ -1,0 +1,18 @@
+scalar Date
+scalar DateTime
+
+type Query{
+    allJAASUser: [JAASUser]
+    allJAASRole: [JAASRole]
+}
+
+type JAASUser {
+    id: ID
+    login: String
+    password: String
+    roles: [JAASRole]
+}
+
+type JAASRole {
+    name: String
+}
