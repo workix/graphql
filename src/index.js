@@ -26,6 +26,8 @@ const schema = makeExecutableSchema({
   typeDefs,
 });
 
+
+
 app.use("/graphql",
 (req, res, next) => {
   req["context"] = {}
@@ -41,6 +43,8 @@ app.use("/graphql",
   }))
 );
 
+app.use('/', (req,res) => res.send({msg: "Workix Graphql"}))
+
 app.use(
   (error, request, response, next) => {
     if (error instanceof Error) {
@@ -51,4 +55,9 @@ app.use(
   }
 );
 
-app.listen(4000, () => console.log("Server is running"));
+const port = process.env.PORT || 4000
+
+app.listen(port, () => {
+  console.log(`Server is running at Port ${port}`)
+  console.log(`http://localhost:${port}/graphql`)
+});

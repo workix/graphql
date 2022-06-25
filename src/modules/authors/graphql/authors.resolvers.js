@@ -23,7 +23,7 @@ const authorsResolvers = {
         return medias;
       }
     },
-    Media:{
+    AuthorMedia:{
       author: async (parent, args, ctx, info) => {        
         const authors = await ctx.dataloaders.authorLoader.load({key: parent.id, info})
         return authors[0];

@@ -1,0 +1,17 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    allForms: [Form]
+}
+
+type Form {
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    email: String
+    message: String
+    name: String
+    subject: String   
+}
