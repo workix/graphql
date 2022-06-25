@@ -35,6 +35,40 @@ class AuthorLoader {
     }
 }
 
+class MemberLoader {
+    static async batchMembers(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let sql = `SELECT ${fields.toString()} FROM members WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let members;
+
+        try {
+            members = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        const ordened = new Map()
+
+        members.forEach(member => {
+            ordened.set(member.id, [])
+        })
+
+        let id;
+        members.forEach(member => {
+            id = member.id
+            ordened.get(id).push(member)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
 class UserLoader {
     static async batchUsers(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
@@ -76,6 +110,40 @@ class MediaLoader {
         let idsString = ids.map(v => `'${v}'`).toString();
         let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["author"] })
         let sql = `SELECT ${fields.toString()} FROM authors_medias WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let medias;
+
+        try {
+            medias = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        const ordened = new Map()
+
+        medias.forEach(media => {
+            ordened.set(media.id, [])
+        })
+
+        let id;
+        medias.forEach(media => {
+            id = media.id
+            ordened.get(id).push(media)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
+class MemberMediaLoader {
+    static async batchMedias(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["owner"] })
+        let sql = `SELECT ${fields.toString()} FROM members_medias WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let medias;
 
@@ -488,6 +556,12 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             candidatesSubscribedJobsLoader: new DataLoader(params => {
                 return CandidateLoader.batchSubscribers(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            memberMediaLoader: new DataLoader(params => {
+                return MemberMediaLoader.batchMedias(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            membersLoader: new DataLoader(params => {
+                return MemberLoader.batchMembers(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
         }
     }

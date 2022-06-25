@@ -1,0 +1,24 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    allMembers: [Member]
+}
+
+type Member {
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    name: String
+    occupation: String
+    picture: String
+    shortText: String
+    medias: [MemberMedia]
+}
+
+type MemberMedia{
+    owner: Member
+    media: String
+    url: String
+}
