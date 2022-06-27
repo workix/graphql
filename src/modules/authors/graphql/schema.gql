@@ -1,7 +1,6 @@
 scalar Date
 
-type Query {
-    hello: String
+type Query {    
     allAuthors: [Author]    
   }
 

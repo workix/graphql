@@ -2,8 +2,8 @@ scalar Date
 scalar DateTime
 
 type Query{
-    allJAASUser: [JAASUser]
-    allJAASRole: [JAASRole]
+    allJAASUsers: [JAASUser]
+    allJAASRoles: [JAASRole]
 }
 
 type JAASUser {

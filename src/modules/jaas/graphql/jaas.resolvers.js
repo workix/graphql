@@ -3,13 +3,13 @@ const { QueryTypes } = require('sequelize');
 
 const jaasResolvers = {
     Query: {
-        allJAASUser: async (parent, args, ctx, info) => {
+        allJAASUsers: async (parent, args, ctx, info) => {
             const fields = ctx.requestedFields.getFields(info, { keep: ["id"], exclude: ["roles"] })
             const sql = `SELECT ${fields.toString()} FROM JAAS_User ORDER BY id ASC`
             const jaasUsers = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
             return jaasUsers;
         },
-        allJAASRole: async (parent, args, ctx, info) => {
+        allJAASRoles: async (parent, args, ctx, info) => {
             const fields = ctx.requestedFields.getFields(info, { keep: [], exclude: [] })
             const sql = `SELECT ${fields.toString()} FROM JAAS_Role ORDER BY name ASC`
             const jaasRoles = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });

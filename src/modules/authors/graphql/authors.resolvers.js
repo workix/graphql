@@ -2,10 +2,7 @@ const { QueryTypes } = require('sequelize');
 import {Author} from '../../../models';
 
 const authorsResolvers = {
-    Query: {
-        hello: (parent, args, ctx, info) => {
-            return 'Hello world!';
-          },
+    Query: {        
           allAuthors: async (parent, args, ctx, info) => {
             const fields = ctx.requestedFields.getFields(info, { keep: ["id"], exclude: ["medias", "author"] })            
             const sql = `SELECT ${fields.toString()} FROM authors ORDER BY id ASC`
