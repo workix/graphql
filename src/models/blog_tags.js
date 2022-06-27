@@ -1,13 +1,13 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('blog_tags', {
+  return sequelize.define('BlogTag', {
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
       allowNull: false,
       references: {
-        model: 'blog',
+        model: 'Blog',
         key: 'id'
       }
     },
@@ -16,6 +16,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'blog_tags'
+    tableName: 'blogs_tags'
   });
 };

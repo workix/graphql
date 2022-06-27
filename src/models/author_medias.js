@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Media', {
+  return sequelize.define('AuthorMedia', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -20,6 +20,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'author_medias'
+    tableName: 'authors_medias'
   });
 };

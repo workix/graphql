@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('blog', {
+  return sequelize.define('Blog', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -47,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
-        model: 'author',
+        model: 'Author',
         key: 'id'
       }
     }

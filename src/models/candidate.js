@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('candidate', {
+  return sequelize.define('Candidate', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -18,11 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     uuid: {
       type: DataTypes.STRING(255),
       allowNull: false
-    },
-    version: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true
-    },
+    },    
     mobilePhone: {
       type: DataTypes.BIGINT,
       allowNull: true
@@ -68,12 +64,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
-        model: 'user',
+        model: 'User',
         key: 'id'
       },
       unique: true
     }
   }, {
-    tableName: 'candidate'
+    tableName: 'candidates'
   });
 };
