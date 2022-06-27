@@ -1,0 +1,17 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    allTestimonials: [Testimonial]
+}
+
+type Testimonial{
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    picture: String
+    signature: String
+    text: String
+    author: Author
+}
