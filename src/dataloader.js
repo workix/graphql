@@ -339,6 +339,39 @@ class CompanyLoader {
     }
 }
 
+class JobLoader {
+    static async batchJobs(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let sql = `SELECT ${fields.toString()} FROM jobs WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let jobs;
+
+        try {
+            jobs = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        jobs.forEach(jobs => {
+            ordened.set(jobs.id, [])
+        })
+
+        let id;
+        jobs.forEach(job => {
+            id = job.id
+            ordened.get(id).push(job)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
 class CandidateLoader {
     static async batchCandidates(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
@@ -394,6 +427,37 @@ class CandidateLoader {
         let id;
         candidates.forEach(candidate => {
             id = candidate.job_id
+            ordened.get(id).push(candidate)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+
+    static async batchSubscribersSP(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();        
+        
+        let sql = `SELECT sp_id, candidate_id FROM selective_processes_candidates WHERE sp_id IN (${idsString}) ORDER BY sp_id ASC;`;
+
+        let candidates;
+
+        try {
+            candidates = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        candidates.forEach(candidate => {
+            ordened.set(candidate.sp_id, [])
+        })
+
+        let id;
+        candidates.forEach(candidate => {
+            id = candidate.sp_id
             ordened.get(id).push(candidate)
         })
 
@@ -609,10 +673,7 @@ export class DataLoaderFactory {
     }
 
     getLoaders() {
-        return {
-            dlcLoader: new DataLoader(params => {
-                return DLCLoader.batchDlcs(this.db, params, this.requestedFields)
-            }, { cacheKeyFn: param => param.key }),
+        return {            
             mediaLoader: new DataLoader(params => {
                 return MediaLoader.batchMedias(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
@@ -666,6 +727,12 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             skillsLoader: new DataLoader(params => {
                 return ResumeLoader.batchSkills(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            jobsLoader: new DataLoader(params => {
+                return JobLoader.batchJobs(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            candidatesSubscribedSPLoader: new DataLoader(params => {
+                return CandidateLoader.batchSubscribersSP(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
         }
     }

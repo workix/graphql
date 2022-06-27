@@ -1,3 +1,4 @@
+import _ from 'lodash';
 const { QueryTypes } = require('sequelize');
 // import { Job } from '../../../models';
 
@@ -19,10 +20,11 @@ const jobsResolvers = {
             
             const subIds = await ctx.dataloaders.candidatesSubscribedJobsLoader.load({key: parent.id, info})                
 
-            const candidate_id = subIds[0] ? subIds[0].candidate_id : 0            
-
-            const candidates = await ctx.dataloaders.candidatesLoader.load({key: candidate_id, info})    
-            return candidates; 
+            const candidates_ids = subIds.length ? subIds.map(i => ({key: i.candidate_id, info: info})) : []                      
+            
+            const candidates = await ctx.dataloaders.candidatesLoader.loadMany(candidates_ids)    
+            
+            return _.flatten(candidates);  
         }
     }    
 }

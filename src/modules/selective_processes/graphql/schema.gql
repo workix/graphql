@@ -1,0 +1,20 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    allSelectiveProcesses: [SelectiveProcess]
+}
+
+type SelectiveProcess {
+    id: ID,
+    active: Boolean
+    createdAt: DateTime
+    disabledAt: DateTime
+    expire: DateTime
+    maxCandidates: Int
+    start: DateTime
+    updatedAt: DateTime
+    uuid: String
+    job: Job
+    candidates: [Candidate]
+}
