@@ -22,6 +22,8 @@
  - [x] - Resume Educations
  - [x] - Resume Experiences
  - [x] - Resume Skills
+ - [x] - Selective Process
+ - [x] - Selective Process Candidates
 
 ## Author Fields
   - [x] - id
@@ -213,6 +215,21 @@
  - [x] - skillName
  - [x] - months
 
+ ## Selective Process
+ - [x] - id
+ - [x] - active
+ - [x] - createdAt
+ - [x] - disabledAt
+ - [x] - expire
+ - [x] - maxCandidates
+ - [x] - start
+ - [x] - updatedAt
+ - [x] - uuid
+ - [x] - job_id
+
+ ## Selective Process Candidates
+ - [x] - sp_id -> references Selective Process(id)
+ - [x] - candidate -> references Candidate(id)
 
 
 
