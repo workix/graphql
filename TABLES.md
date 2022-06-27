@@ -5,8 +5,7 @@
  - [x] - Comment
  - [x] - Blog Comments
  - [x] - Blog Pictures
- - [x] - Blog Tags
- - [x] - User
+ - [x] - Blog Tags 
  - [x] - Candidate
  - [x] - Company
  - [x] - Company Medias
@@ -24,6 +23,9 @@
  - [x] - Resume Skills
  - [x] - Selective Process
  - [x] - Selective Process Candidates
+ - [x] - Subscriber
+ - [x] - Testimonial
+ - [x] - User
 
 ## Author Fields
   - [x] - id
@@ -72,16 +74,6 @@
 ## Blog Pictures
   - [x] - id -> references Blog(id)
   - [x] - name
-
-## User
- - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
- - [x] - uuid
- - [x] - active
- - [x] - email
- - [x] - firebaseMessageToken
- - [x] - firebaseUUID
 
 ## Candidate
  - [x] - id
@@ -230,6 +222,34 @@
  ## Selective Process Candidates
  - [x] - sp_id -> references Selective Process(id)
  - [x] - candidate -> references Candidate(id)
+
+## Subscriber
+ - [x] - id
+ - [x] - createdAt
+ - [x] - updatedAt
+ - [x] - uuid
+ - [x] - email
+
+ ## Testimonial
+ - [x] - id
+ - [x] - createdAt
+ - [x] - updatedAt
+ - [x] - uuid
+ - [x] - picture
+ - [x] - signature
+ - [x] - text
+ - [x] - author_id -> references Author(id)
+
+## User
+ - [x] - id
+ - [x] - createdAt
+ - [x] - updatedAt
+ - [x] - uuid
+ - [x] - active
+ - [x] - email
+ - [x] - firebaseMessageToken
+ - [x] - firebaseUUID
+
 
 
 
