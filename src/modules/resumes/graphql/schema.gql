@@ -1,0 +1,32 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    allResumes: [Resume]    
+}
+
+type Resume {
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    carrerLevel: CarrerLevel
+    content: String
+    objective: String
+    presence: Presence
+    candidate: Candidate
+}
+
+enum CarrerLevel{
+    JUNIOR,
+    MIDDLE,
+    SENIOR,
+    EXPERT
+}
+
+enum Presence {
+    REMOTE,
+    OFFICE,
+    RELOCATION,
+    TRAVEL_A_LOT
+}
