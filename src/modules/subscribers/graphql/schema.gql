@@ -1,0 +1,14 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    allSubscribers: [Subscriber]
+}
+
+type Subscriber {
+    id: ID,
+    createdAt: DateTime
+    updatedAt: DateTime
+    uuid: String
+    email: String
+}
