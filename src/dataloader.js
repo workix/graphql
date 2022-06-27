@@ -507,6 +507,101 @@ class CommentLoader {
     }
 }
 
+class ResumeLoader {
+    static async batchEducations(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let sql = `SELECT ${fields.toString()} FROM resumes_educations WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let educations;
+
+        try {
+            educations = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        educations.forEach(education => {
+            ordened.set(education.id, [])
+        })
+
+        let id;
+        educations.forEach(education => {
+            id = education.id
+            ordened.get(id).push(education)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+
+    static async batchExperiences(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let sql = `SELECT ${fields.toString()} FROM resumes_experiences WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let experiences;
+
+        try {
+            experiences = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        experiences.forEach(experience => {
+            ordened.set(experience.id, [])
+        })
+
+        let id;
+        experiences.forEach(experience => {
+            id = experience.id
+            ordened.get(id).push(experience)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+
+    static async batchSkills(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let sql = `SELECT ${fields.toString()} FROM resumes_skills WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let skills;
+
+        try {
+            skills = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        skills.forEach(skill => {
+            ordened.set(skill.id, [])
+        })
+
+        let id;
+        skills.forEach(skill => {
+            id = skill.id
+            ordened.get(id).push(skill)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
 export class DataLoaderFactory {
     constructor(connection, requestedFields) {
         this.db = connection;
@@ -562,6 +657,15 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             membersLoader: new DataLoader(params => {
                 return MemberLoader.batchMembers(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            educationsLoader: new DataLoader(params => {
+                return ResumeLoader.batchEducations(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            experiencesLoader: new DataLoader(params => {
+                return ResumeLoader.batchExperiences(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            skillsLoader: new DataLoader(params => {
+                return ResumeLoader.batchSkills(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
         }
     }

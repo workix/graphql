@@ -15,6 +15,9 @@ type Resume {
     objective: String
     presence: Presence
     candidate: Candidate
+    educations: [Education]
+    experiences: [Experience]
+    skills: [Skill]
 }
 
 enum CarrerLevel{
@@ -29,4 +32,29 @@ enum Presence {
     OFFICE,
     RELOCATION,
     TRAVEL_A_LOT
+}
+
+type Education {
+    id: ID
+    description: String
+    endDate: Date
+    qualification: String
+    schoolName: String
+    startDate: Date
+}
+
+type Experience {
+    id: ID
+    description: String
+    employerName: String
+    endDate: Date
+    jobTitle: String
+    startDate: Date
+    responsibilities: String
+}
+
+type Skill {
+    id: ID
+    skillName: String
+    months: Int
 }
