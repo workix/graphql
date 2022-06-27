@@ -18,6 +18,10 @@
  - [x] - Job Candidates
  - [x] - Member
  - [x] - Member Medias
+ - [x] - Resume
+ - [x] - Resume Educations
+ - [x] - Resume Experiences
+ - [x] - Resume Skills
 
 ## Author Fields
   - [x] - id
@@ -77,7 +81,7 @@
  - [x] - firebaseMessageToken
  - [x] - firebaseUUID
 
- ## Candidate
+## Candidate
  - [x] - id
  - [x] - createdAt
  - [x] - updatedAt
@@ -94,7 +98,7 @@
  - [x] - cpf
  - [x] - user_id -> references User(id)
 
- ## Company
+## Company
  - [x] - id
  - [x] - createdAt
  - [x] - updatedAt
@@ -113,7 +117,7 @@
  - [x] - segment
  - [x] - user_id -> references User(id)
 
- ## Company Medias
+## Company Medias
   - [x] - id -> references Company(id)
   - [x] - media
   - [x] - url
@@ -128,19 +132,19 @@
  - [x] - name
  - [x] - subject
 
- ## JAAS Role
+## JAAS Role
  - [x] - name
 
- ## JAAS Roles
+## JAAS Roles
  - [x] - id -> references User(id)
  - [x] - role_name -> references JAAS Role(name)
 
- ## JAAS User
+## JAAS User
  - [x] - id
  - [x] - login
  - [x] - password
 
- ## Job
+## Job
  - [x] - id
  - [x] - createdAt
  - [x] - updatedAt
@@ -157,11 +161,11 @@
  - [x] - title
  - [x] - company_id
 
- ## Job Candidates
+## Job Candidates
  - [x] - Job_id
  - [x] - candidates_id
 
- ## Member
+## Member
  - [x] - id
  - [x] - createdAt
  - [x] - updatedAt
@@ -171,11 +175,47 @@
  - [x] - picture
  - [x] - shortText
 
-  ## Member
+## Member
  - [x] - id -> references Member(id)
  - [x] - media
  - [x] - url
- 
+
+ ## Resume
+ - [x] - id
+ - [x] - createdAt
+ - [x] - updatedAt
+ - [x] - uuid
+ - [x] - carrerLevel [enum]
+ - [x] - content
+ - [x] - objective
+ - [x] - presence [enum]
+ - [x] - candidate_id -> references Candidate(id)
+
+ ## Resume Educations
+ - [x] - id -> references Resume(id)
+ - [x] - description
+ - [x] - endDate
+ - [x] - qualification
+ - [x] - schoolName
+ - [x] - startDate
+
+ ## Resume Experiences
+ - [x] - id -> references Resume(id)
+ - [x] - description
+ - [x] - employerName
+ - [x] - endDate
+ - [x] - jobTitle
+ - [x] - startDate
+ - [x] - responsibilities
+
+ ## Resume Skills
+ - [x] - id -> references Resume(id)
+ - [x] - skillName
+ - [x] - months
+
+
+
+
 
 
  
