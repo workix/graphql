@@ -17,16 +17,16 @@ const resumesResolvers = {
         }
     },
     CarrerLevel: {
-        JUNIOR: 1,
-        MIDDLE: 2,
-        SENIOR: 3,
-        EXPERT: 4
+        JUNIOR: 0,
+        MIDDLE: 1,
+        SENIOR: 2,
+        EXPERT: 3
     },
     Presence: {
-        REMOTE: 1,
-        OFFICE: 2,
-        RELOCATION: 3,
-        TRAVEL_A_LOT: 4
+        REMOTE: 0,
+        OFFICE: 1,
+        RELOCATION: 2,
+        TRAVEL_A_LOT: 3
     }    
 }
 
