@@ -310,7 +310,7 @@ class CompanyLoader {
     static async batchCompanies(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["medias"] })
         let sql = `SELECT ${fields.toString()} FROM companies WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let companies;
@@ -343,7 +343,7 @@ class JobLoader {
     static async batchJobs(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "company_id"], exclude: ["company"] })
         let sql = `SELECT ${fields.toString()} FROM jobs WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let jobs;

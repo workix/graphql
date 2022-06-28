@@ -19,7 +19,7 @@ type Candidate {
     zipCode: Int
     name: String
     birthDate: Date
-    cpf: Int   
+    cpf: Float   
     user: User 
     resume: Resume
 }
