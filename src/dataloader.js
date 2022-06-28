@@ -376,7 +376,7 @@ class CandidateLoader {
     static async batchCandidates(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: [] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "user_id"], exclude: ["user"] })
         let sql = `SELECT ${fields.toString()} FROM candidates WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let candidates;
