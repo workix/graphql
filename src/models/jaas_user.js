@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('jaas_user', {
+  return sequelize.define('JAASUser', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -16,6 +16,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'jaas_user'
+    tableName: 'JAAS_User'
   });
 };

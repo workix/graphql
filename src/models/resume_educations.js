@@ -1,13 +1,13 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('resume_educations', {
+  return sequelize.define('ResumeEducation', {
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
       allowNull: false,
       references: {
-        model: 'resume',
+        model: 'Resume',
         key: 'id'
       }
     },
@@ -32,6 +32,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'resume_educations'
+    tableName: 'resumes_educations'
   });
 };

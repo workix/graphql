@@ -1,21 +1,25 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('resume_skills', {
+  return sequelize.define('ResumeSkill', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'resume',
+        model: 'Resume',
         key: 'id'
       }
     },
     skillName: {
       type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    months: {
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
-    tableName: 'resume_skills'
+    tableName: 'resumes_skills'
   });
 };

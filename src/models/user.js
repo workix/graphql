@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('user', {
+  return sequelize.define('User', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -18,11 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     uuid: {
       type: DataTypes.STRING(255),
       allowNull: false
-    },
-    version: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true
-    },
+    },    
     active: {
       type: DataTypes.BOOLEAN,
       allowNull: true
@@ -41,6 +37,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'user'
+    tableName: 'users'
   });
 };

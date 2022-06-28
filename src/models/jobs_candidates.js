@@ -1,26 +1,26 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('JAASRoles', {
-    id: {
+  return sequelize.define('JobCandidate', {
+    Job_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'JAASUser',
+        model: 'Job',
         key: 'id'
       }
     },
-    role_name: {
-      type: DataTypes.STRING(255),
+    candidates_id: {
+      type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'JAASRole',
-        key: 'name'
+        model: 'Candidate',
+        key: 'id'
       }
     }
   }, {
-    tableName: 'JAAS_Roles'
+    tableName: 'jobs_candidates'
   });
 };

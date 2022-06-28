@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('selective_process', {
+  return sequelize.define('SelectiveProcess', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -38,20 +38,16 @@ module.exports = function(sequelize, DataTypes) {
     uuid: {
       type: DataTypes.STRING(255),
       allowNull: false
-    },
-    version: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true
-    },
+    },    
     job_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
-        model: 'job',
+        model: 'Job',
         key: 'id'
       }
     }
   }, {
-    tableName: 'selective_process'
+    tableName: 'selective_processes'
   });
 };

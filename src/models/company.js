@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('company', {
+  return sequelize.define('Company', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -18,10 +18,6 @@ module.exports = function(sequelize, DataTypes) {
     uuid: {
       type: DataTypes.STRING(255),
       allowNull: false
-    },
-    version: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true
     },
     mobilePhone: {
       type: DataTypes.BIGINT,
@@ -64,6 +60,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
+    logo: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
     segment: {
       type: DataTypes.STRING(255),
       allowNull: false
@@ -72,12 +72,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
-        model: 'user',
+        model: 'User',
         key: 'id'
       },
       unique: true
     }
   }, {
-    tableName: 'company'
+    tableName: 'companies'
   });
 };

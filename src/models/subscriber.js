@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('subscriber', {
+  return sequelize.define('Subscriber', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -19,15 +19,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    version: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true
-    },
     email: {
       type: DataTypes.STRING(255),
       allowNull: false
     }
   }, {
-    tableName: 'subscriber'
+    tableName: 'subscribers'
   });
 };

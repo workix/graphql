@@ -1,13 +1,13 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('jaas_role', {
+  return sequelize.define('JAASRole', {
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true
     }
   }, {
-    tableName: 'jaas_role'
+    tableName: 'JAAS_Role'
   });
 };
