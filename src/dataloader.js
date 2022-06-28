@@ -376,7 +376,7 @@ class CandidateLoader {
     static async batchCandidates(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "user_id"], exclude: ["user"] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "user_id"], exclude: ["user","resume"] })
         let sql = `SELECT ${fields.toString()} FROM candidates WHERE id IN (${idsString}) ORDER BY id ASC;`;
 
         let candidates;
@@ -572,6 +572,37 @@ class CommentLoader {
 }
 
 class ResumeLoader {
+    static async batchResumes(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "candidate_id"], exclude: ["educations", "experiences", "skills"] })
+        let sql = `SELECT ${fields.toString()} FROM resumes WHERE candidate_id IN (${idsString}) ORDER BY id ASC;`;
+
+        let resumes;
+
+        try {
+            resumes = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        resumes.forEach(resume => {
+            ordened.set(resume.candidate_id, [])
+        })
+
+        let id;
+        resumes.forEach(resume => {
+            id = resume.candidate_id
+            ordened.get(id).push(resume)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+
     static async batchEducations(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
@@ -733,6 +764,9 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             candidatesSubscribedSPLoader: new DataLoader(params => {
                 return CandidateLoader.batchSubscribersSP(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            resumesLoader: new DataLoader(params => {
+                return ResumeLoader.batchResumes(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
         }
     }

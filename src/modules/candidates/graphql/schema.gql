@@ -21,4 +21,5 @@ type Candidate {
     birthDate: Date
     cpf: Int   
     user: User 
+    resume: Resume
 }

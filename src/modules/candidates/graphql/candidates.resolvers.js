@@ -4,7 +4,7 @@ import { Candidate } from '../../../models';
 const candidatesResolvers = {
     Query: {       
           allCandidates: async (parent, args, ctx, info) => {
-            const fields = ctx.requestedFields.getFields(info, { keep: ["user_id"], exclude: ["user"] })            
+            const fields = ctx.requestedFields.getFields(info, { keep: ["user_id"], exclude: ["user", "resume"] })            
             const sql = `SELECT ${fields.toString()} FROM candidates ORDER BY id ASC`
             const candidates = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
             return candidates;
@@ -13,10 +13,13 @@ const candidatesResolvers = {
     },
     Candidate: {
       user: async (parent, args, ctx, info) => {        
-          const users = await ctx.dataloaders.usersLoader.load({key: parent.user_id, info})
-          //console.log(parent)
+          const users = await ctx.dataloaders.usersLoader.load({key: parent.user_id, info})          
           return users[0];        
-      }
+      },
+      resume: async (parent, args, ctx, info) => {
+        const resumes = await ctx.dataloaders.resumesLoader.load({key: parent.id, info})          
+        return resumes[0];        
+      }        
     }
 }
 
