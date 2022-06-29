@@ -6,7 +6,8 @@ import PaginatedList from '../../../utils/PaginatedList';
 
 const usersRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: ["id"], exclude: ["rows"] })
+    const getFields = info => requestedFields.getFields(info, { keep: ["id"], exclude: [] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id"], exclude: [] })
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
@@ -48,8 +49,9 @@ const usersRepository = db => {
         return user;
     }
 
-    const findAllPaginated = async (info, args) => {
-        const fields = getFields(info)
+    const findAllPaginated = async (info, args) => {           
+        
+        const fields = getFieldsWithSubfields(info).get("rows")              
         
         const totalRows = await User.count()
 
@@ -61,13 +63,13 @@ const usersRepository = db => {
 
 		const end = paginator.getEnd();		
 
-        const options = { /*attributes: fields,*/ order: ['id'] }
+        const options = { attributes: fields, order: ['id'] }
         options.offset = start - 1;
         options.limit = args.limit;
 
         const users = await User.findAll(options)
 
-        const paginatedList = new PaginatedList(users, paginator.getStart(), paginator.getEnd(), paginator.getTotalPages(), paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList(users, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 
