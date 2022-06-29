@@ -25,6 +25,7 @@ const usersRepository = db => {
 
     const createUser = async args => {        
         const user = await User.create(args.input)        
+        await user.reload()
         return user;
     }
 
