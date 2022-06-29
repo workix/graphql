@@ -8,6 +8,7 @@ type Query {
 
 type Mutation {
     createUser(input: UserInput!): User
+    deleteUser(id: ID!) : Boolean
 }
 
 type User {

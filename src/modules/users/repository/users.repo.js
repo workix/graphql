@@ -29,7 +29,12 @@ const usersRepository = db => {
         return user;
     }
 
-    return { findAll, findById, createUser }
+    const deleteUser = async args => {
+        const deleted = await User.destroy({ where: { id: args.id } })        
+        return deleted > 0
+    }
+
+    return { findAll, findById, createUser, deleteUser }
 }
 
 export default usersRepository;

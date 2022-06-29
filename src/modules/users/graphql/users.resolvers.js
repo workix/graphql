@@ -15,6 +15,10 @@ const usersResolvers = {
         createUser: async (parent, args, ctx, info) => {
           const user = await usersRepository(ctx.orm).createUser(args)
           return user;
+        },
+        deleteUser: async (parent, args, ctx, info) => {
+          const deleted = await usersRepository(ctx.orm).deleteUser(args)          
+          return deleted;
         }
     }
 }
