@@ -3,6 +3,7 @@ scalar DateTime
 
 type Query {
     allUsers: [User]
+    getUserById(id: ID): User
 }
 
 type User {

@@ -4,14 +4,21 @@ import { User } from '../../../models';
 
 const usersRepository = db => {
     const requestedFields = new RequestedFields();
+    const getFields = info => requestedFields.getFields(info, { keep: ["id"], exclude: [] })
+    
     const findAll = async info => {
-        const fields = requestedFields.getFields(info, { keep: ["id"], exclude: [] })            
-        const sql = `SELECT ${fields.toString()} FROM users ORDER BY id ASC`
-        const users = await db.sequelize.query(sql, { type: QueryTypes.SELECT });
+        const fields = getFields(info)
+        const users = await User.findAll({ attributes: fields})                
         return users;
     }
 
-    return {findAll}
+    const findById = async (info, args) => {
+        const fields = getFields(info)
+        const user = await User.findAll({ where: { id: args.id } , attributes: fields})        
+        return user[0];
+    }
+
+    return { findAll, findById }
 }
 
 export default usersRepository;
