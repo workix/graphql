@@ -1,12 +1,11 @@
 const { QueryTypes } = require('sequelize');
 import { User } from '../../../models';
+import usersRepository from '../repository/users.repo';
 
 const usersResolvers = {
     Query: {       
-          allUsers: async (parent, args, ctx, info) => {
-            const fields = ctx.requestedFields.getFields(info, { keep: ["id"], exclude: ["", ""] })            
-            const sql = `SELECT ${fields.toString()} FROM users ORDER BY id ASC`
-            const users = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
+          allUsers: async (parent, args, ctx, info) => {            
+            const users = usersRepository(ctx.orm).findAll(info)
             return users;
           }
           

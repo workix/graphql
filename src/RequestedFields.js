@@ -2,7 +2,7 @@
 const graphqlFields = require('graphql-fields');
 import { difference, union } from 'lodash';
 
-export class RequestedFiels{
+export class RequestedFields{
 
     getFields(info, options) {
         let fields = Object.keys(graphqlFields(info))        

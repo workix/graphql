@@ -11,10 +11,10 @@ import "express-async-errors";
 import db from './models/index';
 
 import { DataLoaderFactory } from './dataloader';
-import { RequestedFiels } from './RequestedFields';
+import { RequestedFields } from './RequestedFields';
 
 const app = express();
-const requestedFields = new RequestedFiels();
+const requestedFields = new RequestedFields();
 const dataLoaderFactory = new DataLoaderFactory(db, requestedFields);
 
 
