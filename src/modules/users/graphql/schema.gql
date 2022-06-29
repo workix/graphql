@@ -4,6 +4,7 @@ scalar DateTime
 type Query {
     allUsers(start: Int, max: Int): [User]
     getUserById(id: ID!): User
+    allUsersPaginated(page: Int!, limit: Int!): PaginatedListUser
 }
 
 type Mutation {
@@ -28,4 +29,14 @@ input UserInput {
     email: String!
     firebaseMessageToken: String
     firebaseUUID: String!
+}
+
+type PaginatedListUser {
+    rows: [User]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
 }

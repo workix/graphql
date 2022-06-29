@@ -14,6 +14,7 @@
 #### [Get All]
 - [x] - GetAll with no filters
 - [x] - GetAll with start, max
+- [x] - Get Users Paginated
 
 #### [Update]
  - [x] - Updating user

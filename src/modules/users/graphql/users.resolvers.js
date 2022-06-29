@@ -9,7 +9,11 @@ const usersResolvers = {
           getUserById: async (parent, args, ctx, info) => {
             const user = await usersRepository(ctx.orm).findById(info, args)
             return user;
-          }                      
+          },
+          allUsersPaginated: async (parent, args, ctx, info) => {
+            const paginatedList = await usersRepository(ctx.orm).findAllPaginated(info, args)
+            return paginatedList;
+          }                     
     },
     Mutation: {
         createUser: async (parent, args, ctx, info) => {
