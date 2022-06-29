@@ -3,7 +3,7 @@ import usersRepository from '../repository/users.repo';
 const usersResolvers = {
     Query: {       
           allUsers: async (parent, args, ctx, info) => {            
-            const users = usersRepository(ctx.orm).findAll(info)
+            const users = usersRepository(ctx.orm).findAll(info,args)
             return users;
           },
           getUserById: async (parent, args, ctx, info) => {

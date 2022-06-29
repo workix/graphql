@@ -7,11 +7,10 @@
 #### [Delete]
 
 #### [Get by Id]
-- Path -> '/users/<!id>'
-- Verb -> Get
+ - [x] - Getting user by id
 
 #### [Get All]
 - [x] - GetAll with no filters
-- Query -> start,max
+- [x] - GetAll with start, max
 
 #### [Update]

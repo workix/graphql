@@ -2,8 +2,8 @@ scalar Date
 scalar DateTime
 
 type Query {
-    allUsers: [User]
-    getUserById(id: ID): User
+    allUsers(start: Int, max: Int): [User]
+    getUserById(id: ID!): User
 }
 
 type User {
