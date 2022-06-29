@@ -6,6 +6,10 @@ type Query {
     getUserById(id: ID!): User
 }
 
+type Mutation {
+    createUser(input: UserInput!): User
+}
+
 type User {
     id: ID,
     createdAt: DateTime
@@ -15,4 +19,11 @@ type User {
     email: String
     firebaseMessageToken: String
     firebaseUUID: String
+}
+
+input UserInput {
+    active: Boolean!
+    email: String!
+    firebaseMessageToken: String
+    firebaseUUID: String!
 }

@@ -11,6 +11,12 @@ const usersResolvers = {
             return user;
           }                      
     },
+    Mutation: {
+        createUser: async (parent, args, ctx, info) => {
+          const user = usersRepository(ctx.orm).createUser(args)
+          return user;
+        }
+    }
 }
 
 export default usersResolvers;

@@ -23,7 +23,12 @@ const usersRepository = db => {
         return users[0];
     }
 
-    return { findAll, findById }
+    const createUser = async args => {        
+        const user = await User.create(args.input)        
+        return user;
+    }
+
+    return { findAll, findById, createUser }
 }
 
 export default usersRepository;

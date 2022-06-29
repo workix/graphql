@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
@@ -5,19 +6,23 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true 
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.fn('now'),
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      defaultValue: Sequelize.fn('now'),
     },
     uuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: Sequelize.UUIDV4,
     },    
     active: {
       type: DataTypes.BOOLEAN,
@@ -30,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     firebaseMessageToken: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     firebaseUUID: {
       type: DataTypes.STRING(255),
