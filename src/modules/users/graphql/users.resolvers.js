@@ -19,6 +19,10 @@ const usersResolvers = {
         deleteUser: async (parent, args, ctx, info) => {
           const deleted = await usersRepository(ctx.orm).deleteUser(args)          
           return deleted;
+        },
+        updateUser: async (parent, args, ctx, info) => {
+          const user = await usersRepository(ctx.orm).updateUser(args)
+          return user;
         }
     }
 }

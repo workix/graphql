@@ -19,8 +19,8 @@ const usersRepository = db => {
 
     const findById = async (info, args) => {
         const fields = getFields(info)
-        const users = await User.findAll({ where: { id: args.id } , attributes: fields})        
-        return users[0];
+        const user = await User.findOne({ where: { id: args.id } , attributes: fields})        
+        return user;
     }
 
     const createUser = async args => {        
@@ -34,7 +34,19 @@ const usersRepository = db => {
         return deleted > 0
     }
 
-    return { findAll, findById, createUser, deleteUser }
+    const updateUser = async args => {
+        const [users, meta] = await User.update(args.input, { where: { id: args.id }, returning: true })
+        
+        if (meta == 0){
+            throw new Error(`User with id: ${args.id} not found`)
+        }
+
+        const user = await User.findOne({ where: { id: args.id }})
+       
+        return user;
+    }
+
+    return { findAll, findById, createUser, deleteUser, updateUser }
 }
 
 export default usersRepository;

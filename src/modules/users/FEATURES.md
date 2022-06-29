@@ -7,7 +7,7 @@
 
 #### [Delete]
  - [x] - Deleting User by id
- 
+
 #### [Get by Id]
  - [x] - Getting user by id
 
@@ -16,3 +16,4 @@
 - [x] - GetAll with start, max
 
 #### [Update]
+ - [x] - Updating user
