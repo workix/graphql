@@ -40,8 +40,17 @@ module.exports = function(sequelize, DataTypes) {
     firebaseUUID: {
       type: DataTypes.STRING(255),
       allowNull: false
+    }    
+  }  
+  , {
+    tableName: 'users',
+    hooks: {
+      afterCreate(instance, options){
+        console.log("HOOK After create")
+      },
+      beforeUpdate(instance, options){
+        instance.updatedAt = Date.now()
+      }
     }
-  }, {
-    tableName: 'users'
-  });
+  } );
 };
