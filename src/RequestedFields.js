@@ -22,7 +22,7 @@ export class RequestedFields{
         keys.forEach(k => {               
             fields = Object.keys(graphqlfields[k])
             transformed = (options.keep) ? union(fields,options.keep) : fields
-            transformed = (options.exclude) ? difference(fields, options.exclude) : fields;
+            transformed = (options.exclude) ? difference(fields, options.exclude) : transformed;
             map.set(k, transformed)
         })      
         return map;
