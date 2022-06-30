@@ -1,3 +1,4 @@
+import { sequelize } from "../../../models";
 import { RequestedFields } from '../../../RequestedFields';
 import { Author, AuthorMedia } from '../../../models';
 import Paginator from '../../../utils/Paginator';
@@ -25,8 +26,8 @@ const authorsRepository = db => {
         return author;
     }
 
-    const create = async args => {       
-        const author = await Author.create(args.input, {include: { model: AuthorMedia, as: "medias" }})        
+    const create = async args => {
+        const author = await Author.create(args.input, { include: { model: AuthorMedia, as: "medias" } })
         await author.reload()
         return author;
     }
@@ -37,30 +38,41 @@ const authorsRepository = db => {
     }
 
     const update = async args => {
-        const [authors, meta] = await Author.update(args.input, { where: { id: args.id }, returning: true })
+        const a = await Author.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (meta == 0) {
+        if (!a) {
             throw new Error(`Author with id: ${args.id} not found`)
         }
 
-        const author = await Author.findOne({ where: { id: args.id } })
+        await sequelize.transaction(async transaction => {
+            // chain all your queries here. make sure you return them.
+            const [authors, meta] = await Author.update(args.input, { where: { id: args.id }, returning: true }, { transaction })       
+
+            await AuthorMedia.destroy({ where: { id: args.id } }, { transaction })
+    
+            for (const m of args.input.medias) {
+                await AuthorMedia.create({ id: args.id, media: m.media, url: m.url }, { transaction })
+            }
+        })     
+
+        const author = await Author.findOne({ where: { id: args.id }, include: { model: AuthorMedia, as: "medias" } })
 
         return author;
     }
 
-    const findAllPaginated = async (info, args) => {           
-        
-        const fields = getFieldsWithSubfields(info).get("rows")              
-        
+    const findAllPaginated = async (info, args) => {
+
+        const fields = getFieldsWithSubfields(info).get("rows")
+
         const totalRows = await Author.count()
 
         const paginator = new Paginator(args.limit, args.page, totalRows);
 
         const totalPages = paginator.getTotalPages();
 
-		const start = paginator.getStart();
+        const start = paginator.getStart();
 
-		const end = paginator.getEnd();		
+        const end = paginator.getEnd();
 
         const options = { attributes: fields, order: ['id'] }
         options.offset = start - 1;

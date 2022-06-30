@@ -17,4 +17,4 @@
 - [x] - Get Authors Paginated
 
 #### [Update]
- - [] - Updating Author
+ - [x] - Updating Author
