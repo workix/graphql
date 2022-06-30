@@ -27,9 +27,21 @@ const candidatesRepository = db => {
     }
 
     const create = async args => {
-        const candidate = await Candidate.create(args.input)
-        await candidate.reload()
-        return candidate;
+        try {
+            const candidate = await Candidate.create(args.input)
+            await candidate.reload()
+            return candidate;    
+        } catch (error) {
+            console.error(error)
+            if (error.errors){
+                const errors = error.errors.map(e => e.message)                
+                throw new Error(errors.toString())
+            }else {                
+                throw new Error(error.message)
+            }
+            
+        }
+        
     }
 
     const destroy = async args => {

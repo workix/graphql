@@ -18,7 +18,7 @@ type Candidate {
     createdAt: DateTime
     updatedAt: DateTime
     uuid: String
-    mobilePhone: Int
+    mobilePhone: Float
     city: String
     estate: String
     neighborhood: String
@@ -33,7 +33,7 @@ type Candidate {
 }
 
 input CandidateInput {    
-    mobilePhone: Int!
+    mobilePhone: Float!
     city: String!
     estate: String!
     neighborhood: String!

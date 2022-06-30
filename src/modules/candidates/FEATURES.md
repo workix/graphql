@@ -3,10 +3,10 @@
 ## Restfull Context [Candidate]
 
 #### [Create]
- - [] - Creating a Candidate
+ - [x] - Creating a Candidate
 
 #### [Delete]
- - [] - Deleting Candidate by id
+ - [x] - Deleting Candidate by id
 
 #### [Get by Id]
  - [x] - Getting Candidate by id
@@ -17,4 +17,4 @@
 - [x] - Get Candidates Paginated
 
 #### [Update]
- - [] - Updating Candidate
+ - [x] - Updating Candidate

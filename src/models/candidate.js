@@ -75,6 +75,14 @@ module.exports = function(sequelize, DataTypes) {
       unique: true
     }
   }, {
-    tableName: 'candidates'
+    tableName: 'candidates',
+    hooks: {
+      afterCreate(instance, options){
+        console.log("HOOK After create")
+      },
+      beforeUpdate(instance, options){
+        instance.updatedAt = Date.now()
+      }
+    }
   });
 };
