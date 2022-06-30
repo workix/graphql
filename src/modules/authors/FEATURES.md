@@ -3,10 +3,10 @@
 ## Restfull Context [Author]
 
 #### [Create]
- - [] - Creating a Author
+ - [x] - Creating a Author
 
 #### [Delete]
- - [] - Deleting Author by id
+ - [x] - Deleting Author by id
 
 #### [Get by Id]
  - [x] - Getting Author by id

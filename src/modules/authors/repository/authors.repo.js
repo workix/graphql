@@ -1,5 +1,5 @@
 import { RequestedFields } from '../../../RequestedFields';
-import { Author } from '../../../models';
+import { Author, AuthorMedia } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
@@ -25,8 +25,8 @@ const authorsRepository = db => {
         return author;
     }
 
-    const create = async args => {
-        const author = await Author.create(args.input)
+    const create = async args => {       
+        const author = await Author.create(args.input, {include: { model: AuthorMedia, as: "medias" }})        
         await author.reload()
         return author;
     }
