@@ -9,12 +9,12 @@
  - [] - Deleting Candidate by id
 
 #### [Get by Id]
- - [] - Getting Candidate by id
+ - [x] - Getting Candidate by id
 
 #### [Get All]
-- [] - GetAll with no filters
-- [] - GetAll with start, max
-- [] - Get Candidates Paginated
+- [x] - GetAll with no filters
+- [x] - GetAll with start, max
+- [x] - Get Candidates Paginated
 
 #### [Update]
  - [] - Updating Candidate

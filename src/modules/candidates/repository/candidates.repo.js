@@ -6,8 +6,8 @@ import PaginatedList from '../../../utils/PaginatedList';
 
 const candidatesRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: ["id"], exclude: [] })
-    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id"], exclude: [] })
+    const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: ["user"] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: ["user"] })
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
@@ -51,7 +51,8 @@ const candidatesRepository = db => {
 
     const findAllPaginated = async (info, args) => {           
         
-        const fields = getFieldsWithSubfields(info).get("rows")              
+        const fields = getFieldsWithSubfields(info).get("rows")    
+        fields.push("user_id")                  
         
         const totalRows = await Candidate.count()
 
