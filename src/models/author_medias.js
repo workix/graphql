@@ -13,13 +13,14 @@ module.exports = function(sequelize, DataTypes) {
     },
     media: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     url: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     }
   }, {
-    tableName: 'authors_medias'
+    tableName: 'authors_medias',
+    timestamps: false
   });
 };

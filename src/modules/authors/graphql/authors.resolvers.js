@@ -1,4 +1,6 @@
+import { Author, AuthorMedia } from '../../../models';
 import authorsRepository from "../repository/authors.repo";
+
 
 const authorsResolvers = {
   Query: {
@@ -13,6 +15,11 @@ const authorsResolvers = {
     allAuthorsPaginated: async (parent, args, ctx, info) => {
       const paginatedList = await authorsRepository(ctx.orm).findAllPaginated(info, args)
       return paginatedList;
+    },
+    debugAuthor: async (parent, args, ctx, info) => {
+      const authors = await Author.findAll({ include: { model: AuthorMedia, as: "medias" }, where: { id: [1, 2, 3, 4, 5] } })
+      console.log(await authors[0].getMedias({raw: true}))
+      return authors
     }
 
   },

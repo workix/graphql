@@ -48,5 +48,14 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
+  
+  Author.associate = function(models) {
+    // associations can be defined here
+    Author.hasMany(models.AuthorMedia,{
+      foreignKey: 'id',
+      as: "medias"      
+    })
+  };
+
   return Author;
 };
