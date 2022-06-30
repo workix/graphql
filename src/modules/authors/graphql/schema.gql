@@ -1,8 +1,16 @@
 scalar Date
 
 type Query {    
-    allAuthors: [Author]    
+    allAuthors: [Author]
+    getAuthorById(id: ID!): Author
+    allAuthorsPaginated(page: Int!, limit: Int!): PaginatedListAuthor    
   }
+
+  type Mutation {
+    createAuthor(input: AuthorInput!): Author
+    deleteAuthor(id: ID!) : Boolean
+    updateAuthor(id: ID!, input: AuthorInput!): Author
+}
 
   type Author {
     id: ID,
@@ -11,12 +19,35 @@ type Query {
     uuid: String    
     aboutText: String
     name: String
-    picture: String,
+    picture: String
     medias: [AuthorMedia]
   }
 
   type AuthorMedia {
-    author: Author,
-    media: String,
+    author: Author
+    media: String
     url: String
   }  
+
+  input AuthorInput {
+    aboutText: String!
+    name: String!
+    picture: String!
+    medias: [AuthorMediaInput]
+}
+
+input AuthorMediaInput {
+  media: String!
+  url: String!
+}
+
+
+type PaginatedListAuthor {
+    rows: [Author]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
+}

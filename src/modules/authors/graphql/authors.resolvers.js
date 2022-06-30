@@ -1,31 +1,47 @@
-const { QueryTypes } = require('sequelize');
-import {Author} from '../../../models';
+import authorsRepository from "../repository/authors.repo";
 
 const authorsResolvers = {
-    Query: {        
-          allAuthors: async (parent, args, ctx, info) => {
-            const fields = ctx.requestedFields.getFields(info, { keep: ["id"], exclude: ["medias", "author"] })            
-            const sql = `SELECT ${fields.toString()} FROM authors ORDER BY id ASC`
-            const authors = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
-            return authors;
-          }
-          
+  Query: {
+    allAuthors: async (parent, args, ctx, info) => {
+      const authors = await authorsRepository(ctx.orm).findAll(info, args)
+      return authors;
     },
-    /*Mutation: {
-
-    },*/
-    Author:{
-      medias: async (parent, args, ctx, info) => {        
-        const medias = await ctx.dataloaders.mediaLoader.load({key: parent.id, info})
-        return medias;
-      }
+    getAuthorById: async (parent, args, ctx, info) => {
+      const author = await authorsRepository(ctx.orm).findById(info, args)
+      return author;
     },
-    AuthorMedia:{
-      author: async (parent, args, ctx, info) => {        
-        const authors = await ctx.dataloaders.authorLoader.load({key: parent.id, info})
-        return authors[0];
-      }
+    allAuthorsPaginated: async (parent, args, ctx, info) => {
+      const paginatedList = await authorsRepository(ctx.orm).findAllPaginated(info, args)
+      return paginatedList;
     }
-  };
-  
-  export default authorsResolvers;
+
+  },
+  Mutation: {
+    createAuthor: async (parent, args, ctx, info) => {
+      const author = await authorsRepository(ctx.orm).create(args)
+      return author;
+    },
+    deleteAuthor: async (parent, args, ctx, info) => {
+      const deleted = await authorsRepository(ctx.orm).destroy(args)
+      return deleted;
+    },
+    updateAuthor: async (parent, args, ctx, info) => {
+      const author = await authorsRepository(ctx.orm).update(args)
+      return author;
+    }
+  },
+  Author: {
+    medias: async (parent, args, ctx, info) => {
+      const medias = await ctx.dataloaders.mediaLoader.load({ key: parent.id, info })
+      return medias;
+    }
+  },
+  AuthorMedia: {
+    author: async (parent, args, ctx, info) => {
+      const authors = await ctx.dataloaders.authorLoader.load({ key: parent.id, info })
+      return authors[0];
+    }
+  }
+};
+
+export default authorsResolvers;
