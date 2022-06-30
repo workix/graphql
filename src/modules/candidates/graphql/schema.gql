@@ -11,6 +11,7 @@ type Mutation {
     createCandidate(input: CandidateInput!): Candidate
     deleteCandidate(id: ID!) : Boolean
     updateCandidate(id: ID!, input: CandidateInput!): Candidate
+    notifyCandidate(input: NotificationInput!): Boolean
 }
 
 type Candidate {
@@ -54,4 +55,16 @@ type PaginatedListCandidate {
     currentPage: Int,
     limitRows: Int,
     maxRows: Int
+}
+
+input NotificationInput {
+    type: NotificationType!
+    user_id: Int!
+    title: String!
+    message: String!
+}
+
+enum NotificationType {
+    MAIL,
+    PUSH
 }

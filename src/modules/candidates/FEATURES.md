@@ -18,3 +18,6 @@
 
 #### [Update]
  - [x] - Updating Candidate
+
+ #### [notify]
+ - [] - Send a Push Notification or Email to Candidate

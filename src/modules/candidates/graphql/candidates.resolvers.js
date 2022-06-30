@@ -1,4 +1,5 @@
 import candidatesRepository from "../repository/candidates.repo";
+import notification from "../services/notification.service";
 
 const candidatesResolvers = {
   Query: {
@@ -28,6 +29,9 @@ const candidatesResolvers = {
     updateCandidate: async (parent, args, ctx, info) => {
       const candidate = await candidatesRepository(ctx.orm).update(args)
       return candidate;
+    },
+    notifyCandidate: async (parent, args, ctx, info) => {
+      await notification(ctx.orm)
     }
   },
   Candidate: {
