@@ -1,4 +1,5 @@
 scalar Date
+scalar DateTime
 
 type Query {    
     allAuthors: [Author]
@@ -15,8 +16,8 @@ type Query {
 
   type Author {
     id: ID,
-    createdAt: String
-    updatedAt: String
+    createdAt: DateTime
+    updatedAt: DateTime
     uuid: String    
     aboutText: String
     name: String
