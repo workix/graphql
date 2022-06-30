@@ -26,18 +26,18 @@ const usersRepository = db => {
         return user;
     }
 
-    const createUser = async args => {
+    const create = async args => {
         const user = await User.create(args.input)
         await user.reload()
         return user;
     }
 
-    const deleteUser = async args => {
+    const destroy = async args => {
         const deleted = await User.destroy({ where: { id: args.id } })
         return deleted > 0
     }
 
-    const updateUser = async args => {
+    const update = async args => {
         const [users, meta] = await User.update(args.input, { where: { id: args.id }, returning: true })
 
         if (meta == 0) {
@@ -73,7 +73,7 @@ const usersRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, createUser, deleteUser, updateUser, findAllPaginated }
+    return { findAll, findById, create, destroy, update, findAllPaginated }
 }
 
 export default usersRepository;

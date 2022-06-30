@@ -17,15 +17,15 @@ const usersResolvers = {
     },
     Mutation: {
         createUser: async (parent, args, ctx, info) => {
-          const user = await usersRepository(ctx.orm).createUser(args)
+          const user = await usersRepository(ctx.orm).create(args)
           return user;
         },
         deleteUser: async (parent, args, ctx, info) => {
-          const deleted = await usersRepository(ctx.orm).deleteUser(args)          
+          const deleted = await usersRepository(ctx.orm).destroy(args)          
           return deleted;
         },
         updateUser: async (parent, args, ctx, info) => {
-          const user = await usersRepository(ctx.orm).updateUser(args)
+          const user = await usersRepository(ctx.orm).update(args)
           return user;
         }
     }
