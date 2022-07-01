@@ -1,13 +1,13 @@
 const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { Blog } from '../../../models';
+import { Comment } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
-const blogsRepository = db => {
+const commentsRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: ["author_id"], exclude: ["author", "comments", "pictures", "tags", "blog"] })
-    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["author_id"], exclude: ["author", "comments", "pictures", "tags", "blog"] })
+    const getFields = info => requestedFields.getFields(info, { keep: [], exclude: ["blog"] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: [], exclude: ["blog"] })
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
@@ -16,44 +16,44 @@ const blogsRepository = db => {
             options.offset = args.start;
             options.limit = args.max;
         }
-        const blogs = await Blog.findAll(options)
-        return blogs;
+        const comments = await Comment.findAll(options)
+        return comments;
     }
 
     const findById = async (info, args) => {
         const fields = getFields(info)
-        const blog = await Blog.findOne({ where: { id: args.id }, attributes: fields })
-        return blog;
+        const comment = await Comment.findOne({ where: { id: args.id }, attributes: fields })
+        return comment;
     }
 
     const create = async args => {
-        const blog = await Blog.create(args.input)
-        await blog.reload()
-        return blog;
+        const comment = await Comment.create(args.input)
+        await comment.reload()
+        return comment;
     }
 
     const destroy = async args => {
-        const deleted = await Blog.destroy({ where: { id: args.id } })
+        const deleted = await Comment.destroy({ where: { id: args.id } })
         return deleted > 0
     }
 
     const update = async args => {
-        const [blogs, meta] = await Blog.update(args.input, { where: { id: args.id }, returning: true })
+        const [comments, meta] = await Comment.update(args.input, { where: { id: args.id }, returning: true })
 
         if (meta == 0) {
-            throw new Error(`Blog with id: ${args.id} not found`)
+            throw new Error(`Comment with id: ${args.id} not found`)
         }
 
-        const blog = await Blog.findOne({ where: { id: args.id } })
+        const comment = await Comment.findOne({ where: { id: args.id } })
 
-        return blog;
+        return comment;
     }
 
     const findAllPaginated = async (info, args) => {           
         
         const fields = getFieldsWithSubfields(info).get("rows")              
         
-        const totalRows = await Blog.count()
+        const totalRows = await Comment.count()
 
         const paginator = new Paginator(args.limit, args.page, totalRows);
 
@@ -67,13 +67,13 @@ const blogsRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const blogs = await Blog.findAll(options)
+        const comments = await Comment.findAll(options)
 
-        const paginatedList = new PaginatedList(blogs, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList(comments, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 
     return { findAll, findById, create, destroy, update, findAllPaginated }
 }
 
-export default blogsRepository;
+export default commentsRepository;

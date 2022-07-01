@@ -10,7 +10,7 @@ const blogsResolvers = {
       return blogs;
     },
     allComments: async (parent, args, ctx, info) => {
-      const fields = ctx.requestedFields.getFields(info, { keep: [""], exclude: ["blog", ""] })
+      const fields = ctx.requestedFields.getFields(info, { keep: [], exclude: ["blog"] })
       const sql = `SELECT ${fields.toString()} FROM comments ORDER BY id ASC`
       const comments = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
       return comments;

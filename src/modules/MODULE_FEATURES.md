@@ -8,7 +8,7 @@
 ## Blogs
 - [x] - Graphql Resolver
 - [x] - Graphql Schema
-- [x] - Repository
+- [x] - Repository [Blog] - [Comment]
 
 ## Candidates
 - [x] - Graphql Resolver
