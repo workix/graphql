@@ -81,7 +81,12 @@ module.exports = function(sequelize, DataTypes) {
     Blog.hasMany(models.BlogPicture,{
       foreignKey: 'id',
       as: "pictures"      
-    })
+    });
+
+    Blog.hasMany(models.BlogTag,{
+      foreignKey: 'id',
+      as: "tags"      
+    });
   }
 
   return Blog;
