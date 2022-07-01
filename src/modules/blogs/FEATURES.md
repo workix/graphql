@@ -17,7 +17,7 @@
 - [x] - Get Blogs Paginated
 
 #### [Update]
- - [] - Updating Blog
+ - [x] - Updating Blog
 
 
 #### [Get Categories]

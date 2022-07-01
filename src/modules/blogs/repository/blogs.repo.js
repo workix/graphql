@@ -1,6 +1,5 @@
-const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { Blog, Comment, BlogPicture, BlogTag } from '../../../models';
+import { Blog, Comment, BlogPicture, BlogTag, BlogComment } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
@@ -38,13 +37,41 @@ const blogsRepository = db => {
     }
 
     const update = async args => {
-        const [blogs, meta] = await Blog.update(args.input, { where: { id: args.id }, returning: true })
+        const b = await Blog.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (meta == 0) {
+        if (!b) {
             throw new Error(`Blog with id: ${args.id} not found`)
         }
 
-        const blog = await Blog.findOne({ where: { id: args.id } })
+        let blog;
+
+        await db.sequelize.transaction(async transaction => {
+            // chain all your queries here. make sure you return them.
+            const [blogs, meta] = await Blog.update(args.input, { where: { id: args.id }, returning: true }, { transaction })       
+
+            blog = await Blog.findOne({ where: { id: args.id }, include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" },{ model: BlogTag, as: "tags" }]})
+
+            await BlogComment.destroy({ where: { Blog_id: args.id } }, { transaction })
+            
+
+            let comment;
+            for (const c of args.input.comments) {
+                comment = await Comment.create({ email: c.email, name: c.name, text: c.text }, { transaction })
+                await blog.addComment(comment, { transaction })
+            }
+
+            await BlogTag.destroy({ where: { id: args.id } }, { transaction })
+    
+            for (const t of args.input.tags) {
+                await BlogTag.create({ id: args.id, name: t.name }, { transaction })
+            }
+
+            await BlogPicture.destroy({ where: { id: args.id } }, { transaction })
+    
+            for (const p of args.input.pictures) {
+                await BlogPicture.create({ id: args.id, pictures: p.pictures }, { transaction })
+            }
+        })             
 
         return blog;
     }

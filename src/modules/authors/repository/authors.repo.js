@@ -1,4 +1,3 @@
-import { sequelize } from "../../../models";
 import { RequestedFields } from '../../../RequestedFields';
 import { Author, AuthorMedia } from '../../../models';
 import Paginator from '../../../utils/Paginator';
@@ -44,7 +43,7 @@ const authorsRepository = db => {
             throw new Error(`Author with id: ${args.id} not found`)
         }
 
-        await sequelize.transaction(async transaction => {
+        await db.sequelize.transaction(async transaction => {
             // chain all your queries here. make sure you return them.
             const [authors, meta] = await Author.update(args.input, { where: { id: args.id }, returning: true }, { transaction })       
 
