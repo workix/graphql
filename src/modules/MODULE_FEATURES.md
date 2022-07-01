@@ -6,9 +6,9 @@
 - [x] - Repository
 
 ## Blogs
-- [] - Graphql Resolver
-- [] - Graphql Schema
-- [] - Repository
+- [x] - Graphql Resolver
+- [x] - Graphql Schema
+- [x] - Repository
 
 ## Candidates
 - [x] - Graphql Resolver
