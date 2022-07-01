@@ -17,7 +17,7 @@ const blogsResolvers = {
       return paginatedList;
     },
     debugBlog: async (parent, args, ctx, info) => {
-      const blogs = await Blog.findAll({ include: [{ model: Comment }, { model: BlogPicture, as: "pictures" },{ model: BlogTag, as: "tags" }], where: { id: [1, 2, 3, 4, 5] } })
+      const blogs = await Blog.findAll({ include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" },{ model: BlogTag, as: "tags" }], where: { id: [1, 2, 3, 4, 5] } })
       console.log("BLOG Comments ->", await blogs[0].getComments({raw: true}))
       console.log("BLOG Pictures ->", await blogs[0].getPictures({raw: true}))
       console.log("BLOG Tags ->", await blogs[0].getTags({raw: true}))
@@ -35,6 +35,20 @@ const blogsResolvers = {
       const paginatedList = await commentsRepository(ctx.orm).findAllPaginated(info, args)
       return paginatedList;
     },  
+  },
+  Mutation: {
+    createBlog: async (parent, args, ctx, info) => {
+      const blog = await blogsRepository(ctx.orm).create(args)
+      return blog;
+    },
+    deleteBlog: async (parent, args, ctx, info) => {
+      const deleted = await blogsRepository(ctx.orm).destroy(args)
+      return deleted;
+    },
+    updateBlog: async (parent, args, ctx, info) => {
+      const blog = await blogsRepository(ctx.orm).update(args)
+      return blog;
+    }
   },
   Blog: {
     author: async (parent, args, ctx, info) => {

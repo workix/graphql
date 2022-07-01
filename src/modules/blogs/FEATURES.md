@@ -3,10 +3,10 @@
 ## Restfull Context [Blog]
 
 #### [Create]
- - [] - Creating a Blog
+ - [x] - Creating a Blog
 
 #### [Delete]
- - [] - Deleting Blog by id
+ - [x] - Deleting Blog by id
 
 #### [Get by Id]
  - [x] - Getting Blog by id
@@ -18,6 +18,21 @@
 
 #### [Update]
  - [] - Updating Blog
+
+
+#### [Get Categories]
+- Path -> '/blogs/categories'
+- Verb -> Get
+
+#### [Get Time Periods] - Periods from Blogs Posts
+- Path -> '/blogs/time_periods'
+- Verb -> Get
+
+#### [Get Recents]
+- Path -> '/blogs/recents'
+- Verb -> Get
+- Query -> start,max
+
 
  ## Restfull Context [Comment]
 

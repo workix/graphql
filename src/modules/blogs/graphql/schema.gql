@@ -2,13 +2,19 @@ scalar Date
 scalar DateTime
 
 type Query {
-    allBlogs: [Blog]
+    allBlogs(start: Int, max: Int): [Blog]
     getBlogById(id: ID!): Blog
     allBlogsPaginated(page: Int!, limit: Int!): PaginatedListBlog
     debugBlog: [Blog]  
-    allComments: [Comment]
+    allComments(start: Int, max: Int): [Comment]
     getCommentById(id: ID!): Comment
     allCommentsPaginated(page: Int!, limit: Int!): PaginatedListComment
+}
+
+  type Mutation {
+    createBlog(input: BlogInput!): Blog
+    deleteBlog(id: ID!) : Boolean
+    updateBlog(id: ID!, input: BlogInput!): Blog
 }
 
 type Picture {
@@ -36,6 +42,33 @@ type Blog {
     comments: [Comment]  
     pictures: [Picture]
     tags: [Tag]
+}
+
+  input BlogInput {
+    category: String!
+    citation: String!
+    content: String!
+    date: Date!
+    resume: String!
+    title: String!
+    author_id: Int
+    comments: [CommentInput]  
+    pictures: [PictureInput]
+    tags: [TagInput]
+}
+
+input CommentInput {
+    email: String!
+    name: String!
+    text: String!    
+}
+
+input PictureInput {
+    pictures: String!
+}
+
+input TagInput{
+    name: String!
 }
 
 type Comment {

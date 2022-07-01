@@ -2,7 +2,7 @@ scalar Date
 scalar DateTime
 
 type Query {    
-    allAuthors: [Author]
+    allAuthors(start: Int, max: Int): [Author]
     getAuthorById(id: ID!): Author
     allAuthorsPaginated(page: Int!, limit: Int!): PaginatedListAuthor
     debugAuthor: [Author]    

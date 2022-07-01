@@ -1,6 +1,6 @@
 const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { Blog } from '../../../models';
+import { Blog, Comment, BlogPicture, BlogTag } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
@@ -27,7 +27,7 @@ const blogsRepository = db => {
     }
 
     const create = async args => {
-        const blog = await Blog.create(args.input)
+        const blog = await Blog.create(args.input, { include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" },{ model: BlogTag, as: "tags" }]})
         await blog.reload()
         return blog;
     }

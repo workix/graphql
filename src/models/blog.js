@@ -75,7 +75,8 @@ module.exports = function(sequelize, DataTypes) {
       through: 'blogs_comments',
       foreignKey: 'Blog_id',
       otherKey: 'comments_id',
-      timestamps: false
+      timestamps: false,
+      as: "comments"
     });
 
     Blog.hasMany(models.BlogPicture,{
