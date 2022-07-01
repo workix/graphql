@@ -1,20 +1,32 @@
-const { QueryTypes } = require('sequelize');
-import { Blog, Comment } from '../../../models';
+import blogsRepository from "../repository/blogs.repo";
+import commentsRepository from "../repository/comments.repo";
 
 const blogsResolvers = {
   Query: {
     allBlogs: async (parent, args, ctx, info) => {
-      const fields = ctx.requestedFields.getFields(info, { keep: ["author_id"], exclude: ["author", "comments", "pictures", "tags", "blog"] })
-      const sql = `SELECT ${fields.toString()} FROM blogs ORDER BY id ASC`
-      const blogs = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
+      const blogs = await blogsRepository(ctx.orm).findAll(info,args)
       return blogs;
     },
+    getBlogById: async (parent, args, ctx, info) => {
+      const blog = await blogsRepository(ctx.orm).findById(info, args)
+      return blog;
+    },
+    allBlogsPaginated: async (parent, args, ctx, info) => {
+      const paginatedList = await blogsRepository(ctx.orm).findAllPaginated(info, args)
+      return paginatedList;
+    },  
     allComments: async (parent, args, ctx, info) => {
-      const fields = ctx.requestedFields.getFields(info, { keep: [], exclude: ["blog"] })
-      const sql = `SELECT ${fields.toString()} FROM comments ORDER BY id ASC`
-      const comments = await ctx.orm.sequelize.query(sql, { type: QueryTypes.SELECT });
+      const comments = await commentsRepository(ctx.orm).findAll(info,args)
       return comments;
-    }
+    },
+    getCommentById: async (parent, args, ctx, info) => {
+      const comment = await commentsRepository(ctx.orm).findById(info, args)
+      return comment;
+    },
+    allCommentsPaginated: async (parent, args, ctx, info) => {
+      const paginatedList = await commentsRepository(ctx.orm).findAllPaginated(info, args)
+      return paginatedList;
+    },  
   },
   Blog: {
     author: async (parent, args, ctx, info) => {

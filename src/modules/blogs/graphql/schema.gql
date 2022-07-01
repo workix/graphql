@@ -3,7 +3,11 @@ scalar DateTime
 
 type Query {
     allBlogs: [Blog]
+    getBlogById(id: ID!): Blog
+    allBlogsPaginated(page: Int!, limit: Int!): PaginatedListBlog
     allComments: [Comment]
+    getCommentById(id: ID!): Comment
+    allCommentsPaginated(page: Int!, limit: Int!): PaginatedListComment
 }
 
 type Picture {
@@ -42,4 +46,24 @@ type Comment {
     name: String
     text: String
     blog: Blog
+}
+
+type PaginatedListBlog {
+    rows: [Blog]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
+}
+
+type PaginatedListComment {
+    rows: [Comment]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
 }
