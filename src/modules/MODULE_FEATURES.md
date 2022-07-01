@@ -11,9 +11,10 @@
 - [] - Repository
 
 ## Candidates
-- [] - Graphql Resolver
-- [] - Graphql Schema
-- [] - Repository
+- [x] - Graphql Resolver
+- [x] - Graphql Schema
+- [x] - Repository
+- [x] - Services [Notification]
 
 ## Companies
 - [] - Graphql Resolver
