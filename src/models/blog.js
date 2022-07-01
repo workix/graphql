@@ -77,6 +77,11 @@ module.exports = function(sequelize, DataTypes) {
       otherKey: 'comments_id',
       timestamps: false
     });
+
+    Blog.hasMany(models.BlogPicture,{
+      foreignKey: 'id',
+      as: "pictures"      
+    })
   }
 
   return Blog;

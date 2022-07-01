@@ -13,9 +13,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     pictures: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     }
   }, {
-    tableName: 'blogs_pictures'
+    tableName: 'blogs_pictures',
+    timestamps: false
   });
 };

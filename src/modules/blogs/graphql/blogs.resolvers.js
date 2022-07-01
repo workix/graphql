@@ -1,4 +1,4 @@
-import { Blog, Comment } from '../../../models';
+import { Blog, Comment, BlogPicture } from '../../../models';
 import blogsRepository from "../repository/blogs.repo";
 import commentsRepository from "../repository/comments.repo";
 
@@ -17,8 +17,9 @@ const blogsResolvers = {
       return paginatedList;
     },
     debugBlog: async (parent, args, ctx, info) => {
-      const blogs = await Blog.findAll({ include: { model: Comment }, where: { id: [1, 2, 3, 4, 5] } })
-      console.log(await blogs[0].getComments({raw: true}))
+      const blogs = await Blog.findAll({ include: [{ model: Comment }, { model: BlogPicture, as: "pictures" }], where: { id: [1, 2, 3, 4, 5] } })
+      console.log("BLOG Comments ->", await blogs[0].getComments({raw: true}))
+      console.log("BLOG Pictures ->", await blogs[0].getPictures({raw: true}))
       return blogs
     },  
     allComments: async (parent, args, ctx, info) => {
