@@ -5,6 +5,7 @@ type Query {
     allBlogs: [Blog]
     getBlogById(id: ID!): Blog
     allBlogsPaginated(page: Int!, limit: Int!): PaginatedListBlog
+    debugBlog: [Blog]  
     allComments: [Comment]
     getCommentById(id: ID!): Comment
     allCommentsPaginated(page: Int!, limit: Int!): PaginatedListComment

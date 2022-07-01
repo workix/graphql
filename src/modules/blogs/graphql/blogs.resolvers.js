@@ -1,3 +1,4 @@
+import { Blog, Comment } from '../../../models';
 import blogsRepository from "../repository/blogs.repo";
 import commentsRepository from "../repository/comments.repo";
 
@@ -14,6 +15,11 @@ const blogsResolvers = {
     allBlogsPaginated: async (parent, args, ctx, info) => {
       const paginatedList = await blogsRepository(ctx.orm).findAllPaginated(info, args)
       return paginatedList;
+    },
+    debugBlog: async (parent, args, ctx, info) => {
+      const blogs = await Blog.findAll({ include: { model: Comment }, where: { id: [1, 2, 3, 4, 5] } })
+      console.log(await blogs[0].getComments({raw: true}))
+      return blogs
     },  
     allComments: async (parent, args, ctx, info) => {
       const comments = await commentsRepository(ctx.orm).findAll(info,args)

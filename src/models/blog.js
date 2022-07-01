@@ -1,23 +1,28 @@
+const Sequelize = require('sequelize');
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Blog', {
+  const Blog = sequelize.define('Blog', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true 
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.fn('now'),
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      defaultValue: Sequelize.fn('now'),
     },
     uuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: Sequelize.UUIDV4,
     },    
     category: {
       type: DataTypes.STRING(255),
@@ -52,6 +57,27 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    tableName: 'blogs'
+    tableName: 'blogs',
+    hooks: {
+      afterCreate(instance, options){
+        console.log("HOOK After create")
+      },
+      beforeUpdate(instance, options){
+        instance.updatedAt = Date.now()
+      }
+    }
   });
+
+
+  Blog.associate = function(models) {
+    // associations can be defined here
+    Blog.belongsToMany(models.Comment, {
+      through: 'blogs_comments',
+      foreignKey: 'Blog_id',
+      otherKey: 'comments_id',
+      timestamps: false
+    });
+  }
+
+  return Blog;
 };
