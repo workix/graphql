@@ -59,5 +59,4 @@
 - Query -> start,max
 
 #### [Create Blog Comment]
-- Path -> '/comments/blog'
-- Verb -> Post
+- [x] - Create a Comment inside a Blog

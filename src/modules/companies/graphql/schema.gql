@@ -2,7 +2,9 @@ scalar Date
 scalar DateTime
 
 type Query {
-    allCompanies: [Company]
+    allCompanies(start: Int, max: Int): [Company]
+    getCompanyById(id: ID!): Company
+    allCompaniesPaginated(page: Int!, limit: Int!): PaginatedListCompany
 }
 
 type Company {
@@ -30,3 +32,13 @@ type Company {
     media: String,
     url: String
   }  
+
+  type PaginatedListCompany {
+    rows: [Company]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
+}
