@@ -20,6 +20,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'companies_medias'
+    tableName: 'companies_medias',
+    timestamps: false
   });
 };

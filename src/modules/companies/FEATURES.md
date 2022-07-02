@@ -3,21 +3,21 @@
 ## Restfull Context [Company]
 
 #### [Create]
- - [] - Creating a Company
+ - [x] - Creating a Company
 
 #### [Delete]
- - [] - Deleting Company by id
+ - [x] - Deleting Company by id
 
 #### [Get by Id]
- - [] - Getting Company by id
+ - [x] - Getting Company by id
 
 #### [Get All]
-- [] - GetAll with no filters
-- [] - GetAll with start, max
-- [] - Get Companies Paginated
+- [x] - GetAll with no filters
+- [x] - GetAll with start, max
+- [x] - Get Companies Paginated
 
 #### [Update]
- - [] - Updating Company
+ - [x] - Updating Company
 
 #### [Get Random Logos]
 - Path -> '/companies/logos'

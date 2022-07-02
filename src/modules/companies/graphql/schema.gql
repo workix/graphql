@@ -7,6 +7,12 @@ type Query {
     allCompaniesPaginated(page: Int!, limit: Int!): PaginatedListCompany
 }
 
+type Mutation {
+    createCompany(input: CompanyInput!): Company
+    deleteCompany(id: ID!) : Boolean
+    updateCompany(id: ID!, input: CompanyInput!): Company    
+}
+
 type Company {
     id: ID,
     createdAt: DateTime
@@ -26,6 +32,28 @@ type Company {
     segment: String
     user: User
     medias: [CompanyMedia]
+}
+
+input CompanyInput {    
+    mobilePhone: Int!
+    city: String!
+    estate: String!
+    neighborhood: String!
+    number: String!
+    street: String!
+    zipCode: Int!
+    name: String!
+    cnpj: Float!
+    description: String!
+    logo: String!
+    segment: String!
+    user_id: Int!
+    medias: [CompanyMediaInput]  
+}
+
+input CompanyMediaInput {
+  media: String!
+  url: String!
 }
 
   type CompanyMedia {    

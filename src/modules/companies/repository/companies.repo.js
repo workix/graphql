@@ -1,6 +1,6 @@
 const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { Company } from '../../../models';
+import { Company, CompanyMedia } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
@@ -28,7 +28,7 @@ const companiesRepository = db => {
 
     const create = async args => {
         try {
-            const company = await Company.create(args.input)
+            const company = await Company.create(args.input, { include: { model: CompanyMedia, as: "medias" } })
             await company.reload()
             return company;    
         } catch (error) {
@@ -50,13 +50,24 @@ const companiesRepository = db => {
     }
 
     const update = async args => {
-        const [companies, meta] = await Company.update(args.input, { where: { id: args.id }, returning: true })
+        const c = await Company.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (meta == 0) {
+        if (!c) {
             throw new Error(`Company with id: ${args.id} not found`)
         }
 
-        const company = await Company.findOne({ where: { id: args.id } })
+        await db.sequelize.transaction(async transaction => {
+            // chain all your queries here. make sure you return them.
+            const [companies, meta] = await Company.update(args.input, { where: { id: args.id }, returning: true }, { transaction })       
+
+            await CompanyMedia.destroy({ where: { id: args.id } }, { transaction })
+    
+            for (const m of args.input.medias) {
+                await CompanyMedia.create({ id: args.id, media: m.media, url: m.url }, { transaction })
+            }
+        })     
+
+        const company = await Company.findOne({ where: { id: args.id }, include: { model: CompanyMedia, as: "medias" } })
 
         return company;
     }

@@ -16,6 +16,20 @@ const companiesResolvers = {
     }
 
   },
+  Mutation: {
+    createCompany: async (parent, args, ctx, info) => {
+      const company = await companiesRepository(ctx.orm).create(args)
+      return company;
+    },
+    deleteCompany: async (parent, args, ctx, info) => {
+      const deleted = await companiesRepository(ctx.orm).destroy(args)
+      return deleted;
+    },
+    updateCompany: async (parent, args, ctx, info) => {
+      const company = await companiesRepository(ctx.orm).update(args)
+      return company;
+    }   
+  },
   Company: {
     user: async (parent, args, ctx, info) => {
       const users = await ctx.dataloaders.usersLoader.load({ key: parent.user_id, info })
