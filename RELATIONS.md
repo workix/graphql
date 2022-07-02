@@ -1,21 +1,21 @@
 # Table Relations
 
 ## Author
-- [] - One Author has Many AuthorMedia
+- [x] - One Author has Many AuthorMedia
 
 ## Blog
-- [] - Many Blog's has One Author
-- [] - One Blog has Many
+- [x] - Many Blog's has One Author
+- [x] - One Blog has Many
 Pictures
-- [] - One Blog has Many Comment's
-- [] - One Blog has Many Tags
+- [x] - One Blog has Many Comment's
+- [x] - One Blog has Many Tags
 
 ## Candidate
-- [] - One Candidate has One User
+- [x] - One Candidate has One User
 
 ## Company
-- [] - One Company has One User
-- [] - One Company has Many CompanyMedia
+- [x] - One Company has One User
+- [x] - One Company has Many CompanyMedia
 
 ## JAAS User
 - [] - Many JAAS User has Many JAAS Role
