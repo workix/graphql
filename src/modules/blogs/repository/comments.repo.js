@@ -72,11 +72,13 @@ const commentsRepository = db => {
     }
 
     const update = async args => {
-        const [comments, meta] = await Comment.update(args.input, { where: { id: args.id }, returning: true })
+        const c = await Comment.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (meta == 0) {
+        if (!c) {
             throw new Error(`Comment with id: ${args.id} not found`)
         }
+
+        const [comments, meta] = await Comment.update(args.input, { where: { id: args.id }, returning: true })        
 
         const comment = await Comment.findOne({ where: { id: args.id } })
 

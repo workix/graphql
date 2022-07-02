@@ -51,7 +51,7 @@
 - [x] - Get Comments Paginated
 
 #### [Update]
- - [] - Updating Comment
+ - [x] - Updating Comment
 
  #### [Get Recents]
 - Path -> '/comments/recents'
