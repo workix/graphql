@@ -37,10 +37,10 @@
  ## Restfull Context [Comment]
 
 #### [Create]
- - [] - Creating a Comment
+ - [x] - Creating a Comment
 
 #### [Delete]
- - [] - Deleting Comment by id
+ - [x] - Deleting Comment by id
 
 #### [Get by Id]
  - [x] - Getting Comment by id
@@ -52,3 +52,12 @@
 
 #### [Update]
  - [] - Updating Comment
+
+ #### [Get Recents]
+- Path -> '/comments/recents'
+- Verb -> Get
+- Query -> start,max
+
+#### [Create Blog Comment]
+- Path -> '/comments/blog'
+- Verb -> Post

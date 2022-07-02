@@ -48,6 +48,18 @@ const blogsResolvers = {
     updateBlog: async (parent, args, ctx, info) => {
       const blog = await blogsRepository(ctx.orm).update(args)
       return blog;
+    },
+    createComment: async (parent, args, ctx, info) => {
+      const comment = await commentsRepository(ctx.orm).create(args)
+      return comment;
+    },
+    deleteComment: async (parent, args, ctx, info) => {
+      const deleted = await commentsRepository(ctx.orm).destroy(args)
+      return deleted;
+    },
+    updateComment: async (parent, args, ctx, info) => {
+      const comment = await commentsRepository(ctx.orm).update(args)
+      return comment;
     }
   },
   Blog: {

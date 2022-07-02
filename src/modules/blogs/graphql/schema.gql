@@ -15,6 +15,9 @@ type Query {
     createBlog(input: BlogInput!): Blog
     deleteBlog(id: ID!) : Boolean
     updateBlog(id: ID!, input: BlogInput!): Blog
+    createComment(input: CommentInput!): Comment
+    deleteComment(id: ID!, blog_id: ID!) : Boolean
+    updateComment(id: ID!, input: CommentInput!): Comment
 }
 
 type Picture {
@@ -58,6 +61,7 @@ type Blog {
 }
 
 input CommentInput {
+    blog_id: Int
     email: String!
     name: String!
     text: String!    
