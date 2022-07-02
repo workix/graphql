@@ -35,6 +35,11 @@ const blogsResolvers = {
       const paginatedList = await commentsRepository(ctx.orm).findAllPaginated(info, args)
       return paginatedList;
     },  
+    debugComment: async (parent, args, ctx, info) => {
+      const comments = await Comment.findAll({ include: [{ model: Blog }] })
+      console.log("Comments Blog ->", await comments[0].getBlogs({raw: true}))      
+      return comments
+    },  
   },
   Mutation: {
     createBlog: async (parent, args, ctx, info) => {
@@ -98,7 +103,7 @@ const blogsResolvers = {
       const owners = await ctx.dataloaders.commentsOwnerLoader.load({key: parent.id, info})
       const blogId = owners[0].blog_id      
 
-      const blogs = await ctx.dataloaders.blogsLoader.load({key: blogId, info})      
+      const blogs = await ctx.dataloaders.blogsLoader.load({key: blogId, info})            
       return blogs[0];
     }
   }

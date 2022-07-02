@@ -9,6 +9,7 @@ type Query {
     allComments(start: Int, max: Int): [Comment]
     getCommentById(id: ID!): Comment
     allCommentsPaginated(page: Int!, limit: Int!): PaginatedListComment
+    debugComment: [Comment]
 }
 
   type Mutation {
