@@ -2,7 +2,15 @@ scalar Date
 scalar DateTime
 
 type Query {
-    allForms: [Form]
+    allForms(start: Int, max: Int): [Form]
+    getFormById(id: ID!): Form
+    allFormsPaginated(page: Int!, limit: Int!): PaginatedListForm
+}
+
+type Mutation {
+    createForm(input: FormInput!): Form
+    deleteForm(id: ID!) : Boolean
+    updateForm(id: ID!, input: FormInput!): Form
 }
 
 type Form {
@@ -14,4 +22,21 @@ type Form {
     message: String
     name: String
     subject: String   
+}
+
+input FormInput {
+    email: String!
+    message: String!
+    name: String!
+    subject: String!   
+}
+
+type PaginatedListForm {
+    rows: [Form]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
 }
