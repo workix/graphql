@@ -29,7 +29,7 @@
 ## JAAS
 - [] - Graphql Resolver
 - [] - Graphql Schema
-- [] - Repository
+- [x] - Repository - [JAASUser] - [JAASRole]
 
 ## Jobs
 - [] - Graphql Resolver
