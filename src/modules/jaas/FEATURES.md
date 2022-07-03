@@ -17,7 +17,7 @@
 - [x] - Get JAASUser Paginated
 
 #### [Update]
- - [] - Updating JAASUser
+ - [x] - Updating JAASUser
 
  # JAASRole Module 
 
