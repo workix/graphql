@@ -60,13 +60,27 @@ const jaasUsersRepository = db => {
     }
 
     const update = async args => {
-        const [jaasUsers, meta] = await JAASUser.update(args.input, { where: { id: args.id }, returning: true })
+        let jaasUser;
+        const u = await JAASUser.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (meta == 0) {
+        if (!u) {
             throw new Error(`JAASUser with id: ${args.id} not found`)
         }
 
-        const jaasUser = await JAASUser.findOne({ where: { id: args.id } })
+        await db.sequelize.transaction(async transaction => {
+            const [jaasUsers, meta] = await JAASUser.update(args.input, { where: { id: args.id }, returning: true }, { transaction })
+
+            jaasUser = await JAASUser.findOne({ where: { id: args.id }, include: { model: JAASRole, as: "roles" } }, { transaction })
+
+            jaasUser.roles.forEach(async r => await jaasUser.removeRole(r, { transaction }))
+
+            if (args.input.roles) {
+                for (let r of args.input.roles) {
+                    const role = await JAASRole.findByPk(r.name, { transaction })
+                    await jaasUser.addRole(role, { transaction })
+                }
+            }
+        })
 
         return jaasUser;
     }

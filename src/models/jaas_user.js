@@ -21,13 +21,13 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     tableName: 'JAAS_User',
-    timestamps: false,
+    timestamps: false,    
     hooks: {
       beforeCreate(instance, options){        
         instance.password = encodeToBase64(instance.password)
       },
-      beforeUpdate(instance, options){
-        
+      beforeBulkUpdate(instance, options){        
+        instance.attributes.password = encodeToBase64(instance.attributes.password)
       }
     }
   });
