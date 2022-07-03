@@ -1,7 +1,8 @@
+const Sequelize = require('sequelize');
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('JAASRoles', {
+  const JAASRoles = sequelize.define('JAASRoles', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -21,6 +22,18 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    tableName: 'JAAS_Roles'
+    tableName: 'JAAS_Roles',
+    timestamps: false
   });
+
+  JAASRoles.associate = function(models) {
+    JAASRoles.belongsTo(models.JAASUser, {
+      through: 'JAAS_Roles',
+      foreignKey: 'id',
+      otherKey: 'role_name',
+      timestamps: false,
+    })
+  }
+
+  return JAASRoles;
 };

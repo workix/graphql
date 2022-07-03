@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
@@ -8,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     }
   }, {
-    tableName: 'JAAS_Role'
+    tableName: 'JAAS_Role',
+    timestamps: false
   });
 };
