@@ -1,6 +1,6 @@
 const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { JAASUser } from '../../../models';
+import { JAASUser, JAASRole } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
@@ -27,8 +27,30 @@ const jaasUsersRepository = db => {
     }
 
     const create = async args => {
-        const jaasUser = await JAASUser.create(args.input)
-        await jaasUser.reload()
+        let jaasUser;
+        try {
+            await db.sequelize.transaction(async transaction => {
+                // { include: { model: JAASRole, as: "roles" } }
+                jaasUser = await JAASUser.create(args.input, { transaction })
+                if (args.input.roles) {
+                    for (let r of args.input.roles) {
+                        const role = await JAASRole.findByPk(r.name, { transaction })
+                        await jaasUser.addRole(role, { transaction })
+                    }
+                }
+                await jaasUser.reload({ transaction })
+            });
+        } catch (error) {
+            console.error(error)
+            if (error.errors) {
+                const errors = error.errors.map(e => e.message)
+                throw new Error(errors.toString())
+            } else {
+                throw new Error(error.message)
+            }
+        }
+
+
         return jaasUser;
     }
 
@@ -49,19 +71,19 @@ const jaasUsersRepository = db => {
         return jaasUser;
     }
 
-    const findAllPaginated = async (info, args) => {           
-        
-        const fields = getFieldsWithSubfields(info).get("rows")              
-        
+    const findAllPaginated = async (info, args) => {
+
+        const fields = getFieldsWithSubfields(info).get("rows")
+
         const totalRows = await JAASUser.count()
 
         const paginator = new Paginator(args.limit, args.page, totalRows);
 
         const totalPages = paginator.getTotalPages();
 
-		const start = paginator.getStart();
+        const start = paginator.getStart();
 
-		const end = paginator.getEnd();		
+        const end = paginator.getEnd();
 
         const options = { attributes: fields, order: ['id'] }
         options.offset = start - 1;
