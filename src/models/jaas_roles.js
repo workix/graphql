@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   JAASRoles.associate = function(models) {
-    JAASRoles.belongsTo(models.JAASUser, {
+    JAASRoles.belongsToMany(models.JAASUser, {
       through: 'JAAS_Roles',
       foreignKey: 'id',
       otherKey: 'role_name',

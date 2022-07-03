@@ -50,7 +50,7 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   Comment.associate = function(models) {
-    Comment.belongsTo(models.Blog, {
+    Comment.belongsToMany(models.Blog, {
       through: 'blogs_comments',
       foreignKey: 'Blog_id',
       otherKey: 'comments_id',
