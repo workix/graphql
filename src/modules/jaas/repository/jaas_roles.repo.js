@@ -6,8 +6,8 @@ import PaginatedList from '../../../utils/PaginatedList';
 
 const jaasRolesRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: ["id"], exclude: [] })
-    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id"], exclude: [] })
+    const getFields = info => requestedFields.getFields(info, { keep: [], exclude: [] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: [], exclude: [] })
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
