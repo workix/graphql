@@ -24,7 +24,7 @@
 ## Forms
 - [] - Graphql Resolver
 - [] - Graphql Schema
-- [] - Repository
+- [x] - Repository
 
 ## JAAS
 - [] - Graphql Resolver

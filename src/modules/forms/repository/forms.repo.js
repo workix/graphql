@@ -1,0 +1,79 @@
+const { QueryTypes } = require('sequelize');
+import { RequestedFields } from '../../../RequestedFields';
+import { Form } from '../../../models';
+import Paginator from '../../../utils/Paginator';
+import PaginatedList from '../../../utils/PaginatedList';
+
+const formsRepository = db => {
+    const requestedFields = new RequestedFields();
+    const getFields = info => requestedFields.getFields(info, { keep: ["id"], exclude: [] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id"], exclude: [] })
+
+    const findAll = async (info, args) => {
+        const fields = getFields(info)
+        const options = { attributes: fields, order: ['id'] }
+        if (args.start != null && args.max != null) {
+            options.offset = args.start;
+            options.limit = args.max;
+        }
+        const forms = await Form.findAll(options)
+        return forms;
+    }
+
+    const findById = async (info, args) => {
+        const fields = getFields(info)
+        const form = await Form.findOne({ where: { id: args.id }, attributes: fields })
+        return form;
+    }
+
+    const create = async args => {
+        const form = await Form.create(args.input)
+        await form.reload()
+        return form;
+    }
+
+    const destroy = async args => {
+        const deleted = await Form.destroy({ where: { id: args.id } })
+        return deleted > 0
+    }
+
+    const update = async args => {
+        const [forms, meta] = await Form.update(args.input, { where: { id: args.id }, returning: true })
+
+        if (meta == 0) {
+            throw new Error(`Form with id: ${args.id} not found`)
+        }
+
+        const form = await Form.findOne({ where: { id: args.id } })
+
+        return form;
+    }
+
+    const findAllPaginated = async (info, args) => {           
+        
+        const fields = getFieldsWithSubfields(info).get("rows")              
+        
+        const totalRows = await Form.count()
+
+        const paginator = new Paginator(args.limit, args.page, totalRows);
+
+        const totalPages = paginator.getTotalPages();
+
+		const start = paginator.getStart();
+
+		const end = paginator.getEnd();		
+
+        const options = { attributes: fields, order: ['id'] }
+        options.offset = start - 1;
+        options.limit = args.limit;
+
+        const forms = await Form.findAll(options)
+
+        const paginatedList = new PaginatedList(forms, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        return paginatedList;
+    }
+
+    return { findAll, findById, create, destroy, update, findAllPaginated }
+}
+
+export default formsRepository;
