@@ -2,8 +2,21 @@ scalar Date
 scalar DateTime
 
 type Query{
-    allJAASUsers: [JAASUser]
-    allJAASRoles: [JAASRole]
+    allJAASUsers(start: Int, max: Int): [JAASUser]
+    getJAASUserById(id: ID!): JAASUser
+    allJAASUsersPaginated(page: Int!, limit: Int!): PaginatedListJAASUser
+    allJAASRoles(start: Int, max: Int): [JAASRole]
+    getJAASRoleById(id: ID!): JAASRole
+    allJAASRolesPaginated(page: Int!, limit: Int!): PaginatedListJAASRole
+}
+
+type Mutation {
+    createJAASUser(input: JAASUserInput!): JAASUser
+    deleteJAASUser(id: ID!) : Boolean
+    updateJAASUser(id: ID!, input: JAASUserInput!): JAASUser
+    createJAASRole(input: JAASRoleInput!): JAASRole
+    deleteJAASRole(id: ID!) : Boolean
+    updateJAASRole(id: ID!, input: JAASRoleInput!): JAASRole
 }
 
 type JAASUser {
@@ -13,6 +26,36 @@ type JAASUser {
     roles: [JAASRole]
 }
 
+input JAASUserInput {
+    login: String!
+    password: String!
+    roles: [JAASRoleInput]
+}
+
+input JAASRoleInput {
+    name: String!
+}
+
 type JAASRole {
     name: String
+}
+
+type PaginatedListJAASUser {
+    rows: [JAASUser]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
+}
+
+type PaginatedListJAASRole {
+    rows: [JAASRole]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
 }
