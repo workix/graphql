@@ -15,8 +15,8 @@ type Mutation {
     deleteJAASUser(id: ID!) : Boolean
     updateJAASUser(id: ID!, input: JAASUserInput!): JAASUser
     createJAASRole(input: JAASRoleInput!): JAASRole
-    deleteJAASRole(id: ID!) : Boolean
-    updateJAASRole(id: ID!, input: JAASRoleInput!): JAASRole
+    deleteJAASRole(name: String!) : Boolean
+    updateJAASRole(name: String!, input: JAASRoleInput!): JAASRole
 }
 
 type JAASUser {

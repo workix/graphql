@@ -45,11 +45,11 @@ const jaasResolvers = {
             const jaasRole = await jaasRolesRepository(ctx.orm).create(args)
             return jaasRole;
         },
-        deleteJAASUser: async (parent, args, ctx, info) => {
+        deleteJAASRole: async (parent, args, ctx, info) => {
             const deleted = await jaasRolesRepository(ctx.orm).destroy(args)
             return deleted;
         },
-        updateJAASUser: async (parent, args, ctx, info) => {
+        updateJAASRole: async (parent, args, ctx, info) => {
             const jaasRole = await jaasRolesRepository(ctx.orm).update(args)
             return jaasRole;
         }

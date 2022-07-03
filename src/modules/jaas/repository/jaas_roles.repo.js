@@ -33,18 +33,21 @@ const jaasRolesRepository = db => {
     }
 
     const destroy = async args => {
-        const deleted = await JAASRole.destroy({ where: { id: args.id } })
+        const deleted = await JAASRole.destroy({ where: { name: args.name } })
         return deleted > 0
     }
 
     const update = async args => {
-        const [jaasRoles, meta] = await JAASRole.update(args.input, { where: { id: args.id }, returning: true })
 
-        if (meta == 0) {
-            throw new Error(`JAASRole with id: ${args.id} not found`)
+        const r = await JAASRole.findByPk(args.name, { attributes: ["name"], raw: true })
+
+        if (!r) {
+            throw new Error(`JAASRole with name: ${args.name} not found`)
         }
 
-        const jaasRole = await JAASRole.findOne({ where: { id: args.id } })
+        const [jaasRoles, meta] = await JAASRole.update(args.input, { where: { name: args.name }, returning: true })        
+
+        const jaasRole = await JAASRole.findOne({ where: { name: args.input.name } })
 
         return jaasRole;
     }
