@@ -11,7 +11,7 @@ const jaasRolesRepository = db => {
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
-        const options = { attributes: fields, order: ['id'] }
+        const options = { attributes: fields, order: ['name'] }
         if (args.start != null && args.max != null) {
             options.offset = args.start;
             options.limit = args.max;
@@ -20,9 +20,9 @@ const jaasRolesRepository = db => {
         return jaasRoles;
     }
 
-    const findById = async (info, args) => {
+    const findByName = async (info, args) => {
         const fields = getFields(info)
-        const jaasRole = await JAASRole.findOne({ where: { id: args.id }, attributes: fields })
+        const jaasRole = await JAASRole.findOne({ where: { name: args.name }, attributes: fields })
         return jaasRole;
     }
 
@@ -63,7 +63,7 @@ const jaasRolesRepository = db => {
 
 		const end = paginator.getEnd();		
 
-        const options = { attributes: fields, order: ['id'] }
+        const options = { attributes: fields, order: ['name'] }
         options.offset = start - 1;
         options.limit = args.limit;
 
@@ -73,7 +73,7 @@ const jaasRolesRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated }
+    return { findAll, findByName, create, destroy, update, findAllPaginated }
 }
 
 export default jaasRolesRepository;

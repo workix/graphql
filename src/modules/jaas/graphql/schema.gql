@@ -6,7 +6,7 @@ type Query{
     getJAASUserById(id: ID!): JAASUser
     allJAASUsersPaginated(page: Int!, limit: Int!): PaginatedListJAASUser
     allJAASRoles(start: Int, max: Int): [JAASRole]
-    getJAASRoleById(id: ID!): JAASRole
+    getJAASRoleByName(name: String!): JAASRole
     allJAASRolesPaginated(page: Int!, limit: Int!): PaginatedListJAASRole
 }
 

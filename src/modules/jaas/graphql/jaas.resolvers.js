@@ -19,8 +19,8 @@ const jaasResolvers = {
             const jaasRoles = await jaasRolesRepository(ctx.orm).findAll(info, args)
             return jaasRoles;
         },
-        getJAASRoleById: async (parent, args, ctx, info) => {
-            const jaasRole = await jaasRolesRepository(ctx.orm).findById(info, args)
+        getJAASRoleByName: async (parent, args, ctx, info) => {
+            const jaasRole = await jaasRolesRepository(ctx.orm).findByName(info, args)
             return jaasRole;
         },
         allJAASRolesPaginated: async (parent, args, ctx, info) => {
