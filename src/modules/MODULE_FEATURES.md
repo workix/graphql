@@ -32,7 +32,7 @@
 - [x] - Repository - [JAASUser] - [JAASRole]
 
 ## Jobs
-- [] - Graphql Resolver
+- [x] - Graphql Resolver
 - [x] - Graphql Schema
 - [x] - Repository
 
