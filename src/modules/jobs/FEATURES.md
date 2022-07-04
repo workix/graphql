@@ -3,21 +3,21 @@
 ## Restfull Context [Job]
 
 #### [Create]
- - [] - Creating a Job
+ - [x] - Creating a Job
 
 #### [Delete]
- - [] - Deleting Job by id
+ - [x] - Deleting Job by id
 
 #### [Get by Id]
- - [] - Getting Job by id
+ - [x] - Getting Job by id
 
 #### [Get All]
-- [] - GetAll with no filters
-- [] - GetAll with start, max
-- [] - Get Jobs Paginated
+- [x] - GetAll with no filters
+- [x] - GetAll with start, max
+- [x] - Get Jobs Paginated
 
 #### [Update]
- - [] - Updating Job
+ - [x] - Updating Job
 
 #### [Get Feature]
 - Path -> '/jobs/feature'

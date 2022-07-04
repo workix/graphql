@@ -33,7 +33,7 @@ const jobsResolvers = {
     },
     Job: {
         company: async (parent, args, ctx, info) => {
-            const companies = await ctx.dataloaders.companiesLoader.load({ key: parent.company_id, info })
+            const companies = await ctx.dataloaders.companiesLoader.load({ key: parent.company_id, info })            
             return companies[0];
         },
         candidates: async (parent, args, ctx, info) => {

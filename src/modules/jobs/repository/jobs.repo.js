@@ -53,7 +53,8 @@ const jobsRepository = db => {
 
     const findAllPaginated = async (info, args) => {           
         
-        const fields = getFieldsWithSubfields(info).get("rows")              
+        const fields = getFieldsWithSubfields(info).get("rows")        
+        fields.push("company_id")      
         
         const totalRows = await Job.count()
 
