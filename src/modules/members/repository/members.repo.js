@@ -4,7 +4,7 @@ import { Member } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
-const jobsRepository = db => {
+const membersRepository = db => {
     const requestedFields = new RequestedFields();
     const getFields = info => requestedFields.getFields(info, { keep: ["id"], exclude: [] })
     const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id"], exclude: [] })
@@ -78,4 +78,4 @@ const jobsRepository = db => {
     return { findAll, findById, create, destroy, update, findAllPaginated }
 }
 
-export default jobsRepository;
+export default membersRepository;
