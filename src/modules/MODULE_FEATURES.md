@@ -37,7 +37,7 @@
 - [x] - Repository
 
 ## Members
-- [] - Graphql Resolver
+- [x] - Graphql Resolver
 - [x] - Graphql Schema
 - [x] - Repository
 

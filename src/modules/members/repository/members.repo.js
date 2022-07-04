@@ -6,8 +6,8 @@ import PaginatedList from '../../../utils/PaginatedList';
 
 const membersRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: ["id"], exclude: [] })
-    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id"], exclude: [] })
+    const getFields = info => requestedFields.getFields(info, { keep: ["id"], exclude: ["medias"] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id"], exclude: ["medias"] })
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
