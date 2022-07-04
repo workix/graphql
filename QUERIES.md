@@ -56,6 +56,8 @@
 
 ## Member
 - [x] - allMembers
+- [x] - getMemberById
+- [x] - allMembersPaginated
 
 ## Resume
 - [x] - allResumes

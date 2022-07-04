@@ -1,6 +1,6 @@
 const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { Member } from '../../../models';
+import { Member,MemberMedia } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
@@ -27,7 +27,7 @@ const membersRepository = db => {
     }
 
     const create = async args => {
-        const member = await Member.create(args.input)
+        const member = await Member.create(args.input,{ include: { model: MemberMedia, as: "medias" } })
         await member.reload()
         return member;
     }
@@ -38,15 +38,24 @@ const membersRepository = db => {
     }
 
     const update = async args => {
-        const f = await Member.findByPk(args.id, { attributes: ["id"], raw: true })
+        const m = await Member.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (!f) {
+        if (!m) {
             throw new Error(`Member with id: ${args.id} not found`)
         }
 
-        const [members, meta] = await Member.update(args.input, { where: { id: args.id }, returning: true })       
+        await db.sequelize.transaction(async transaction => {
+            // chain all your queries here. make sure you return them.
+            const [members, meta] = await Member.update(args.input, { where: { id: args.id }, returning: true }, { transaction })       
 
-        const member = await Member.findOne({ where: { id: args.id } })
+            await MemberMedia.destroy({ where: { id: args.id } }, { transaction })
+    
+            for (const m of args.input.medias) {
+                await MemberMedia.create({ id: args.id, media: m.media, url: m.url }, { transaction })
+            }
+        })     
+
+        const member = await Member.findOne({ where: { id: args.id }, include: { model: MemberMedia, as: "medias" } })
 
         return member;
     }

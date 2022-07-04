@@ -3,18 +3,18 @@
 ## Restfull Context [Member]
 
 #### [Create]
- - [] - Creating a Member
+ - [x] - Creating a Member
 
 #### [Delete]
- - [] - Deleting Member by id
+ - [x] - Deleting Member by id
 
 #### [Get by Id]
- - [] - Getting Member by id
+ - [x] - Getting Member by id
 
 #### [Get All]
-- [] - GetAll with no filters
-- [] - GetAll with start, max
-- [] - Get Members Paginated
+- [x] - GetAll with no filters
+- [x] - GetAll with start, max
+- [x] - Get Members Paginated
 
 #### [Update]
- - [] - Updating Member
+ - [x] - Updating Member
