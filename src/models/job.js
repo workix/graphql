@@ -1,27 +1,32 @@
+const Sequelize = require('sequelize');
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Job', {
+  const Job = sequelize.define('Job', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.fn('now'),
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      defaultValue: Sequelize.fn('now'),
     },
     uuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: Sequelize.UUIDV4,
     },    
     active: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: false
     },
     benefits: {
       type: DataTypes.TEXT,
@@ -33,23 +38,23 @@ module.exports = function(sequelize, DataTypes) {
     },
     feature: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: false
     },
     jobCategory: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     jobType: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     maxPayment: {
       type: DataTypes.DECIMAL,
-      allowNull: true
+      allowNull: false
     },
     minPayment: {
       type: DataTypes.DECIMAL,
-      allowNull: true
+      allowNull: false
     },
     requirement: {
       type: DataTypes.TEXT,
@@ -68,6 +73,16 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    tableName: 'jobs'
+    tableName: 'jobs',
+    hooks: {
+      afterCreate(instance, options){
+        console.log("HOOK After create")
+      },
+      beforeUpdate(instance, options){
+        instance.updatedAt = Date.now()
+      }
+    }
   });
+
+  return Job;
 };
