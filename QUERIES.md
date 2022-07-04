@@ -51,6 +51,8 @@
 
 ## Job
 - [x] - allJobs
+- [x] - getJobById
+- [x] - allJobsPaginated
 
 ## Member
 - [x] - allMembers
