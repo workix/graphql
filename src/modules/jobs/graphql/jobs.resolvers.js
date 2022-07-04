@@ -12,7 +12,7 @@ const jobsResolvers = {
             const job = await jobsRepository(ctx.orm).findById(info, args)
             return job;
         },
-        allJobPaginated: async (parent, args, ctx, info) => {
+        allJobsPaginated: async (parent, args, ctx, info) => {
             const paginatedList = await jobsRepository(ctx.orm).findAllPaginated(info, args)
             return paginatedList;
         }
