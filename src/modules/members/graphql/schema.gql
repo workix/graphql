@@ -2,7 +2,15 @@ scalar Date
 scalar DateTime
 
 type Query {
-    allMembers: [Member]
+    allMembers(start: Int, max: Int): [Member]
+    getMemberById(id: ID!): Member
+    allMembersPaginated(page: Int!, limit: Int!): PaginatedListMember
+}
+
+type Mutation {
+    createMember(input: MemberInput!): Member
+    deleteMember(id: ID!) : Boolean
+    updateMember(id: ID!, input: MemberInput!): Member
 }
 
 type Member {
@@ -17,8 +25,31 @@ type Member {
     medias: [MemberMedia]
 }
 
+input MemberInput {
+    name: String!
+    occupation: String!
+    picture: String!
+    shortText: String!
+    medias: [MemberMediaInput]
+}
+
 type MemberMedia{
     owner: Member
     media: String
     url: String
+}
+
+input MemberMediaInput {
+    media: String!
+    url: String!
+}
+
+type PaginatedListMember {
+    rows: [Member]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
 }
