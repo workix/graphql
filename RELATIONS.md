@@ -18,15 +18,14 @@ Pictures
 - [x] - One Company has Many CompanyMedia
 
 ## JAAS User
-- [] - Many JAAS User has Many JAAS Role
+- [x] - Many JAAS User has Many JAAS Role
 
 ## Job
 - [] - Many Job's belongs to One Company
 - [] - Many Job's has Many Candidate's
 
 ## Member
-- [] - One Member has Many
-MemberMedia
+- [] - One Member has Many MemberMedia
 
 ## Resume
  - [] - One Resume belongs to One Candidate
