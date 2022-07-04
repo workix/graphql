@@ -39,7 +39,7 @@
 ## Members
 - [] - Graphql Resolver
 - [] - Graphql Schema
-- [] - Repository
+- [x] - Repository
 
 ## Resumes
 - [] - Graphql Resolver
