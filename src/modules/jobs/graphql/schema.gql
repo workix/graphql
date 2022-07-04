@@ -2,8 +2,17 @@ scalar Date
 scalar DateTime
 
 type Query{
-    allJobs: [Job]
+    allJobs(start: Int, max: Int): [Job]
+    getJobById(id: ID!): Job
+    allJobsPaginated(page: Int!, limit: Int!): PaginatedListJob
 }
+
+type Mutation {
+    createJob(input: JobInput!): Job
+    deleteJob(id: ID!) : Boolean
+    updateJob(id: ID!, input: JobInput!): Job
+}
+
 
 type Job {
     id: ID,
@@ -14,12 +23,45 @@ type Job {
     benefits: String
     description: String
     feature: Boolean
-    jobCategory: String
-    jobType: String
+    jobCategory: JobCategory
+    jobType: JobType
     maxPayment: Float
     minPayment: Float
     requirement: String
     title: String
     company: Company
     candidates: [Candidate]
+}
+
+input JobInput {
+    active: Boolean!
+    benefits: String!
+    description: String!
+    feature: Boolean!
+    jobCategory: JobCategory!
+    jobType: JobType!
+    maxPayment: Float!
+    minPayment: Float!
+    requirement: String!
+    title: String!
+    company_id: Int!
+}
+
+enum JobCategory {
+    MANAGEMENT, OPERATOR
+}
+
+enum JobType {
+    FREELANCE, FULLTIME, INTERNSHIP, PARTTIME, TEMPORARY, VOLUNTEER
+}
+
+
+type PaginatedListJob {
+    rows: [Job]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
 }
