@@ -38,11 +38,13 @@ const jobsRepository = db => {
     }
 
     const update = async args => {
-        const [jobs, meta] = await Job.update(args.input, { where: { id: args.id }, returning: true })
+        const j = await Job.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (meta == 0) {
+        if (!j) {
             throw new Error(`Job with id: ${args.id} not found`)
         }
+
+        const [jobs, meta] = await Job.update(args.input, { where: { id: args.id }, returning: true })        
 
         const job = await Job.findOne({ where: { id: args.id } })
 

@@ -50,11 +50,13 @@ const candidatesRepository = db => {
     }
 
     const update = async args => {
-        const [candidates, meta] = await Candidate.update(args.input, { where: { id: args.id }, returning: true })
+        const c = await Candidate.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (meta == 0) {
+        if (!c) {
             throw new Error(`Candidate with id: ${args.id} not found`)
         }
+
+        const [candidates, meta] = await Candidate.update(args.input, { where: { id: args.id }, returning: true })        
 
         const candidate = await Candidate.findOne({ where: { id: args.id } })
 

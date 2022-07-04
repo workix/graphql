@@ -38,11 +38,13 @@ const formsRepository = db => {
     }
 
     const update = async args => {
-        const [forms, meta] = await Form.update(args.input, { where: { id: args.id }, returning: true })
+        const f = await Form.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (meta == 0) {
+        if (!f) {
             throw new Error(`Form with id: ${args.id} not found`)
         }
+
+        const [forms, meta] = await Form.update(args.input, { where: { id: args.id }, returning: true })       
 
         const form = await Form.findOne({ where: { id: args.id } })
 

@@ -38,11 +38,13 @@ const usersRepository = db => {
     }
 
     const update = async args => {
-        const [users, meta] = await User.update(args.input, { where: { id: args.id }, returning: true })
+        const u = await User.findByPk(args.id, { attributes: ["id"], raw: true })
 
-        if (meta == 0) {
+        if (!u) {
             throw new Error(`User with id: ${args.id} not found`)
         }
+
+        const [users, meta] = await User.update(args.input, { where: { id: args.id }, returning: true })
 
         const user = await User.findOne({ where: { id: args.id } })
 
