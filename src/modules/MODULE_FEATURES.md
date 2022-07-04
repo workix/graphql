@@ -34,7 +34,7 @@
 ## Jobs
 - [] - Graphql Resolver
 - [] - Graphql Schema
-- [] - Repository
+- [x] - Repository
 
 ## Members
 - [] - Graphql Resolver
