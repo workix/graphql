@@ -21,6 +21,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    tableName: 'jobs_candidates'
+    tableName: 'jobs_candidates',
+    timestamps: false
   });
 };
