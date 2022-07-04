@@ -84,5 +84,15 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
+  Job.associate = function(models) {
+    Job.hasMany(models.Candidate,{
+      foreignKey: 'Job_id',
+      otherKey: 'candidates_id',
+      as: "candidates"      
+    });
+
+    Job.belongsTo(models.Company)
+  }
+
   return Job;
 };
