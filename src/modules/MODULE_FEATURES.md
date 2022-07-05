@@ -54,7 +54,7 @@
 ## Subscribers
 - [] - Graphql Resolver
 - [] - Graphql Schema
-- [] - Repository
+- [x] - Repository
 
 ## Testimonials
 - [x] - Graphql Resolver
