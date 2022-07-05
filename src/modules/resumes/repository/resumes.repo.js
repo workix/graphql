@@ -1,6 +1,6 @@
 const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { Resume } from '../../../models';
+import { Resume, ResumeEducation, ResumeExperience, ResumeSkill } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
@@ -27,7 +27,7 @@ const resumesRepository = db => {
     }
 
     const create = async args => {
-        const resume = await Resume.create(args.input)
+        const resume = await Resume.create(args.input, { include: [{ model: ResumeExperience, as: "experiences" }, { model: ResumeEducation, as: "educations" }, { model: ResumeSkill, as: "skills" }] })
         await resume.reload()
         return resume;
     }
@@ -44,27 +44,27 @@ const resumesRepository = db => {
             throw new Error(`Resume with id: ${args.id} not found`)
         }
 
-        const [resumes, meta] = await Resume.update(args.input, { where: { id: args.id }, returning: true })       
+        const [resumes, meta] = await Resume.update(args.input, { where: { id: args.id }, returning: true })
 
         const resume = await Resume.findOne({ where: { id: args.id } })
 
         return resume;
     }
 
-    const findAllPaginated = async (info, args) => {           
-        
+    const findAllPaginated = async (info, args) => {
+
         const fields = getFieldsWithSubfields(info).get("rows")
-        fields.push("candidate_id")              
-        
+        fields.push("candidate_id")
+
         const totalRows = await Resume.count()
 
         const paginator = new Paginator(args.limit, args.page, totalRows);
 
         const totalPages = paginator.getTotalPages();
 
-		const start = paginator.getStart();
+        const start = paginator.getStart();
 
-		const end = paginator.getEnd();		
+        const end = paginator.getEnd();
 
         const options = { attributes: fields, order: ['id'] }
         options.offset = start - 1;
