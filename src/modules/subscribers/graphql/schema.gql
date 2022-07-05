@@ -2,7 +2,15 @@ scalar Date
 scalar DateTime
 
 type Query {
-    allSubscribers: [Subscriber]
+    allSubscribers(start: Int, max: Int): [Subscriber]
+    getSubscriberById(id: ID!): Subscriber
+    allSubscribersPaginated(page: Int!, limit: Int!): PaginatedListSubscriber
+}
+
+type Mutation {
+    createSubscriber(input: SubscriberInput!): Subscriber
+    deleteSubscriber(id: ID!) : Boolean
+    updateSubscriber(id: ID!, input: SubscriberInput!): Subscriber
 }
 
 type Subscriber {
@@ -11,4 +19,18 @@ type Subscriber {
     updatedAt: DateTime
     uuid: String
     email: String
+}
+
+input SubscriberInput {
+    email: String!
+}
+
+type PaginatedListSubscriber {
+    rows: [Subscriber]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
 }
