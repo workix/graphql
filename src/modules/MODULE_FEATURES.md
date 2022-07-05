@@ -59,7 +59,7 @@
 ## Testimonials
 - [] - Graphql Resolver
 - [] - Graphql Schema
-- [] - Repository
+- [x] - Repository
 
 ## Users
 - [x] - Graphql Resolver
