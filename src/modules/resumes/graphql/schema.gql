@@ -2,7 +2,15 @@ scalar Date
 scalar DateTime
 
 type Query {
-    allResumes: [Resume]    
+    allResumes(start: Int, max: Int): [Resume]  
+    getResumeById(id: ID!): Resume
+    allResumesPaginated(page: Int!, limit: Int!): PaginatedListResume  
+}
+
+type Mutation {
+    createResume(input: ResumeInput!): Resume
+    deleteResume(id: ID!) : Boolean
+    updateResume(id: ID!, input: ResumeInput!): Resume
 }
 
 type Resume {
@@ -18,6 +26,39 @@ type Resume {
     educations: [Education]
     experiences: [Experience]
     skills: [Skill]
+}
+
+input ResumeInput {
+    carrerLevel: CarrerLevel!
+    content: String!
+    objective: String!
+    presence: Presence!
+    candidate_id: Int!
+    educations: [EducationInput]
+    experiences: [ExperienceInput]
+    skills: [SkillInput]
+}
+
+input EducationInput {
+    description: String!
+    endDate: Date
+    qualification: String!
+    schoolName: String!
+    startDate: Date!
+}
+
+input ExperienceInput {
+    description: String!
+    employerName: String!
+    endDate: Date
+    jobTitle: String!
+    startDate: Date!
+    responsibilities: String!
+}
+
+input SkillInput {
+    skillName: String!
+    months: Int!
 }
 
 enum CarrerLevel{
@@ -57,4 +98,14 @@ type Skill {
     id: ID
     skillName: String
     months: Int
+}
+
+type PaginatedListResume {
+    rows: [Resume]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
 }
