@@ -85,13 +85,17 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   Job.associate = function(models) {
-    Job.hasMany(models.Candidate,{
+    Job.belongsToMany(models.Candidate,{
+      through: 'jobs_candidates',
       foreignKey: 'Job_id',
       otherKey: 'candidates_id',
+      timestamps: false,
       as: "candidates"      
     });
 
-    Job.belongsTo(models.Company)
+    Job.belongsTo(models.Company, {
+      foreignKey: 'company_id',
+    })
   }
 
   return Job;

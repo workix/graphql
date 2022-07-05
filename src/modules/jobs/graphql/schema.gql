@@ -5,6 +5,7 @@ type Query{
     allJobs(start: Int, max: Int): [Job]
     getJobById(id: ID!): Job
     allJobsPaginated(page: Int!, limit: Int!): PaginatedListJob
+    debugJob: [Job]
 }
 
 type Mutation {

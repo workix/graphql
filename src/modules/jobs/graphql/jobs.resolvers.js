@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import jobsRepository from '../repository/jobs.repo';
-// import { Job } from '../../../models';
+import { Job, Candidate } from '../../../models';
 
 const jobsResolvers = {
     Query: {
@@ -15,7 +15,13 @@ const jobsResolvers = {
         allJobsPaginated: async (parent, args, ctx, info) => {
             const paginatedList = await jobsRepository(ctx.orm).findAllPaginated(info, args)
             return paginatedList;
-        }
+        },
+        debugJob: async (parent, args, ctx, info) => {
+            const jobs = await Job.findAll({ include: [{ model: Candidate, as: "candidates" }] })
+            console.log("Jobs Candidates ->", await jobs[0].getCandidates({raw: true}))      
+            console.log("Jobs Company ->", await jobs[0].getCompany({raw: true}))   
+            return jobs
+          },  
     },
     Mutation: {
         createJob: async (parent, args, ctx, info) => {
