@@ -16,6 +16,20 @@ const resumesResolvers = {
             return paginatedList;
         }
     },
+    Mutation: {
+        createResume: async (parent, args, ctx, info) => {
+            const resume = await resumesRepository(ctx.orm).create(args)
+            return resume;
+        },
+        deleteResume: async (parent, args, ctx, info) => {
+            const deleted = await resumesRepository(ctx.orm).destroy(args)
+            return deleted;
+        },
+        updateResume: async (parent, args, ctx, info) => {
+            const resume = await resumesRepository(ctx.orm).update(args)
+            return resume;
+        }
+    },
     Resume: {
         candidate: async (parent, args, ctx, info) => {
             const candidates = await ctx.dataloaders.candidatesLoader.load({ key: parent.candidate_id, info })
