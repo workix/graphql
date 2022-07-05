@@ -72,7 +72,9 @@
 
 
 ## Testimonial
-
+- [x] - createTestimonial
+- [x] - deleteTestimonial
+- [x] - updateTestimonial
 
 ## User
 - [x] - createUser

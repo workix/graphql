@@ -38,4 +38,4 @@ Pictures
  - [] - Many SP's has Many Candidate's
 
  ## Testimonial
- - [] - One Testimonial has one Author
+ - [x] - One Testimonial has one Author

@@ -72,6 +72,8 @@
 
 ## Testimonial
 - [x] - allTestimonials
+- [x] - getTestimonialById
+- [x] - allTestimonialsPaginated
 
 ## User
 - [x] - allUsers
