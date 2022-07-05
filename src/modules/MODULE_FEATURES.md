@@ -42,7 +42,7 @@
 - [x] - Repository
 
 ## Resumes
-- [] - Graphql Resolver
+- [x] - Graphql Resolver
 - [x] - Graphql Schema
 - [x] - Repository
 

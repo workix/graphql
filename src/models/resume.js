@@ -1,39 +1,44 @@
+const Sequelize = require('sequelize');
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Resume', {
+  const Resume = sequelize.define('Resume', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true 
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.fn('now'),
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      defaultValue: Sequelize.fn('now'),
     },
     uuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: Sequelize.UUIDV4,
     },
     carrerLevel: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },    
     content: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: false
     },
     objective: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     presence: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },  
     candidate_id: {
       type: DataTypes.BIGINT,
@@ -45,6 +50,38 @@ module.exports = function(sequelize, DataTypes) {
       unique: true
     }
   }, {
-    tableName: 'resumes'
+    tableName: 'resumes',
+    hooks: {
+      afterCreate(instance, options){
+        console.log("HOOK After create")
+      },
+      beforeUpdate(instance, options){
+        instance.updatedAt = Date.now()
+      }
+    }
   });
+
+  Resume.associate = function(models) {
+    // associations can be defined here
+    Resume.hasMany(models.ResumeEducation,{
+      foreignKey: 'id',
+      as: "educations"      
+    });
+
+    Resume.hasMany(models.ResumeExperience,{
+      foreignKey: 'id',
+      as: "experiences"      
+    });
+
+    Resume.hasMany(models.ResumeSkill,{
+      foreignKey: 'id',
+      as: "skills"      
+    });
+
+    Resume.belongsTo(models.Candidate, {
+      foreignKey: 'candidate_id',
+    })
+  }
+
+  return Resume;
 };

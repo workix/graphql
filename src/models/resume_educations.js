@@ -32,6 +32,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'resumes_educations'
+    tableName: 'resumes_educations',
+    timestamps: false
   });
 };

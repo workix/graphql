@@ -29,13 +29,14 @@ module.exports = function(sequelize, DataTypes) {
     },
     startDate: {
       type: DataTypes.DATEONLY,
-      allowNull: true
+      allowNull: false
     },
     responsibilities: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
   }, {
-    tableName: 'resumes_experiences'
+    tableName: 'resumes_experiences',
+    timestamps: false
   });
 };
