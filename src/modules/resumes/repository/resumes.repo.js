@@ -44,9 +44,37 @@ const resumesRepository = db => {
             throw new Error(`Resume with id: ${args.id} not found`)
         }
 
-        const [resumes, meta] = await Resume.update(args.input, { where: { id: args.id }, returning: true })
+        let resume;
+        await db.sequelize.transaction(async transaction => {
+            // chain all your queries here. make sure you return them.
+            const [resumes, meta] = await Resume.update(args.input, { where: { id: args.id }, returning: true }, { transaction })
 
-        const resume = await Resume.findOne({ where: { id: args.id } })
+            resume = await Resume.findOne({ where: { id: args.id } })
+
+            if (args.input.educations) {
+                await ResumeEducation.destroy({ where: { id: args.id } }, { transaction })
+
+                for (const e of args.input.educations) {
+                    await ResumeEducation.create({ id: args.id, description: e.description, endDate: e.endDate, qualification: e.qualification, schoolName: e.schoolName, startDate: e.startDate }, { transaction })
+                }
+            }
+
+            if (args.input.experiences) {
+                await ResumeExperience.destroy({ where: { id: args.id } }, { transaction })
+
+                for (const e of args.input.experiences) {
+                    await ResumeExperience.create({ id: args.id, description: e.description, employerName: e.employerName, endDate: e.endDate, jobTitle: e.jobTitle, responsibilities: e.responsibilities, startDate: e.startDate }, { transaction })
+                }
+            }
+
+            if (args.input.skills) {
+                await ResumeSkill.destroy({ where: { id: args.id } }, { transaction })
+
+                for (const s of args.input.skills) {
+                    await ResumeSkill.create({ id: args.id, months: s.months, skillName: s.skillName }, { transaction })
+                }
+            }           
+        })
 
         return resume;
     }
