@@ -61,7 +61,9 @@
 - [x] - updateMember
 
 ## Resume
-
+- [x] - createResume
+- [x] - deleteResume
+- [x] - updateResume
 
 ## Selective Process
 

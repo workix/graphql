@@ -28,10 +28,10 @@ Pictures
 - [x] - One Member has Many MemberMedia
 
 ## Resume
- - [] - One Resume belongs to One Candidate
- - [] - One Resume has Many Educations
- - [] - One Resume has Many Experiences
- - [] - One Resume has Many Skills
+ - [x] - One Resume belongs to One Candidate
+ - [x] - One Resume has Many Educations
+ - [x] - One Resume has Many Experiences
+ - [x] - One Resume has Many Skills
 
  ## Selective Process
  - [] - Many SP's has one Job

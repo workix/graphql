@@ -61,6 +61,8 @@
 
 ## Resume
 - [x] - allResumes
+- [x] - getResumeById
+- [x] - allResumesPaginated
 
 ## Selective Process
 - [x] - allSelectiveProcesses
