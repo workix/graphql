@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Testimonial', {
+  const Testimonial = sequelize.define('Testimonial', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -55,4 +55,13 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
+
+  Testimonial.associate = function(models) {
+    // associations can be defined here
+    Testimonial.belongsTo(models.Author, {
+      foreignKey: 'author_id',
+    })
+  }
+
+  return Testimonial;
 };
