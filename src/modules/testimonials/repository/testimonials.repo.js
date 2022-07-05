@@ -53,7 +53,8 @@ const testimonialsRepository = db => {
 
     const findAllPaginated = async (info, args) => {           
         
-        const fields = getFieldsWithSubfields(info).get("rows")              
+        const fields = getFieldsWithSubfields(info).get("rows")
+        fields.push("author_id")              
         
         const totalRows = await Testimonial.count()
 
