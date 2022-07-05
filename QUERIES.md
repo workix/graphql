@@ -69,6 +69,8 @@
 
 ## Subscriber
 - [x] - allSubscribers
+- [x] - getSubscriberById
+- [x] - allSubscribersPaginated
 
 ## Testimonial
 - [x] - allTestimonials

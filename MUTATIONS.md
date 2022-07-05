@@ -69,7 +69,9 @@
 
 
 ## Subscriber
-
+- [x] - createSubscriber
+- [x] - deleteSubscriber
+- [x] - updateSubscriber
 
 ## Testimonial
 - [x] - createTestimonial
