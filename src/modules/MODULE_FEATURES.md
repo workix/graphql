@@ -44,7 +44,7 @@
 ## Resumes
 - [] - Graphql Resolver
 - [] - Graphql Schema
-- [] - Repository
+- [x] - Repository
 
 ## Selective Processes
 - [] - Graphql Resolver
