@@ -32,7 +32,7 @@ const schema = makeExecutableSchema({
 app.use("/graphql",
   extractJWTMiddleware(),
   (req, res, next) => {
-    if (!req["context"]) req["context"] = {}
+    if (!req["context"]) {req["context"] = {}}
     req["context"]['orm'] = db;
     req["context"]['dataloaders'] = dataLoaderFactory.getLoaders();
     req["context"]['requestedFields'] = requestedFields;

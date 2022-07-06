@@ -7,15 +7,15 @@ const extractJWTMiddleware = () => {
         let authorization = req.headers['authorization']
         let token = authorization ? authorization.split(' ')[1] : undefined
 
-        req['context'] = {}
+        if(!req['context']) {req['context'] = {}}
         req['context']['authorization'] = authorization;
 
         if (!token) { return next() }
 
-        jwt.verify(token, process.env.SECRET, async (err, decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
             if (err) { return next() }
 
-            const user = await User.findByPk(decoded.sub, { attributes: ['id', 'email', 'firebaseUUID'] })
+            const user = await User.findOne({ where: { firebaseUUID: decoded.id, email: decoded.sub } }, { attributes: ['id', 'email', 'firebaseUUID'] })
 
             if (user) {
                 req['context']['user'] = {

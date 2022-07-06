@@ -1,3 +1,10 @@
+import { authResolver } from './../../../composable_resolvers/auth-resolver';
+import { compose } from './../../../composable_resolvers/composable.resolver';
+import { verifyTokenResolver } from './../../../composable_resolvers/verify-token-resolver';
+
+const authGuard = [authResolver, verifyTokenResolver]
+
+
 const jwt = require('jsonwebtoken');
 import { User } from '../../../models';
 import authRepository from "../repository/auth.repo";
@@ -5,14 +12,18 @@ import authRepository from "../repository/auth.repo";
 
 const authResolvers = {
     Query: {
+        aboutMe: compose(...authGuard)(async (parent, args, ctx, info) => {
+            const user = await User.findOne({ where: { firebaseUUID: ctx.user.firebaseUUID, email: ctx.user.email }, raw: true })
 
+            return { user }
+        })
     },
     Mutation: {
         doLogin: async (parent, args, ctx, info) => {
-            
+
             const user = await User.findOne({ where: { firebaseUUID: args.input.firebaseUUID, email: args.input.email } })
-            
-            if (!user){
+
+            if (!user) {
                 throw new Error("Email or FirebaseUUID is invalid")
             }
 
@@ -22,7 +33,7 @@ const authResolvers = {
             });
 
             return token;
-            
+
         }
     }
 };

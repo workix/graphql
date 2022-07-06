@@ -10,7 +10,7 @@ type Mutation {
 }
 
 type AboutMe {
-    user: User
+    user: User    
 }
 
 input LoginInput {
