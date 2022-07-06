@@ -2,7 +2,15 @@ scalar Date
 scalar DateTime
 
 type Query {
-    allSelectiveProcesses: [SelectiveProcess]
+    allSelectiveProcesses(start: Int, max: Int): [SelectiveProcess]
+    getSelectiveProcessById(id: ID!): SelectiveProcess
+    allSelectiveProcessesPaginated(page: Int!, limit: Int!): PaginatedListSelectiveProcess
+}
+
+type Mutation {
+    createSelectiveProcess(input: SelectiveProcessInput!): SelectiveProcess
+    deleteSelectiveProcess(id: ID!) : Boolean
+    updateSelectiveProcess(id: ID!, input: SelectiveProcessInput!): SelectiveProcess
 }
 
 type SelectiveProcess {
@@ -17,4 +25,23 @@ type SelectiveProcess {
     uuid: String
     job: Job
     candidates: [Candidate]
+}
+
+input SelectiveProcessInput {
+    active: Boolean!
+    disabledAt: DateTime
+    expire: DateTime
+    maxCandidates: Int!
+    start: DateTime!
+    job_id: Int!
+}
+
+type PaginatedListSelectiveProcess {
+    rows: [SelectiveProcess]
+    start: Int
+    end: Int,
+    totalPages: Int,
+    currentPage: Int,
+    limitRows: Int,
+    maxRows: Int
 }
