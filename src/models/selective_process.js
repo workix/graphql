@@ -1,19 +1,22 @@
+const Sequelize = require('sequelize');
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('SelectiveProcess', {
+  const SelectiveProcess = sequelize.define('SelectiveProcess', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true 
     },
     active: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: false
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false,
+      defaultValue: Sequelize.fn('now'),
     },
     disabledAt: {
       type: DataTypes.DATE,
@@ -33,11 +36,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false,
+      defaultValue: Sequelize.fn('now'),
     },
     uuid: {
-      type: DataTypes.STRING(255),
-      allowNull: false
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: Sequelize.UUIDV4,
     },    
     job_id: {
       type: DataTypes.BIGINT,
@@ -48,6 +53,31 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    tableName: 'selective_processes'
+    tableName: 'selective_processes',
+    hooks: {
+      afterCreate(instance, options){
+        console.log("HOOK After create")
+      },
+      beforeUpdate(instance, options){
+        instance.updatedAt = Date.now()
+      }
+    }
   });
+
+  SelectiveProcess.associate = function(models) {
+    // associations can be defined here
+    SelectiveProcess.belongsToMany(models.Candidate,{
+      through: 'selective_processes_candidates',
+      foreignKey: 'sp_id',
+      otherKey: 'candidate_id',
+      timestamps: false,
+      as: "candidates"      
+    });
+
+    SelectiveProcess.belongsTo(models.Job, {
+      foreignKey: 'job_id',
+    })
+  }  
+
+  return SelectiveProcess;
 };
