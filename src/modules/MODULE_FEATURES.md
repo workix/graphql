@@ -47,7 +47,7 @@
 - [x] - Repository
 
 ## Selective Processes
-- [] - Graphql Resolver
+- [x] - Graphql Resolver
 - [x] - Graphql Schema
 - [x] - Repository
 
