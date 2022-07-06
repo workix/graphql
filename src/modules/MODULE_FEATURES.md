@@ -49,7 +49,7 @@
 ## Selective Processes
 - [] - Graphql Resolver
 - [] - Graphql Schema
-- [] - Repository
+- [x] - Repository
 
 ## Subscribers
 - [x] - Graphql Resolver
