@@ -6,7 +6,7 @@ const authGuard = [authResolver, verifyTokenResolver]
 
 
 const jwt = require('jsonwebtoken');
-import { User } from '../../../models';
+import { User, Company, Candidate, Resume } from '../../../models';
 import authRepository from "../repository/auth.repo";
 
 
@@ -14,8 +14,11 @@ const authResolvers = {
     Query: {
         aboutMe: compose(...authGuard)(async (parent, args, ctx, info) => {
             const user = await User.findOne({ where: { firebaseUUID: ctx.user.firebaseUUID, email: ctx.user.email }, raw: true })
+            const company = await Company.findOne({ where: { user_id: user.id } })
+            const candidate = await Candidate.findOne({ where: { user_id: user.id } })
+            const resume = await Resume.findOne({where: {candidate_id: candidate.id}})
 
-            return { user }
+            return { user, company, candidate, resume }
         })
     },
     Mutation: {

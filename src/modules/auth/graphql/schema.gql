@@ -11,6 +11,9 @@ type Mutation {
 
 type AboutMe {
     user: User    
+    company: Company
+    candidate: Candidate
+    resume: Resume
 }
 
 input LoginInput {
