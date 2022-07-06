@@ -12,6 +12,7 @@ import db from './models/index';
 
 import { DataLoaderFactory } from './dataloader';
 import { RequestedFields } from './RequestedFields';
+import { extractJWTMiddleware } from './middleware/extract_jwt'
 
 const app = express();
 const requestedFields = new RequestedFields();
@@ -29,13 +30,14 @@ const schema = makeExecutableSchema({
 
 
 app.use("/graphql",
-(req, res, next) => {
-  req["context"] = {}
-  req["context"]['orm'] = db;
-  req["context"]['dataloaders'] = dataLoaderFactory.getLoaders();
-  req["context"]['requestedFields'] = requestedFields;
-  next();
-},
+  extractJWTMiddleware(),
+  (req, res, next) => {
+    if (!req["context"]) req["context"] = {}
+    req["context"]['orm'] = db;
+    req["context"]['dataloaders'] = dataLoaderFactory.getLoaders();
+    req["context"]['requestedFields'] = requestedFields;
+    next();
+  },
   graphqlHTTP(req => ({
     schema,
     graphiql: true,
@@ -43,12 +45,12 @@ app.use("/graphql",
   }))
 );
 
-app.use('/', (req,res) => res.send({msg: "Workix Graphql"}))
+app.use('/', (req, res) => res.send({ msg: "Workix Graphql" }))
 
 app.use(
   (error, request, response, next) => {
     if (error instanceof Error) {
-      return response.status(400).json({message: error.message});
+      return response.status(400).json({ message: error.message });
     }
 
     return response.status(500).json(error);
