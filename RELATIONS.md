@@ -34,8 +34,8 @@ Pictures
  - [x] - One Resume has Many Skills
 
  ## Selective Process
- - [] - Many SP's has one Job
- - [] - Many SP's has Many Candidate's
+ - [x] - Many SP's has one Job
+ - [x] - Many SP's has Many Candidate's
 
  ## Testimonial
  - [x] - One Testimonial has one Author

@@ -66,7 +66,9 @@
 - [x] - updateResume
 
 ## Selective Process
-
+- [x] - createSelectiveProcess
+- [x] - deleteSelectiveProcess
+- [x] - updateSelectiveProcess
 
 ## Subscriber
 - [x] - createSubscriber
