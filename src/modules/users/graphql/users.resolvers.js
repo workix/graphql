@@ -1,4 +1,5 @@
 import usersRepository from '../repository/users.repo';
+import client from '../../../factory/elastic_search_factory';
 
 const usersResolvers = {
     Query: {       
@@ -18,6 +19,12 @@ const usersResolvers = {
     Mutation: {
         createUser: async (parent, args, ctx, info) => {
           const user = await usersRepository(ctx.orm).create(args)
+          
+          const result = await client.index({
+            index: 'users',
+            body: user
+          })
+          
           return user;
         },
         deleteUser: async (parent, args, ctx, info) => {
