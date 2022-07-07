@@ -18,18 +18,18 @@ const usersResolvers = {
     deepSearchUser: async (parent, args, ctx, info) => {
       const result = await client.search({
         index: 'users',
-        body:{
+        body: {
           query: {
             multi_match: {
               query: args.term,
-              fields: ['email','firebaseUUID', 'firebaseMessageToken']
+              fields: ['id', 'uuid', 'email', 'firebaseUUID', 'firebaseMessageToken']
             }
           }
         }
-        
+
       })
 
-      const results = result.body.hits.hits.map(i=> ({id: i['_id'], user: i["_source"], score: i['_score']}))      
+      const results = result.body.hits.hits.map(i => ({ id: i['_id'], user: i["_source"], score: i['_score'] }))
       return results
     }
   },
