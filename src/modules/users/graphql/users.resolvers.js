@@ -1,5 +1,4 @@
 import usersRepository from '../repository/users.repo';
-import client from '../../../factory/elastic_search_factory';
 import { createIndex, deleteIndex, matchAnyFields, updateIndex } from '../elasticSearch/users.elastic';
 
 const usersResolvers = {
@@ -17,7 +16,7 @@ const usersResolvers = {
       return paginatedList;
     },
     deepSearchUser: async (parent, args, ctx, info) => {
-      const results = matchAnyFields(args.term)
+      const results = await matchAnyFields(args.term)
       return results
     }
   },

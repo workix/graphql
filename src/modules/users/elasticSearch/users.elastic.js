@@ -1,18 +1,18 @@
 import client from '../../../factory/elastic_search_factory';
 import { User } from '../../../models';
 
-export const matchAnyFields = async term => {
+export const matchAnyFields = async term => {    
     const result = await client.search({
         index: 'users',
         body: {
             query: {
                 multi_match: {
                     query: term,
-                    fields: ['id', 'uuid', 'email', 'firebaseUUID', 'firebaseMessageToken']
+                    fields: ['email', 'firebaseUUID', 'firebaseMessageToken']
                 }
             }
         }
-    })
+    })    
 
     const results = makeResponse(result)
     return results;
