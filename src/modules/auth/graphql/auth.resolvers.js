@@ -16,7 +16,7 @@ const authResolvers = {
             const user = await User.findOne({ where: { firebaseUUID: ctx.user.firebaseUUID, email: ctx.user.email }, raw: true })
             const company = await Company.findOne({ where: { user_id: user.id } })
             const candidate = await Candidate.findOne({ where: { user_id: user.id } })
-            const resume = await Resume.findOne({where: {candidate_id: candidate.id}})
+            const resume = candidate ? await Resume.findOne({where: {candidate_id: candidate.id}}) : null
 
             return { user, company, candidate, resume }
         })
