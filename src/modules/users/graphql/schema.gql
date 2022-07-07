@@ -5,13 +5,19 @@ type Query {
     allUsers(start: Int, max: Int): [User]
     getUserById(id: ID!): User
     allUsersPaginated(page: Int!, limit: Int!): PaginatedListUser
-    deepSearch(term: String!): User
+    deepSearchUser(term: String!): [ElasticUser]
 }
 
 type Mutation {
     createUser(input: UserInput!): User
     deleteUser(id: ID!) : Boolean
     updateUser(id: ID!, input: UserInput!): User
+}
+
+type ElasticUser {
+    id: ID
+    score: Float
+    user: User
 }
 
 type User {

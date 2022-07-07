@@ -15,8 +15,22 @@ const usersResolvers = {
       const paginatedList = await usersRepository(ctx.orm).findAllPaginated(info, args)
       return paginatedList;
     },
-    deepSearch: async (parent, args, ctx, info) => {
+    deepSearchUser: async (parent, args, ctx, info) => {
+      const result = await client.search({
+        index: 'users',
+        body:{
+          query: {
+            multi_match: {
+              query: args.term,
+              fields: ['email','firebaseUUID', 'firebaseMessageToken']
+            }
+          }
+        }
+        
+      })
 
+      const results = result.body.hits.hits.map(i=> ({id: i['_id'], user: i["_source"], score: i['_score']}))      
+      return results
     }
   },
   Mutation: {
@@ -33,6 +47,14 @@ const usersResolvers = {
     },
     deleteUser: async (parent, args, ctx, info) => {
       const deleted = await usersRepository(ctx.orm).destroy(args)
+
+      /*
+      const result = await client.delete({
+        index: 'users',
+        id: args.uuid
+      })
+    */
+
       return deleted;
     },
     updateUser: async (parent, args, ctx, info) => {
