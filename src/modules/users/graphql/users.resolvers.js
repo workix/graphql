@@ -22,6 +22,7 @@ const usersResolvers = {
           
           const result = await client.index({
             index: 'users',
+            id: user.uuid,
             body: user
           })
           
@@ -33,6 +34,14 @@ const usersResolvers = {
         },
         updateUser: async (parent, args, ctx, info) => {
           const user = await usersRepository(ctx.orm).update(args)
+
+          const result = await client.update({
+            index: "users",
+            type: "_doc",     
+            id: user.uuid,                               
+            body: {doc:{user}}
+        })
+
           return user;
         }
     }
