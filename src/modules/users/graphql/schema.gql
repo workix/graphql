@@ -5,6 +5,7 @@ type Query {
     allUsers(start: Int, max: Int): [User]
     getUserById(id: ID!): User
     allUsersPaginated(page: Int!, limit: Int!): PaginatedListUser
+    deepSearch(term: String!): User
 }
 
 type Mutation {
