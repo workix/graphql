@@ -1,5 +1,6 @@
 import usersRepository from '../repository/users.repo';
 import client from '../../../factory/elastic_search_factory';
+import { createIndex, deleteIndex, matchAnyFields, updateIndex } from '../elasticSearch/users.elastic';
 
 const usersResolvers = {
   Query: {
@@ -16,20 +17,7 @@ const usersResolvers = {
       return paginatedList;
     },
     deepSearchUser: async (parent, args, ctx, info) => {
-      const result = await client.search({
-        index: 'users',
-        body: {
-          query: {
-            multi_match: {
-              query: args.term,
-              fields: ['id', 'uuid', 'email', 'firebaseUUID', 'firebaseMessageToken']
-            }
-          }
-        }
-
-      })
-
-      const results = result.body.hits.hits.map(i => ({ id: i['_id'], user: i["_source"], score: i['_score'] }))
+      const results = matchAnyFields(args.term)
       return results
     }
   },
@@ -37,35 +25,21 @@ const usersResolvers = {
     createUser: async (parent, args, ctx, info) => {
       const user = await usersRepository(ctx.orm).create(args)
 
-      const result = await client.index({
-        index: 'users',
-        id: user.uuid,
-        body: user
-      })
+      await createIndex(user)
 
       return user;
     },
     deleteUser: async (parent, args, ctx, info) => {
       const deleted = await usersRepository(ctx.orm).destroy(args)
 
-      /*
-      const result = await client.delete({
-        index: 'users',
-        id: args.uuid
-      })
-    */
+      await deleteIndex(args.id)
 
       return deleted;
     },
     updateUser: async (parent, args, ctx, info) => {
       const user = await usersRepository(ctx.orm).update(args)
 
-      const result = await client.update({
-        index: "users",
-        type: "_doc",
-        id: user.uuid,
-        body: { doc: user }
-      })
+      await updateIndex(user)
 
       return user;
     }
