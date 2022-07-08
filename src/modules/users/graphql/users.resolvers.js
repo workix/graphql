@@ -1,6 +1,7 @@
 import usersRepository from '../repository/users.repo';
 import { createIndex, deleteIndex, matchAnyFields, updateIndex } from '../elasticSearch/users.elastic';
 
+
 const usersResolvers = {
   Query: {
     allUsers: async (parent, args, ctx, info) => {
@@ -25,6 +26,10 @@ const usersResolvers = {
       const user = await usersRepository(ctx.orm).create(args)
 
       await createIndex(user)
+
+      const message = {action: "welcome", user}
+      
+      await ctx.mqserver.publishInQueue('notifications', JSON.stringify(message));
 
       return user;
     },

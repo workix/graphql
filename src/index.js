@@ -13,53 +13,59 @@ import db from './models/index';
 import { DataLoaderFactory } from './dataloader';
 import { RequestedFields } from './RequestedFields';
 import { extractJWTMiddleware } from './middleware/extract_jwt'
+import RabbitmqServer from './factory/rabbitmq_server';
 
-const app = express();
-const requestedFields = new RequestedFields();
-const dataLoaderFactory = new DataLoaderFactory(db, requestedFields);
-
-
-app.use(express.json());
-
-
-const schema = makeExecutableSchema({
-  resolvers,
-  typeDefs,
-});
-
-
-
-app.use("/graphql",
-  extractJWTMiddleware(),
-  (req, res, next) => {
-    if (!req["context"]) {req["context"] = {}}
-    req["context"]['orm'] = db;
-    req["context"]['dataloaders'] = dataLoaderFactory.getLoaders();
-    req["context"]['requestedFields'] = requestedFields;
-    next();
-  },
-  graphqlHTTP(req => ({
-    schema,
-    graphiql: true,
-    context: req['context']
-  }))
-);
-
-app.use('/', (req, res) => res.send({ msg: "Workix Graphql" }))
-
-app.use(
-  (error, request, response, next) => {
-    if (error instanceof Error) {
-      return response.status(400).json({ message: error.message });
+(async () => {
+  
+  const app = express();
+  const requestedFields = new RequestedFields();
+  const dataLoaderFactory = new DataLoaderFactory(db, requestedFields);
+  const mqserver = new RabbitmqServer(process.env.RABBITMQ_SERVER_HOST);
+  await mqserver.start()
+  
+  app.use(express.json());
+  
+  
+  const schema = makeExecutableSchema({
+    resolvers,
+    typeDefs,
+  });
+  
+  
+  
+  app.use("/graphql",
+    extractJWTMiddleware(),
+    (req, res, next) => {
+      if (!req["context"]) {req["context"] = {}}
+      req["context"]['orm'] = db;
+      req["context"]['dataloaders'] = dataLoaderFactory.getLoaders();
+      req["context"]['requestedFields'] = requestedFields;
+      req["context"]['mqserver'] = mqserver;
+      next();
+    },
+    graphqlHTTP(req => ({
+      schema,
+      graphiql: true,
+      context: req['context']
+    }))
+  );
+  
+  app.use('/', (req, res) => res.send({ msg: "Workix Graphql" }))
+  
+  app.use(
+    (error, request, response, next) => {
+      if (error instanceof Error) {
+        return response.status(400).json({ message: error.message });
+      }
+  
+      return response.status(500).json(error);
     }
-
-    return response.status(500).json(error);
-  }
-);
-
-const port = process.env.PORT || 4000
-
-app.listen(port, () => {
-  console.log(`Server is running at Port ${port}`)
-  console.log(`http://localhost:${port}/graphql`)
-});
+  );
+  
+  const port = process.env.PORT || 4000
+  
+  app.listen(port, () => {
+    console.log(`Server is running at Port ${port}`)
+    console.log(`http://localhost:${port}/graphql`)
+  });
+})();

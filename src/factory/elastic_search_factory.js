@@ -1,6 +1,6 @@
 const { Client } = require('@elastic/elasticsearch')
 const client = new Client({
-  node: 'http://localhost:9200',
+  node: process.env.ELASTIC_SEARCH_HOST,
   //auth: { apiKey: 'base64EncodedKey' }
 })
 

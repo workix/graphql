@@ -9,6 +9,7 @@ export default class RabbitmqServer {
     async start() {
         this.conn = await connect(this.uri);
         this.channel = await this.conn.createChannel();
+        return this;
     }
 
     async publishInQueue(queue, message) {
