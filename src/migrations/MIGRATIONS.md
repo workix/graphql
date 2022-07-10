@@ -21,8 +21,8 @@
  [x] - Resume Educations
  [x] - Resume Experiences
  [x] - Resume Skills
- [] - Selective Process
- [] - Selective Process Candidates
+ [x] - Selective Process
+ [x] - Selective Process Candidates
  [] - Subscriber
  [] - Testimonial
  [x] - User
@@ -61,3 +61,7 @@
  [x] - Resume Educations
  [x] - Resume Experiences
  [x] - Resume Skills
+
+ ### Selective Process
+ [x] - Job
+ [x] - Candidate
