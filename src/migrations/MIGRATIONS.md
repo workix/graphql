@@ -23,7 +23,7 @@
  [x] - Resume Skills
  [x] - Selective Process
  [x] - Selective Process Candidates
- [] - Subscriber
+ [x] - Subscriber
  [] - Testimonial
  [x] - User
 
