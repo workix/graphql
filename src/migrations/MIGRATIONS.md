@@ -10,9 +10,9 @@
  [x] - Company
  [x] - Company Medias
  [x] - Form
- [] - JAAS Role
- [] - JAAS Roles
- [] - JAAS User
+ [x] - JAAS Role
+ [x] - JAAS Roles
+ [x] - JAAS User
  [] - Job
  [] - Job Candidates
  [] - Member
@@ -45,4 +45,7 @@
 [x] - User
 [x] - Company Media
 
+### JAAS Roles
+[x] - JAAS User
+[x] - JAAS Role
  
