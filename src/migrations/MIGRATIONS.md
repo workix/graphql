@@ -1,12 +1,12 @@
 ## Migrations
  [x] - Author
  [x] - Author Medias
- [] - Blog
- [] - Blog Picture
- [] - Blog Tag
- [] - Blog Comment
+ [x] - Blog
+ [x] - Blog Picture
+ [x] - Blog Tag
+ [x] - Blog Comment
  [] - Candidate
- [] - Comment
+ [x] - Comment
  [] - Company
  [] - Company Medias
  [] - Form
@@ -31,4 +31,11 @@
 
 ### Author
 [x] - Author Media
+
+### Blog
+[x] - Author
+[x] - Comment
+[x] - Blog Picture
+[x] - Blog Tag
+
  
