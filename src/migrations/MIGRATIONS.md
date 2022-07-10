@@ -15,8 +15,8 @@
  [x] - JAAS User
  [x] - Job
  [x] - Job Candidates
- [] - Member
- [] - Member Medias
+ [x] - Member
+ [x] - Member Medias
  [] - Resume
  [] - Resume Educations
  [] - Resume Experiences
@@ -52,3 +52,6 @@
  ### Job
  [x] - Company
  [x] - Candidate
+
+ ### Member
+ [x] - Member Media
