@@ -24,7 +24,7 @@
  [x] - Selective Process
  [x] - Selective Process Candidates
  [x] - Subscriber
- [] - Testimonial
+ [x] - Testimonial
  [x] - User
 
 ## Dependencies
@@ -65,3 +65,6 @@
  ### Selective Process
  [x] - Job
  [x] - Candidate
+
+ ### Testimonial
+ [x] - Author
