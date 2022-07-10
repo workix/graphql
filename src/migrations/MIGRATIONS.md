@@ -5,7 +5,7 @@
  [x] - Blog Picture
  [x] - Blog Tag
  [x] - Blog Comment
- [] - Candidate
+ [x] - Candidate
  [x] - Comment
  [] - Company
  [] - Company Medias
@@ -37,5 +37,8 @@
 [x] - Comment
 [x] - Blog Picture
 [x] - Blog Tag
+
+### Candidate
+[x] - User
 
  
