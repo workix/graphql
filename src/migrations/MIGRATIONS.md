@@ -9,7 +9,7 @@
  [x] - Comment
  [x] - Company
  [x] - Company Medias
- [] - Form
+ [x] - Form
  [] - JAAS Role
  [] - JAAS Roles
  [] - JAAS User
