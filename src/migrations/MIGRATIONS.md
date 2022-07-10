@@ -7,8 +7,8 @@
  [x] - Blog Comment
  [x] - Candidate
  [x] - Comment
- [] - Company
- [] - Company Medias
+ [x] - Company
+ [x] - Company Medias
  [] - Form
  [] - JAAS Role
  [] - JAAS Roles
@@ -40,5 +40,9 @@
 
 ### Candidate
 [x] - User
+
+### Company
+[x] - User
+[x] - Company Media
 
  
