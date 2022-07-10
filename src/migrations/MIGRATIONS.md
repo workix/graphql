@@ -13,8 +13,8 @@
  [x] - JAAS Role
  [x] - JAAS Roles
  [x] - JAAS User
- [] - Job
- [] - Job Candidates
+ [x] - Job
+ [x] - Job Candidates
  [] - Member
  [] - Member Medias
  [] - Resume
@@ -49,3 +49,6 @@
 [x] - JAAS User
 [x] - JAAS Role
  
+ ### Job
+ [x] - Company
+ [x] - Candidate
