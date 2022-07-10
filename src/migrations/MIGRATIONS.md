@@ -17,10 +17,10 @@
  [x] - Job Candidates
  [x] - Member
  [x] - Member Medias
- [] - Resume
- [] - Resume Educations
- [] - Resume Experiences
- [] - Resume Skills
+ [x] - Resume
+ [x] - Resume Educations
+ [x] - Resume Experiences
+ [x] - Resume Skills
  [] - Selective Process
  [] - Selective Process Candidates
  [] - Subscriber
@@ -55,3 +55,9 @@
 
  ### Member
  [x] - Member Media
+
+ ### Resume
+ [x] - Candidate
+ [x] - Resume Educations
+ [x] - Resume Experiences
+ [x] - Resume Skills
