@@ -55,7 +55,7 @@ module.exports = {
         queryInterface.createTable('resumes_educations', {
           id: {
             type: Sequelize.DataTypes.BIGINT,
-            primaryKey: true,
+            primaryKey: false,
             allowNull: false,
             references: {
               model: 'resumes',
@@ -86,7 +86,7 @@ module.exports = {
         queryInterface.createTable('resumes_experiences', {
           id: {
             type: Sequelize.DataTypes.BIGINT,
-            primaryKey: true,
+            primaryKey: false,
             allowNull: false,
             references: {
               model: 'resumes',
@@ -122,7 +122,7 @@ module.exports = {
           id: {
             type: Sequelize.DataTypes.BIGINT,
             allowNull: false,
-            primaryKey: true,
+            primaryKey: false,
             references: {
               model: 'resumes',
               key: 'id'

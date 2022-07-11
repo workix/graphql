@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('ResumeEducation', {
     id: {
       type: DataTypes.BIGINT,
-      primaryKey: true,
+      primaryKey: false,
       allowNull: false,
       references: {
         model: 'Resume',
