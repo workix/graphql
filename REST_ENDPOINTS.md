@@ -82,7 +82,7 @@
 #### [Validate] cpf
 - Path -> '/vue/validate_cpf'
 - Verb -> Post
-- [] - Not Implemented Yet
+- [x] - Migrated to mutation validateCPF
 
 ## Restfull [Authentication]
 - Class -> AuthEndpoint

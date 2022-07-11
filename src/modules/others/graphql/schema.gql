@@ -1,0 +1,10 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    validateCPF(cpf: String!): Boolean
+}
+
+#type Mutation {
+#    
+#}
