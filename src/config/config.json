@@ -10,6 +10,9 @@
     "define": {
       "timestamps": false,
       "underscored": false
+    },
+    "dialectOptions": {
+      "multipleStatements": true
     }
   },
   "test": {
@@ -23,6 +26,9 @@
     "define": {
       "timestamps": false,
       "underscored": false
+    },
+    "dialectOptions": {
+      "multipleStatements": true
     }
   },
   "production": {
@@ -30,6 +36,7 @@
     "dialect": "postgres",
     "protocol": "postgres",
     "dialectOptions": {
+      "multipleStatements": true,
       "ssl": {
         "require": true,
         "rejectUnauthorized": false
