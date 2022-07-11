@@ -2,13 +2,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const sqlBlogsTags = fs.readFileSync(path.resolve(__dirname, 'blogs_tags.sql'), 'utf8');
+const sqlBlogsPictures = fs.readFileSync(path.resolve(__dirname, 'blogs_pictures.sql'), 'utf8');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
     return queryInterface.sequelize.transaction(transaction => {
       return Promise.all([
-        queryInterface.sequelize.query(sqlBlogsTags, { transaction }),        
+        queryInterface.sequelize.query(sqlBlogsPictures, { transaction }),        
       ])
     })
   },
@@ -16,7 +16,7 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     return queryInterface.sequelize.transaction(transaction => {
       return Promise.all([        
-        queryInterface.bulkDelete('blogs_tags', {}, { transaction })
+        queryInterface.bulkDelete('blogs_pictures', {}, { transaction })
       ])
     })
 
