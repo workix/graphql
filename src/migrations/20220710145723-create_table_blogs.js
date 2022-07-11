@@ -83,7 +83,7 @@ module.exports = {
           id: {
             type: Sequelize.DataTypes.BIGINT,
             allowNull: false,
-            primaryKey: true,
+            primaryKey: false,
             references: {
               model: 'blogs',
               key: 'id'
@@ -97,7 +97,7 @@ module.exports = {
         queryInterface.createTable('blogs_tags', {
           id: {
             type: Sequelize.DataTypes.BIGINT,
-            primaryKey: true,
+            primaryKey: false,
             allowNull: false,
             references: {
               model: 'blogs',
