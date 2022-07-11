@@ -12,6 +12,8 @@
 - [x] - Subscriber
 - [x] - Testimonial
 - [x] - User
+- [x] - Others
+
 
 ## Author
 - [x] - allAuthors
@@ -83,3 +85,6 @@
 - [x] - allUsers
 - [x] - getUserById
 - [x] - allUsersPaginated
+
+## Others
+- [x] - validateCPF
