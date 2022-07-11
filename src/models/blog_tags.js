@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('BlogTag', {
     id: {
       type: DataTypes.BIGINT,
-      primaryKey: false,
+      primaryKey: true,
       allowNull: false,
       references: {
         model: 'Blog',
