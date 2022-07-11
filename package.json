@@ -11,7 +11,7 @@
     "migrate": "npx sequelize db:migrate",
     "migrate:test": "npx sequelize db:migrate --env=test",
     "seed": "npx sequelize db:seed:all",
-    "seed:test": "npx sequelize db:seed:all --env=test",
+    "seed:test": "npx sequelize db:seed:all --env=test --debug",
     "prestart": "npx sequelize db:migrate && npx sequelize db:seed:all",
     "start": "nodemon --exec babel-node src/index.js",
     "build": "babel src --out-dir build",

@@ -43,7 +43,7 @@ module.exports = {
           id: {
             type: Sequelize.DataTypes.BIGINT,
             allowNull: false,
-            primaryKey: true,
+            primaryKey: false,
             references: {
               model: 'authors',
               key: 'id'
