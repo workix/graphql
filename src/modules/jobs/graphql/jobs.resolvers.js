@@ -33,6 +33,10 @@ const jobsResolvers = {
         getJobByCompanyId: async (parent, args, ctx, info) => {
             const jobs = await jobsRepository(ctx.orm).findAllByCompany(info, args)
             return jobs;
+        },
+        getJobByIdAndCompanyId: async (parent, args, ctx, info) => {
+            const job = await jobsRepository(ctx.orm).findByIdAndCompanyId(info, args)
+            return job;
         }
     },
     Mutation: {

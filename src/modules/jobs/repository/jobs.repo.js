@@ -53,6 +53,12 @@ const jobsRepository = db => {
         return job;
     }
 
+    const findByIdAndCompanyId = async (info, args) => {
+        const fields = getFields(info)
+        const job = await Job.findOne({ where: { id: args.id, company_id: args.companyId }, attributes: fields })
+        return job;
+    }
+
     const create = async args => {
         const job = await Job.create(args.input)
         await job.reload()
@@ -108,7 +114,7 @@ const jobsRepository = db => {
         return true;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated, findAllFeatured, listRandomFeatured, findAllByCompany, subscribe }
+    return { findAll, findById, create, destroy, update, findAllPaginated, findAllFeatured, listRandomFeatured, findAllByCompany, subscribe, findByIdAndCompanyId }
 }
 
 export default jobsRepository;

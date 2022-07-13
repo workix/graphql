@@ -456,7 +456,7 @@
 #### [Get by id and company id]
 - Path -> '/jobs/<!id>/company/<!company_id>'
 - Verb -> Get
-- [] - Not Implemented Yet
+- [x] - Migrated to query getJobByIdAndCompanyId
 
 ## Restfull [Member]
 - Class -> MemberEndpoint
