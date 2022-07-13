@@ -12,7 +12,8 @@ type Query {
     debugComment: [Comment]
     allBlogsCategories: [String]
     allBlogsTimePeriods: [TimePeriod],
-    allBlogsRecents(start: Int, max: Int): [Blog]
+    allBlogsRecents(start: Int, max: Int): [Blog],
+    allCommentsRecents(start: Int, max: Int): [Comment]
 }
 
   type Mutation {

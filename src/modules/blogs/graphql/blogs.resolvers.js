@@ -52,6 +52,10 @@ const blogsResolvers = {
       const blogs = await blogsRepository(ctx.orm).findAllRecents(info,args)
       return blogs;
     },
+    allCommentsRecents: async (parent, args, ctx, info) => {
+      const comments = await commentsRepository(ctx.orm).findAllRecents(info,args)
+      return comments;
+    },
   },
   Mutation: {
     createBlog: async (parent, args, ctx, info) => {

@@ -9,6 +9,17 @@ const commentsRepository = db => {
     const getFields = info => requestedFields.getFields(info, { keep: [], exclude: ["blog"] })
     const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: [], exclude: ["blog"] })
 
+    const findAllRecents = async (info, args) => {
+        const fields = getFields(info)
+        const options = { attributes: fields, order: [['createdAt', 'DESC']] }
+        if (args.start != null && args.max != null) {
+            options.offset = args.start;
+            options.limit = args.max;
+        }
+        const comments = await Comment.findAll(options)
+        return comments;
+    }
+
     const findAll = async (info, args) => {
         const fields = getFields(info)
         const options = { attributes: fields, order: ['id'] }
@@ -109,7 +120,7 @@ const commentsRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated }
+    return { findAll, findById, create, destroy, update, findAllPaginated, findAllRecents }
 }
 
 export default commentsRepository;

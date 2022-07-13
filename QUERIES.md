@@ -30,6 +30,7 @@
 - [x] - allBlogsCategories
 - [x] - allBlogsTimePeriods
 - [x] - allBlogsRecents
+- [x] - allCommentsRecents
 
 ## Candidate
 - [x] - allCandidates
