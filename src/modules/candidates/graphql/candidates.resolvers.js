@@ -31,7 +31,13 @@ const candidatesResolvers = {
       return candidate;
     },
     notifyCandidate: async (parent, args, ctx, info) => {
-      await notification(ctx.orm)
+      const candidate = await candidatesRepository(ctx.orm).findByUserId(info, args)
+
+      const message = { action: "contact", type: args.input.type, candidate }
+
+      await ctx.mqserver.publishInQueue('notifications', JSON.stringify(message));
+
+      return true
     }
   },
   Candidate: {

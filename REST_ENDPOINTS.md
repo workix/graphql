@@ -221,7 +221,7 @@
 #### [notify]
  - Path -> '/candidates/notify'
  - Verb -> Post
- - [] - Not Implemented Yet
+ - [x] - Migrate to mutation notifyCandidate
 
 
 ## Restfull [Comment]

@@ -26,6 +26,12 @@ const candidatesRepository = db => {
         return candidate;
     }
 
+    const findByUserId = async (info, args) => {
+        const fields = getFields(info)        
+        const candidate = await Candidate.findOne({ where: { user_id: args.input.user_id }, attributes: fields })
+        return candidate;
+    }
+
     const create = async args => {
         try {
             const candidate = await Candidate.create(args.input)
@@ -88,7 +94,7 @@ const candidatesRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated }
+    return { findAll, findById, create, destroy, update, findAllPaginated, findByUserId }
 }
 
 export default candidatesRepository;
