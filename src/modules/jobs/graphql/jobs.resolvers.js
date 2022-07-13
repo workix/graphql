@@ -2,6 +2,12 @@ import _ from 'lodash';
 import jobsRepository from '../repository/jobs.repo';
 import { Job, Candidate } from '../../../models';
 
+import { authResolver } from './../../../composable_resolvers/auth-resolver';
+import { compose } from './../../../composable_resolvers/composable.resolver';
+import { verifyTokenResolver } from './../../../composable_resolvers/verify-token-resolver';
+
+const authGuard = [authResolver, verifyTokenResolver]
+
 const jobsResolvers = {
     Query: {
         allJobs: async (parent, args, ctx, info) => {
@@ -37,7 +43,11 @@ const jobsResolvers = {
         getJobByIdAndCompanyId: async (parent, args, ctx, info) => {
             const job = await jobsRepository(ctx.orm).findByIdAndCompanyId(info, args)
             return job;
-        }
+        },
+        myJobs: compose(...authGuard)(async (parent, args, ctx, info) => {
+            const jobs = await jobsRepository(ctx.orm).findMyJobs(info, args, ctx)
+            return jobs;
+        })
     },
     Mutation: {
         createJob: async (parent, args, ctx, info) => {

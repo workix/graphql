@@ -10,6 +10,7 @@ type Query{
     listJobRandomFeatured: [Job]
     getJobByCompanyId(companyId: ID!) : [Job]
     getJobByIdAndCompanyId(id: ID!, companyId: ID!) : Job
+    myJobs: [Job]
 }
 
 type Mutation {

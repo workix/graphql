@@ -114,7 +114,20 @@ const jobsRepository = db => {
         return true;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated, findAllFeatured, listRandomFeatured, findAllByCompany, subscribe, findByIdAndCompanyId }
+    const findMyJobs = async (info, args, ctx) => {
+
+        const jobs = await db.sequelize.query(`
+        SELECT DISTINCT j.* FROM jobs j
+        LEFT JOIN companies c ON j.company_id = c.id
+        LEFT JOIN users u ON c.user_id = u.id
+                         WHERE u.firebaseUUID = :firebaseUUID ORDER BY j.id`, {
+                            replacements: { firebaseUUID: ctx.user.firebaseUUID },
+                            type: QueryTypes.SELECT
+                          })
+        return jobs;
+    }
+
+    return { findAll, findById, create, destroy, update, findAllPaginated, findAllFeatured, listRandomFeatured, findAllByCompany, subscribe, findByIdAndCompanyId, findMyJobs }
 }
 
 export default jobsRepository;

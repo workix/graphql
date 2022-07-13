@@ -446,7 +446,7 @@
 #### [Get My Jobs] - Jobs from Company
 - Path -> '/jobs/my_jobs'
 - Verb -> Get
-- [] - Not Implemented Yet
+- [x] - Migrated to query myJobs
 
 #### [Subscribe Candidate in Job]
 - Path -> '/jobs/subscribe'

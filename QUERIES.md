@@ -66,6 +66,7 @@
 - [x] - listJobRandomFeatured
 - [x] - getJobByCompanyId
 - [x] - getJobByIdAndCompanyId
+- [x] - myJobs
 
 ## Member
 - [x] - allMembers
