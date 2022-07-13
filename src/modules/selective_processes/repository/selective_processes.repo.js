@@ -1,6 +1,6 @@
 const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { SelectiveProcess } from '../../../models';
+import { SelectiveProcess,SelectiveProcessCandidate } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
@@ -76,7 +76,12 @@ const selectiveProcessesRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated }
+    const subscribe = async args => {
+        await SelectiveProcessCandidate.create({ sp_id: args.input.spId, candidate_id: args.input.candidateId })
+        return true;
+    }
+
+    return { findAll, findById, create, destroy, update, findAllPaginated, subscribe }
 }
 
 export default selectiveProcessesRepository;

@@ -19,16 +19,20 @@ const selectiveProcessesResolvers = {
     },
     Mutation: {
         createSelectiveProcess: async (parent, args, ctx, info) => {
-          const selectiveProcess = await selectiveProcessesRepository(ctx.orm).create(args)
-          return selectiveProcess;
+            const selectiveProcess = await selectiveProcessesRepository(ctx.orm).create(args)
+            return selectiveProcess;
         },
         deleteSelectiveProcess: async (parent, args, ctx, info) => {
-          const deleted = await selectiveProcessesRepository(ctx.orm).destroy(args)          
-          return deleted;
+            const deleted = await selectiveProcessesRepository(ctx.orm).destroy(args)
+            return deleted;
         },
         updateSelectiveProcess: async (parent, args, ctx, info) => {
-          const selectiveProcess = await selectiveProcessesRepository(ctx.orm).update(args)
-          return selectiveProcess;
+            const selectiveProcess = await selectiveProcessesRepository(ctx.orm).update(args)
+            return selectiveProcess;
+        },
+        subscribeInSelectiveProcess: async (parent, args, ctx, info) => {
+            const subscribed = await selectiveProcessesRepository(ctx.orm).subscribe(args)
+            return subscribed;
         }
     },
     SelectiveProcess: {

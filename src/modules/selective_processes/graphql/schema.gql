@@ -11,6 +11,7 @@ type Mutation {
     createSelectiveProcess(input: SelectiveProcessInput!): SelectiveProcess
     deleteSelectiveProcess(id: ID!) : Boolean
     updateSelectiveProcess(id: ID!, input: SelectiveProcessInput!): SelectiveProcess
+    subscribeInSelectiveProcess(input: SubscribeInSelectiveProcessInput!): Boolean
 }
 
 type SelectiveProcess {
@@ -44,4 +45,9 @@ type PaginatedListSelectiveProcess {
     currentPage: Int,
     limitRows: Int,
     maxRows: Int
+}
+
+input SubscribeInSelectiveProcessInput{
+    spId: ID!
+    candidateId: ID!
 }

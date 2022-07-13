@@ -574,7 +574,7 @@
 #### [Subscribe in Selective Processes] 
 - Path -> '/selectiveprocesses/subscribe'
 - Verb -> Post
-- [] - Not Implemented Yet
+- [x] - Migrated to mutation subscribeInSelectiveProcess
 
 #### [Get Paginated]
 - Path -> '/selectiveprocesses/paginated'

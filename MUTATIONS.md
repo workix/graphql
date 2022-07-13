@@ -70,6 +70,7 @@
 - [x] - createSelectiveProcess
 - [x] - deleteSelectiveProcess
 - [x] - updateSelectiveProcess
+- [x] - subscribeInSelectiveProcess
 
 ## Subscriber
 - [x] - createSubscriber
