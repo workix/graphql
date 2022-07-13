@@ -3,7 +3,7 @@ import { Blog, Comment, BlogPicture, BlogTag, BlogComment } from '../../../model
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
-const Sequelize = require('sequelize');
+const { Sequelize, QueryTypes } = require('sequelize');
 
 const blogsRepository = db => {
     const requestedFields = new RequestedFields();
@@ -12,10 +12,17 @@ const blogsRepository = db => {
 
     const findAllCategories = async (info, args) => {
         const categories = await Blog.findAll({
-            attributes: [Sequelize.fn('DISTINCT', Sequelize.col('category')) ,'category'],            
+            attributes: [Sequelize.fn('DISTINCT', Sequelize.col('category')), 'category'],
             raw: true
-        })        
+        })
         return categories.map(c => c.category);
+    }
+
+    const findAllTimePeriods = async (info, args) => {
+        const timePeriods = await db.sequelize.query(`SELECT YEAR(b.createdAt) as year, MONTH(b.createdAt) as month from blogs b GROUP BY YEAR(b.createdAt), MONTH(b.createdAt)`, {
+            type: QueryTypes.SELECT
+        })
+        return timePeriods;
     }
 
     const findAll = async (info, args) => {
@@ -36,7 +43,7 @@ const blogsRepository = db => {
     }
 
     const create = async args => {
-        const blog = await Blog.create(args.input, { include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" },{ model: BlogTag, as: "tags" }]})
+        const blog = await Blog.create(args.input, { include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" }, { model: BlogTag, as: "tags" }] })
         await blog.reload()
         return blog;
     }
@@ -57,12 +64,12 @@ const blogsRepository = db => {
 
         await db.sequelize.transaction(async transaction => {
             // chain all your queries here. make sure you return them.
-            const [blogs, meta] = await Blog.update(args.input, { where: { id: args.id }, returning: true }, { transaction })       
+            const [blogs, meta] = await Blog.update(args.input, { where: { id: args.id }, returning: true }, { transaction })
 
-            blog = await Blog.findOne({ where: { id: args.id }, include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" },{ model: BlogTag, as: "tags" }]})
+            blog = await Blog.findOne({ where: { id: args.id }, include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" }, { model: BlogTag, as: "tags" }] })
 
             await BlogComment.destroy({ where: { Blog_id: args.id } }, { transaction })
-            
+
 
             let comment;
             for (const c of args.input.comments) {
@@ -71,34 +78,34 @@ const blogsRepository = db => {
             }
 
             await BlogTag.destroy({ where: { id: args.id } }, { transaction })
-    
+
             for (const t of args.input.tags) {
                 await BlogTag.create({ id: args.id, name: t.name }, { transaction })
             }
 
             await BlogPicture.destroy({ where: { id: args.id } }, { transaction })
-    
+
             for (const p of args.input.pictures) {
                 await BlogPicture.create({ id: args.id, pictures: p.pictures }, { transaction })
             }
-        })             
+        })
 
         return blog;
     }
 
-    const findAllPaginated = async (info, args) => {           
-        
-        const fields = getFieldsWithSubfields(info).get("rows")              
-        
+    const findAllPaginated = async (info, args) => {
+
+        const fields = getFieldsWithSubfields(info).get("rows")
+
         const totalRows = await Blog.count()
 
         const paginator = new Paginator(args.limit, args.page, totalRows);
 
         const totalPages = paginator.getTotalPages();
 
-		const start = paginator.getStart();
+        const start = paginator.getStart();
 
-		const end = paginator.getEnd();		
+        const end = paginator.getEnd();
 
         const options = { attributes: fields, order: ['id'] }
         options.offset = start - 1;
@@ -110,7 +117,7 @@ const blogsRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated, findAllCategories }
+    return { findAll, findById, create, destroy, update, findAllPaginated, findAllCategories, findAllTimePeriods }
 }
 
 export default blogsRepository;

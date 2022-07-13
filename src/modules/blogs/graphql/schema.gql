@@ -11,6 +11,7 @@ type Query {
     allCommentsPaginated(page: Int!, limit: Int!): PaginatedListComment
     debugComment: [Comment]
     allBlogsCategories: [String]
+    allBlogsTimePeriods: [TimePeriod]
 }
 
   type Mutation {
@@ -106,4 +107,9 @@ type PaginatedListComment {
     currentPage: Int,
     limitRows: Int,
     maxRows: Int
+}
+
+type TimePeriod {
+    year: Int
+    month: Int
 }

@@ -43,6 +43,10 @@ const blogsResolvers = {
     allBlogsCategories: async (parent, args, ctx, info) => {
       const categories = await blogsRepository(ctx.orm).findAllCategories(info, args)
       return categories;
+    },
+    allBlogsTimePeriods: async (parent, args, ctx, info) => {
+      const timePeriods = await blogsRepository(ctx.orm).findAllTimePeriods(info, args)
+      return timePeriods;
     }
   },
   Mutation: {

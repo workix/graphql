@@ -168,7 +168,7 @@
 #### [Get Time Periods] - Periods from Blogs Posts
 - Path -> '/blogs/time_periods'
 - Verb -> Get
-- [] - Not Implemented Yet
+- [x] - Migrated to query allBlogsTimePeriods
 
 #### [Get Recents]
 - Path -> '/blogs/recents'
