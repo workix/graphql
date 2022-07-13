@@ -163,7 +163,7 @@
 #### [Get Categories]
 - Path -> '/blogs/categories'
 - Verb -> Get
-- [] - Not Implemented Yet
+- [x] - Migrated to query allBlogsCategories
 
 #### [Get Time Periods] - Periods from Blogs Posts
 - Path -> '/blogs/time_periods'

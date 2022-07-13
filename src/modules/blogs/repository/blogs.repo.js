@@ -3,10 +3,20 @@ import { Blog, Comment, BlogPicture, BlogTag, BlogComment } from '../../../model
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
+const Sequelize = require('sequelize');
+
 const blogsRepository = db => {
     const requestedFields = new RequestedFields();
     const getFields = info => requestedFields.getFields(info, { keep: ["author_id"], exclude: ["author", "comments", "pictures", "tags", "blog"] })
     const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["author_id"], exclude: ["author", "comments", "pictures", "tags", "blog"] })
+
+    const findAllCategories = async (info, args) => {
+        const categories = await Blog.findAll({
+            attributes: [Sequelize.fn('DISTINCT', Sequelize.col('category')) ,'category'],            
+            raw: true
+        })        
+        return categories.map(c => c.category);
+    }
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
@@ -100,7 +110,7 @@ const blogsRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated }
+    return { findAll, findById, create, destroy, update, findAllPaginated, findAllCategories }
 }
 
 export default blogsRepository;

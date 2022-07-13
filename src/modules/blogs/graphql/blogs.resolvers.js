@@ -40,6 +40,10 @@ const blogsResolvers = {
       console.log("Comments Blog ->", await comments[0].getBlogs({raw: true}))      
       return comments
     },  
+    allBlogsCategories: async (parent, args, ctx, info) => {
+      const categories = await blogsRepository(ctx.orm).findAllCategories(info, args)
+      return categories;
+    }
   },
   Mutation: {
     createBlog: async (parent, args, ctx, info) => {

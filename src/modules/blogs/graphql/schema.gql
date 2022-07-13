@@ -10,6 +10,7 @@ type Query {
     getCommentById(id: ID!): Comment
     allCommentsPaginated(page: Int!, limit: Int!): PaginatedListComment
     debugComment: [Comment]
+    allBlogsCategories: [String]
 }
 
   type Mutation {

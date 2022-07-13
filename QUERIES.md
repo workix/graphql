@@ -27,6 +27,7 @@
 - [x] - allComments
 - [x] - getCommentById
 - [x] - allCommentsPaginated
+- [x] - allBlogsCategories
 
 ## Candidate
 - [x] - allCandidates
