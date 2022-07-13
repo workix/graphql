@@ -20,6 +20,4 @@
  - [x] - Updating Company
 
 #### [Get Random Logos]
-- Path -> '/companies/logos'
-- Verb -> Get
-- Query -> start,max
+- [x] - Returning Random Logos from Companies

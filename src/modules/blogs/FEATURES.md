@@ -21,17 +21,13 @@
 
 
 #### [Get Categories]
-- Path -> '/blogs/categories'
-- Verb -> Get
+- [x] - Return all Blogs Categories
 
 #### [Get Time Periods] - Periods from Blogs Posts
-- Path -> '/blogs/time_periods'
-- Verb -> Get
+- [x] - Return all Blogs Time Periods
 
 #### [Get Recents]
-- Path -> '/blogs/recents'
-- Verb -> Get
-- Query -> start,max
+- [x] - Return all Recents Blogs
 
 
  ## Restfull Context [Comment]
@@ -54,9 +50,7 @@
  - [x] - Updating Comment
 
  #### [Get Recents]
-- Path -> '/comments/recents'
-- Verb -> Get
-- Query -> start,max
+- [x] - Return all Recents Comments
 
 #### [Create Blog Comment]
 - [x] - Create a Comment inside a Blog

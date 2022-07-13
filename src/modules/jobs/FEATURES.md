@@ -20,19 +20,14 @@
  - [x] - Updating Job
 
 #### [Get Feature]
-- Path -> '/jobs/feature'
-- Verb -> Get
-- Query -> start,max
+- [x] - Returning Featured or not Jobs
 
 #### [Get Random Featured]
-- Path -> '/jobs/random_featured'
-- Verb -> Get
+- [x] - Returning Random Featured Jobs
 
 #### [Get by company]
-- Path -> '/jobs/company/<!id>'
-- Verb -> Get
+- [x] - Returning Jobs From Company Id
 
 #### [Get My Jobs]
-- Path -> '/jobs/my_jobs'
-- Verb -> Get
+- [x] - Returning Jobs Registrated by Company
 

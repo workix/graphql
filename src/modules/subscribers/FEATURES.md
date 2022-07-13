@@ -20,5 +20,4 @@
  - [x] - Updating Subscriber
 
 #### [Subscribe] = Toggle
-- Path -> '/subscribers/subscribe'
-- Verb -> Post
+- [x] - Created mutation to Toggle Subscribe

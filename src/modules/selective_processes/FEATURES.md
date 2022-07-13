@@ -20,18 +20,13 @@
 
 
 #### [My Selective Processes] - Created by Company
-- Path -> '/selectiveprocesses/my_selective_processes'
-- Verb -> Get
+- [x] - Returning Selective Processes created by Company
 
 #### [My Selective Processes Subscribed] - Selective Process where i have subscribed
-- Path -> '/selectiveprocesses/my_selective_processes_subscribed'
-- Verb -> Get
+- [x] - Returning Selective Processes when i have Subscribed (Candidate)
 
 #### [Subscribe in Selective Processes] 
-- Path -> '/selectiveprocesses/subscribe'
-- Verb -> Post
+- [x] - Created Mutation to Subscribe in Selective Process (Candidate)
 
 #### [Get Paginated]
-- Path -> '/selectiveprocesses/paginated'
-- Verb -> Get
-- Query -> page, limit
+- [x] - Get SelectiveProcess Paginated
