@@ -11,6 +11,7 @@ type Mutation {
     createSubscriber(input: SubscriberInput!): Subscriber
     deleteSubscriber(id: ID!) : Boolean
     updateSubscriber(id: ID!, input: SubscriberInput!): Subscriber
+    subscribeMail(email: String!) : Boolean
 }
 
 type Subscriber {

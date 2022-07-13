@@ -625,7 +625,7 @@
 #### [Subscribe] = Toggle
 - Path -> '/subscribers/subscribe'
 - Verb -> Post
-- [] - Not Implemented Yet
+- [x] - Migrated to mutation subscribeMail
 
 ## Restfull [Testimonial]
 - Class -> TestimonialEndpoint

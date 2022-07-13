@@ -44,26 +44,26 @@ const subscribersRepository = db => {
             throw new Error(`Subscriber with id: ${args.id} not found`)
         }
 
-        const [subscribers, meta] = await Subscriber.update(args.input, { where: { id: args.id }, returning: true })       
+        const [subscribers, meta] = await Subscriber.update(args.input, { where: { id: args.id }, returning: true })
 
         const subscriber = await Subscriber.findOne({ where: { id: args.id } })
 
         return subscriber;
     }
 
-    const findAllPaginated = async (info, args) => {           
-        
-        const fields = getFieldsWithSubfields(info).get("rows")              
-        
+    const findAllPaginated = async (info, args) => {
+
+        const fields = getFieldsWithSubfields(info).get("rows")
+
         const totalRows = await Subscriber.count()
 
         const paginator = new Paginator(args.limit, args.page, totalRows);
 
         const totalPages = paginator.getTotalPages();
 
-		const start = paginator.getStart();
+        const start = paginator.getStart();
 
-		const end = paginator.getEnd();		
+        const end = paginator.getEnd();
 
         const options = { attributes: fields, order: ['id'] }
         options.offset = start - 1;
@@ -75,7 +75,18 @@ const subscribersRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated }
+    const subscribeToggle = async args => {
+        const subscriber = await Subscriber.findOne({ email: args.email })
+        if (!subscriber) {
+            await Subscriber.create({ email: args.email })
+            return true
+        } else {
+            await subscriber.destroy()
+            return false
+        }
+    }
+
+    return { findAll, findById, create, destroy, update, findAllPaginated, subscribeToggle }
 }
 
 export default subscribersRepository;

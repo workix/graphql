@@ -27,6 +27,10 @@ const subscribersResolvers = {
     updateSubscriber: async (parent, args, ctx, info) => {
       const subscriber = await subscribersRepository(ctx.orm).update(args)
       return subscriber;
+    },
+    subscribeMail: async (parent, args, ctx, info) => {
+      const subscribed = await subscribersRepository(ctx.orm).subscribeToggle(args)
+      return subscribed;
     }
   },
 }
