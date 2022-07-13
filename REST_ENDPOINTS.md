@@ -299,7 +299,7 @@
 - Path -> '/companies/logos'
 - Verb -> Get
 - Query -> start,max
-- [] - Not Implemented Yet
+- [x] - Migrated to query listRandomLogos
 
 ## Restfull [Form]
 - Class -> FormEndpoint

@@ -41,6 +41,7 @@
 - [x] - allCompanies
 - [x] - getCompanyById
 - [x] - allCompaniesPaginated
+- [x] - listRandomLogos
 
 ## Form
 - [x] - allForms

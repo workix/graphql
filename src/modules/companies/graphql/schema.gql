@@ -5,6 +5,7 @@ type Query {
     allCompanies(start: Int, max: Int): [Company]
     getCompanyById(id: ID!): Company
     allCompaniesPaginated(page: Int!, limit: Int!): PaginatedListCompany
+    listRandomLogos(start: Int, max: Int): [Logo]
 }
 
 type Mutation {
@@ -69,4 +70,10 @@ input CompanyMediaInput {
     currentPage: Int,
     limitRows: Int,
     maxRows: Int
+}
+
+type Logo {
+  id: ID
+  name: String
+  logo: String
 }

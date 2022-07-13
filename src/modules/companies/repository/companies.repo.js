@@ -1,4 +1,4 @@
-const { QueryTypes } = require('sequelize');
+const { QueryTypes,Sequelize } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
 import { Company, CompanyMedia } from '../../../models';
 import Paginator from '../../../utils/Paginator';
@@ -8,6 +8,17 @@ const companiesRepository = db => {
     const requestedFields = new RequestedFields();
     const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: ["user", "medias"] })
     const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: ["user","medias"] })
+
+    const listRandomLogos = async (info, args) => {
+        const fields = getFields(info)
+        const options = { attributes: fields,  order: [Sequelize.fn('RAND')]  }
+        if (args.start != null && args.max != null) {
+            options.offset = args.start;
+            options.limit = args.max;
+        }
+        const logos = await Company.findAll(options)
+        return logos;
+    }
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
@@ -97,7 +108,7 @@ const companiesRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated }
+    return { findAll, findById, create, destroy, update, findAllPaginated, listRandomLogos }
 }
 
 export default companiesRepository;
