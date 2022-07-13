@@ -11,7 +11,8 @@ type Query {
     allCommentsPaginated(page: Int!, limit: Int!): PaginatedListComment
     debugComment: [Comment]
     allBlogsCategories: [String]
-    allBlogsTimePeriods: [TimePeriod]
+    allBlogsTimePeriods: [TimePeriod],
+    allBlogsRecents(start: Int, max: Int): [Blog]
 }
 
   type Mutation {

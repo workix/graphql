@@ -29,6 +29,7 @@
 - [x] - allCommentsPaginated
 - [x] - allBlogsCategories
 - [x] - allBlogsTimePeriods
+- [x] - allBlogsRecents
 
 ## Candidate
 - [x] - allCandidates

@@ -25,6 +25,17 @@ const blogsRepository = db => {
         return timePeriods;
     }
 
+    const findAllRecents = async (info, args) => {
+        const fields = getFields(info)
+        const options = { attributes: fields, order: [['createdAt', 'DESC']] }
+        if (args.start != null && args.max != null) {
+            options.offset = args.start;
+            options.limit = args.max;
+        }
+        const blogs = await Blog.findAll(options)
+        return blogs;
+    }
+
     const findAll = async (info, args) => {
         const fields = getFields(info)
         const options = { attributes: fields, order: ['id'] }
@@ -117,7 +128,7 @@ const blogsRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated, findAllCategories, findAllTimePeriods }
+    return { findAll, findById, create, destroy, update, findAllPaginated, findAllCategories, findAllTimePeriods, findAllRecents }
 }
 
 export default blogsRepository;
