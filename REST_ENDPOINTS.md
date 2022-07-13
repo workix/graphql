@@ -425,12 +425,12 @@
 - Path -> '/jobs/feature'
 - Verb -> Get
 - Query -> start,max
-- [] - Not Implemented Yet
+- [x] - Migrated to query allJobsFeatured
 
 #### [Get Random Featured]
 - Path -> '/jobs/random_featured'
 - Verb -> Get
-- [] - Not Implemented Yet
+- [x] - Migrated to query listJobRandomFeatured
 
 #### [Get by company id]
 - Path -> '/jobs/company/<!id>'

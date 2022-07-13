@@ -14,7 +14,7 @@ const companiesResolvers = {
       const paginatedList = await companiesRepository(ctx.orm).findAllPaginated(info, args)
       return paginatedList;
     },
-    listRandomLogos:  async (parent, args, ctx, info) => {
+    listCompanyRandomLogos:  async (parent, args, ctx, info) => {
       const logos = await companiesRepository(ctx.orm).listRandomLogos(info, args)
       return logos;
     }

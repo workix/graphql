@@ -60,6 +60,8 @@
 - [x] - allJobs
 - [x] - getJobById
 - [x] - allJobsPaginated
+- [x] - allJobsFeatured
+- [x] - listJobRandomFeatured
 
 ## Member
 - [x] - allMembers

@@ -5,7 +5,7 @@ type Query {
     allCompanies(start: Int, max: Int): [Company]
     getCompanyById(id: ID!): Company
     allCompaniesPaginated(page: Int!, limit: Int!): PaginatedListCompany
-    listRandomLogos(start: Int, max: Int): [Logo]
+    listCompanyRandomLogos(start: Int, max: Int): [Logo]
 }
 
 type Mutation {

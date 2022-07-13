@@ -18,28 +18,36 @@ const jobsResolvers = {
         },
         debugJob: async (parent, args, ctx, info) => {
             const jobs = await Job.findAll({ include: [{ model: Candidate, as: "candidates" }] })
-            console.log("Jobs Candidates ->", await jobs[0].getCandidates({raw: true}))      
-            console.log("Jobs Company ->", await jobs[0].getCompany({raw: true}))   
+            console.log("Jobs Candidates ->", await jobs[0].getCandidates({ raw: true }))
+            console.log("Jobs Company ->", await jobs[0].getCompany({ raw: true }))
             return jobs
-          },  
+        },
+        allJobsFeatured: async (parent, args, ctx, info) => {
+            const jobs = await jobsRepository(ctx.orm).findAllFeatured(info, args)
+            return jobs;
+        },
+        listJobRandomFeatured: async (parent, args, ctx, info) => {
+            const jobs = await jobsRepository(ctx.orm).listRandomFeatured(info, args)
+            return jobs;
+        }
     },
     Mutation: {
         createJob: async (parent, args, ctx, info) => {
-          const job = await jobsRepository(ctx.orm).create(args)
-          return job;
+            const job = await jobsRepository(ctx.orm).create(args)
+            return job;
         },
         deleteJob: async (parent, args, ctx, info) => {
-          const deleted = await jobsRepository(ctx.orm).destroy(args)          
-          return deleted;
+            const deleted = await jobsRepository(ctx.orm).destroy(args)
+            return deleted;
         },
         updateJob: async (parent, args, ctx, info) => {
-          const job = await jobsRepository(ctx.orm).update(args)
-          return job;
+            const job = await jobsRepository(ctx.orm).update(args)
+            return job;
         }
     },
     Job: {
         company: async (parent, args, ctx, info) => {
-            const companies = await ctx.dataloaders.companiesLoader.load({ key: parent.company_id, info })            
+            const companies = await ctx.dataloaders.companiesLoader.load({ key: parent.company_id, info })
             return companies[0];
         },
         candidates: async (parent, args, ctx, info) => {
