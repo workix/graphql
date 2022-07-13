@@ -47,6 +47,10 @@ const jobsResolvers = {
         updateJob: async (parent, args, ctx, info) => {
             const job = await jobsRepository(ctx.orm).update(args)
             return job;
+        },
+        subscribeInJob: async (parent, args, ctx, info) => {
+            const subscribed = await jobsRepository(ctx.orm).subscribe(args)
+            return subscribed;
         }
     },
     Job: {

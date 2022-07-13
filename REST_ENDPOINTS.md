@@ -443,7 +443,7 @@
 - Query -> page, limit
 - [x] - Migrated to query allJobsPaginated
 
-#### [Get My Jobs]
+#### [Get My Jobs] - Jobs from Company
 - Path -> '/jobs/my_jobs'
 - Verb -> Get
 - [] - Not Implemented Yet
@@ -451,7 +451,7 @@
 #### [Subscribe Candidate in Job]
 - Path -> '/jobs/subscribe'
 - Verb -> Post
-- [] - Not Implemented Yet
+- [x] - Migrated to mutation subscribeInJob
 
 #### [Get by id and company id]
 - Path -> '/jobs/<!id>/company/<!company_id>'

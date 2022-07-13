@@ -15,6 +15,7 @@ type Mutation {
     createJob(input: JobInput!): Job
     deleteJob(id: ID!) : Boolean
     updateJob(id: ID!, input: JobInput!): Job
+    subscribeInJob(input: SubscribeInJobInput!): Boolean
 }
 
 
@@ -68,4 +69,9 @@ type PaginatedListJob {
     currentPage: Int,
     limitRows: Int,
     maxRows: Int
+}
+
+input SubscribeInJobInput{
+    jobId: ID!
+    candidateId: ID!
 }

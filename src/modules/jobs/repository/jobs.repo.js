@@ -1,6 +1,6 @@
 const { QueryTypes, Sequelize } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { Job } from '../../../models';
+import { Job, JobCandidate } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 
@@ -10,7 +10,7 @@ const jobsRepository = db => {
     const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "company_id"], exclude: ["company", "candidates"] })
 
 
-    const findAllByCompany  = async (info, args) => {
+    const findAllByCompany = async (info, args) => {
         const fields = getFields(info)
         const options = { attributes: fields, order: [['id', 'ASC']], where: { company_id: args.companyId } }
         const jobs = await Job.findAll(options)
@@ -103,7 +103,12 @@ const jobsRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated, findAllFeatured, listRandomFeatured, findAllByCompany }
+    const subscribe = async args => {
+        await JobCandidate.create({ Job_id: args.input.jobId, candidates_id: args.input.candidateId })
+        return true;
+    }
+
+    return { findAll, findById, create, destroy, update, findAllPaginated, findAllFeatured, listRandomFeatured, findAllByCompany, subscribe }
 }
 
 export default jobsRepository;

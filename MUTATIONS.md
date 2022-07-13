@@ -7,10 +7,10 @@
 - [x] - JAAS
 - [x] - Job
 - [x] - Member
-- [] - Resume
-- [] - Selective Process
-- [] - Subscriber
-- [] - Testimonial
+- [x] - Resume
+- [x] - Selective Process
+- [x] - Subscriber
+- [x] - Testimonial
 - [x] - User
 
 ## Author
@@ -54,6 +54,7 @@
 - [x] - createJob
 - [x] - deleteJob
 - [x] - updateJob
+- [x] - subscribeInJob
 
 ## Member
 - [x] - createMember
