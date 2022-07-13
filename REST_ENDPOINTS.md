@@ -569,7 +569,7 @@
 #### [My Selective Processes Subscribed] - Selective Process where i have subscribed
 - Path -> '/selectiveprocesses/my_selective_processes_subscribed'
 - Verb -> Get
-- [x] - Migrated to mutation mySelectiveProcessesSubscribed
+- [x] - Migrated to query mySelectiveProcessesSubscribed
 
 #### [Subscribe in Selective Processes] 
 - Path -> '/selectiveprocesses/subscribe'
