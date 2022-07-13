@@ -81,7 +81,22 @@ const selectiveProcessesRepository = db => {
         return true;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated, subscribe }
+    const findMySPSubscribed = async (info, args, ctx) => {
+
+        const selectiveProcesses = await db.sequelize.query(`
+        SELECT DISTINCT j.id, sp.* FROM selective_processes sp
+        LEFT JOIN jobs j ON sp.job_id = j.id
+        LEFT JOIN selective_processes_candidates spc ON sp.id = spc.sp_id
+        LEFT JOIN candidates ON spc.candidate_id = candidates.id
+        LEFT JOIN users u ON candidates.user_id = u.id
+                         WHERE u.firebaseUUID = :firebaseUUID ORDER BY j.id`, {
+                            replacements: { firebaseUUID: ctx.user.firebaseUUID },
+                            type: QueryTypes.SELECT
+                          })
+        return selectiveProcesses;
+    }
+
+    return { findAll, findById, create, destroy, update, findAllPaginated, subscribe, findMySPSubscribed }
 }
 
 export default selectiveProcessesRepository;

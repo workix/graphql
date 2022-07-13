@@ -71,6 +71,7 @@
 - [x] - deleteSelectiveProcess
 - [x] - updateSelectiveProcess
 - [x] - subscribeInSelectiveProcess
+- [x] - mySelectiveProcessesSubscribed
 
 ## Subscriber
 - [x] - createSubscriber

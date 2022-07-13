@@ -5,6 +5,7 @@ type Query {
     allSelectiveProcesses(start: Int, max: Int): [SelectiveProcess]
     getSelectiveProcessById(id: ID!): SelectiveProcess
     allSelectiveProcessesPaginated(page: Int!, limit: Int!): PaginatedListSelectiveProcess
+    mySelectiveProcessesSubscribed: [SelectiveProcess]
 }
 
 type Mutation {

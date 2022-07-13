@@ -1,6 +1,11 @@
 import _ from 'lodash';
 import selectiveProcessesRepository from '../repository/selective_processes.repo';
 // import { SelectiveProcess } from '../../../models';
+import { authResolver } from './../../../composable_resolvers/auth-resolver';
+import { compose } from './../../../composable_resolvers/composable.resolver';
+import { verifyTokenResolver } from './../../../composable_resolvers/verify-token-resolver';
+
+const authGuard = [authResolver, verifyTokenResolver]
 
 const selectiveProcessesResolvers = {
     Query: {
@@ -15,7 +20,11 @@ const selectiveProcessesResolvers = {
         allSelectiveProcessesPaginated: async (parent, args, ctx, info) => {
             const paginatedList = await selectiveProcessesRepository(ctx.orm).findAllPaginated(info, args)
             return paginatedList;
-        }
+        },
+        mySelectiveProcessesSubscribed: compose(...authGuard)(async (parent, args, ctx, info) => {
+            const selectiveProcesses = await selectiveProcessesRepository(ctx.orm).findMySPSubscribed(info, args, ctx)
+            return selectiveProcesses;
+        })
     },
     Mutation: {
         createSelectiveProcess: async (parent, args, ctx, info) => {
