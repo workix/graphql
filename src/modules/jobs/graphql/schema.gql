@@ -8,6 +8,7 @@ type Query{
     debugJob: [Job],
     allJobsFeatured(start: Int, max: Int, featured: Boolean!): [Job]
     listJobRandomFeatured: [Job]
+    getJobByCompanyId(companyId: ID!) : [Job]
 }
 
 type Mutation {

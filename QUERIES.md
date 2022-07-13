@@ -62,6 +62,7 @@
 - [x] - allJobsPaginated
 - [x] - allJobsFeatured
 - [x] - listJobRandomFeatured
+- [x] - getJobByCompanyId
 
 ## Member
 - [x] - allMembers

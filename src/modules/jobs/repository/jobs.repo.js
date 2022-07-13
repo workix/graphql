@@ -10,6 +10,12 @@ const jobsRepository = db => {
     const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "company_id"], exclude: ["company", "candidates"] })
 
 
+    const findAllByCompany  = async (info, args) => {
+        const fields = getFields(info)
+        const options = { attributes: fields, order: [['id', 'ASC']], where: { company_id: args.companyId } }
+        const jobs = await Job.findAll(options)
+        return jobs;
+    }
 
     const listRandomFeatured = async (info, args) => {
         const fields = getFields(info)
@@ -97,7 +103,7 @@ const jobsRepository = db => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated, findAllFeatured, listRandomFeatured }
+    return { findAll, findById, create, destroy, update, findAllPaginated, findAllFeatured, listRandomFeatured, findAllByCompany }
 }
 
 export default jobsRepository;

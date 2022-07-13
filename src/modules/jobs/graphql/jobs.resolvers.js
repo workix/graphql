@@ -29,6 +29,10 @@ const jobsResolvers = {
         listJobRandomFeatured: async (parent, args, ctx, info) => {
             const jobs = await jobsRepository(ctx.orm).listRandomFeatured(info, args)
             return jobs;
+        },
+        getJobByCompanyId: async (parent, args, ctx, info) => {
+            const jobs = await jobsRepository(ctx.orm).findAllByCompany(info, args)
+            return jobs;
         }
     },
     Mutation: {

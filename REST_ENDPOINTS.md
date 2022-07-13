@@ -435,7 +435,7 @@
 #### [Get by company id]
 - Path -> '/jobs/company/<!id>'
 - Verb -> Get
-- [] - Not Implemented Yet
+- [x] - Migrated to query getJobByCompanyId
 
 #### [Get Paginated]
 - Path -> '/jobs/paginated'
