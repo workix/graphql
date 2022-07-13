@@ -564,7 +564,7 @@
 #### [My Selective Processes] - Created by Company
 - Path -> '/selectiveprocesses/my_selective_processes'
 - Verb -> Get
-- [] - Not Implemented Yet
+- [x] - Migrated to query mySelectiveProcesses
 
 #### [My Selective Processes Subscribed] - Selective Process where i have subscribed
 - Path -> '/selectiveprocesses/my_selective_processes_subscribed'

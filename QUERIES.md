@@ -82,6 +82,7 @@
 - [x] - getSelectiveProcessById
 - [x] - allSelectiveProcessesPaginated
 - [x] - mySelectiveProcessesSubscribed
+- [x] - mySelectiveProcesses
 
 ## Subscriber
 - [x] - allSubscribers

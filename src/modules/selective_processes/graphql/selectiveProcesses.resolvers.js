@@ -24,6 +24,10 @@ const selectiveProcessesResolvers = {
         mySelectiveProcessesSubscribed: compose(...authGuard)(async (parent, args, ctx, info) => {
             const selectiveProcesses = await selectiveProcessesRepository(ctx.orm).findMySPSubscribed(info, args, ctx)
             return selectiveProcesses;
+        }),
+        mySelectiveProcesses: compose(...authGuard)(async (parent, args, ctx, info) => {
+            const selectiveProcesses = await selectiveProcessesRepository(ctx.orm).findMySPs(info, args, ctx)
+            return selectiveProcesses;
         })
     },
     Mutation: {
