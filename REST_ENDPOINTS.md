@@ -589,7 +589,7 @@
 #### [List Stats] - List Stats
 - Path -> '/statistics'
 - Verb -> Get
-- [] - Not Implemented Yet
+- [x] - Migrated to query statisticsCount
 
 
 ## Restfull [Subscriber]

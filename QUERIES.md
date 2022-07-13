@@ -13,6 +13,8 @@
 - [x] - Testimonial
 - [x] - User
 - [x] - Others
+- [x] - Stats
+
 
 
 ## Author
@@ -97,3 +99,6 @@
 
 ## Others
 - [x] - validateCPF
+
+## Stats
+- [x] - statisticsCount

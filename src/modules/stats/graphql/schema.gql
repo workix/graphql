@@ -1,0 +1,13 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    statisticsCount: StatisticsCount
+}
+
+type StatisticsCount {
+    members: Int
+    jobs: Int
+    resumes: Int
+    companies: Int
+}
