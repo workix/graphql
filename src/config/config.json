@@ -1,31 +1,31 @@
 {
   "development": {
-    "username": "root",
-    "password": "root",
+    "username": "postgres",
+    "password": "postgres",
     "database": "workix",
     "host": "127.0.0.1",
-    "dialect": "mysql",
+    "dialect": "postgres",
     "migrationStorage": "sequelize",
     "seederStorage": "sequelize",
     "define": {
       "timestamps": false,
-      "underscored": false
+      "underscored": true
     },
     "dialectOptions": {
       "multipleStatements": true
     }
   },
   "test": {
-    "username": "root",
-    "password": "root",
+    "username": "postgres",
+    "password": "postgres",
     "database": "workix_test",
     "host": "127.0.0.1",
-    "dialect": "mysql",
+    "dialect": "postgres",
     "migrationStorage": "sequelize",
     "seederStorage": "sequelize",
     "define": {
       "timestamps": false,
-      "underscored": false
+      "underscored": true
     },
     "dialectOptions": {
       "multipleStatements": true
@@ -45,7 +45,7 @@
       "seederStorage": "sequelize",
       "define": {
         "timestamps": false,
-        "underscored": false
+        "underscored": true
       }
     }
   }
