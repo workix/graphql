@@ -11,12 +11,12 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true
           },
-          createdAt: {
+          created_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: false,
             defaultValue: Sequelize.fn('now'),
           },
-          updatedAt: {
+          updated_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: true,
             defaultValue: Sequelize.fn('now'),
@@ -26,7 +26,7 @@ module.exports = {
             allowNull: false,
             defaultValue: Sequelize.UUIDV4,
           },
-          carrerLevel: {
+          carrer_level: {
             type: Sequelize.DataTypes.INTEGER,
             allowNull: false
           },
@@ -66,7 +66,7 @@ module.exports = {
             type: Sequelize.DataTypes.TEXT,
             allowNull: true
           },
-          endDate: {
+          end_date: {
             type: Sequelize.DataTypes.DATEONLY,
             allowNull: true
           },
@@ -74,11 +74,11 @@ module.exports = {
             type: Sequelize.DataTypes.TEXT,
             allowNull: true
           },
-          schoolName: {
+          school_name: {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: true
           },
-          startDate: {
+          start_date: {
             type: Sequelize.DataTypes.DATEONLY,
             allowNull: true
           }
@@ -97,19 +97,19 @@ module.exports = {
             type: Sequelize.DataTypes.TEXT,
             allowNull: true
           },
-          employerName: {
+          employer_name: {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: true
           },
-          endDate: {
+          end_date: {
             type: Sequelize.DataTypes.DATEONLY,
             allowNull: true
           },
-          jobTitle: {
+          job_title: {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: true
           },
-          startDate: {
+          start_date: {
             type: Sequelize.DataTypes.DATEONLY,
             allowNull: false
           },
@@ -128,7 +128,7 @@ module.exports = {
               key: 'id'
             }
           },
-          skillName: {
+          skill_name: {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: false
           },

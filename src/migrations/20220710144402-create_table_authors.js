@@ -11,12 +11,12 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true
           },
-          createdAt: {
+          created_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: false,
             defaultValue: Sequelize.fn('now'),
           },
-          updatedAt: {
+          updated_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: true,
             defaultValue: Sequelize.fn('now'),
@@ -26,7 +26,7 @@ module.exports = {
             allowNull: false,
             defaultValue: Sequelize.UUIDV4,
           },
-          aboutText: {
+          about_text: {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: false
           },

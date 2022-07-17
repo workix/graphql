@@ -11,12 +11,12 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true
           },
-          createdAt: {
+          created_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: false,
             defaultValue: Sequelize.fn('now'),
           },
-          updatedAt: {
+          updated_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: true,
             defaultValue: Sequelize.fn('now'),
@@ -37,6 +37,15 @@ module.exports = {
           text: {
             type: Sequelize.DataTypes.TEXT,
             allowNull: false
+          },
+          parent_id: {
+            type: Sequelize.DataTypes.BIGINT,
+            allowNull: true,
+            primaryKey: false,
+            references: {
+              model: 'comments',
+              key: 'id'
+            }
           }
         }, { transaction })
       ]);

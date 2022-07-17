@@ -11,12 +11,12 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true
           },
-          createdAt: {
+          created_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: false,
             defaultValue: Sequelize.fn('now'),
           },
-          updatedAt: {
+          updated_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: true,
             defaultValue: Sequelize.fn('now'),
@@ -26,7 +26,7 @@ module.exports = {
             allowNull: false,
             defaultValue: Sequelize.UUIDV4,
           },
-          mobilePhone: {
+          mobile_phone: {
             type: Sequelize.DataTypes.BIGINT,
             allowNull: false
           },
@@ -34,7 +34,7 @@ module.exports = {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: false
           },
-          estate: {
+          state: {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: false
           },
@@ -50,7 +50,7 @@ module.exports = {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: false
           },
-          zipCode: {
+          zip_code: {
             type: Sequelize.DataTypes.BIGINT,
             allowNull: false
           },

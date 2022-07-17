@@ -11,12 +11,12 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true
           },
-          createdAt: {
+          created_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: false,
             defaultValue: Sequelize.fn('now'),
           },
-          updatedAt: {
+          updated_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: true,
             defaultValue: Sequelize.fn('now'),
@@ -25,11 +25,7 @@ module.exports = {
             type: Sequelize.DataTypes.UUID,
             allowNull: false,
             defaultValue: Sequelize.UUIDV4,
-          },
-          category: {
-            type: Sequelize.DataTypes.STRING(255),
-            allowNull: true
-          },
+          },          
           citation: {
             type: Sequelize.DataTypes.TEXT,
             allowNull: true
@@ -59,8 +55,23 @@ module.exports = {
             }
           }
         }, { transaction }),
+        queryInterface.createTable('blogs_categories', {
+          id: {
+            type: Sequelize.DataTypes.BIGINT,
+            allowNull: false,
+            primaryKey: false,
+            references: {
+              model: 'blogs',
+              key: 'id'
+            }
+          },
+          category: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: false
+          }
+        }, { transaction }),
         queryInterface.createTable('blogs_comments', {
-          Blog_id: {
+          blog_id: {
             type: Sequelize.DataTypes.BIGINT,
             allowNull: false,
             primaryKey: true,
@@ -69,7 +80,7 @@ module.exports = {
               key: 'id'
             }
           },
-          comments_id: {
+          comment_id: {
             type: Sequelize.DataTypes.BIGINT,
             allowNull: false,
             primaryKey: true,
@@ -89,7 +100,7 @@ module.exports = {
               key: 'id'
             }
           },
-          pictures: {
+          picture: {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: false
           }
@@ -116,6 +127,7 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(transaction => {
       return Promise.all([
+        queryInterface.dropTable('blogs_categories', { transaction }),
         queryInterface.dropTable('blogs_comments', { transaction }),
         queryInterface.dropTable('blogs_pictures', { transaction }),
         queryInterface.dropTable('blogs_tags', { transaction }),

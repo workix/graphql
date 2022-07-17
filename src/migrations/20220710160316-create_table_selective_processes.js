@@ -11,32 +11,32 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true
           },
-          active: {
+          activated: {
             type: Sequelize.DataTypes.BOOLEAN,
             allowNull: false
           },
-          createdAt: {
+          created_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: false,
             defaultValue: Sequelize.fn('now'),
           },
-          disabledAt: {
+          disabled_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: true
           },
-          expire: {
+          expires_in: {
             type: Sequelize.DataTypes.DATE,
             allowNull: true
           },
-          maxCandidates: {
-            type: Sequelize.DataTypes.INTEGER(11),
+          max_candidates: {
+            type: Sequelize.DataTypes.INTEGER,
             allowNull: false
           },
-          start: {
+          starts_in: {
             type: Sequelize.DataTypes.DATE,
             allowNull: true
           },
-          updatedAt: {
+          updated_at: {
             type: Sequelize.DataTypes.DATE,
             allowNull: false,
             defaultValue: Sequelize.fn('now'),

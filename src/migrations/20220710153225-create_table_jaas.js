@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(transaction => {
       return Promise.all([
-        queryInterface.createTable('JAAS_User', {
+        queryInterface.createTable('jaas_user', {
           id: {
             type: Sequelize.DataTypes.BIGINT,
             allowNull: false,
@@ -21,20 +21,20 @@ module.exports = {
             allowNull: false
           }
         }, { transaction }),
-        queryInterface.createTable('JAAS_Role', {
+        queryInterface.createTable('jaas_role', {
           name: {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: false,
             primaryKey: true
           }
         }, { transaction }),
-        queryInterface.createTable('JAAS_Roles', {
+        queryInterface.createTable('jaas_roles', {
           id: {
             type: Sequelize.DataTypes.BIGINT,
             allowNull: false,
             primaryKey: true,
             references: {
-              model: 'JAAS_User',
+              model: 'jaas_user',
               key: 'id'
             }
           },
@@ -43,7 +43,7 @@ module.exports = {
             allowNull: false,
             primaryKey: true,
             references: {
-              model: 'JAAS_Role',
+              model: 'jaas_role',
               key: 'name'
             }
           }
@@ -55,9 +55,9 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(transaction => {
       return Promise.all([
-        queryInterface.dropTable('JAAS_Roles', { transaction }),
-        queryInterface.dropTable('JAAS_Role', { transaction }),
-        queryInterface.dropTable('JAAS_User', { transaction })
+        queryInterface.dropTable('jaas_roles', { transaction }),
+        queryInterface.dropTable('jaas_role', { transaction }),
+        queryInterface.dropTable('jaas_user', { transaction })
       ]);
     })
   }
