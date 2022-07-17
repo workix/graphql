@@ -1,5 +1,19 @@
 version: "3.0"
 services:
+  postgres:
+    image: postgres:latest
+    container_name: "postgres"
+    environment:
+      - POSTGRES_DB=workix
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust       
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
+    ports:
+      - 5432:5432
+    networks:
+      - es-net  
   elasticsearch:
     container_name: es-container
     image: docker.elastic.co/elasticsearch/elasticsearch:7.11.0
@@ -10,6 +24,8 @@ services:
       - es-net
     ports:
       - 9200:9200
+    depends_on:
+      - postgres  
   kibana:
     container_name: kb-container
     image: docker.elastic.co/kibana/kibana:7.11.0
