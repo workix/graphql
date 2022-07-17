@@ -120,8 +120,8 @@ const jobsRepository = db => {
         SELECT DISTINCT j.* FROM jobs j
         LEFT JOIN companies c ON j.company_id = c.id
         LEFT JOIN users u ON c.user_id = u.id
-                         WHERE u.firebaseUUID = :firebaseUUID ORDER BY j.id`, {
-                            replacements: { firebaseUUID: ctx.user.firebaseUUID },
+                         WHERE u.firebase_uuid = :firebase_uuid ORDER BY j.id`, {
+                            replacements: { firebase_uuid: ctx.user.firebase_uuid },
                             type: QueryTypes.SELECT
                           })
         return jobs;
