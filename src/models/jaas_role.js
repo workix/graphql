@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     }
   }, {
-    tableName: 'JAAS_Role',
+    tableName: 'jaas_role',
     timestamps: false
   });
 };

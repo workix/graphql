@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    pictures: {
+    picture: {
       type: DataTypes.STRING(255),
       allowNull: false
     }

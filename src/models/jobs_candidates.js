@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('JobCandidate', {
-    Job_id: {
+    job_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    candidates_id: {
+    candidate_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,

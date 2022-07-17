@@ -9,12 +9,12 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true 
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.fn('now'),
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.fn('now'),
@@ -23,11 +23,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.UUID,
       allowNull: false,
       defaultValue: Sequelize.UUIDV4,
-    },    
-    category: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
+    },        
     citation: {
       type: DataTypes.TEXT,
       allowNull: true
@@ -73,8 +69,8 @@ module.exports = function(sequelize, DataTypes) {
     // associations can be defined here
     Blog.belongsToMany(models.Comment, {
       through: 'blogs_comments',
-      foreignKey: 'Blog_id',
-      otherKey: 'comments_id',
+      foreignKey: 'blog_id',
+      otherKey: 'comment_id',
       timestamps: false,
       as: "comments"
     });
@@ -87,6 +83,11 @@ module.exports = function(sequelize, DataTypes) {
     Blog.hasMany(models.BlogTag,{
       foreignKey: 'id',
       as: "tags"      
+    });
+
+    Blog.hasMany(models.BlogCategory,{
+      foreignKey: 'id',
+      as: "categories"      
     });
   }
 

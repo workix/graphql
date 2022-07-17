@@ -9,12 +9,12 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true 
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.fn('now'),
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.fn('now'),
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: Sequelize.UUIDV4,
     },    
-    mobilePhone: {
+    mobile_phone: {
       type: DataTypes.BIGINT,
       allowNull: true
     },
@@ -32,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    estate: {
+    state: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    zipCode: {
+    zip_code: {
       type: DataTypes.BIGINT,
       allowNull: true
     },
@@ -56,7 +56,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    birthDate: {
+    birth_date: {
       type: DataTypes.DATEONLY,
       allowNull: false
     },

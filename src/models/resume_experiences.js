@@ -15,19 +15,19 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    employerName: {
+    employer_name: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    endDate: {
+    end_date: {
       type: DataTypes.DATEONLY,
       allowNull: true
     },
-    jobTitle: {
+    job_title: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    startDate: {
+    start_date: {
       type: DataTypes.DATEONLY,
       allowNull: false
     },

@@ -22,13 +22,13 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    tableName: 'JAAS_Roles',
+    tableName: 'jaas_roles',
     timestamps: false
   });
 
   JAASRoles.associate = function(models) {
     JAASRoles.belongsToMany(models.JAASUser, {
-      through: 'JAAS_Roles',
+      through: 'jaas_roles',
       foreignKey: 'id',
       otherKey: 'role_name',
       timestamps: false,

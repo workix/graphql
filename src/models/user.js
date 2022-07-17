@@ -9,12 +9,12 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true 
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.fn('now'),
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.fn('now'),
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: Sequelize.UUIDV4,
     },    
-    active: {
+    activated: {
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
@@ -33,11 +33,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true
     },
-    firebaseMessageToken: {
+    firebase_message_token: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    firebaseUUID: {
+    firebase_uuid: {
       type: DataTypes.STRING(255),
       allowNull: false
     }    

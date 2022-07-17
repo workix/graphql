@@ -9,12 +9,12 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.fn('now'),
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.fn('now'),
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: Sequelize.UUIDV4,
     },    
-    active: {
+    activated: {
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
@@ -36,23 +36,23 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    feature: {
+    featured: {
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
-    jobCategory: {
+    job_category: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    jobType: {
+    job_type: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    maxPayment: {
+    max_payment: {
       type: DataTypes.DECIMAL,
       allowNull: false
     },
-    minPayment: {
+    min_payment: {
       type: DataTypes.DECIMAL,
       allowNull: false
     },
@@ -87,8 +87,8 @@ module.exports = function(sequelize, DataTypes) {
   Job.associate = function(models) {
     Job.belongsToMany(models.Candidate,{
       through: 'jobs_candidates',
-      foreignKey: 'Job_id',
-      otherKey: 'candidates_id',
+      foreignKey: 'job_id',
+      otherKey: 'candidate_id',
       timestamps: false,
       as: "candidates"      
     });

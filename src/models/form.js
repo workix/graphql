@@ -9,12 +9,12 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
         autoIncrement: true 
       },
-      createdAt: {
+      created_at: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn('now'),
       },
-      updatedAt: {
+      updated_at: {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: Sequelize.fn('now'),
@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
       },
       message: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: false
       },
       name: {

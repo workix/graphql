@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('BlogComment', {
-    Blog_id: {
+    blog_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    comments_id: {
+    comment_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,

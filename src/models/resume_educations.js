@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    endDate: {
+    end_date: {
       type: DataTypes.DATEONLY,
       allowNull: true
     },
@@ -23,11 +23,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    schoolName: {
+    school_name: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    startDate: {
+    start_date: {
       type: DataTypes.DATEONLY,
       allowNull: true
     }
