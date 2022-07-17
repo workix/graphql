@@ -1,3 +1,4 @@
+import UserDTO from '../../../dtos/UserDTO';
 import client from '../../../factory/elastic_search_factory';
 import { User } from '../../../models';
 
@@ -8,7 +9,7 @@ export const matchAnyFields = async term => {
             query: {
                 multi_match: {
                     query: term,
-                    fields: ['email', 'firebaseUUID', 'firebaseMessageToken']
+                    fields: ['email', 'firebase_uuid', 'firebase_message_token']
                 }
             }
         }
@@ -50,6 +51,6 @@ export const updateIndex = async user => {
 }
 
 const makeResponse = rawResult => {
-    const results = rawResult.body.hits.hits.map(i => ({ id: i['_id'], user: i["_source"], score: i['_score'] }))
+    const results = rawResult.body.hits.hits.map(i => ({ id: i['_id'], user: new UserDTO(i["_source"]), score: i['_score'] }))
     return results
 }

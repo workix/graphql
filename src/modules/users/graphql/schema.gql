@@ -39,7 +39,7 @@ input UserInput {
 }
 
 type PaginatedListUser {
-    rows: [User]
+    users: [User]
     start: Int
     end: Int,
     totalPages: Int,

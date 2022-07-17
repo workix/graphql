@@ -1,7 +1,7 @@
 export default class PaginatedList {    
 
-    constructor(rows, start, end, totalPages, currentPage, limitRows, maxRows) {
-        this.rows = rows;
+    constructor(name, rows, start, end, totalPages, currentPage, limitRows, maxRows) {
+        this[name] = rows;
         this.start = start;
         this.end = end;
         this.totalPages = totalPages;

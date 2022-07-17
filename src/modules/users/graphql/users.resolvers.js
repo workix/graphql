@@ -12,7 +12,7 @@ const usersResolvers = {
     },
     getUserById: async (parent, args, ctx, info) => {
       const user = await usersRepository(ctx.orm).findById(info, args)
-      return user;
+      return new UserDTO(user);
     },
     allUsersPaginated: async (parent, args, ctx, info) => {
       const paginatedList = await usersRepository(ctx.orm).findAllPaginated(info, args)
@@ -33,7 +33,7 @@ const usersResolvers = {
       
       await ctx.mqserver.publishInQueue('notifications', JSON.stringify(message));
 
-      return user;
+      return new UserDTO(user) ;
     },
     deleteUser: async (parent, args, ctx, info) => {
       const deleted = await usersRepository(ctx.orm).destroy(args)
@@ -47,7 +47,7 @@ const usersResolvers = {
 
       await updateIndex(user)
 
-      return user;
+      return new UserDTO(user);
     }
   }
 }

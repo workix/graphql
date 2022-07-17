@@ -3,6 +3,8 @@ import { RequestedFields } from '../../../RequestedFields';
 import { User } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import UserDTO from '../../../dtos/UserDTO';
+import { CreateUserDTO, UpdateUserDTO } from '../../../dtos/UserMutationDTO';
 
 const usersRepository = db => {
     const requestedFields = new RequestedFields();
@@ -26,8 +28,8 @@ const usersRepository = db => {
         return user;
     }
 
-    const create = async args => {
-        const user = await User.create(args.input)
+    const create = async args => {        
+        const user = await User.create(new CreateUserDTO(args.input))        
         await user.reload()
         return user;
     }
@@ -44,7 +46,7 @@ const usersRepository = db => {
             throw new Error(`User with id: ${args.id} not found`)
         }
 
-        const [users, meta] = await User.update(args.input, { where: { id: args.id }, returning: true })
+        const [users, meta] = await User.update(new UpdateUserDTO(args.input), { where: { id: args.id }, returning: true })
 
         const user = await User.findOne({ where: { id: args.id } })
 
@@ -69,9 +71,10 @@ const usersRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const users = await User.findAll(options)
+        let users = await User.findAll(options)
+        users = users.map(u => new UserDTO(u))
 
-        const paginatedList = new PaginatedList(users, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('users', users, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 
