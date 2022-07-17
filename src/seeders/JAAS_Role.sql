@@ -1,2 +1,2 @@
-INSERT INTO JAAS_Role (name) VALUES ('Admin');
-INSERT INTO JAAS_Role (name) VALUES ('Guest');
+INSERT INTO jaas_role (name) VALUES ('Admin');
+INSERT INTO jaas_role (name) VALUES ('Guest');
