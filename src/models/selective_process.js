@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     max_candidates: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     starts_in: {

@@ -25,14 +25,14 @@ type User {
     createdAt: DateTime
     updatedAt: DateTime
     uuid: String
-    active: Boolean
+    activated: Boolean
     email: String
     firebaseMessageToken: String
     firebaseUUID: String
 }
 
 input UserInput {
-    active: Boolean!
+    activated: Boolean!
     email: String!
     firebaseMessageToken: String
     firebaseUUID: String!

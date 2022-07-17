@@ -15,8 +15,8 @@ const usersRepository = db => {
         if (args.start != null && args.max != null) {
             options.offset = args.start;
             options.limit = args.max;
-        }
-        const users = await User.findAll(options)
+        }        
+        const users = await User.findAll(options)        
         return users;
     }
 

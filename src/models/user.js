@@ -43,13 +43,13 @@ module.exports = function(sequelize, DataTypes) {
     }    
   }  
   , {
-    tableName: 'users',
+    tableName: 'users',    
     hooks: {
       afterCreate(instance, options){
         console.log("HOOK After create")
       },
       beforeUpdate(instance, options){
-        instance.updatedAt = Date.now()
+        instance.updated_at = Date.now()
       }
     }
   } );

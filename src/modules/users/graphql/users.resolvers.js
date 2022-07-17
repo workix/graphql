@@ -1,12 +1,14 @@
 import usersRepository from '../repository/users.repo';
 import { createIndex, deleteIndex, matchAnyFields, updateIndex } from '../elasticSearch/users.elastic';
+import UserDTO from '../../../dtos/UserDTO';
 
 
 const usersResolvers = {
   Query: {
     allUsers: async (parent, args, ctx, info) => {
       const users = await usersRepository(ctx.orm).findAll(info, args)
-      return users;
+      const usersDTO = users.map(u => new UserDTO(u))
+      return usersDTO;
     },
     getUserById: async (parent, args, ctx, info) => {
       const user = await usersRepository(ctx.orm).findById(info, args)
