@@ -13,7 +13,7 @@ const commentsRepository = db => {
 
     const findAllRecents = async (info, args) => {
         const fields = getFields(info)
-        const options = { attributes: fields, order: [['createdAt', 'DESC']] }
+        const options = { attributes: fields, order: [['created_at', 'DESC']] }
         if (args.start != null && args.max != null) {
             options.offset = args.start;
             options.limit = args.max;

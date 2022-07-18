@@ -13,7 +13,7 @@ const blogsRepository = db => {
     const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["author_id"], exclude: ["author", "comments", "pictures", "tags", "blog", "categories"] })
 
     const findAllCategories = async (info, args) => {
-        const categories = await Blog.findAll({
+        const categories = await BlogCategory.findAll({
             attributes: [Sequelize.fn('DISTINCT', Sequelize.col('category')), 'category'],
             raw: true
         })
@@ -21,7 +21,7 @@ const blogsRepository = db => {
     }
 
     const findAllTimePeriods = async (info, args) => {
-        const timePeriods = await db.sequelize.query(`SELECT YEAR(b.createdAt) as year, MONTH(b.createdAt) as month from blogs b GROUP BY YEAR(b.createdAt), MONTH(b.createdAt)`, {
+        const timePeriods = await db.sequelize.query(`SELECT EXTRACT(YEAR FROM (b.created_at)) as year, EXTRACT(MONTH FROM (b.created_at)) as month from blogs b GROUP BY EXTRACT(YEAR FROM (b.created_at)), EXTRACT(MONTH FROM (b.created_at))`, {
             type: QueryTypes.SELECT
         })
         return timePeriods;
@@ -29,7 +29,7 @@ const blogsRepository = db => {
 
     const findAllRecents = async (info, args) => {
         const fields = getFields(info)
-        const options = { attributes: fields, order: [['createdAt', 'DESC']] }
+        const options = { attributes: fields, order: [['created_at', 'DESC']] }
         if (args.start != null && args.max != null) {
             options.offset = args.start;
             options.limit = args.max;
