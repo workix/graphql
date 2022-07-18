@@ -46,7 +46,7 @@ const subscribersRepository = db => {
             throw new Error(`Subscriber with id: ${args.id} not found`)
         }
 
-        const [subscribers, meta] = await Subscriber.update(new UpdateSubscriberDTO(args.input), { where: { id: args.id }, returning: true })
+        const [subscribers, meta] = await Subscriber.update(new UpdateSubscriberDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true})
 
         const subscriber = await Subscriber.findOne({ where: { id: args.id } })
 

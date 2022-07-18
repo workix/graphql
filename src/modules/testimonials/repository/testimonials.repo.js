@@ -46,7 +46,7 @@ const testimonialsRepository = db => {
             throw new Error(`Testimonial with id: ${args.id} not found`)
         }
 
-        const [testimonials, meta] = await Testimonial.update(new UpdateTestimonialDTO(args.input), { where: { id: args.id }, returning: true })       
+        const [testimonials, meta] = await Testimonial.update(new UpdateTestimonialDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true })       
 
         const testimonial = await Testimonial.findOne({ where: { id: args.id } })
 

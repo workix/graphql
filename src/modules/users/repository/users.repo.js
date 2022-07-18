@@ -46,7 +46,7 @@ const usersRepository = db => {
             throw new Error(`User with id: ${args.id} not found`)
         }
 
-        const [users, meta] = await User.update(new UpdateUserDTO(args.input), { where: { id: args.id }, returning: true })
+        const [users, meta] = await User.update(new UpdateUserDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true })
 
         const user = await User.findOne({ where: { id: args.id } })
 

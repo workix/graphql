@@ -32,7 +32,7 @@ input FormInput {
 }
 
 type PaginatedListForm {
-    rows: [Form]
+    forms: [Form]
     start: Int
     end: Int,
     totalPages: Int,

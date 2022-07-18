@@ -20,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'JAAS_User',
+    tableName: 'jaas_user',
     timestamps: false,    
     hooks: {
       beforeCreate(instance, options){        

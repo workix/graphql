@@ -3,6 +3,8 @@ import { RequestedFields } from '../../../RequestedFields';
 import { Form } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import FormDTO from '../../../dtos/FormDTO';
+import { CreateFormDTO, UpdateFormDTO } from '../../../dtos/FormMutationDTO';
 
 const formsRepository = db => {
     const requestedFields = new RequestedFields();
@@ -27,7 +29,7 @@ const formsRepository = db => {
     }
 
     const create = async args => {
-        const form = await Form.create(args.input)
+        const form = await Form.create(new CreateFormDTO(args.input))
         await form.reload()
         return form;
     }
@@ -44,7 +46,7 @@ const formsRepository = db => {
             throw new Error(`Form with id: ${args.id} not found`)
         }
 
-        const [forms, meta] = await Form.update(args.input, { where: { id: args.id }, returning: true })       
+        const [forms, meta] = await Form.update(new UpdateFormDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true })       
 
         const form = await Form.findOne({ where: { id: args.id } })
 
@@ -53,7 +55,7 @@ const formsRepository = db => {
 
     const findAllPaginated = async (info, args) => {           
         
-        const fields = getFieldsWithSubfields(info).get("rows")              
+        const fields = getFieldsWithSubfields(info).get("forms")              
         
         const totalRows = await Form.count()
 
@@ -69,7 +71,8 @@ const formsRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const forms = await Form.findAll(options)
+        let forms = await Form.findAll(options)
+        forms = forms.map(f => new FormDTO(f))
 
         const paginatedList = new PaginatedList(forms, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;

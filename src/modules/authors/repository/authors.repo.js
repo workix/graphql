@@ -47,7 +47,7 @@ const authorsRepository = db => {
 
         await db.sequelize.transaction(async transaction => {
             // chain all your queries here. make sure you return them.
-            const [authors, meta] = await Author.update(new UpdateAuthorDTO(args.input), { where: { id: args.id }, returning: true }, { transaction })       
+            const [authors, meta] = await Author.update(new UpdateAuthorDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true }, { transaction })       
 
             await AuthorMedia.destroy({ where: { id: args.id } }, { transaction })
     
