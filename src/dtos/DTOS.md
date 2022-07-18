@@ -2,7 +2,7 @@
  - [x] - Author - [ListDTO] - [MutationDTO]
  - [] - Author Medias - [ListDTO] - [MutationDTO]
  - [] - Blog - [ListDTO] - [MutationDTO]
- - [] - Comment - [ListDTO] - [MutationDTO]
+ - [x] - Comment - [ListDTO] - [MutationDTO]
  - [] - Blog Comments - [ListDTO] - [MutationDTO]
  - [] - Blog Pictures - [ListDTO] - [MutationDTO]
  - [] - Blog Tags - [ListDTO] - [MutationDTO] 

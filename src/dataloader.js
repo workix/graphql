@@ -508,7 +508,7 @@ class CommentLoader {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
         let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog"] })        
-        let sql = `SELECT ${fields.toString()}, c.id as comment_id, bc.Blog_id as blog_id FROM comments c INNER JOIN blogs_comments bc on c.id = bc.comments_id WHERE Blog_id IN (${idsString}) ORDER BY id ASC;`
+        let sql = `SELECT ${fields.toString()}, c.id as comment_id, bc.blog_id as blog_id FROM comments c INNER JOIN blogs_comments bc on c.id = bc.comment_id WHERE blog_id IN (${idsString}) ORDER BY id ASC;`
 
         let comments;
 
@@ -541,8 +541,8 @@ class CommentLoader {
         let idsString = ids.map(v => `'${v}'`).toString();
         // let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog"] })        
         // let sql = `SELECT ${fields.toString()}, c.id as comment_id, bc.Blog_id as blog_id FROM comments c INNER JOIN blogs_comments bc on c.id = bc.comments_id WHERE Blog_id IN (${idsString}) ORDER BY id ASC;`
-        let sql = `select c.id as comment_id, bc.Blog_id as blog_id from comments c 
-        inner join blogs_comments bc on c.id = bc.comments_id WHERE c.id IN (${idsString}) ORDER BY comment_id ASC`
+        let sql = `select c.id as comment_id, bc.blog_id as blog_id from comments c 
+        inner join blogs_comments bc on c.id = bc.comment_id WHERE c.id IN (${idsString}) ORDER BY comment_id ASC`
 
         let owners;
 

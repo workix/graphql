@@ -3,6 +3,7 @@ import { RequestedFields } from '../../../RequestedFields';
 import { Blog, Comment } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import { CreateCommentDTO, UpdateCommentDTO } from '../../../dtos/CommentMutationDTO';
 
 const commentsRepository = db => {
     const requestedFields = new RequestedFields();
@@ -40,17 +41,17 @@ const commentsRepository = db => {
     const create = async args => {
         let comment;
         await db.sequelize.transaction(async transaction => {
-            comment = await Comment.create(args.input, { transaction })
+            comment = await Comment.create(new CreateCommentDTO(args.input), { transaction })
 
-            if (!args.input.blog_id) {
-                throw new Error("blog_id is not provided")
+            if (!args.input.blogId) {
+                throw new Error("blogId is not provided")
             }
 
-            const blog = await Blog.findOne({ where: { id: args.input.blog_id } }, { transaction })
+            const blog = await Blog.findOne({ where: { id: args.input.blogId } }, { transaction })
 
 
             if (!blog) {
-                throw new Error(`Blog with id: ${args.input.blog_id} not found`)
+                throw new Error(`Blog with id: ${args.input.blogId} not found`)
             }
             await blog.addComment(comment, { transaction })
             await comment.reload({ transaction })
@@ -89,7 +90,7 @@ const commentsRepository = db => {
             throw new Error(`Comment with id: ${args.id} not found`)
         }
 
-        const [comments, meta] = await Comment.update(args.input, { where: { id: args.id }, returning: true })        
+        const [comments, meta] = await Comment.update(new UpdateCommentDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true  })        
 
         const comment = await Comment.findOne({ where: { id: args.id } })
 
@@ -98,7 +99,7 @@ const commentsRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("rows")
+        const fields = getFieldsWithSubfields(info).get("comments")
 
         const totalRows = await Comment.count()
 
@@ -116,7 +117,7 @@ const commentsRepository = db => {
 
         const comments = await Comment.findAll(options)
 
-        const paginatedList = new PaginatedList(comments, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('comments', comments, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 

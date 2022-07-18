@@ -1,3 +1,4 @@
+import CommentDTO from '../../../dtos/CommentDTO';
 import { Blog, Comment, BlogPicture, BlogTag } from '../../../models';
 import blogsRepository from "../repository/blogs.repo";
 import commentsRepository from "../repository/comments.repo";
@@ -24,20 +25,22 @@ const blogsResolvers = {
       return blogs
     },  
     allComments: async (parent, args, ctx, info) => {
-      const comments = await commentsRepository(ctx.orm).findAll(info,args)
+      let comments = await commentsRepository(ctx.orm).findAll(info,args)
+      comments = comments.map(c => new CommentDTO(c))
       return comments;
     },
     getCommentById: async (parent, args, ctx, info) => {
       const comment = await commentsRepository(ctx.orm).findById(info, args)
-      return comment;
+      return new CommentDTO(comment);
     },
     allCommentsPaginated: async (parent, args, ctx, info) => {
       const paginatedList = await commentsRepository(ctx.orm).findAllPaginated(info, args)
       return paginatedList;
     },  
     debugComment: async (parent, args, ctx, info) => {
-      const comments = await Comment.findAll({ include: [{ model: Blog }] })
+      let comments = await Comment.findAll({ include: [{ model: Blog }] })
       console.log("Comments Blog ->", await comments[0].getBlogs({raw: true}))      
+      comments = comments.map(c => new CommentDTO(c))
       return comments
     },  
     allBlogsCategories: async (parent, args, ctx, info) => {
@@ -72,7 +75,7 @@ const blogsResolvers = {
     },
     createComment: async (parent, args, ctx, info) => {
       const comment = await commentsRepository(ctx.orm).create(args)
-      return comment;
+      return new CommentDTO(comment);
     },
     deleteComment: async (parent, args, ctx, info) => {
       const deleted = await commentsRepository(ctx.orm).destroy(args)
@@ -80,7 +83,7 @@ const blogsResolvers = {
     },
     updateComment: async (parent, args, ctx, info) => {
       const comment = await commentsRepository(ctx.orm).update(args)
-      return comment;
+      return new CommentDTO(comment);
     }
   },
   Blog: {
@@ -89,7 +92,8 @@ const blogsResolvers = {
       return authors[0];
     },
     comments: async(parent, args, ctx, info) => {
-      const comments = await ctx.dataloaders.commentsLoader.load({ key: parent.id, info })
+      let comments = await ctx.dataloaders.commentsLoader.load({ key: parent.id, info })
+      comments = comments.map(c => new CommentDTO(c))
       return comments;
     },
     pictures: async (parent, args, ctx, info) => {
