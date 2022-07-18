@@ -27,7 +27,7 @@ module.exports = {
             defaultValue: Sequelize.UUIDV4,
           },
           carrer_level: {
-            type: Sequelize.DataTypes.INTEGER,
+            type: Sequelize.DataTypes.STRING,
             allowNull: false
           },
           content: {
@@ -39,7 +39,7 @@ module.exports = {
             allowNull: false
           },
           presence: {
-            type: Sequelize.DataTypes.INTEGER,
+            type: Sequelize.DataTypes.STRING,
             allowNull: false
           },
           candidate_id: {

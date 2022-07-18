@@ -33,7 +33,7 @@ input ResumeInput {
     content: String!
     objective: String!
     presence: Presence!
-    candidate_id: Int!
+    candidateId: Int!
     educations: [EducationInput]
     experiences: [ExperienceInput]
     skills: [SkillInput]

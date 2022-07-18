@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: Sequelize.UUIDV4,
     },
     carrer_level: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false
     },    
     content: {
@@ -37,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     presence: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false
     },  
     candidate_id: {
@@ -55,8 +55,9 @@ module.exports = function(sequelize, DataTypes) {
       afterCreate(instance, options){
         console.log("HOOK After create")
       },
-      beforeUpdate(instance, options){
-        instance.updatedAt = Date.now()
+      beforeBulkUpdate(instance, options){
+        console.log("HOOK beforeUpdate")
+        instance.attributes.updated_at = Date.now()
       }
     }
   });

@@ -8,9 +8,6 @@ export default class ResumeDTO {
         this.content = resume.content
         this.objective = resume.objective
         this.presence = resume.presence
-        this.candidateId = resume.candidate_id
-        // this.educations = resume.educations
-        // this.experiences = resume.experiences
-        // this.skills = resume.skills
+        this.candidateId = resume.candidate_id       
     }
 }

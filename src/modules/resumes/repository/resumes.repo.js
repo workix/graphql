@@ -3,7 +3,11 @@ import { RequestedFields } from '../../../RequestedFields';
 import { Resume, ResumeEducation, ResumeExperience, ResumeSkill } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
-
+import ResumeDTO from '../../../dtos/ResumeDTO';
+import { CreateResumeDTO, UpdateResumeDTO } from '../../../dtos/ResumeMutationDTO'
+import { UpdateEducationDTO } from '../../../dtos/EducationsMutationDTO'
+import { UpdateExperienceDTO } from '../../../dtos/ExperienceMutationDTO'
+import { UpdateSkillDTO } from '../../../dtos/SkillMutationDTO'
 const resumesRepository = db => {
     const requestedFields = new RequestedFields();
     const getFields = info => requestedFields.getFields(info, { keep: ["candidate_id", "id"], exclude: ["candidate", "educations", "experiences", "skills"] })
@@ -27,7 +31,7 @@ const resumesRepository = db => {
     }
 
     const create = async args => {
-        const resume = await Resume.create(args.input, { include: [{ model: ResumeExperience, as: "experiences" }, { model: ResumeEducation, as: "educations" }, { model: ResumeSkill, as: "skills" }] })
+        const resume = await Resume.create(new CreateResumeDTO(args.input), { include: [{ model: ResumeExperience, as: "experiences" }, { model: ResumeEducation, as: "educations" }, { model: ResumeSkill, as: "skills" }] })
         await resume.reload()
         return resume;
     }
@@ -47,7 +51,7 @@ const resumesRepository = db => {
         let resume;
         await db.sequelize.transaction(async transaction => {
             // chain all your queries here. make sure you return them.
-            const [resumes, meta] = await Resume.update(args.input, { where: { id: args.id }, returning: true }, { transaction })
+            const [resumes, meta] = await Resume.update(new UpdateResumeDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true }, { transaction })
 
             resume = await Resume.findOne({ where: { id: args.id } })
 
@@ -55,7 +59,8 @@ const resumesRepository = db => {
                 await ResumeEducation.destroy({ where: { id: args.id } }, { transaction })
 
                 for (const e of args.input.educations) {
-                    await ResumeEducation.create({ id: args.id, description: e.description, endDate: e.endDate, qualification: e.qualification, schoolName: e.schoolName, startDate: e.startDate }, { transaction })
+                    const educationInput = { id: args.id, description: e.description, endDate: e.endDate, qualification: e.qualification, schoolName: e.schoolName, startDate: e.startDate }
+                    await ResumeEducation.create(new UpdateEducationDTO(educationInput), { transaction })
                 }
             }
 
@@ -63,7 +68,8 @@ const resumesRepository = db => {
                 await ResumeExperience.destroy({ where: { id: args.id } }, { transaction })
 
                 for (const e of args.input.experiences) {
-                    await ResumeExperience.create({ id: args.id, description: e.description, employerName: e.employerName, endDate: e.endDate, jobTitle: e.jobTitle, responsibilities: e.responsibilities, startDate: e.startDate }, { transaction })
+                    const experienceInput = { id: args.id, description: e.description, employerName: e.employerName, endDate: e.endDate, jobTitle: e.jobTitle, responsibilities: e.responsibilities, startDate: e.startDate }
+                    await ResumeExperience.create(new UpdateExperienceDTO(experienceInput), { transaction })
                 }
             }
 
@@ -71,9 +77,10 @@ const resumesRepository = db => {
                 await ResumeSkill.destroy({ where: { id: args.id } }, { transaction })
 
                 for (const s of args.input.skills) {
-                    await ResumeSkill.create({ id: args.id, months: s.months, skillName: s.skillName }, { transaction })
+                    const skillInput = { id: args.id, months: s.months, skillName: s.skillName }
+                    await ResumeSkill.create(new UpdateSkillDTO(skillInput), { transaction })
                 }
-            }           
+            }
         })
 
         return resume;
@@ -81,7 +88,7 @@ const resumesRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("rows")
+        const fields = getFieldsWithSubfields(info).get("resumes")
         fields.push("candidate_id")
 
         const totalRows = await Resume.count()
@@ -98,9 +105,10 @@ const resumesRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const resumes = await Resume.findAll(options)
+        let resumes = await Resume.findAll(options)
+        resumes = resumes.map(r => new ResumeDTO(r))
 
-        const paginatedList = new PaginatedList(resumes, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('resumes', resumes, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 

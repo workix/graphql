@@ -1,16 +1,21 @@
 import CandidateDTO from '../../../dtos/CandidateDTO';
 import resumesRepository from '../repository/resumes.repo'
 // import { Resume } from '../../../models';
+import ResumeDTO from '../../../dtos/ResumeDTO'
+import EducationDTO from '../../../dtos/EducationsDTO';
+import ExperienceDTO from '../../../dtos/ExperienceDTO';
+import SkillDTO from '../../../dtos/SkillDTO';
 
 const resumesResolvers = {
     Query: {
         allResumes: async (parent, args, ctx, info) => {
-            const resumes = await resumesRepository(ctx.orm).findAll(info, args)
+            let resumes = await resumesRepository(ctx.orm).findAll(info, args)
+            resumes = resumes.map(r => new ResumeDTO(r))
             return resumes;
         },
         getResumeById: async (parent, args, ctx, info) => {
             const resume = await resumesRepository(ctx.orm).findById(info, args)
-            return resume;
+            return new ResumeDTO(resume);
         },
         allResumesPaginated: async (parent, args, ctx, info) => {
             const paginatedList = await resumesRepository(ctx.orm).findAllPaginated(info, args)
@@ -20,7 +25,7 @@ const resumesResolvers = {
     Mutation: {
         createResume: async (parent, args, ctx, info) => {
             const resume = await resumesRepository(ctx.orm).create(args)
-            return resume;
+            return new ResumeDTO(resume);
         },
         deleteResume: async (parent, args, ctx, info) => {
             const deleted = await resumesRepository(ctx.orm).destroy(args)
@@ -28,7 +33,7 @@ const resumesResolvers = {
         },
         updateResume: async (parent, args, ctx, info) => {
             const resume = await resumesRepository(ctx.orm).update(args)
-            return resume;
+            return new ResumeDTO(resume);
         }
     },
     Resume: {
@@ -37,30 +42,21 @@ const resumesResolvers = {
             return new CandidateDTO(candidates[0]);
         },
         educations: async (parent, args, ctx, info) => {
-            const educations = await ctx.dataloaders.educationsLoader.load({ key: parent.id, info })
+            let educations = await ctx.dataloaders.educationsLoader.load({ key: parent.id, info })
+            educations = educations.map(e => new EducationDTO(e))
             return educations;
         },
         experiences: async (parent, args, ctx, info) => {
-            const experiences = await ctx.dataloaders.experiencesLoader.load({ key: parent.id, info })
+            let experiences = await ctx.dataloaders.experiencesLoader.load({ key: parent.id, info })
+            experiences = experiences.map(e => new ExperienceDTO(e))
             return experiences;
         },
         skills: async (parent, args, ctx, info) => {
-            const skills = await ctx.dataloaders.skillsLoader.load({ key: parent.id, info })
+            let skills = await ctx.dataloaders.skillsLoader.load({ key: parent.id, info })
+            skills = skills.map(s => new SkillDTO(s))        
             return skills;
         }
-    },
-    CarrerLevel: {
-        JUNIOR: 0,
-        MIDDLE: 1,
-        SENIOR: 2,
-        EXPERT: 3
-    },
-    Presence: {
-        REMOTE: 0,
-        OFFICE: 1,
-        RELOCATION: 2,
-        TRAVEL_A_LOT: 3
-    }
+    }    
 }
 
 export default resumesResolvers;
