@@ -27,7 +27,7 @@ input SubscriberInput {
 }
 
 type PaginatedListSubscriber {
-    rows: [Subscriber]
+    subscribers: [Subscriber]
     start: Int
     end: Int,
     totalPages: Int,

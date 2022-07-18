@@ -3,6 +3,8 @@ import { RequestedFields } from '../../../RequestedFields';
 import { Subscriber } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import SubscriberDTO from '../../../dtos/SubscriberDTO';
+import { CreateSubscriberDTO, UpdateSubscriberDTO } from '../../../dtos/SubscriberMutationDTO';
 
 const subscribersRepository = db => {
     const requestedFields = new RequestedFields();
@@ -27,7 +29,7 @@ const subscribersRepository = db => {
     }
 
     const create = async args => {
-        const subscriber = await Subscriber.create(args.input)
+        const subscriber = await Subscriber.create(new CreateSubscriberDTO(args.input))
         await subscriber.reload()
         return subscriber;
     }
@@ -44,7 +46,7 @@ const subscribersRepository = db => {
             throw new Error(`Subscriber with id: ${args.id} not found`)
         }
 
-        const [subscribers, meta] = await Subscriber.update(args.input, { where: { id: args.id }, returning: true })
+        const [subscribers, meta] = await Subscriber.update(new UpdateSubscriberDTO(args.input), { where: { id: args.id }, returning: true })
 
         const subscriber = await Subscriber.findOne({ where: { id: args.id } })
 
@@ -53,7 +55,7 @@ const subscribersRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("rows")
+        const fields = getFieldsWithSubfields(info).get("subscribers")
 
         const totalRows = await Subscriber.count()
 
@@ -69,9 +71,10 @@ const subscribersRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const subscribers = await Subscriber.findAll(options)
+        let subscribers = await Subscriber.findAll(options)
+        subscribers = subscribers.map(s => new SubscriberDTO(s))
 
-        const paginatedList = new PaginatedList(subscribers, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('subscribers', subscribers, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 
