@@ -27,8 +27,7 @@ const authorsRepository = db => {
         return author;
     }
 
-    const create = async args => {
-        console.log(new CreateAuthorDTO(args.input))
+    const create = async args => {        
         const author = await Author.create(new CreateAuthorDTO(args.input), { include: { model: AuthorMedia, as: "medias" } })
         await author.reload()
         return author;
@@ -64,7 +63,7 @@ const authorsRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("rows")
+        const fields = getFieldsWithSubfields(info).get("authors")        
 
         const totalRows = await Author.count()
 
