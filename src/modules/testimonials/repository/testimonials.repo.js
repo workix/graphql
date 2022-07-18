@@ -3,6 +3,8 @@ import { RequestedFields } from '../../../RequestedFields';
 import { Testimonial } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import TestimonialDTO from '../../../dtos/TestimonialDTO';
+import { CreateTestimonialDTO, UpdateTestimonialDTO } from '../../../dtos/TestimonialMutationDTO';
 
 const testimonialsRepository = db => {
     const requestedFields = new RequestedFields();
@@ -27,7 +29,7 @@ const testimonialsRepository = db => {
     }
 
     const create = async args => {
-        const testimonial = await Testimonial.create(args.input)
+        const testimonial = await Testimonial.create(new CreateTestimonialDTO(args.input))
         await testimonial.reload()
         return testimonial;
     }
@@ -44,7 +46,7 @@ const testimonialsRepository = db => {
             throw new Error(`Testimonial with id: ${args.id} not found`)
         }
 
-        const [testimonials, meta] = await Testimonial.update(args.input, { where: { id: args.id }, returning: true })       
+        const [testimonials, meta] = await Testimonial.update(new UpdateTestimonialDTO(args.input), { where: { id: args.id }, returning: true })       
 
         const testimonial = await Testimonial.findOne({ where: { id: args.id } })
 
@@ -53,7 +55,7 @@ const testimonialsRepository = db => {
 
     const findAllPaginated = async (info, args) => {           
         
-        const fields = getFieldsWithSubfields(info).get("rows")
+        const fields = getFieldsWithSubfields(info).get("testimonials")
         fields.push("author_id")              
         
         const totalRows = await Testimonial.count()
@@ -70,7 +72,8 @@ const testimonialsRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const testimonials = await Testimonial.findAll(options)
+        let testimonials = await Testimonial.findAll(options)
+        testimonials = testimonials.map(t => new TestimonialDTO(t))
 
         const paginatedList = new PaginatedList('testimonials', testimonials, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;

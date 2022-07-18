@@ -1,3 +1,5 @@
+import TestimonialDTO from '../../../dtos/TestimonialDTO';
+import AuthorDTO from '../../../dtos/AuthorDTO';
 import testimonialsRepository from '../repository/testimonials.repo'
 // import { Testimonial } from '../../../models';
 
@@ -5,12 +7,13 @@ import testimonialsRepository from '../repository/testimonials.repo'
 const testimonialsResolvers = {
   Query: {
     allTestimonials: async (parent, args, ctx, info) => {
-      const testimonials = await testimonialsRepository(ctx.orm).findAll(info, args)
+      let testimonials = await testimonialsRepository(ctx.orm).findAll(info, args)
+      testimonials = testimonials.map(t => new TestimonialDTO(t))
       return testimonials;
     },
     getTestimonialById: async (parent, args, ctx, info) => {
       const testimonial = await testimonialsRepository(ctx.orm).findById(info, args)
-      return testimonial;
+      return new TestimonialDTO(testimonial) ;
     },
     allTestimonialsPaginated: async (parent, args, ctx, info) => {
       const paginatedList = await testimonialsRepository(ctx.orm).findAllPaginated(info, args)
@@ -20,7 +23,7 @@ const testimonialsResolvers = {
   Mutation: {
     createTestimonial: async (parent, args, ctx, info) => {
       const testimonial = await testimonialsRepository(ctx.orm).create(args)
-      return testimonial;
+      return new TestimonialDTO(testimonial);
     },
     deleteTestimonial: async (parent, args, ctx, info) => {
       const deleted = await testimonialsRepository(ctx.orm).destroy(args)
@@ -28,13 +31,13 @@ const testimonialsResolvers = {
     },
     updateTestimonial: async (parent, args, ctx, info) => {
       const testimonial = await testimonialsRepository(ctx.orm).update(args)
-      return testimonial;
+      return new TestimonialDTO(testimonial);
     }
   },
   Testimonial: {
     author: async (parent, args, ctx, info) => {
-      const authors = await ctx.dataloaders.authorLoader.load({ key: parent.author_id, info })
-      return authors[0];
+      const authors = await ctx.dataloaders.authorLoader.load({ key: parent.authorId, info })
+      return new AuthorDTO(authors[0]);
     }
   }
 }
