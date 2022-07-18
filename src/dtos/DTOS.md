@@ -6,6 +6,7 @@
  - [] - Blog Comments - [ListDTO] - [MutationDTO]
  - [] - Blog Pictures - [ListDTO] - [MutationDTO]
  - [] - Blog Tags - [ListDTO] - [MutationDTO] 
+ - [] - Blog Categories - [ListDTO] - [MutationDTO] 
  - [] - Candidate - [ListDTO] - [MutationDTO]
  - [] - Company - [ListDTO] - [MutationDTO]
  - [] - Company Medias - [ListDTO] - [MutationDTO]

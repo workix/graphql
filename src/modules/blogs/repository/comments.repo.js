@@ -4,6 +4,7 @@ import { Blog, Comment } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 import { CreateCommentDTO, UpdateCommentDTO } from '../../../dtos/CommentMutationDTO';
+import CommentDTO from '../../../dtos/CommentDTO';
 
 const commentsRepository = db => {
     const requestedFields = new RequestedFields();
@@ -115,7 +116,8 @@ const commentsRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const comments = await Comment.findAll(options)
+        let comments = await Comment.findAll(options)
+        comments = comments.map(c => new CommentDTO(c))
 
         const paginatedList = new PaginatedList('comments', comments, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;

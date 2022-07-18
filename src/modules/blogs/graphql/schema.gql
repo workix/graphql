@@ -27,20 +27,23 @@ type Query {
 
 type Picture {
     blog: Blog
-    pictures: String
+    picture: String
 }
 
 type Tag {
     blog: Blog
     name: String
 }
+type Category {
+    blog: Blog
+    category: String
+}
 
 type Blog {
     id: ID,
     createdAt: DateTime
     updatedAt: DateTime
-    uuid: String
-    category: String
+    uuid: String    
     citation: String
     content: String
     date: Date
@@ -50,19 +53,20 @@ type Blog {
     comments: [Comment]  
     pictures: [Picture]
     tags: [Tag]
+    categories: [Category]
 }
 
-  input BlogInput {
-    category: String!
+  input BlogInput {    
     citation: String!
     content: String!
     date: Date!
     resume: String!
     title: String!
-    author_id: Int
+    authorId: Int
     comments: [CommentInput]  
     pictures: [PictureInput]
     tags: [TagInput]
+    categories: [CategoryInput]
 }
 
 input CommentInput {
@@ -74,11 +78,15 @@ input CommentInput {
 }
 
 input PictureInput {
-    pictures: String!
+    picture: String!
 }
 
 input TagInput{
     name: String!
+}
+
+input CategoryInput {
+    category: String!
 }
 
 type Comment {
@@ -94,7 +102,7 @@ type Comment {
 }
 
 type PaginatedListBlog {
-    rows: [Blog]
+    blogs: [Blog]
     start: Int
     end: Int,
     totalPages: Int,

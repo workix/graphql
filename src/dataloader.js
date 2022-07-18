@@ -273,6 +273,39 @@ class TagLoader {
     }
 }
 
+class CategoryLoader {
+    static async batchCategories(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog"] })
+        let sql = `SELECT ${fields.toString()} FROM blogs_categories WHERE id IN (${idsString}) ORDER BY id ASC;`;
+
+        let categories;
+
+        try {
+            categories = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+        const ordened = new Map()
+
+        categories.forEach(tag => {
+            ordened.set(tag.id, [])
+        })
+
+        let id;
+        categories.forEach(tag => {
+            id = tag.id
+            ordened.get(id).push(tag)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)
+        return Promise.resolve(response);
+    }
+}
+
 class BlogLoader {
     static async batchBlogs(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
@@ -571,9 +604,7 @@ class CommentLoader {
 
     static async batchOwner(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
-        let idsString = ids.map(v => `'${v}'`).toString();
-        // let fields = requestedFields.getFields(params[0].info, { keep: ["id"], exclude: ["blog"] })        
-        // let sql = `SELECT ${fields.toString()}, c.id as comment_id, bc.Blog_id as blog_id FROM comments c INNER JOIN blogs_comments bc on c.id = bc.comments_id WHERE Blog_id IN (${idsString}) ORDER BY id ASC;`
+        let idsString = ids.map(v => `'${v}'`).toString();        
         let sql = `select c.id as comment_id, bc.blog_id as blog_id from comments c 
         inner join blogs_comments bc on c.id = bc.comment_id WHERE c.id IN (${idsString}) ORDER BY comment_id ASC`
 
@@ -755,6 +786,9 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             tagsLoader: new DataLoader(params => {
                 return TagLoader.batchTags(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            categoriesLoader: new DataLoader(params => {
+                return CategoryLoader.batchCategories(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
             blogsLoader: new DataLoader(params => {
                 return BlogLoader.batchBlogs(this.db, params, this.requestedFields)
