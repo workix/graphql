@@ -69,6 +69,7 @@ module.exports = function(sequelize, DataTypes) {
 
     Comment.belongsTo(models.Comment, {
       foreignKey: 'parent_id',
+      as: "parentComment"
     })
   }
 

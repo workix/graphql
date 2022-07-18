@@ -45,6 +45,7 @@ const blogsResolvers = {
     debugComment: async (parent, args, ctx, info) => {
       let comments = await Comment.findAll({ include: [{ model: Blog }] })
       console.log("Comments Blog ->", await comments[0].getBlogs({ raw: true }))
+      console.log("Comments Parent ->", await comments[0].getParentComment({ raw: true }))
       comments = comments.map(c => new CommentDTO(c))
       return comments
     },
