@@ -507,7 +507,7 @@ class CommentLoader {
     static async batchParentsComments(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "parent_id"], exclude: [] })        
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "parent_id"], exclude: ["parent_comment"] })        
         let sql = `SELECT ${fields.toString()} FROM comments WHERE parent_id IN (${idsString}) ORDER BY id ASC;`
 
         let comments;
