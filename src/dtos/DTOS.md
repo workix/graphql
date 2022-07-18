@@ -9,7 +9,7 @@
  - [] - Candidate - [ListDTO] - [MutationDTO]
  - [] - Company - [ListDTO] - [MutationDTO]
  - [] - Company Medias - [ListDTO] - [MutationDTO]
- - [] - Form - [ListDTO] - [MutationDTO]
+ - [x] - Form - [ListDTO] - [MutationDTO]
  - [] - JAAS Role - [ListDTO] - [MutationDTO]
  - [] - JAAS Roles - [ListDTO] - [MutationDTO]
  - [] - JAAS User - [ListDTO] - [MutationDTO]
