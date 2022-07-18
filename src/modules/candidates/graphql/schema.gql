@@ -21,7 +21,7 @@ type Candidate {
     uuid: String
     mobilePhone: Float
     city: String
-    estate: String
+    state: String
     neighborhood: String
     number: String
     street: String
@@ -36,7 +36,7 @@ type Candidate {
 input CandidateInput {    
     mobilePhone: Float!
     city: String!
-    estate: String!
+    state: String!
     neighborhood: String!
     number: String!
     street: String!
@@ -44,11 +44,11 @@ input CandidateInput {
     name: String!
     birthDate: Date!
     cpf: Float!   
-    user_id: Int!    
+    userId: Int!    
 }
 
 type PaginatedListCandidate {
-    rows: [Candidate]
+    candidates: [Candidate]
     start: Int
     end: Int,
     totalPages: Int,
@@ -59,7 +59,7 @@ type PaginatedListCandidate {
 
 input NotificationInput {
     type: NotificationType!
-    user_id: Int!
+    userId: Int!
     title: String!
     message: String!
 }

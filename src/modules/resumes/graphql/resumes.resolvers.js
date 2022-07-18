@@ -1,3 +1,4 @@
+import CandidateDTO from '../../../dtos/CandidateDTO';
 import resumesRepository from '../repository/resumes.repo'
 // import { Resume } from '../../../models';
 
@@ -32,8 +33,8 @@ const resumesResolvers = {
     },
     Resume: {
         candidate: async (parent, args, ctx, info) => {
-            const candidates = await ctx.dataloaders.candidatesLoader.load({ key: parent.candidate_id, info })
-            return candidates[0];
+            const candidates = await ctx.dataloaders.candidatesLoader.load({ key: parent.candidateId, info })
+            return new CandidateDTO(candidates[0]);
         },
         educations: async (parent, args, ctx, info) => {
             const educations = await ctx.dataloaders.educationsLoader.load({ key: parent.id, info })

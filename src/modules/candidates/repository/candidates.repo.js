@@ -3,11 +3,13 @@ import { RequestedFields } from '../../../RequestedFields';
 import { Candidate } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import CandidateDTO from '../../../dtos/CandidateDTO';
+import { CreateCandidateDTO, UpdateCandidateDTO } from '../../../dtos/CandidateMutationDTO';
 
 const candidatesRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: ["user"] })
-    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: ["user"] })
+    const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: ["user", "resume"] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: ["user", "resume"] })
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
@@ -28,13 +30,13 @@ const candidatesRepository = db => {
 
     const findByUserId = async (info, args) => {
         const fields = getFields(info)        
-        const candidate = await Candidate.findOne({ where: { user_id: args.input.user_id }, attributes: fields })
+        const candidate = await Candidate.findOne({ where: { user_id: args.input.userId }, attributes: fields })
         return candidate;
     }
 
     const create = async args => {
         try {
-            const candidate = await Candidate.create(args.input)
+            const candidate = await Candidate.create(new CreateCandidateDTO(args.input))
             await candidate.reload()
             return candidate;    
         } catch (error) {
@@ -62,7 +64,7 @@ const candidatesRepository = db => {
             throw new Error(`Candidate with id: ${args.id} not found`)
         }
 
-        const [candidates, meta] = await Candidate.update(args.input, { where: { id: args.id }, returning: true })        
+        const [candidates, meta] = await Candidate.update(new UpdateCandidateDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true })        
 
         const candidate = await Candidate.findOne({ where: { id: args.id } })
 
@@ -71,8 +73,8 @@ const candidatesRepository = db => {
 
     const findAllPaginated = async (info, args) => {           
         
-        const fields = getFieldsWithSubfields(info).get("rows")    
-        fields.push("user_id")                  
+        const fields = getFieldsWithSubfields(info).get("candidates")    
+        fields.push("user_id")             
         
         const totalRows = await Candidate.count()
 
@@ -88,9 +90,10 @@ const candidatesRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const candidates = await Candidate.findAll(options)
+        let candidates = await Candidate.findAll(options)
+        candidates = candidates.map(c => new CandidateDTO(c))
 
-        const paginatedList = new PaginatedList(candidates, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('candidates', candidates, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 

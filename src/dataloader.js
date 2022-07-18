@@ -639,7 +639,7 @@ class ResumeLoader {
     static async batchResumes(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
-        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "candidate_id"], exclude: ["educations", "experiences", "skills"] })
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "candidate_id"], exclude: ["educations", "experiences", "skills", "candidate"] })
         let sql = `SELECT ${fields.toString()} FROM resumes WHERE candidate_id IN (${idsString}) ORDER BY id ASC;`;
 
         let resumes;

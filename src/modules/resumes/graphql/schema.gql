@@ -101,7 +101,7 @@ type Skill {
 }
 
 type PaginatedListResume {
-    rows: [Resume]
+    resumes: [Resume]
     start: Int
     end: Int,
     totalPages: Int,
