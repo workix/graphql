@@ -1,7 +1,7 @@
 # DTO's MIGRATED
  - [x] - Author - [ListDTO] - [MutationDTO]
  - [] - Author Medias - [ListDTO] - [MutationDTO]
- - [] - Blog - [ListDTO] - [MutationDTO]
+ - [x] - Blog - [ListDTO] - [MutationDTO]
  - [x] - Comment - [ListDTO] - [MutationDTO]
  - [] - Blog Comments - [ListDTO] - [MutationDTO]
  - [] - Blog Pictures - [ListDTO] - [MutationDTO]
