@@ -6,6 +6,7 @@ export default class CommentDTO {
         this.uuid = comment.uuid
         this.email = comment.email
         this.name = comment.name
-        this.text = comment.text        
+        this.text = comment.text     
+        this.parentId = comment.parent_id   
     }
 }

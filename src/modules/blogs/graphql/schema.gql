@@ -69,7 +69,8 @@ input CommentInput {
     blogId: Int
     email: String!
     name: String!
-    text: String!    
+    text: String!   
+    parentId: Int 
 }
 
 input PictureInput {
@@ -89,6 +90,7 @@ type Comment {
     name: String
     text: String
     blog: Blog
+    parentComment: Comment
 }
 
 type PaginatedListBlog {

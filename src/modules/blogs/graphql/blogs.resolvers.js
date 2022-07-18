@@ -6,7 +6,7 @@ import commentsRepository from "../repository/comments.repo";
 const blogsResolvers = {
   Query: {
     allBlogs: async (parent, args, ctx, info) => {
-      const blogs = await blogsRepository(ctx.orm).findAll(info,args)
+      const blogs = await blogsRepository(ctx.orm).findAll(info, args)
       return blogs;
     },
     getBlogById: async (parent, args, ctx, info) => {
@@ -18,14 +18,14 @@ const blogsResolvers = {
       return paginatedList;
     },
     debugBlog: async (parent, args, ctx, info) => {
-      const blogs = await Blog.findAll({ include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" },{ model: BlogTag, as: "tags" }], where: { id: [1, 2, 3, 4, 5] } })
-      console.log("BLOG Comments ->", await blogs[0].getComments({raw: true}))
-      console.log("BLOG Pictures ->", await blogs[0].getPictures({raw: true}))
-      console.log("BLOG Tags ->", await blogs[0].getTags({raw: true}))
+      const blogs = await Blog.findAll({ include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" }, { model: BlogTag, as: "tags" }], where: { id: [1, 2, 3, 4, 5] } })
+      console.log("BLOG Comments ->", await blogs[0].getComments({ raw: true }))
+      console.log("BLOG Pictures ->", await blogs[0].getPictures({ raw: true }))
+      console.log("BLOG Tags ->", await blogs[0].getTags({ raw: true }))
       return blogs
-    },  
+    },
     allComments: async (parent, args, ctx, info) => {
-      let comments = await commentsRepository(ctx.orm).findAll(info,args)
+      let comments = await commentsRepository(ctx.orm).findAll(info, args)
       comments = comments.map(c => new CommentDTO(c))
       return comments;
     },
@@ -36,13 +36,13 @@ const blogsResolvers = {
     allCommentsPaginated: async (parent, args, ctx, info) => {
       const paginatedList = await commentsRepository(ctx.orm).findAllPaginated(info, args)
       return paginatedList;
-    },  
+    },
     debugComment: async (parent, args, ctx, info) => {
       let comments = await Comment.findAll({ include: [{ model: Blog }] })
-      console.log("Comments Blog ->", await comments[0].getBlogs({raw: true}))      
+      console.log("Comments Blog ->", await comments[0].getBlogs({ raw: true }))
       comments = comments.map(c => new CommentDTO(c))
       return comments
-    },  
+    },
     allBlogsCategories: async (parent, args, ctx, info) => {
       const categories = await blogsRepository(ctx.orm).findAllCategories(info, args)
       return categories;
@@ -52,11 +52,11 @@ const blogsResolvers = {
       return timePeriods;
     },
     allBlogsRecents: async (parent, args, ctx, info) => {
-      const blogs = await blogsRepository(ctx.orm).findAllRecents(info,args)
+      const blogs = await blogsRepository(ctx.orm).findAllRecents(info, args)
       return blogs;
     },
     allCommentsRecents: async (parent, args, ctx, info) => {
-      const comments = await commentsRepository(ctx.orm).findAllRecents(info,args)
+      const comments = await commentsRepository(ctx.orm).findAllRecents(info, args)
       return comments;
     },
   },
@@ -91,7 +91,7 @@ const blogsResolvers = {
       const authors = await ctx.dataloaders.authorLoader.load({ key: parent.author_id, info })
       return authors[0];
     },
-    comments: async(parent, args, ctx, info) => {
+    comments: async (parent, args, ctx, info) => {
       let comments = await ctx.dataloaders.commentsLoader.load({ key: parent.id, info })
       comments = comments.map(c => new CommentDTO(c))
       return comments;
@@ -105,26 +105,30 @@ const blogsResolvers = {
       return tags;
     }
   },
-  Tag:{
-    blog: async (parent, args, ctx, info) => {        
-      const blogs = await ctx.dataloaders.blogsLoader.load({key: parent.id, info})
+  Tag: {
+    blog: async (parent, args, ctx, info) => {
+      const blogs = await ctx.dataloaders.blogsLoader.load({ key: parent.id, info })
       return blogs[0];
     }
   },
-  Picture:{
-    blog: async (parent, args, ctx, info) => {        
-      const blogs = await ctx.dataloaders.blogsLoader.load({key: parent.id, info})
+  Picture: {
+    blog: async (parent, args, ctx, info) => {
+      const blogs = await ctx.dataloaders.blogsLoader.load({ key: parent.id, info })
       return blogs[0];
     }
   },
-  Comment:{
-    blog: async (parent, args, ctx, info) => {            
+  Comment: {
+    blog: async (parent, args, ctx, info) => {
 
-      const owners = await ctx.dataloaders.commentsOwnerLoader.load({key: parent.id, info})
-      const blogId = owners[0].blog_id      
+      const owners = await ctx.dataloaders.commentsOwnerLoader.load({ key: parent.id, info })
+      const blogId = owners[0].blog_id
 
-      const blogs = await ctx.dataloaders.blogsLoader.load({key: blogId, info})            
+      const blogs = await ctx.dataloaders.blogsLoader.load({ key: blogId, info })
       return blogs[0];
+    },
+    parentComment: async (parent, args, ctx, info) => {
+      const comments = await ctx.dataloaders.commentsParentLoader.load({ key: parent.parentId, info })
+      return new CommentDTO(comments[0]);
     }
   }
 };

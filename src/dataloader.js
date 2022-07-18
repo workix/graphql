@@ -504,6 +504,39 @@ class JAASRoleLoader {
 }
 
 class CommentLoader {
+    static async batchParentsComments(connection, params, requestedFields) {
+        let ids = params.map(param => param.key)
+        let idsString = ids.map(v => `'${v}'`).toString();
+        let fields = requestedFields.getFields(params[0].info, { keep: ["id", "parent_id"], exclude: [] })        
+        let sql = `SELECT ${fields.toString()} FROM comments WHERE parent_id IN (${idsString}) ORDER BY id ASC;`
+
+        let comments;
+
+        try {
+            comments = await connection.sequelize.query(sql, { type: QueryTypes.SELECT });
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        const ordened = new Map()
+
+        comments.forEach(comment => {
+            ordened.set(comment.parent_id, [])
+        })
+
+        let id;
+        comments.forEach(comment => {
+            id = comment.parent_id
+            ordened.get(id).push(comment)
+        })
+
+        let response = ids.map(id => ordened.get(id))
+        response = response.map(i => i == undefined ? [] : i)       
+        
+        return Promise.resolve(response);
+    }
+
     static async batchComments(connection, params, requestedFields) {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();
@@ -713,6 +746,9 @@ export class DataLoaderFactory {
             }, { cacheKeyFn: param => param.key }),
             commentsLoader: new DataLoader(params => {
                 return CommentLoader.batchComments(this.db, params, this.requestedFields)
+            }, { cacheKeyFn: param => param.key }),
+            commentsParentLoader: new DataLoader(params => {
+                return CommentLoader.batchParentsComments(this.db, params, this.requestedFields)
             }, { cacheKeyFn: param => param.key }),
             picturesLoader: new DataLoader(params => {
                 return PictureLoader.batchPictures(this.db, params, this.requestedFields)

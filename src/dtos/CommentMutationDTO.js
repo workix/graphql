@@ -8,6 +8,7 @@ export class CreateCommentDTO {
         this.email = input.email
         this.name = input.name
         this.text = input.text   
+        this.parent_id = input.parentId
     }
 }
 
@@ -16,5 +17,6 @@ export class UpdateCommentDTO {
         this.email = input.email
         this.name = input.name
         this.text = input.text  
+        this.parent_id = input.parentId
     }
 }

@@ -7,8 +7,8 @@ import { CreateCommentDTO, UpdateCommentDTO } from '../../../dtos/CommentMutatio
 
 const commentsRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: [], exclude: ["blog"] })
-    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: [], exclude: ["blog"] })
+    const getFields = info => requestedFields.getFields(info, { keep: ["parent_id"], exclude: ["blog", "parent_comment"] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["parent_id"], exclude: ["blog", "parent_comment"] })
 
     const findAllRecents = async (info, args) => {
         const fields = getFields(info)
