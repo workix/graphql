@@ -45,7 +45,7 @@ input AuthorMediaInput {
 
 
 type PaginatedListAuthor {
-    rows: [Author]
+    authors: [Author]
     start: Int
     end: Int,
     totalPages: Int,

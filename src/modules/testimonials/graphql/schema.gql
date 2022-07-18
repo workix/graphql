@@ -28,11 +28,11 @@ input TestimonialInput {
     picture: String!
     signature: String!
     text: String!
-    author_id: Int!
+    authorId: Int!
 }
 
 type PaginatedListTestimonial {
-    rows: [Testimonial]
+    testimonials: [Testimonial]
     start: Int
     end: Int,
     totalPages: Int,

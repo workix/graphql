@@ -2,8 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class CreateUserDTO {
     constructor(input){        
-        this.createdAt = new Date()
-        this.updatedAt = new Date()
+        this.created_at = new Date()
+        this.updated_at = new Date()
         this.uuid = uuidv4()
         this.activated = input.activated
         this.email = input.email

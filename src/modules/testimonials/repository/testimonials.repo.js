@@ -72,7 +72,7 @@ const testimonialsRepository = db => {
 
         const testimonials = await Testimonial.findAll(options)
 
-        const paginatedList = new PaginatedList(testimonials, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('testimonials', testimonials, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 

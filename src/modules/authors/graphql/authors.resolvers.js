@@ -1,24 +1,27 @@
 import { Author, AuthorMedia } from '../../../models';
 import authorsRepository from "../repository/authors.repo";
+import AuthorDTO from '../../../dtos/AuthorDTO'
 
 
 const authorsResolvers = {
   Query: {
     allAuthors: async (parent, args, ctx, info) => {
-      const authors = await authorsRepository(ctx.orm).findAll(info, args)
+      let authors = await authorsRepository(ctx.orm).findAll(info, args)
+      authors = authors.map(a => new AuthorDTO(a))
       return authors;
     },
     getAuthorById: async (parent, args, ctx, info) => {
       const author = await authorsRepository(ctx.orm).findById(info, args)
-      return author;
+      return new AuthorDTO(author);
     },
     allAuthorsPaginated: async (parent, args, ctx, info) => {
       const paginatedList = await authorsRepository(ctx.orm).findAllPaginated(info, args)
       return paginatedList;
     },
     debugAuthor: async (parent, args, ctx, info) => {
-      const authors = await Author.findAll({ include: { model: AuthorMedia, as: "medias" }, where: { id: [1, 2, 3, 4, 5] } })
+      let authors = await Author.findAll({ include: { model: AuthorMedia, as: "medias" }, where: { id: [1, 2, 3, 4, 5] } })
       console.log(await authors[0].getMedias({raw: true}))
+      authors = authors.map(a => new AuthorDTO(a))      
       return authors
     }
 
@@ -26,7 +29,7 @@ const authorsResolvers = {
   Mutation: {
     createAuthor: async (parent, args, ctx, info) => {
       const author = await authorsRepository(ctx.orm).create(args)
-      return author;
+      return new AuthorDTO(author);
     },
     deleteAuthor: async (parent, args, ctx, info) => {
       const deleted = await authorsRepository(ctx.orm).destroy(args)
@@ -34,7 +37,7 @@ const authorsResolvers = {
     },
     updateAuthor: async (parent, args, ctx, info) => {
       const author = await authorsRepository(ctx.orm).update(args)
-      return author;
+      return new AuthorDTO(author);
     }
   },
   Author: {
@@ -46,7 +49,7 @@ const authorsResolvers = {
   AuthorMedia: {
     author: async (parent, args, ctx, info) => {
       const authors = await ctx.dataloaders.authorLoader.load({ key: parent.id, info })
-      return authors[0];
+      return new AuthorDTO(authors[0]);
     }
   }
 };

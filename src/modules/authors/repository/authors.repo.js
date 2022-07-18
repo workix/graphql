@@ -2,6 +2,8 @@ import { RequestedFields } from '../../../RequestedFields';
 import { Author, AuthorMedia } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import AuthorDTO from '../../../dtos/AuthorDTO';
+import { CreateAuthorDTO, UpdateAuthorDTO } from '../../../dtos/AuthorMutationDTO';
 
 const authorsRepository = db => {
     const requestedFields = new RequestedFields();
@@ -26,7 +28,8 @@ const authorsRepository = db => {
     }
 
     const create = async args => {
-        const author = await Author.create(args.input, { include: { model: AuthorMedia, as: "medias" } })
+        console.log(new CreateAuthorDTO(args.input))
+        const author = await Author.create(new CreateAuthorDTO(args.input), { include: { model: AuthorMedia, as: "medias" } })
         await author.reload()
         return author;
     }
@@ -45,7 +48,7 @@ const authorsRepository = db => {
 
         await db.sequelize.transaction(async transaction => {
             // chain all your queries here. make sure you return them.
-            const [authors, meta] = await Author.update(args.input, { where: { id: args.id }, returning: true }, { transaction })       
+            const [authors, meta] = await Author.update(new UpdateAuthorDTO(args.input), { where: { id: args.id }, returning: true }, { transaction })       
 
             await AuthorMedia.destroy({ where: { id: args.id } }, { transaction })
     
@@ -77,9 +80,10 @@ const authorsRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const authors = await Author.findAll(options)
+        let authors = await Author.findAll(options)
+        authors = authors.map(a => new AuthorDTO(a))
 
-        const paginatedList = new PaginatedList(authors, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('authors', authors, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 
