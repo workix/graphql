@@ -1,8 +1,10 @@
 const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { Member,MemberMedia } from '../../../models';
+import { Member, MemberMedia } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import MemberDTO from '../../../dtos/MemberDTO';
+import { CreateMemberDTO, UpdateMemberDTO } from '../../../dtos/MemberMutationDTO';
 
 const membersRepository = db => {
     const requestedFields = new RequestedFields();
@@ -27,7 +29,7 @@ const membersRepository = db => {
     }
 
     const create = async args => {
-        const member = await Member.create(args.input,{ include: { model: MemberMedia, as: "medias" } })
+        const member = await Member.create(new CreateMemberDTO(args.input), { include: { model: MemberMedia, as: "medias" } })
         await member.reload()
         return member;
     }
@@ -46,41 +48,42 @@ const membersRepository = db => {
 
         await db.sequelize.transaction(async transaction => {
             // chain all your queries here. make sure you return them.
-            const [members, meta] = await Member.update(args.input, { where: { id: args.id }, returning: true }, { transaction })       
+            const [members, meta] = await Member.update(new UpdateMemberDTO(args.input), { where: { id: args.id }, returning: true }, { transaction })
 
             await MemberMedia.destroy({ where: { id: args.id } }, { transaction })
-    
+
             for (const m of args.input.medias) {
                 await MemberMedia.create({ id: args.id, media: m.media, url: m.url }, { transaction })
             }
-        })     
+        })
 
         const member = await Member.findOne({ where: { id: args.id }, include: { model: MemberMedia, as: "medias" } })
 
         return member;
     }
 
-    const findAllPaginated = async (info, args) => {           
-        
-        const fields = getFieldsWithSubfields(info).get("rows")              
-        
+    const findAllPaginated = async (info, args) => {
+
+        const fields = getFieldsWithSubfields(info).get("members")
+
         const totalRows = await Member.count()
 
         const paginator = new Paginator(args.limit, args.page, totalRows);
 
         const totalPages = paginator.getTotalPages();
 
-		const start = paginator.getStart();
+        const start = paginator.getStart();
 
-		const end = paginator.getEnd();		
+        const end = paginator.getEnd();
 
         const options = { attributes: fields, order: ['id'] }
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const members = await Member.findAll(options)
+        let members = await Member.findAll(options)
+        members = members.map(m => new MemberDTO(m))
 
-        const paginatedList = new PaginatedList(members, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('members', members, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 
