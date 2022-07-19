@@ -4,6 +4,9 @@ import blogsRepository from "../repository/blogs.repo";
 import commentsRepository from "../repository/comments.repo";
 import BlogDTO from '../../../dtos/BlogDTO'
 import AuthorDTO from '../../../dtos/AuthorDTO'
+import PictureDTO from '../../../dtos/PictureDTO'
+import CategoryDTO from '../../../dtos/CategoryDTO'
+import TagDTO from '../../../dtos/TagDTO'
 
 const blogsResolvers = {
   Query: {
@@ -70,7 +73,7 @@ const blogsResolvers = {
   },
   Mutation: {
     createBlog: async (parent, args, ctx, info) => {
-      const blog = await blogsRepository(ctx.orm).create(args)      
+      const blog = await blogsRepository(ctx.orm).create(args)
       return new BlogDTO(blog);
     },
     deleteBlog: async (parent, args, ctx, info) => {
@@ -97,7 +100,7 @@ const blogsResolvers = {
   Blog: {
     author: async (parent, args, ctx, info) => {
       const authors = await ctx.dataloaders.authorLoader.load({ key: parent.authorId, info })
-      return new AuthorDTO(authors[0]) ;
+      return new AuthorDTO(authors[0]);
     },
     comments: async (parent, args, ctx, info) => {
       let comments = await ctx.dataloaders.commentsLoader.load({ key: parent.id, info })
@@ -105,15 +108,18 @@ const blogsResolvers = {
       return comments;
     },
     pictures: async (parent, args, ctx, info) => {
-      const pictures = await ctx.dataloaders.picturesLoader.load({ key: parent.id, info })
+      let pictures = await ctx.dataloaders.picturesLoader.load({ key: parent.id, info })
+      pictures = pictures.map(p => new PictureDTO(p))
       return pictures;
     },
     tags: async (parent, args, ctx, info) => {
-      const tags = await ctx.dataloaders.tagsLoader.load({ key: parent.id, info })
+      let tags = await ctx.dataloaders.tagsLoader.load({ key: parent.id, info })
+      tags = tags.map(t => new TagDTO(t))
       return tags;
     },
     categories: async (parent, args, ctx, info) => {
-      const categories = await ctx.dataloaders.categoriesLoader.load({ key: parent.id, info })
+      let categories = await ctx.dataloaders.categoriesLoader.load({ key: parent.id, info })
+      categories = categories.map(c => new CategoryDTO(c))
       return categories;
     }
   },

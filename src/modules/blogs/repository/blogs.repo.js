@@ -4,6 +4,10 @@ import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 import BlogDTO from '../../../dtos/BlogDTO';
 import { CreateBlogDTO, UpdateBlogDTO } from '../../../dtos/BlogMutationDTO'
+import { CreateCommentDTO } from '../../../dtos/CommentMutationDTO';
+import { CreateTagDTO } from '../../../dtos/TagMutationDTO';
+import { CreatePictureDTO } from '../../../dtos/PictureMutationDTO';
+import { CreateCategoryDTO } from '../../../dtos/CategoryMutationDTO';
 
 const { Sequelize, QueryTypes } = require('sequelize');
 
@@ -57,12 +61,25 @@ const blogsRepository = db => {
 
     const create = async args => {
         let blog;
+        const options = { include: [] }
+        if (args.input.comments) {
+            options.include.push({ model: Comment, as: "comments" })
+        }
+        if (args.input.pictures) {
+            options.include.push({ model: BlogPicture, as: "pictures" })
+        }
+        if (args.input.tags) {
+            options.include.push({ model: BlogTag, as: "tags" })
+        }
+        if (args.input.categories) {
+            options.include.push({ model: BlogCategory, as: "categories" })
+        }
         await db.sequelize.transaction(async transaction => {
-            blog = await Blog.create(new CreateBlogDTO(args.input), { include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" }, { model: BlogTag, as: "tags" }, { model: BlogCategory, as: "categories" },] }, { transaction })
+            blog = await Blog.create(new CreateBlogDTO(args.input), options, { transaction })
             await blog.reload()
-            
-        })  
-        return blog;      
+
+        })
+        return blog;
     }
 
     const destroy = async args => {
@@ -85,32 +102,44 @@ const blogsRepository = db => {
 
             blog = await Blog.findOne({ where: { id: args.id }, include: [{ model: Comment, as: "comments" }, { model: BlogPicture, as: "pictures" }, { model: BlogTag, as: "tags" }, { model: BlogCategory, as: "categories" },] })
 
-            await BlogComment.destroy({ where: { blog_id: args.id } }, { transaction })
-
-
-            let comment;
-            for (const c of args.input.comments) {
-                comment = await Comment.create({ email: c.email, name: c.name, text: c.text }, { transaction })
-                await blog.addComment(comment, { transaction })
+            if (args.input.comments) {
+                let comment;
+                for (const c of args.input.comments) {
+                    await BlogComment.destroy({ where: { blog_id: args.id } }, { transaction })
+                    const commentInput = { email: c.email, name: c.name, text: c.text, parentId: c.parentId }
+                    comment = await Comment.create(new CreateCommentDTO(commentInput), { transaction })
+                    await blog.addComment(comment, { transaction })
+                }
             }
 
-            await BlogTag.destroy({ where: { id: args.id } }, { transaction })
+            if (args.input.tags) {
+                await BlogTag.destroy({ where: { id: args.id } }, { transaction })
 
-            for (const t of args.input.tags) {
-                await BlogTag.create({ id: args.id, name: t.name }, { transaction })
+                for (const t of args.input.tags) {
+                    const tagInput = { id: args.id, name: t.name }
+                    await BlogTag.create(new CreateTagDTO(tagInput), { transaction })
+                }
             }
 
-            await BlogPicture.destroy({ where: { id: args.id } }, { transaction })
+            if (args.input.pictures) {
+                await BlogPicture.destroy({ where: { id: args.id } }, { transaction })
 
-            for (const p of args.input.pictures) {
-                await BlogPicture.create({ id: args.id, picture: p.picture }, { transaction })
+                for (const p of args.input.pictures) {
+                    const pictureInput = { id: args.id, picture: p.picture }
+                    await BlogPicture.create(new CreatePictureDTO(pictureInput), { transaction })
+                }
             }
 
-            await BlogCategory.destroy({ where: { id: args.id } }, { transaction })
+            if (args.input.categories) {
+                await BlogCategory.destroy({ where: { id: args.id } }, { transaction })
 
-            for (const c of args.input.categories) {
-                await BlogCategory.create({ id: args.id, category: c.category }, { transaction })
+                for (const c of args.input.categories) {
+                    const categoryInput = { id: args.id, category: c.category }
+                    await BlogCategory.create(new CreateCategoryDTO(categoryInput), { transaction })
+                }
             }
+
+
         })
 
         return blog;
