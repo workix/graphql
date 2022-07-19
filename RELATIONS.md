@@ -5,10 +5,13 @@
 
 ## Blog
 - [x] - Many Blog's has One Author
-- [x] - One Blog has Many
-Pictures
+- [x] - One Blog has Many Pictures
 - [x] - One Blog has Many Comment's
 - [x] - One Blog has Many Tags
+- [x] - One Blog has Many Categories
+
+## Comment
+- [x] - One Comment has One ParentComment
 
 ## Candidate
 - [x] - One Candidate has One User

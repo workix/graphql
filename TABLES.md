@@ -6,6 +6,7 @@
  - [x] - Blog Comments
  - [x] - Blog Pictures
  - [x] - Blog Tags 
+ - [x] - Blog Categories 
  - [x] - Candidate
  - [x] - Company
  - [x] - Company Medias
@@ -29,10 +30,10 @@
 
 ## Author Fields
   - [x] - id
-  - [x] - createdAt
-  - [x] - updatedAt
+  - [x] - created_at
+  - [x] - updated_at
   - [x] - uuid
-  - [x] - aboutText
+  - [x] - about_text
   - [x] - name
   - [x] - picture
 
@@ -43,8 +44,8 @@
 
 ## Blog
   - [x] - id
-  - [x] - createdAt
-  - [x] - updatedAt
+  - [x] - created_at
+  - [x] - updated_at
   - [x] - uuid
   - [x] - category
   - [x] - citation
@@ -56,54 +57,59 @@
 
 ## Comment
   - [x] - id
-  - [x] - createdAt
-  - [x] - updatedAt
+  - [x] - created_at
+  - [x] - updated_at
   - [x] - uuid
   - [x] - email
   - [x] - name
   - [x] - text
+  - [x] - parent_id
 
 ## Blog Comments
-  - [x] - Blog_id
-  - [x] - comments_id
+  - [x] - blog_id
+  - [x] - comment_id
 
 ## Blog Pictures
   - [x] - id -> references Blog(id)
-  - [x] - pictures
+  - [x] - picture
 
 ## Blog Pictures
   - [x] - id -> references Blog(id)
   - [x] - name
 
+## Blog Categories
+  - [x] - id -> references Blog(id)
+  - [x] - category
+
 ## Candidate
  - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
+ - [x] - created_at
+ - [x] - updated_at
  - [x] - uuid
- - [x] - mobilePhone
+ - [x] - mobile_phone
  - [x] - city
- - [x] - estate
+ - [x] - state
  - [x] - neighborhood
  - [x] - number
  - [x] - street
- - [x] - zipCode
+ - [x] - zip_code
  - [x] - name
- - [x] - birthDate
+ - [x] - birth_date
  - [x] - cpf
  - [x] - user_id -> references User(id)
 
 ## Company
  - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
+ - [x] - created_at
+ - [x] - updated_at
  - [x] - uuid
- - [x] - mobilePhone
+ - [x] - mobile_phone
  - [x] - city
- - [x] - estate
+ - [x] - state
  - [x] - neighborhood
  - [x] - number
  - [x] - street
- - [x] - zipCode
+ - [x] - zip_code
  - [x] - name
  - [x] - cnpj
  - [x] - description
@@ -118,8 +124,8 @@
 
 ## Form
  - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
+ - [x] - created_at
+ - [x] - updated_at
  - [x] - uuid
  - [x] - email
  - [x] - message
@@ -140,34 +146,34 @@
 
 ## Job
  - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
+ - [x] - created_at
+ - [x] - updated_at
  - [x] - uuid
- - [x] - active
+ - [x] - activated
  - [x] - benefits
  - [x] - description
  - [x] - feature
- - [x] - jobCategory
- - [x] - jobType
- - [x] - maxPayment
- - [x] - minPayment
+ - [x] - job_category [enum]
+ - [x] - job_type [enum]
+ - [x] - max_payment
+ - [x] - min_payment
  - [x] - requirement
  - [x] - title
  - [x] - company_id
 
 ## Job Candidates
- - [x] - Job_id
- - [x] - candidates_id
+ - [x] - job_id
+ - [x] - candidate_id
 
 ## Member
  - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
+ - [x] - created_at
+ - [x] - updated_at
  - [x] - uuid
  - [x] - name
  - [x] - occupation
  - [x] - picture
- - [x] - shortText
+ - [x] - short_text
 
 ## Member
  - [x] - id -> references Member(id)
@@ -176,10 +182,10 @@
 
  ## Resume
  - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
+ - [x] - created_at
+ - [x] - updated_at
  - [x] - uuid
- - [x] - carrerLevel [enum]
+ - [x] - carrer_level [enum]
  - [x] - content
  - [x] - objective
  - [x] - presence [enum]
@@ -188,52 +194,52 @@
  ## Resume Educations
  - [x] - id -> references Resume(id)
  - [x] - description
- - [x] - endDate
+ - [x] - end_date
  - [x] - qualification
- - [x] - schoolName
- - [x] - startDate
+ - [x] - school_name
+ - [x] - start_date
 
  ## Resume Experiences
  - [x] - id -> references Resume(id)
  - [x] - description
- - [x] - employerName
- - [x] - endDate
+ - [x] - employer_name
+ - [x] - end_date
  - [x] - jobTitle
- - [x] - startDate
+ - [x] - start_date
  - [x] - responsibilities
 
  ## Resume Skills
  - [x] - id -> references Resume(id)
- - [x] - skillName
+ - [x] - skill_name
  - [x] - months
 
  ## Selective Process
  - [x] - id
- - [x] - active
- - [x] - createdAt
- - [x] - disabledAt
- - [x] - expire
- - [x] - maxCandidates
- - [x] - start
- - [x] - updatedAt
+ - [x] - activated
+ - [x] - created_at
+ - [x] - disabled_at
+ - [x] - expires_in
+ - [x] - max_candidates
+ - [x] - starts_in
+ - [x] - updated_at
  - [x] - uuid
  - [x] - job_id
 
  ## Selective Process Candidates
  - [x] - sp_id -> references Selective Process(id)
- - [x] - candidate -> references Candidate(id)
+ - [x] - candidate_id -> references Candidate(id)
 
 ## Subscriber
  - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
+ - [x] - created_at
+ - [x] - updated_at
  - [x] - uuid
  - [x] - email
 
  ## Testimonial
  - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
+ - [x] - created_at
+ - [x] - updated_at
  - [x] - uuid
  - [x] - picture
  - [x] - signature
@@ -242,13 +248,13 @@
 
 ## User
  - [x] - id
- - [x] - createdAt
- - [x] - updatedAt
+ - [x] - created_at
+ - [x] - updated_at
  - [x] - uuid
- - [x] - active
+ - [x] - activated
  - [x] - email
- - [x] - firebaseMessageToken
- - [x] - firebaseUUID
+ - [x] - firebase_message_token
+ - [x] - firebase_uuid
 
 
 
