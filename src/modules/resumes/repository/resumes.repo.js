@@ -5,9 +5,9 @@ import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 import ResumeDTO from '../../../dtos/ResumeDTO';
 import { CreateResumeDTO, UpdateResumeDTO } from '../../../dtos/ResumeMutationDTO'
-import { UpdateEducationDTO } from '../../../dtos/EducationsMutationDTO'
-import { UpdateExperienceDTO } from '../../../dtos/ExperienceMutationDTO'
-import { UpdateSkillDTO } from '../../../dtos/SkillMutationDTO'
+import { CreateEducationDTO } from '../../../dtos/EducationsMutationDTO'
+import { CreateExperienceDTO } from '../../../dtos/ExperienceMutationDTO'
+import { CreateSkillDTO } from '../../../dtos/SkillMutationDTO'
 const resumesRepository = db => {
     const requestedFields = new RequestedFields();
     const getFields = info => requestedFields.getFields(info, { keep: ["candidate_id", "id"], exclude: ["candidate", "educations", "experiences", "skills"] })
@@ -31,7 +31,17 @@ const resumesRepository = db => {
     }
 
     const create = async args => {
-        const resume = await Resume.create(new CreateResumeDTO(args.input), { include: [{ model: ResumeExperience, as: "experiences" }, { model: ResumeEducation, as: "educations" }, { model: ResumeSkill, as: "skills" }] })
+        const options = { include: [] };
+        if (args.input.experiences) {
+            options.include.push({ model: ResumeExperience, as: "experiences" })
+        }
+        if (args.input.educations){
+            options.include.push({ model: ResumeEducation, as: "educations" })
+        }
+        if (args.input.skills) {
+            options.include.push({ model: ResumeSkill, as: "skills" })
+        }
+        const resume = await Resume.create(new CreateResumeDTO(args.input), options)
         await resume.reload()
         return resume;
     }
@@ -60,7 +70,7 @@ const resumesRepository = db => {
 
                 for (const e of args.input.educations) {
                     const educationInput = { id: args.id, description: e.description, endDate: e.endDate, qualification: e.qualification, schoolName: e.schoolName, startDate: e.startDate }
-                    await ResumeEducation.create(new UpdateEducationDTO(educationInput), { transaction })
+                    await ResumeEducation.create(new CreateEducationDTO(educationInput), { transaction })
                 }
             }
 
@@ -69,7 +79,7 @@ const resumesRepository = db => {
 
                 for (const e of args.input.experiences) {
                     const experienceInput = { id: args.id, description: e.description, employerName: e.employerName, endDate: e.endDate, jobTitle: e.jobTitle, responsibilities: e.responsibilities, startDate: e.startDate }
-                    await ResumeExperience.create(new UpdateExperienceDTO(experienceInput), { transaction })
+                    await ResumeExperience.create(new CreateExperienceDTO(experienceInput), { transaction })
                 }
             }
 
@@ -78,7 +88,7 @@ const resumesRepository = db => {
 
                 for (const s of args.input.skills) {
                     const skillInput = { id: args.id, months: s.months, skillName: s.skillName }
-                    await ResumeSkill.create(new UpdateSkillDTO(skillInput), { transaction })
+                    await ResumeSkill.create(new CreateSkillDTO(skillInput), { transaction })
                 }
             }
         })

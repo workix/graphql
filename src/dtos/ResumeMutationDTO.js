@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { CreateEducationDTO , UpdateEducationDTO} from './EducationsMutationDTO';
+import { CreateEducationDTO, UpdateEducationDTO } from './EducationsMutationDTO';
 import { CreateExperienceDTO, UpdateExperienceDTO } from './ExperienceMutationDTO';
 import { CreateSkillDTO, UpdateSkillDTO } from './SkillMutationDTO';
 
@@ -13,9 +13,9 @@ export class CreateResumeDTO {
         this.objective = input.objective
         this.presence = input.presence
         this.candidate_id = input.candidateId
-        this.educations = input.educations.map(e => new CreateEducationDTO(e))
-        this.experiences = input.experiences.map(e => new CreateExperienceDTO(e))
-        this.skills = input.skills.map(s => new CreateSkillDTO(s))
+        this.educations = input.educations ? input.educations.map(e => new CreateEducationDTO(e)) : null
+        this.experiences = input.experiences ? input.experiences.map(e => new CreateExperienceDTO(e)) : null
+        this.skills = input.skills ? input.skills.map(s => new CreateSkillDTO(s)) : null
     }
 }
 
@@ -26,8 +26,8 @@ export class UpdateResumeDTO {
         this.objective = input.objective
         this.presence = input.presence
         this.candidate_id = input.candidateId
-        this.educations = input.educations.map(e => new UpdateEducationDTO(e))
-        this.experiences = input.experiences.map(e => new UpdateExperienceDTO(e))
-        this.skills = input.skills.map(s => new UpdateSkillDTO(s))
+        this.educations = input.educations ? input.educations.map(e => new UpdateEducationDTO(e)) : null
+        this.experiences = input.experiences ? input.experiences.map(e => new UpdateExperienceDTO(e)) : null
+        this.skills = input.skills ? input.skills.map(s => new UpdateSkillDTO(s)) : null
     }
 }
