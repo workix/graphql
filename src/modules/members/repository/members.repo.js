@@ -5,6 +5,8 @@ import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 import MemberDTO from '../../../dtos/MemberDTO';
 import { CreateMemberDTO, UpdateMemberDTO } from '../../../dtos/MemberMutationDTO';
+import { upperFirst } from 'lodash';
+import { CreateMediaDTO } from '../../../dtos/MediaMutationDTO';
 
 const membersRepository = db => {
     const requestedFields = new RequestedFields();
@@ -29,7 +31,8 @@ const membersRepository = db => {
     }
 
     const create = async args => {
-        const member = await Member.create(new CreateMemberDTO(args.input), { include: { model: MemberMedia, as: "medias" } })
+        const options = args.input.medias ? { include: { model: MemberMedia, as: "medias" } } : {}
+        const member = await Member.create(new CreateMemberDTO(args.input), options)
         await member.reload()
         return member;
     }
@@ -48,13 +51,17 @@ const membersRepository = db => {
 
         await db.sequelize.transaction(async transaction => {
             // chain all your queries here. make sure you return them.
-            const [members, meta] = await Member.update(new UpdateMemberDTO(args.input), { where: { id: args.id }, returning: true }, { transaction })
+            const [members, meta] = await Member.update(new UpdateMemberDTO(args.input), { where: { id: args.id }, returning: true }, { transaction })          
 
-            await MemberMedia.destroy({ where: { id: args.id } }, { transaction })
+            if (args.input.medias) {
+                await MemberMedia.destroy({ where: { id: args.id } }, { transaction })
 
-            for (const m of args.input.medias) {
-                await MemberMedia.create({ id: args.id, media: m.media, url: m.url }, { transaction })
+                for (const m of args.input.medias) {
+                    const mediaInput = { id: args.id, media: m.media, url: m.url }
+                    await MemberMedia.create(new CreateMediaDTO(mediaInput), { transaction })
+                }
             }
+
         })
 
         const member = await Member.findOne({ where: { id: args.id }, include: { model: MemberMedia, as: "medias" } })

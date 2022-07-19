@@ -17,7 +17,7 @@
  - [] - Job - [ListDTO] - [MutationDTO]
  - [] - Job Candidates - [ListDTO] - [MutationDTO]
  - [x] - Member - [ListDTO] - [MutationDTO]
- - [] - Member Medias - [ListDTO] - [MutationDTO]
+ - [x] - Member Medias - [ListDTO] - [MutationDTO]
  - [x] - Resume - [ListDTO] - [MutationDTO]
  - [x] - Resume Educations - [ListDTO] - [MutationDTO]
  - [x] - Resume Experiences - [ListDTO] - [MutationDTO]

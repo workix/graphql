@@ -1,6 +1,7 @@
 import MemberDTO from "../../../dtos/MemberDTO";
 import membersRepository from "../repository/members.repo";
 // import { Member } from '../../../models';
+import MediaDTO from '../../../dtos/MediaDTO'
 
 const membersResolvers = {
   Query: {
@@ -34,7 +35,8 @@ const membersResolvers = {
   },
   Member: {
     medias: async (parent, args, ctx, info) => {
-      const medias = await ctx.dataloaders.memberMediaLoader.load({ key: parent.id, info })
+      let medias = await ctx.dataloaders.memberMediaLoader.load({ key: parent.id, info })
+      medias = medias.map(m => new MediaDTO(m))
       return medias;
     }
   },
