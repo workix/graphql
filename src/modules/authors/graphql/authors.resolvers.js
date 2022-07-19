@@ -1,6 +1,7 @@
 import { Author, AuthorMedia } from '../../../models';
 import authorsRepository from "../repository/authors.repo";
 import AuthorDTO from '../../../dtos/AuthorDTO'
+import MediaDTO from '../../../dtos/MediaDTO'
 
 
 const authorsResolvers = {
@@ -42,7 +43,8 @@ const authorsResolvers = {
   },
   Author: {
     medias: async (parent, args, ctx, info) => {
-      const medias = await ctx.dataloaders.mediaLoader.load({ key: parent.id, info })
+      let medias = await ctx.dataloaders.mediaLoader.load({ key: parent.id, info })
+      medias = medias.map(m => new MediaDTO(m))
       return medias;
     }
   },

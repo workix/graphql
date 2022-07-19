@@ -1,6 +1,6 @@
 # DTO's MIGRATED
  - [x] - Author - [ListDTO] - [MutationDTO]
- - [] - Author Medias - [ListDTO] - [MutationDTO]
+ - [x] - Author Medias - [ListDTO] - [MutationDTO]
  - [x] - Blog - [ListDTO] - [MutationDTO]
  - [x] - Comment - [ListDTO] - [MutationDTO]
  - [] - Blog Comments - [ListDTO] - [MutationDTO]

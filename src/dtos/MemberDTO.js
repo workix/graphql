@@ -7,7 +7,6 @@ export default class MemberDTO {
         this.name = member.name
         this.occupation = member.occupation
         this.picture = member.picture
-        this.shortText = member.short_text
-        // this.medias = member.medias
+        this.shortText = member.short_text        
     }
 }

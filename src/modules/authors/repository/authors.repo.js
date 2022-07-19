@@ -4,6 +4,7 @@ import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 import AuthorDTO from '../../../dtos/AuthorDTO';
 import { CreateAuthorDTO, UpdateAuthorDTO } from '../../../dtos/AuthorMutationDTO';
+import { CreateMediaDTO, UpdateMediaDTO } from '../../../dtos/MediaMutationDTO';
 
 const authorsRepository = db => {
     const requestedFields = new RequestedFields();
@@ -27,8 +28,9 @@ const authorsRepository = db => {
         return author;
     }
 
-    const create = async args => {        
-        const author = await Author.create(new CreateAuthorDTO(args.input), { include: { model: AuthorMedia, as: "medias" } })
+    const create = async args => {
+        const options = args.input.medias ? { include: { model: AuthorMedia, as: "medias" } } : {}
+        const author = await Author.create(new CreateAuthorDTO(args.input), options)
         await author.reload()
         return author;
     }
@@ -47,14 +49,18 @@ const authorsRepository = db => {
 
         await db.sequelize.transaction(async transaction => {
             // chain all your queries here. make sure you return them.
-            const [authors, meta] = await Author.update(new UpdateAuthorDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true }, { transaction })       
+            const [authors, meta] = await Author.update(new UpdateAuthorDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true }, { transaction })
 
             await AuthorMedia.destroy({ where: { id: args.id } }, { transaction })
-    
-            for (const m of args.input.medias) {
-                await AuthorMedia.create({ id: args.id, media: m.media, url: m.url }, { transaction })
+
+            if (args.input.medias){
+                for (const m of args.input.medias) {
+                    const mediaInput = { id: args.id, media: m.media, url: m.url }
+                    await AuthorMedia.create(new CreateMediaDTO(mediaInput), { transaction })
+                }
             }
-        })     
+            
+        })
 
         const author = await Author.findOne({ where: { id: args.id }, include: { model: AuthorMedia, as: "medias" } })
 
@@ -63,7 +69,7 @@ const authorsRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("authors")        
+        const fields = getFieldsWithSubfields(info).get("authors")
 
         const totalRows = await Author.count()
 
