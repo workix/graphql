@@ -21,7 +21,7 @@ type Company {
     uuid: String
     mobilePhone: Int
     city: String
-    estate: String
+    state: String
     neighborhood: String
     number: String
     street: String
@@ -38,7 +38,7 @@ type Company {
 input CompanyInput {    
     mobilePhone: Int!
     city: String!
-    estate: String!
+    state: String!
     neighborhood: String!
     number: String!
     street: String!
@@ -48,7 +48,7 @@ input CompanyInput {
     description: String!
     logo: String!
     segment: String!
-    user_id: Int!
+    userId: Int!
     medias: [CompanyMediaInput]  
 }
 
@@ -63,7 +63,7 @@ input CompanyMediaInput {
   }  
 
   type PaginatedListCompany {
-    rows: [Company]
+    companies: [Company]
     start: Int
     end: Int,
     totalPages: Int,
