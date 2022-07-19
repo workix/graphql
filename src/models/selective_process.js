@@ -58,8 +58,9 @@ module.exports = function(sequelize, DataTypes) {
       afterCreate(instance, options){
         console.log("HOOK After create")
       },
-      beforeUpdate(instance, options){
-        instance.updatedAt = Date.now()
+      beforeBulkUpdate(instance, options){
+        console.log("HOOK beforeUpdate")
+        instance.attributes.updated_at = Date.now()
       }
     }
   });

@@ -18,12 +18,12 @@ type Mutation {
 
 type SelectiveProcess {
     id: ID,
-    active: Boolean
+    activated: Boolean
     createdAt: DateTime
     disabledAt: DateTime
-    expire: DateTime
+    expiresIn: DateTime
     maxCandidates: Int
-    start: DateTime
+    startsIn: DateTime
     updatedAt: DateTime
     uuid: String
     job: Job
@@ -31,16 +31,16 @@ type SelectiveProcess {
 }
 
 input SelectiveProcessInput {
-    active: Boolean!
+    activated: Boolean!
     disabledAt: DateTime
-    expire: DateTime
+    expiresIn: DateTime
     maxCandidates: Int!
-    start: DateTime!
-    job_id: Int!
+    startsIn: DateTime!
+    jobId: Int!
 }
 
 type PaginatedListSelectiveProcess {
-    rows: [SelectiveProcess]
+    selectiveProcesses: [SelectiveProcess]
     start: Int
     end: Int,
     totalPages: Int,

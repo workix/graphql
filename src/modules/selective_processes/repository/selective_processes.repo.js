@@ -1,8 +1,10 @@
 const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
-import { SelectiveProcess,SelectiveProcessCandidate } from '../../../models';
+import { SelectiveProcess, SelectiveProcessCandidate } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import SelectiveProcessDTO from '../../../dtos/SelectiveProcessDTO';
+import { CreateSelectiveProcessDTO, UpdateSelectiveProcessDTO } from '../../../dtos/SelectiveProcessMutationDTO'
 
 const selectiveProcessesRepository = db => {
     const requestedFields = new RequestedFields();
@@ -27,7 +29,7 @@ const selectiveProcessesRepository = db => {
     }
 
     const create = async args => {
-        const selectiveProcess = await SelectiveProcess.create(args.input)
+        const selectiveProcess = await SelectiveProcess.create(new CreateSelectiveProcessDTO(args.input))
         await selectiveProcess.reload()
         return selectiveProcess;
     }
@@ -44,35 +46,36 @@ const selectiveProcessesRepository = db => {
             throw new Error(`SelectiveProcess with id: ${args.id} not found`)
         }
 
-        const [selectiveProcesses, meta] = await SelectiveProcess.update(args.input, { where: { id: args.id }, returning: true })       
+        const [selectiveProcesses, meta] = await SelectiveProcess.update(new UpdateSelectiveProcessDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true  })
 
         const selectiveProcess = await SelectiveProcess.findOne({ where: { id: args.id } })
 
         return selectiveProcess;
     }
 
-    const findAllPaginated = async (info, args) => {           
-        
-        const fields = getFieldsWithSubfields(info).get("rows")  
-        fields.push("job_id")            
-        
+    const findAllPaginated = async (info, args) => {
+
+        const fields = getFieldsWithSubfields(info).get("selectiveProcesses")
+        fields.push("job_id")
+
         const totalRows = await SelectiveProcess.count()
 
         const paginator = new Paginator(args.limit, args.page, totalRows);
 
         const totalPages = paginator.getTotalPages();
 
-		const start = paginator.getStart();
+        const start = paginator.getStart();
 
-		const end = paginator.getEnd();		
+        const end = paginator.getEnd();
 
         const options = { attributes: fields, order: ['id'] }
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const selectiveProcesses = await SelectiveProcess.findAll(options)
+        let selectiveProcesses = await SelectiveProcess.findAll(options)
+        selectiveProcesses = selectiveProcesses.map(sp => new SelectiveProcessDTO(sp))
 
-        const paginatedList = new PaginatedList(selectiveProcesses, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('selectiveProcesses', selectiveProcesses, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 
@@ -84,29 +87,29 @@ const selectiveProcessesRepository = db => {
     const findMySPSubscribed = async (info, args, ctx) => {
 
         const selectiveProcesses = await db.sequelize.query(`
-        SELECT DISTINCT j.id, sp.* FROM selective_processes sp
+        SELECT DISTINCT sp.* FROM selective_processes sp
         LEFT JOIN jobs j ON sp.job_id = j.id
         LEFT JOIN selective_processes_candidates spc ON sp.id = spc.sp_id
         LEFT JOIN candidates ON spc.candidate_id = candidates.id
         LEFT JOIN users u ON candidates.user_id = u.id
-                         WHERE u.firebaseUUID = :firebaseUUID ORDER BY j.id`, {
-                            replacements: { firebaseUUID: ctx.user.firebaseUUID },
-                            type: QueryTypes.SELECT
-                          })
+                         WHERE u.firebase_uuid = :firebase_uuid ORDER BY sp.id`, {
+            replacements: { firebase_uuid: ctx.user.firebase_uuid },
+            type: QueryTypes.SELECT
+        })
         return selectiveProcesses;
     }
 
     const findMySPs = async (info, args, ctx) => {
 
         const selectiveProcesses = await db.sequelize.query(`
-        SELECT DISTINCT j.id, sp.* FROM selective_processes sp 
+        SELECT DISTINCT sp.* FROM selective_processes sp 
         LEFT JOIN jobs j ON sp.job_id = j.id 
         LEFT JOIN companies c ON j.company_id = c.id 
         LEFT JOIN users u ON c.user_id = u.id 
-                         WHERE u.firebaseUUID = :firebaseUUID ORDER BY j.id`, {
-                            replacements: { firebaseUUID: ctx.user.firebaseUUID },
-                            type: QueryTypes.SELECT
-                          })
+                         WHERE u.firebase_uuid = :firebase_uuid ORDER BY sp.id`, {
+            replacements: { firebase_uuid: ctx.user.firebase_uuid },
+            type: QueryTypes.SELECT
+        })
         return selectiveProcesses;
     }
 
