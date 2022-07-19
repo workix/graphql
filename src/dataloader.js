@@ -441,7 +441,7 @@ class CandidateLoader {
         let ids = params.map(param => param.key)
         let idsString = ids.map(v => `'${v}'`).toString();        
         
-        let sql = `SELECT Job_id as job_id, candidates_id as candidate_id FROM jobs_candidates WHERE Job_id IN (${idsString}) ORDER BY Job_id ASC;`;
+        let sql = `SELECT job_id as job_id, candidate_id as candidate_id FROM jobs_candidates WHERE job_id IN (${idsString}) ORDER BY job_id ASC;`;
 
         let candidates;
 

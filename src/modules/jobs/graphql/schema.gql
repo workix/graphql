@@ -26,10 +26,10 @@ type Job {
     createdAt: DateTime
     updatedAt: DateTime
     uuid: String
-    active: Boolean
+    activated: Boolean
     benefits: String
     description: String
-    feature: Boolean
+    featured: Boolean
     jobCategory: JobCategory
     jobType: JobType
     maxPayment: Float
@@ -41,17 +41,17 @@ type Job {
 }
 
 input JobInput {
-    active: Boolean!
+    activated: Boolean!
     benefits: String!
     description: String!
-    feature: Boolean!
+    featured: Boolean!
     jobCategory: JobCategory!
     jobType: JobType!
     maxPayment: Float!
     minPayment: Float!
     requirement: String!
     title: String!
-    company_id: Int!
+    companyId: Int!
 }
 
 enum JobCategory {
@@ -64,7 +64,7 @@ enum JobType {
 
 
 type PaginatedListJob {
-    rows: [Job]
+    jobs: [Job]
     start: Int
     end: Int,
     totalPages: Int,
