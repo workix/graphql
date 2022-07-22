@@ -3,6 +3,8 @@ import { RequestedFields } from '../../../RequestedFields';
 import { JAASUser, JAASRole } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import JAASUserDTO from '../../../dtos/JAASUserDTO';
+import { CreateJAASUserDTO, UpdateJAASUserDTO } from '../../../dtos/JAASUserMutationDTO'
 
 const jaasUsersRepository = db => {
     const requestedFields = new RequestedFields();
@@ -31,7 +33,8 @@ const jaasUsersRepository = db => {
         try {
             await db.sequelize.transaction(async transaction => {
                 // { include: { model: JAASRole, as: "roles" } }
-                jaasUser = await JAASUser.create(args.input, { transaction })
+                jaasUser = await JAASUser.create(new CreateJAASUserDTO(args.input) , { transaction })
+                
                 if (args.input.roles) {
                     for (let r of args.input.roles) {
                         const role = await JAASRole.findByPk(r.name, { transaction })
@@ -68,13 +71,15 @@ const jaasUsersRepository = db => {
         }
 
         await db.sequelize.transaction(async transaction => {
-            const [jaasUsers, meta] = await JAASUser.update(args.input, { where: { id: args.id }, returning: true }, { transaction })
+            const [jaasUsers, meta] = await JAASUser.update(new UpdateJAASUserDTO(args.input), { where: { id: args.id }, returning: true }, { transaction })
 
-            jaasUser = await JAASUser.findOne({ where: { id: args.id }, include: { model: JAASRole, as: "roles" } }, { transaction })
-
-            jaasUser.roles.forEach(async r => await jaasUser.removeRole(r, { transaction }))
+            jaasUser = await JAASUser.findOne({ where: { id: args.id }, include: { model: JAASRole, as: "roles" } }, { transaction })            
 
             if (args.input.roles) {
+                for(let r of jaasUser.roles){
+                    await jaasUser.removeRole(r, { transaction })
+                }               
+
                 for (let r of args.input.roles) {
                     const role = await JAASRole.findByPk(r.name, { transaction })
                     await jaasUser.addRole(role, { transaction })
@@ -87,7 +92,7 @@ const jaasUsersRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("rows")
+        const fields = getFieldsWithSubfields(info).get("jaasUsers")
 
         const totalRows = await JAASUser.count()
 
@@ -103,9 +108,10 @@ const jaasUsersRepository = db => {
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const jaasUsers = await JAASUser.findAll(options)
+        let jaasUsers = await JAASUser.findAll(options)
+        jaasUsers = jaasUsers.map(u => new JAASUserDTO(u))
 
-        const paginatedList = new PaginatedList(jaasUsers, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('jaasUsers', jaasUsers, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 

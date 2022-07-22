@@ -41,7 +41,7 @@ type JAASRole {
 }
 
 type PaginatedListJAASUser {
-    rows: [JAASUser]
+    jaasUsers: [JAASUser]
     start: Int
     end: Int,
     totalPages: Int,
@@ -51,7 +51,7 @@ type PaginatedListJAASUser {
 }
 
 type PaginatedListJAASRole {
-    rows: [JAASRole]
+    jaasRoles: [JAASRole]
     start: Int
     end: Int,
     totalPages: Int,

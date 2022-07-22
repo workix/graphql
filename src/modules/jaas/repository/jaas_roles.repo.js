@@ -3,6 +3,8 @@ import { RequestedFields } from '../../../RequestedFields';
 import { JAASRole } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
+import JAASRoleDTO from '../../../dtos/JAASRoleDTO';
+import { CreateJAASRoleDTO, UpdateJAASRoleDTO } from '../../../dtos/JAASRoleMutationDTO'
 
 const jaasRolesRepository = db => {
     const requestedFields = new RequestedFields();
@@ -27,7 +29,7 @@ const jaasRolesRepository = db => {
     }
 
     const create = async args => {
-        const jaasRole = await JAASRole.create(args.input)
+        const jaasRole = await JAASRole.create(new CreateJAASRoleDTO(args.input))
         await jaasRole.reload()
         return jaasRole;
     }
@@ -45,34 +47,35 @@ const jaasRolesRepository = db => {
             throw new Error(`JAASRole with name: ${args.name} not found`)
         }
 
-        const [jaasRoles, meta] = await JAASRole.update(args.input, { where: { name: args.name }, returning: true })        
+        const [jaasRoles, meta] = await JAASRole.update(new UpdateJAASRoleDTO(args.input) , { where: { name: args.name }, returning: true })
 
         const jaasRole = await JAASRole.findOne({ where: { name: args.input.name } })
 
         return jaasRole;
     }
 
-    const findAllPaginated = async (info, args) => {           
-        
-        const fields = getFieldsWithSubfields(info).get("rows")              
-        
+    const findAllPaginated = async (info, args) => {
+
+        const fields = getFieldsWithSubfields(info).get("jaasRoles")
+
         const totalRows = await JAASRole.count()
 
         const paginator = new Paginator(args.limit, args.page, totalRows);
 
         const totalPages = paginator.getTotalPages();
 
-		const start = paginator.getStart();
+        const start = paginator.getStart();
 
-		const end = paginator.getEnd();		
+        const end = paginator.getEnd();
 
         const options = { attributes: fields, order: ['name'] }
         options.offset = start - 1;
         options.limit = args.limit;
 
-        const jaasRoles = await JAASRole.findAll(options)
+        let jaasRoles = await JAASRole.findAll(options)
+        jaasRoles = jaasRoles.map(r => new JAASRoleDTO(r))
 
-        const paginatedList = new PaginatedList(jaasRoles, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
+        const paginatedList = new PaginatedList('jaasRoles', jaasRoles, start, end, totalPages, paginator.getCurrentPage(), paginator.getLimitRows(), paginator.getMaxRows())
         return paginatedList;
     }
 
