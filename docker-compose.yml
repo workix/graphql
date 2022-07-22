@@ -14,6 +14,16 @@ services:
       - 5432:5432
     networks:
       - es-net  
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine    
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - "./.redis_data:/data"      
+    networks:
+      - es-net
   elasticsearch:
     container_name: es-container
     image: docker.elastic.co/elasticsearch/elasticsearch:7.11.0

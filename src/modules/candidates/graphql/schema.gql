@@ -3,6 +3,7 @@ scalar DateTime
 
 type Query {
     allCandidates(start: Int, max: Int): [Candidate]
+    allCandidatesRedis: [Candidate]
     getCandidateById(id: ID!): Candidate
     allCandidatesPaginated(page: Int!, limit: Int!): PaginatedListCandidate
 }

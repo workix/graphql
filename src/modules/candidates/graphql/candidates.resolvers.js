@@ -3,11 +3,27 @@ import notification from "../services/notification.service";
 import CandidateDTO from '../../../dtos/CandidateDTO'
 import UserDTO from '../../../dtos/UserDTO'
 import ResumeDTO from '../../../dtos/ResumeDTO'
+import { setRedis, getRedis, redisClient } from '../../../factory/redis_server'
 
 const candidatesResolvers = {
   Query: {
     allCandidates: async (parent, args, ctx, info) => {
       let candidates = await candidatesRepository(ctx.orm).findAll(info, args)
+      candidates = candidates.map(c => new CandidateDTO(c))
+      return candidates;
+    },
+    allCandidatesRedis: async (parent, args, ctx, info) => {     
+
+      const keys = await redisClient.keys('candidate*');     
+
+      let parsedValues;
+
+      if (keys) {
+        const values = await redisClient.mget(keys);
+        parsedValues = values.map(v => JSON.parse(v))
+      }
+      
+      let candidates = parsedValues || [];
       candidates = candidates.map(c => new CandidateDTO(c))
       return candidates;
     },
@@ -24,14 +40,20 @@ const candidatesResolvers = {
   Mutation: {
     createCandidate: async (parent, args, ctx, info) => {
       const candidate = await candidatesRepository(ctx.orm).create(args)
+      // candidate-${idCandidate}
+      await setRedis(`candidate-${candidate.id}`, JSON.stringify(candidate));
       return new CandidateDTO(candidate);
     },
     deleteCandidate: async (parent, args, ctx, info) => {
       const deleted = await candidatesRepository(ctx.orm).destroy(args)
+      // candidate-${idCandidate}
+      await setRedis(`candidate-${args.id}`, null);
       return deleted;
     },
     updateCandidate: async (parent, args, ctx, info) => {
       const candidate = await candidatesRepository(ctx.orm).update(args)
+      // candidate-${idCandidate}
+      await setRedis(`candidate-${candidate.id}`, JSON.stringify(candidate));
       return new CandidateDTO(candidate);
     },
     notifyCandidate: async (parent, args, ctx, info) => {
