@@ -5,6 +5,7 @@ type Query {
     allCandidates(start: Int, max: Int): [Candidate]
     allCandidatesRedis: [Candidate]
     getCandidateById(id: ID!): Candidate
+    findCandidateByUserId(userId: ID!): Candidate
     allCandidatesPaginated(page: Int!, limit: Int!): PaginatedListCandidate
 }
 
@@ -20,18 +21,26 @@ type Candidate {
     createdAt: DateTime
     updatedAt: DateTime
     uuid: String
+    contact: Contact
+    locale: Locale
+    name: String
+    birthDate: Date
+    cpf: Float   
+    user: User 
+    resume: Resume
+}
+
+type Contact {
     mobilePhone: Float
+}
+
+type Locale {
     city: String
     state: String
     neighborhood: String
     number: String
     street: String
     zipCode: Int
-    name: String
-    birthDate: Date
-    cpf: Float   
-    user: User 
-    resume: Resume
 }
 
 input CandidateInput {    

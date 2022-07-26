@@ -40,6 +40,18 @@ const companiesResolvers = {
     }   
   },
   Company: {
+    locale: async (parent, args, ctx, info) => {
+      const { city, state, neighborhood, number, street, zipCode } = parent
+      return {
+        city, state, neighborhood, number, street, zipCode
+      }
+    },
+    contact: async (parent, args, ctx, info) => {
+      const { mobilePhone } = parent
+      return {
+        mobilePhone
+      }
+    },
     user: async (parent, args, ctx, info) => {
       const users = await ctx.dataloaders.usersLoader.load({ key: parent.user_id, info })
       return new UserDTO(users[0]);

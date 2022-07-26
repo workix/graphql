@@ -5,32 +5,41 @@ import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 import CandidateDTO from '../../../dtos/CandidateDTO';
 import { CreateCandidateDTO, UpdateCandidateDTO } from '../../../dtos/CandidateMutationDTO';
-
+import _ from 'lodash'
 const candidatesRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: ["user", "resume"] })
-    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: ["user", "resume"] })
+    const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: ["user", "resume", 'locale', 'contact'] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: ["user", "resume", 'locale', 'contact'] })
 
     const findAll = async (info, args) => {
-        const fields = getFields(info)
+        
+        let fields = getFields(info)
+        const subFields = _.concat(getFieldsWithSubfields(info).get('locale'), getFieldsWithSubfields(info).get('contact'))
+        fields = _.compact(_.concat(fields, ...subFields))       
+             
         const options = { attributes: fields, order: ['id'] }
         if (args.start != null && args.max != null) {
             options.offset = args.start;
             options.limit = args.max;
         }
         const candidates = await Candidate.findAll(options)
+        
         return candidates;
     }
 
     const findById = async (info, args) => {
-        const fields = getFields(info)
+        let fields = getFields(info)
+        const subFields = _.concat(getFieldsWithSubfields(info).get('locale'), getFieldsWithSubfields(info).get('contact'))
+        fields = _.compact(_.concat(fields, ...subFields))       
         const candidate = await Candidate.findOne({ where: { id: args.id }, attributes: fields })
         return candidate;
     }
 
     const findByUserId = async (info, args) => {
-        const fields = getFields(info)        
-        const candidate = await Candidate.findOne({ where: { user_id: args.input.userId }, attributes: fields })
+        let fields = getFields(info)
+        const subFields = _.concat(getFieldsWithSubfields(info).get('locale'), getFieldsWithSubfields(info).get('contact'))
+        fields = _.compact(_.concat(fields, ...subFields))   
+        const candidate = await Candidate.findOne({ where: { user_id: args.userId }, attributes: fields })
         return candidate;
     }
 
@@ -71,8 +80,7 @@ const candidatesRepository = db => {
         return candidate;
     }
 
-    const findAllPaginated = async (info, args) => {           
-        
+    const findAllPaginated = async (info, args) => {                   
         const fields = getFieldsWithSubfields(info).get("candidates")    
         fields.push("user_id")             
         

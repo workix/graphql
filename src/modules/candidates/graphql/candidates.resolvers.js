@@ -8,12 +8,12 @@ const candidatesResolvers = {
   Query: {
     allCandidates: async (parent, args, ctx, info) => {
       let candidates = await candidatesRepository(ctx.orm).findAll(info, args)
-      candidates = candidates.map(c => new CandidateDTO(c))
+      candidates = candidates.map(c => new CandidateDTO(c))      
       return candidates;
     },
-    allCandidatesRedis: async (parent, args, ctx, info) => {     
+    allCandidatesRedis: async (parent, args, ctx, info) => {
 
-      const keys = await redisClient.keys('candidate*');     
+      const keys = await redisClient.keys('candidate*');
 
       let parsedValues;
 
@@ -21,13 +21,17 @@ const candidatesResolvers = {
         const values = await redisClient.mget(keys);
         parsedValues = values.map(v => JSON.parse(v))
       }
-      
+
       let candidates = parsedValues || [];
       candidates = candidates.map(c => new CandidateDTO(c))
       return candidates;
     },
     getCandidateById: async (parent, args, ctx, info) => {
       const candidate = await candidatesRepository(ctx.orm).findById(info, args)
+      return new CandidateDTO(candidate);
+    },
+    findCandidateByUserId: async (parent, args, ctx, info) => {
+      const candidate = await candidatesRepository(ctx.orm).findByUserId(info, args)
       return new CandidateDTO(candidate);
     },
     allCandidatesPaginated: async (parent, args, ctx, info) => {
@@ -66,6 +70,18 @@ const candidatesResolvers = {
     }
   },
   Candidate: {
+    locale: async (parent, args, ctx, info) => {
+      const { city, state, neighborhood, number, street, zipCode } = parent
+      return {
+        city, state, neighborhood, number, street, zipCode
+      }
+    },
+    contact: async (parent, args, ctx, info) => {
+      const { mobilePhone } = parent
+      return {
+        mobilePhone
+      }
+    },
     user: async (parent, args, ctx, info) => {
       const users = await ctx.dataloaders.usersLoader.load({ key: parent.userId, info })
       return new UserDTO(users[0]);
