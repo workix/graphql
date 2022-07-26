@@ -1,9 +1,8 @@
 import candidatesRepository from "../repository/candidates.repo";
-import notification from "../services/notification.service";
 import CandidateDTO from '../../../dtos/CandidateDTO'
 import UserDTO from '../../../dtos/UserDTO'
 import ResumeDTO from '../../../dtos/ResumeDTO'
-import { setRedis, getRedis, redisClient } from '../../../factory/redis_server'
+import { setRedis, redisClient } from '../../../factory/redis_server'
 
 const candidatesResolvers = {
   Query: {
