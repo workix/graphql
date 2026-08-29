@@ -55,7 +55,7 @@ const formsRepository = db => {
 
     const findAllPaginated = async (info, args) => {           
         
-        const fields = getFieldsWithSubfields(info).get("forms")              
+        const fields = getFieldsWithSubfields(info).get("forms") || []              
         
         const totalRows = await Form.count()
 

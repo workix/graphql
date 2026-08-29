@@ -147,7 +147,7 @@ const blogsRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("blogs")
+        const fields = getFieldsWithSubfields(info).get("blogs") || []
 
         const totalRows = await Blog.count()
 

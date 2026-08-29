@@ -55,7 +55,7 @@ const subscribersRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("subscribers")
+        const fields = getFieldsWithSubfields(info).get("subscribers") || []
 
         const totalRows = await Subscriber.count()
 

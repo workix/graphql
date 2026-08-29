@@ -69,7 +69,7 @@ const authorsRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("authors")
+        const fields = getFieldsWithSubfields(info).get("authors") || []
 
         const totalRows = await Author.count()
 
