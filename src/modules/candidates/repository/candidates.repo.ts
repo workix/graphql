@@ -79,7 +79,7 @@ const candidatesRepository = (db: any) => {
     }
 
     const findAllPaginated = async (info: any, args: any) => {                   
-        const fields = getFieldsWithSubfields(info).get("candidates")    
+        const fields = getFieldsWithSubfields(info).get("candidates") || []    
         fields.push("user_id")             
         
         const totalRows = await Candidate.count()

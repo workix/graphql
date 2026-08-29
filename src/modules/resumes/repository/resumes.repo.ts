@@ -98,7 +98,7 @@ const resumesRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("resumes")
+        const fields = getFieldsWithSubfields(info).get("resumes") || []
         fields.push("candidate_id")
 
         const totalRows = await Resume.count()
