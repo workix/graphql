@@ -14,7 +14,7 @@ const candidatesRepository = (db: any) => {
 
     const findAll = async (info: any, args: any) => {
         let fields = getFields(info)
-        const subFields = _.concat(getFieldsWithSubfields(info).get('locale'), getFieldsWithSubfields(info).get('contact'))
+        const subFields = _.concat(getFieldsWithSubfields(info).get('locale') || [], getFieldsWithSubfields(info).get('contact') || [])
         fields = _.compact(_.concat(fields, ...subFields))       
              
         const options: any = { attributes: fields, order: ['id'] }
@@ -29,7 +29,7 @@ const candidatesRepository = (db: any) => {
 
     const findById = async (info: any, args: any) => {
         let fields = getFields(info)
-        const subFields = _.concat(getFieldsWithSubfields(info).get('locale'), getFieldsWithSubfields(info).get('contact'))
+        const subFields = _.concat(getFieldsWithSubfields(info).get('locale') || [], getFieldsWithSubfields(info).get('contact') || [])
         fields = _.compact(_.concat(fields, ...subFields))       
         const candidate = await Candidate.findOne({ where: { id: args.id }, attributes: fields })
         return candidate;
@@ -37,7 +37,7 @@ const candidatesRepository = (db: any) => {
 
     const findByUserId = async (info: any, args: any) => {
         let fields = getFields(info)
-        const subFields = _.concat(getFieldsWithSubfields(info).get('locale'), getFieldsWithSubfields(info).get('contact'))
+        const subFields = _.concat(getFieldsWithSubfields(info).get('locale') || [], getFieldsWithSubfields(info).get('contact') || [])
         fields = _.compact(_.concat(fields, ...subFields))   
         const candidate = await Candidate.findOne({ where: { user_id: args.userId }, attributes: fields })
         return candidate;

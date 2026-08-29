@@ -2,6 +2,9 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   clearMocks: true,
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json' }]
+  },
   collectCoverage: true,
   collectCoverageFrom: [
     'src/**/*.ts',
@@ -21,7 +24,7 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   testMatch: [
-    '**/tests/**/*.spec.[jt]s',
-    '**/tests/**/*.test.[jt]s'
+    '**/tests/**/*.spec.ts',
+    '**/tests/**/*.test.ts'
   ]
 };

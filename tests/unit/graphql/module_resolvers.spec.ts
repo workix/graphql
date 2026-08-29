@@ -15,6 +15,28 @@ import statsResolvers from '../../../src/modules/stats/graphql/stats.resolvers';
 import othersResolvers from '../../../src/modules/others/graphql/others.resolvers';
 
 import * as usersElastic from '../../../src/modules/users/elasticSearch/users.elastic';
+import { User, Candidate, Job, Resume, Company, SelectiveProcess, Blog, Comment, Author, Member, JAASUser, JAASRole, Form, Subscriber, Testimonial } from '../../../src/models';
+
+jest.mock('../../../src/factory/redis_server', () => ({
+  setRedis: jest.fn().mockResolvedValue('OK'),
+  redisClient: {
+    keys: jest.fn().mockResolvedValue([]),
+    mget: jest.fn().mockResolvedValue([]),
+    get: jest.fn().mockResolvedValue(null),
+    set: jest.fn().mockResolvedValue('OK'),
+    quit: jest.fn()
+  }
+}));
+
+jest.mock('ioredis', () => jest.fn().mockImplementation(() => ({
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue('OK'),
+  quit: jest.fn()
+})));
+
+jest.mock('jsonwebtoken', () => ({
+  verify: jest.fn((token: string, secret: string, cb: Function) => cb(null, { id: 1 }))
+}));
 
 jest.mock('../../../src/modules/users/elasticSearch/users.elastic', () => ({
   matchAnyFields: jest.fn().mockResolvedValue([]),
@@ -23,15 +45,57 @@ jest.mock('../../../src/modules/users/elasticSearch/users.elastic', () => ({
   updateIndex: jest.fn().mockResolvedValue({})
 }));
 
+jest.mock('../../../src/models', () => {
+  const mockModelObj = { reload: jest.fn().mockResolvedValue({}), destroy: jest.fn().mockResolvedValue(1), addComment: jest.fn().mockResolvedValue({}), removeComment: jest.fn().mockResolvedValue({}), addCandidate: jest.fn().mockResolvedValue({}), addJob: jest.fn().mockResolvedValue({}), addSelectiveProcess: jest.fn().mockResolvedValue({}), getCandidates: jest.fn().mockResolvedValue([]), getCompany: jest.fn().mockResolvedValue({}), getMedias: jest.fn().mockResolvedValue([]), getComments: jest.fn().mockResolvedValue([]), getPictures: jest.fn().mockResolvedValue([]), getTags: jest.fn().mockResolvedValue([]), getCategories: jest.fn().mockResolvedValue([]) };
+  return {
+    User: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Candidate: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Job: { findAll: jest.fn().mockResolvedValue([mockModelObj]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Resume: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Company: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    SelectiveProcess: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Blog: { findAll: jest.fn().mockResolvedValue([mockModelObj]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Comment: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Author: { findAll: jest.fn().mockResolvedValue([mockModelObj]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    AuthorMedia: { create: jest.fn().mockResolvedValue(mockModelObj), destroy: jest.fn() },
+    Member: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    JAASUser: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    JAASRole: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Form: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Subscriber: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Testimonial: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    BlogCategory: { findAll: jest.fn().mockResolvedValue([]) },
+    BlogPicture: { create: jest.fn().mockResolvedValue(mockModelObj) },
+    BlogTag: { create: jest.fn().mockResolvedValue(mockModelObj) },
+    MemberMedia: { create: jest.fn().mockResolvedValue(mockModelObj) },
+    CompanyMedia: { create: jest.fn().mockResolvedValue(mockModelObj) },
+    JobCandidate: { create: jest.fn().mockResolvedValue(mockModelObj) },
+    SelectiveProcessCandidate: { create: jest.fn().mockResolvedValue(mockModelObj) }
+  };
+});
+
 describe('GraphQL Module Resolvers Unit Tests', () => {
+  jest.setTimeout(30000);
   let mockCtx: any;
   let mockInfo: any;
 
   beforeEach(() => {
-    mockInfo = {};
+    mockInfo = {
+      fieldNodes: [
+        {
+          kind: 'Field',
+          name: { value: 'item' },
+          selectionSet: { selections: [{ kind: 'Field', name: { value: 'id' } }] }
+        }
+      ]
+    };
+
     mockCtx = {
       orm: {
-        sequelize: {}
+        sequelize: {
+          transaction: jest.fn().mockImplementation(async (cb: any) => cb({})),
+          query: jest.fn().mockResolvedValue([])
+        }
       },
       mqserver: {
         publishInQueue: jest.fn().mockResolvedValue(true)
@@ -63,251 +127,291 @@ describe('GraphQL Module Resolvers Unit Tests', () => {
   });
 
   describe('usersResolvers', () => {
-    it('should delegate Query and Mutation for users', async () => {
+    it('should execute Query and Mutation for users', async () => {
       const q = usersResolvers.Query;
       const m = usersResolvers.Mutation;
 
-      expect(typeof q.allUsers).toBe('function');
-      expect(typeof q.getUserById).toBe('function');
-      expect(typeof q.allUsersPaginated).toBe('function');
-      expect(typeof q.deepSearchUser).toBe('function');
+      await q.allUsers(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getUserById(null, { id: 1 }, mockCtx, mockInfo);
+      await q.allUsersPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
+      await q.deepSearchUser(null, { term: 'test' }, mockCtx, mockInfo);
 
-      expect(typeof m.createUser).toBe('function');
-      expect(typeof m.deleteUser).toBe('function');
-      expect(typeof m.updateUser).toBe('function');
+      await m.createUser(null, { input: { email: 'a@b.com' } }, mockCtx, mockInfo);
+      await m.updateUser(null, { id: 1, input: { email: 'a@b.com' } }, mockCtx, mockInfo);
+      await m.deleteUser(null, { id: 1 }, mockCtx, mockInfo);
     });
   });
 
   describe('candidatesResolvers', () => {
-    it('should delegate Query, Mutation and Candidate field resolvers', async () => {
+    it('should execute Query, Mutation and Candidate field resolvers', async () => {
       const q = candidatesResolvers.Query;
       const m = candidatesResolvers.Mutation;
       const c = candidatesResolvers.Candidate;
 
-      expect(typeof q.allCandidates).toBe('function');
-      expect(typeof q.getCandidateById).toBe('function');
-      expect(typeof q.findCandidateByUserId).toBe('function');
+      await q.allCandidates(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getCandidateById(null, { id: 2 }, mockCtx, mockInfo);
+      await q.findCandidateByUserId(null, { userId: 1 }, mockCtx, mockInfo);
+      await q.allCandidatesPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createCandidate).toBe('function');
-      expect(typeof m.updateCandidate).toBe('function');
-      expect(typeof m.deleteCandidate).toBe('function');
+      await m.createCandidate(null, { input: { name: 'John' } }, mockCtx, mockInfo);
+      await m.updateCandidate(null, { id: 2, input: { name: 'John' } }, mockCtx, mockInfo);
+      await m.deleteCandidate(null, { id: 2 }, mockCtx, mockInfo);
 
-      expect(typeof c.user).toBe('function');
-      expect(typeof c.resume).toBe('function');
+      await c.user({ user_id: 1 }, {}, mockCtx, mockInfo);
+      await c.resume({ id: 2 }, {}, mockCtx, mockInfo);
+      await c.locale({ address: 'Main St' }, {}, mockCtx, mockInfo);
+      await c.contact({ phone: '123456' }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('jobsResolvers', () => {
-    it('should delegate Query, Mutation and Job field resolvers', async () => {
+    it('should execute Query, Mutation and Job field resolvers', async () => {
       const q = jobsResolvers.Query;
       const m = jobsResolvers.Mutation;
       const j = jobsResolvers.Job;
 
-      expect(typeof q.allJobs).toBe('function');
-      expect(typeof q.getJobById).toBe('function');
+      await q.allJobs(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getJobById(null, { id: 4 }, mockCtx, mockInfo);
+      await q.getJobByCompanyId(null, { companyId: 3 }, mockCtx, mockInfo);
+      await q.listJobRandomFeatured(null, {}, mockCtx, mockInfo);
+      await q.allJobsFeatured(null, { featured: true }, mockCtx, mockInfo);
+      await q.getJobByIdAndCompanyId(null, { id: 4, companyId: 3 }, mockCtx, mockInfo);
+      await q.myJobs(null, {}, { ...mockCtx, authorization: 'Bearer tok', user: { firebase_uuid: 'fb1' } }, mockInfo);
+      await q.allJobsPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createJob).toBe('function');
-      expect(typeof m.updateJob).toBe('function');
-      expect(typeof m.deleteJob).toBe('function');
-      expect(typeof m.subscribeInJob).toBe('function');
+      await m.createJob(null, { input: { title: 'Dev' } }, mockCtx, mockInfo);
+      await m.updateJob(null, { id: 4, input: { title: 'Dev' } }, mockCtx, mockInfo);
+      await m.deleteJob(null, { id: 4 }, mockCtx, mockInfo);
+      await m.subscribeInJob(null, { input: { jobId: 4, candidateId: 2 } }, mockCtx, mockInfo);
 
-      expect(typeof j.company).toBe('function');
+      await j.company({ company_id: 3 }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('resumesResolvers', () => {
-    it('should delegate Query, Mutation and Resume field resolvers', async () => {
+    it('should execute Query, Mutation and Resume field resolvers', async () => {
       const q = resumesResolvers.Query;
       const m = resumesResolvers.Mutation;
       const r = resumesResolvers.Resume;
 
-      expect(typeof q.allResumes).toBe('function');
-      expect(typeof q.getResumeById).toBe('function');
+      await q.allResumes(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getResumeById(null, { id: 5 }, mockCtx, mockInfo);
+      await q.allResumesPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createResume).toBe('function');
-      expect(typeof m.updateResume).toBe('function');
-      expect(typeof m.deleteResume).toBe('function');
+      await m.createResume(null, { input: { candidateId: 2 } }, mockCtx, mockInfo);
+      await m.updateResume(null, { id: 5, input: { candidateId: 2 } }, mockCtx, mockInfo);
+      await m.deleteResume(null, { id: 5 }, mockCtx, mockInfo);
 
-      expect(typeof r.candidate).toBe('function');
-      expect(typeof r.educations).toBe('function');
-      expect(typeof r.experiences).toBe('function');
-      expect(typeof r.skills).toBe('function');
+      await r.candidate({ candidate_id: 2 }, {}, mockCtx, mockInfo);
+      await r.educations({ id: 5 }, {}, mockCtx, mockInfo);
+      await r.experiences({ id: 5 }, {}, mockCtx, mockInfo);
+      await r.skills({ id: 5 }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('companiesResolvers', () => {
-    it('should delegate Query, Mutation and Company field resolvers', async () => {
+    it('should execute Query, Mutation and Company field resolvers', async () => {
       const q = companiesResolvers.Query;
       const m = companiesResolvers.Mutation;
       const c = companiesResolvers.Company;
 
-      expect(typeof q.allCompanies).toBe('function');
-      expect(typeof q.getCompanyById).toBe('function');
+      await q.allCompanies(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getCompanyById(null, { id: 3 }, mockCtx, mockInfo);
+      await q.listCompanyRandomLogos(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.allCompaniesPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createCompany).toBe('function');
-      expect(typeof m.updateCompany).toBe('function');
-      expect(typeof m.deleteCompany).toBe('function');
+      await m.createCompany(null, { input: { name: 'Corp' } }, mockCtx, mockInfo);
+      await m.updateCompany(null, { id: 3, input: { name: 'Corp' } }, mockCtx, mockInfo);
+      await m.deleteCompany(null, { id: 3 }, mockCtx, mockInfo);
 
-      expect(typeof c.user).toBe('function');
-      expect(typeof c.medias).toBe('function');
+      await c.user({ user_id: 1 }, {}, mockCtx, mockInfo);
+      await c.medias({ id: 3 }, {}, mockCtx, mockInfo);
+      await c.locale({ address: 'St' }, {}, mockCtx, mockInfo);
+      await c.contact({ phone: '123' }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('selectiveProcessesResolvers', () => {
-    it('should delegate Query, Mutation and SelectiveProcess field resolvers', async () => {
+    it('should execute Query, Mutation and SelectiveProcess field resolvers', async () => {
       const q = selectiveProcessesResolvers.Query;
       const m = selectiveProcessesResolvers.Mutation;
       const sp = selectiveProcessesResolvers.SelectiveProcess;
 
-      expect(typeof q.allSelectiveProcesses).toBe('function');
-      expect(typeof q.getSelectiveProcessById).toBe('function');
+      await q.allSelectiveProcesses(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getSelectiveProcessById(null, { id: 7 }, mockCtx, mockInfo);
+      await q.mySelectiveProcessesSubscribed(null, {}, { ...mockCtx, authorization: 'Bearer tok', user: { firebase_uuid: 'fb1' } }, mockInfo);
+      await q.mySelectiveProcesses(null, {}, { ...mockCtx, authorization: 'Bearer tok', user: { firebase_uuid: 'fb1' } }, mockInfo);
+      await q.allSelectiveProcessesPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createSelectiveProcess).toBe('function');
-      expect(typeof m.updateSelectiveProcess).toBe('function');
-      expect(typeof m.deleteSelectiveProcess).toBe('function');
-      expect(typeof m.subscribeInSelectiveProcess).toBe('function');
+      await m.createSelectiveProcess(null, { input: { title: 'SP' } }, mockCtx, mockInfo);
+      await m.updateSelectiveProcess(null, { id: 7, input: { title: 'SP' } }, mockCtx, mockInfo);
+      await m.deleteSelectiveProcess(null, { id: 7 }, mockCtx, mockInfo);
+      await m.subscribeInSelectiveProcess(null, { input: { spId: 7, candidateId: 2 } }, mockCtx, mockInfo);
 
-      expect(typeof sp.job).toBe('function');
+      await sp.job({ job_id: 4 }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('blogsResolvers', () => {
-    it('should delegate Query, Mutation, Blog and Comment field resolvers', async () => {
+    it('should execute Query, Mutation, Blog and Comment field resolvers', async () => {
       const q = blogsResolvers.Query;
       const m = blogsResolvers.Mutation;
       const b = blogsResolvers.Blog;
       const c = blogsResolvers.Comment;
+      const tag = blogsResolvers.Tag;
+      const pic = blogsResolvers.Picture;
+      const cat = blogsResolvers.Category;
 
-      expect(typeof q.allBlogs).toBe('function');
-      expect(typeof q.getBlogById).toBe('function');
-      expect(typeof q.allBlogsCategories).toBe('function');
-      expect(typeof q.allComments).toBe('function');
+      await q.allBlogs(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getBlogById(null, { id: 8 }, mockCtx, mockInfo);
+      await q.allBlogsPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
+      await q.debugBlog(null, {}, mockCtx, mockInfo);
+      await q.allComments(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getCommentById(null, { id: 9 }, mockCtx, mockInfo);
+      await q.allCommentsPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
+      await q.allBlogsCategories(null, {}, mockCtx, mockInfo);
+      await q.allBlogsTimePeriods(null, {}, mockCtx, mockInfo);
+      await q.allBlogsRecents(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.allCommentsRecents(null, { start: 0, max: 5 }, mockCtx, mockInfo);
 
-      expect(typeof m.createBlog).toBe('function');
-      expect(typeof m.updateBlog).toBe('function');
-      expect(typeof m.deleteBlog).toBe('function');
-      expect(typeof m.createComment).toBe('function');
+      await m.createBlog(null, { input: { title: 'Blog' } }, mockCtx, mockInfo);
+      await m.updateBlog(null, { id: 8, input: { title: 'Blog' } }, mockCtx, mockInfo);
+      await m.deleteBlog(null, { id: 8 }, mockCtx, mockInfo);
+      await m.createComment(null, { input: { blogId: 8, content: 'C' } }, mockCtx, mockInfo);
+      await m.updateComment(null, { id: 9, input: { content: 'C' } }, mockCtx, mockInfo);
+      await m.deleteComment(null, { id: 9 }, mockCtx, mockInfo);
 
-      expect(typeof b.author).toBe('function');
-      expect(typeof b.comments).toBe('function');
-      expect(typeof b.pictures).toBe('function');
-      expect(typeof b.tags).toBe('function');
-      expect(typeof b.categories).toBe('function');
-      expect(typeof c.blog).toBe('function');
-      expect(typeof c.parentComment).toBe('function');
+      await b.author({ author_id: 6 }, {}, mockCtx, mockInfo);
+      await b.comments({ id: 8 }, {}, mockCtx, mockInfo);
+      await b.pictures({ id: 8 }, {}, mockCtx, mockInfo);
+      await b.tags({ id: 8 }, {}, mockCtx, mockInfo);
+      await b.categories({ id: 8 }, {}, mockCtx, mockInfo);
+      await tag.blog({ id: 8 }, {}, mockCtx, mockInfo);
+      await pic.blog({ id: 8 }, {}, mockCtx, mockInfo);
+      await cat.blog({ id: 8 }, {}, mockCtx, mockInfo);
+      await c.blog({ id: 9 }, {}, mockCtx, mockInfo);
+      await c.parentComment({ parentId: 9 }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('authorsResolvers', () => {
-    it('should delegate Query, Mutation, Author and AuthorMedia field resolvers', async () => {
+    it('should execute Query, Mutation, Author and AuthorMedia field resolvers', async () => {
       const q = authorsResolvers.Query;
       const m = authorsResolvers.Mutation;
       const a = authorsResolvers.Author;
       const am = authorsResolvers.AuthorMedia;
 
-      expect(typeof q.allAuthors).toBe('function');
-      expect(typeof q.getAuthorById).toBe('function');
+      await q.allAuthors(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getAuthorById(null, { id: 6 }, mockCtx, mockInfo);
+      await q.allAuthorsPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
+      await q.debugAuthor(null, {}, mockCtx, mockInfo);
 
-      expect(typeof m.createAuthor).toBe('function');
-      expect(typeof m.updateAuthor).toBe('function');
-      expect(typeof m.deleteAuthor).toBe('function');
+      await m.createAuthor(null, { input: { name: 'A' } }, mockCtx, mockInfo);
+      await m.updateAuthor(null, { id: 6, input: { name: 'A' } }, mockCtx, mockInfo);
+      await m.deleteAuthor(null, { id: 6 }, mockCtx, mockInfo);
 
-      expect(typeof a.medias).toBe('function');
-      expect(typeof am.author).toBe('function');
+      await a.medias({ id: 6 }, {}, mockCtx, mockInfo);
+      await am.author({ id: 6 }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('membersResolvers', () => {
-    it('should delegate Query, Mutation, Member and MemberMedia field resolvers', async () => {
+    it('should execute Query, Mutation, Member and MemberMedia field resolvers', async () => {
       const q = membersResolvers.Query;
       const m = membersResolvers.Mutation;
       const mem = membersResolvers.Member;
       const mm = membersResolvers.MemberMedia;
 
-      expect(typeof q.allMembers).toBe('function');
-      expect(typeof q.getMemberById).toBe('function');
+      await q.allMembers(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getMemberById(null, { id: 10 }, mockCtx, mockInfo);
+      await q.allMembersPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createMember).toBe('function');
-      expect(typeof m.updateMember).toBe('function');
-      expect(typeof m.deleteMember).toBe('function');
+      await m.createMember(null, { input: { name: 'M' } }, mockCtx, mockInfo);
+      await m.updateMember(null, { id: 10, input: { name: 'M' } }, mockCtx, mockInfo);
+      await m.deleteMember(null, { id: 10 }, mockCtx, mockInfo);
 
-      expect(typeof mem.medias).toBe('function');
-      expect(typeof mm.owner).toBe('function');
+      await mem.medias({ id: 10 }, {}, mockCtx, mockInfo);
+      await mm.owner({ id: 10 }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('jaasResolvers', () => {
-    it('should delegate Query, Mutation and JAASUser field resolvers', async () => {
+    it('should execute Query, Mutation and JAASUser field resolvers', async () => {
       const q = jaasResolvers.Query;
       const m = jaasResolvers.Mutation;
       const ju = jaasResolvers.JAASUser;
 
-      expect(typeof q.allJAASUsers).toBe('function');
-      expect(typeof q.getJAASUserById).toBe('function');
-      expect(typeof q.allJAASRoles).toBe('function');
-      expect(typeof q.getJAASRoleByName).toBe('function');
+      await q.allJAASUsers(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getJAASUserById(null, { id: 11 }, mockCtx, mockInfo);
+      await q.allJAASUsersPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
+      await q.allJAASRoles(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getJAASRoleByName(null, { name: 'ADMIN' }, mockCtx, mockInfo);
+      await q.allJAASRolesPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createJAASUser).toBe('function');
-      expect(typeof m.updateJAASUser).toBe('function');
-      expect(typeof m.deleteJAASUser).toBe('function');
-      expect(typeof m.createJAASRole).toBe('function');
-      expect(typeof m.updateJAASRole).toBe('function');
-      expect(typeof m.deleteJAASRole).toBe('function');
+      await m.createJAASUser(null, { input: { username: 'j' } }, mockCtx, mockInfo);
+      await m.updateJAASUser(null, { id: 11, input: { username: 'j' } }, mockCtx, mockInfo);
+      await m.deleteJAASUser(null, { id: 11 }, mockCtx, mockInfo);
+      await m.createJAASRole(null, { input: { roleName: 'R' } }, mockCtx, mockInfo);
+      await m.updateJAASRole(null, { id: 12, input: { roleName: 'R' } }, mockCtx, mockInfo);
+      await m.deleteJAASRole(null, { id: 12 }, mockCtx, mockInfo);
 
-      expect(typeof ju.roles).toBe('function');
+      await ju.roles({ id: 11 }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('formsResolvers', () => {
-    it('should delegate Query and Mutation for Forms', async () => {
+    it('should execute Query and Mutation for Forms', async () => {
       const q = formsResolvers.Query;
       const m = formsResolvers.Mutation;
 
-      expect(typeof q.allForms).toBe('function');
-      expect(typeof q.getFormById).toBe('function');
+      await q.allForms(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getFormById(null, { id: 13 }, mockCtx, mockInfo);
+      await q.allFormsPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createForm).toBe('function');
-      expect(typeof m.updateForm).toBe('function');
-      expect(typeof m.deleteForm).toBe('function');
+      await m.createForm(null, { input: { message: 'F' } }, mockCtx, mockInfo);
+      await m.updateForm(null, { id: 13, input: { message: 'F' } }, mockCtx, mockInfo);
+      await m.deleteForm(null, { id: 13 }, mockCtx, mockInfo);
     });
   });
 
   describe('subscribersResolvers', () => {
-    it('should delegate Query and Mutation for Subscribers', async () => {
+    it('should execute Query and Mutation for Subscribers', async () => {
       const q = subscribersResolvers.Query;
       const m = subscribersResolvers.Mutation;
 
-      expect(typeof q.allSubscribers).toBe('function');
-      expect(typeof q.getSubscriberById).toBe('function');
+      await q.allSubscribers(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getSubscriberById(null, { id: 14 }, mockCtx, mockInfo);
+      await q.allSubscribersPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createSubscriber).toBe('function');
-      expect(typeof m.updateSubscriber).toBe('function');
-      expect(typeof m.deleteSubscriber).toBe('function');
-      expect(typeof m.subscribeMail).toBe('function');
+      await m.createSubscriber(null, { input: { email: 's@w.com' } }, mockCtx, mockInfo);
+      await m.updateSubscriber(null, { id: 14, input: { email: 's@w.com' } }, mockCtx, mockInfo);
+      await m.deleteSubscriber(null, { id: 14 }, mockCtx, mockInfo);
+      await m.subscribeMail(null, { input: { email: 's@w.com' } }, mockCtx, mockInfo);
     });
   });
 
   describe('testimonialsResolvers', () => {
-    it('should delegate Query, Mutation and Testimonial field resolvers', async () => {
+    it('should execute Query, Mutation and Testimonial field resolvers', async () => {
       const q = testimonialsResolvers.Query;
       const m = testimonialsResolvers.Mutation;
       const t = testimonialsResolvers.Testimonial;
 
-      expect(typeof q.allTestimonials).toBe('function');
-      expect(typeof q.getTestimonialById).toBe('function');
+      await q.allTestimonials(null, { start: 0, max: 5 }, mockCtx, mockInfo);
+      await q.getTestimonialById(null, { id: 15 }, mockCtx, mockInfo);
+      await q.allTestimonialsPaginated(null, { limit: 10, page: 1 }, mockCtx, mockInfo);
 
-      expect(typeof m.createTestimonial).toBe('function');
-      expect(typeof m.updateTestimonial).toBe('function');
-      expect(typeof m.deleteTestimonial).toBe('function');
+      await m.createTestimonial(null, { input: { content: 'T' } }, mockCtx, mockInfo);
+      await m.updateTestimonial(null, { id: 15, input: { content: 'T' } }, mockCtx, mockInfo);
+      await m.deleteTestimonial(null, { id: 15 }, mockCtx, mockInfo);
 
-      expect(typeof t.author).toBe('function');
+      await t.author({ authorId: 6 }, {}, mockCtx, mockInfo);
     });
   });
 
   describe('statsResolvers', () => {
-    it('should delegate Query for stats', async () => {
+    it('should execute Query for stats', async () => {
       const q = statsResolvers.Query;
-      expect(typeof q.statisticsCount).toBe('function');
+      await q.statisticsCount(null, {}, mockCtx, mockInfo);
     });
   });
 
