@@ -787,6 +787,17 @@ Feature: Autenticação e Consulta de Perfil do Usuário
 
 ---
 
+# 26. POLÍTICA DE GARANTIA DE QUALIDADE, TDD E COBERTURA DE TESTES (100%)
+
+> [!IMPORTANT]
+> **POLÍTICA OBRIGATÓRIA DE DESENVOLVIMENTO GUIADO POR TESTES (TDD)**:
+> 1. **Desenvolvimento Guiado por Testes (TDD)**: Toda nova funcionalidade, alteração de regra de negócio, correção de bug ou adição de módulo DEVE ser implementada estritamente segundo o fluxo *TDD Red-Green-Refactor* (escrever o teste unitário primeiro, verificar sua falha, implementar o código mínimo funcional para aprovação do teste e refatorar).
+> 2. **Metodologia Baby Steps**: Todas as modificações no código-fonte e adições de testes DEVEM ser commitadas em passos curtos e incrementais (*baby steps*) sob a identidade do autor `Felipe Rodrigues Michetti <frmichetti@gmail.com>` com mensagens em Português Brasil.
+> 3. **Meta de Cobertura de Testes (100%)**: O arquivo [`jest.config.js`](file:///c:/Packsys/NetBeansProjects/graphql/jest.config.js) está configurado com `ts-jest` e possui `coverageThreshold` global estabelecido em 100% para *statements*, *branches*, *functions* e *lines*.
+> 4. **Suítes de Testes Unitários**: O projeto conta com suítes unitárias TDD completas para todos os utilitários ([`src/utils`](file:///c:/Packsys/NetBeansProjects/graphql/src/utils)), validações ([`src/validation`](file:///c:/Packsys/NetBeansProjects/graphql/src/validation)), repositórios e serviços ([`src/modules/*/repository`](file:///c:/Packsys/NetBeansProjects/graphql/src/modules)), DataLoaders e ElasticSearch ([`src/factory`](file:///c:/Packsys/NetBeansProjects/graphql/src/factory)), resolvers unificados ([`src/resolvers.ts`](file:///c:/Packsys/NetBeansProjects/graphql/src/resolvers.ts)) e os 15 resolvers GraphQL dos módulos.
+
+---
+
 # REGRA FINAL
 
 > [!IMPORTANT]
