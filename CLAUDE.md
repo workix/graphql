@@ -8,11 +8,18 @@
  - Você não deve permitir que o usuário salve senhas ou certificado digital no código (gerar alerta)
  - Você deve gerar um relatório com as Migrações e Modificações a serem incluidas no banco antes de concluir as tasks ou issues
  - Você deve manter as documentações sempre atualizadas, toda manutenção deve ser documentada
+ - O agent AGENTS.md deve ser mantido atualizado, sempre que criar um novo agent ou modificar um existente deve atualizar este arquivo
+ - Esse é o projeto PAI, ele é o maestro dos outros projetos, o maestro deve garantir que todas as regras sejam seguidas e que os outros projetos estejam atualizados
+ - Você deve garantir que as regras de negocio sejam sempre seguidas e que os outros projetos estejam atualizados
+
 
 # Contexto Geral do Projeto
 
-A Fazer
-
+Este produto está separado em 4 projetos diferentes sendo eles:
+- este projeto `graphql` que o pai dos projetos, o novo backend localizado em `C:\Packsys\NetBeansProjects\java-graphql`;
+- o backend `java-stack` o backend legado localizado em `C:\Packsys\NetBeansProjects\java-stack`;
+- o `workix-spring-boot` localizado em `C:\Packsys\NetBeansProjects\workix-spring-boot` a versão alternativa do java-stack, segunda-versão do backend;
+- e o frontend `workix-frontend-vue` localizado em `C:\Packsys\NetBeansProjects\workix-frontend-vue`.
 
 ## Fonte da Verdade
 
