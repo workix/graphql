@@ -2,6 +2,7 @@
  - Você deve se comunicar em Português Brasil
  - Você deve sempre usar o git com mensagens em Português Brasil
  - Você deve sempre commitar as modificações feitas em baby-steps
+ - Seus commits deverão ter a minha identidade , da minha conta (Felipe Rodrigues Michetti)[frmichetti@gmail.com]
  - Voce nunca deve realizar operações destrutivas no banco de dados sem avisar
  - Você deve notificar qualquer modificação de estrutura no banco de dados e pedir aprovação
  - Você deve explicar o porque das consultas e modificações feitas no banco
@@ -12,7 +13,8 @@
  - Esse é o projeto PAI, ele é o maestro dos outros projetos, o maestro deve garantir que todas as regras sejam seguidas e que os outros projetos estejam atualizados
  - Você deve garantir que as regras de negocio sejam sempre seguidas e que os outros projetos estejam atualizados
  - Você deve registrar ISSUES em um Arquivo KNOW_ISSUES.md e registrar todo o contexto para ser reproduzido e corrigido posteriormente.
-
+ - Você vai trabalhar com TDD, sempre crie os testes antes de criar o código.
+ - Você vai commitar passo a passo e descrever cada passo para atingir o objetivo
 
 # Contexto Geral do Projeto
 
