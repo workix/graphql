@@ -17,7 +17,7 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "serve": "node dist/index.js",
-    "test": "jest",
+    "test": "jest --coverage",
     "lint": "eslint src/**/*.ts"
   },
   "keywords": [],
@@ -67,6 +67,7 @@
     "jest-cli": "^28.1.3",
     "nodemon": "^1.19.1",
     "sequelize-auto": "^0.4.29",
+    "ts-jest": "^28.0.8",
     "ts-node-dev": "^2.0.0",
     "typescript": "^7.0.2"
   }
