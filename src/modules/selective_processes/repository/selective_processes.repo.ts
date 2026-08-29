@@ -55,7 +55,7 @@ const selectiveProcessesRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("selectiveProcesses")
+        const fields = getFieldsWithSubfields(info).get("selectiveProcesses") || []
         fields.push("job_id")
 
         const totalRows = await SelectiveProcess.count()

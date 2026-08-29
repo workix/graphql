@@ -91,7 +91,7 @@ const companiesRepository = db => {
 
     const findAllPaginated = async (info, args) => {
 
-        const fields = getFieldsWithSubfields(info).get("companies")
+        const fields = getFieldsWithSubfields(info).get("companies") || []
         fields.push("user_id")
 
         const totalRows = await Company.count()
