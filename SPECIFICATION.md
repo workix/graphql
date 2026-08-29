@@ -25,6 +25,9 @@ Sistemas tradicionais de recrutamento e seleção enfrentam desafios críticos d
 4. **Alta Performance em Consultas de Vagas e Candidatos**: Cache em Redis para listagens randômicas, destaques e buscas frequentes.
 5. **Autenticação Unificada**: Integração entre tokens JWT locais e IDs do Firebase Authenticator.
 
+### 1.1.1 Documentação de Implementações Técnicas e Matriz de Paridade
+Toda a auditoria técnica de paridade de recursos e estrutura entre os 4 projetos do ecossistema (`graphql`, `java-stack`, `workix-spring-boot`, `workix-frontend-vue`) está unificada no relatório [`IMPLEMENTAÇÕES_TECNICAS.md`](file:///c:/Packsys/NetBeansProjects/graphql/IMPLEMENTA%C3%87%C3%95ES_TECNICAS.md) localizado na raiz deste projeto pai (`graphql`).
+
 ## 1.2 Escopo
 
 ### Incluído
@@ -97,7 +100,9 @@ Monólito Modular voltado a API Gateway GraphQL sobre Node.js e Express. O siste
 
 | Camada | Tecnologia | Versão | Função / Observação |
 | :--- | :--- | :--- | :--- |
-| **Runtime & Servidor Web** | Node.js / Express | `^4.17.1` | Servidor de aplicação HTTP e middleware runner |
+| **Linguagem & Runtime** | TypeScript / Node.js | `^5.0.0` / `^18.0.0` | Linguagem estaticamente tipada, compilada via `tsc` / `ts-node-dev` |
+| **Servidor Web & Middleware** | Express | `^4.17.1` | Servidor de aplicação HTTP e middleware runner |
+| **Camada de Tipagem Central** | `src/types/` | `1.0.0` | Interfaces para os 29 modelos Sequelize, DTOs, Contexto GraphQL e DataLoaders |
 | **Camada de API GraphQL** | express-graphql / graphql / graphql-tools | `^0.12.0` / `^15.5.1` / `^7.0.5` | Definição de Schemas (.gql) e fusão dinâmica de Resolvers |
 | **Batching & Caching de API**| DataLoader / graphql-fields | `^2.1.0` / `^2.0.3` | Agrupamento de queries SQL e extração dinâmica de campos solicitados |
 | **ORM & Persistência SQL** | Sequelize / Sequelize CLI | `^5.9.2` / `^5.5.0` | Mapeamento Objeto-Relacional para MySQL / PostgreSQL |
@@ -117,14 +122,14 @@ flowchart TB
     end
 
     subgraph HTTP_Layer ["Camada HTTP & Middlewares (Express)"]
-        EXP["Express App (src/index.js)"]
-        JWT_MD["extractJWTMiddleware (src/middleware/extract_jwt.js)"]
+        EXP["Express App (src/index.ts)"]
+        JWT_MD["extractJWTMiddleware (src/middleware/extract_jwt.ts)"]
         ASYNC_ERR["express-async-errors"]
     end
 
     subgraph GraphQL_Layer ["Camada GraphQL (Schema & Resolvers)"]
-        SCHEMA["Merged GraphQL Schema (src/schemas.js)"]
-        RESOLVERS["Merged Resolvers (src/resolvers.js)"]
+        SCHEMA["Merged GraphQL Schema (src/schemas.ts)"]
+        RESOLVERS["Merged Resolvers (src/resolvers.ts)"]
         COMPOSABLE["Composable Resolvers (authResolver / verifyTokenResolver)"]
     end
 
@@ -139,12 +144,12 @@ flowchart TB
     end
 
     subgraph Data_Access ["Camada de Dados & Infraestrutura"]
-        REPO["Repository Layer (*.repo.js)"]
-        DL["DataLoader Factory (src/dataloader.js)"]
-        FIELDS["RequestedFields Utility (src/RequestedFields.js)"]
-        RMQ["RabbitmqServer (src/factory/rabbitmq_server.js)"]
-        REDIS_F["Redis Factory (src/factory/redis_server.js)"]
-        SEQ["Sequelize ORM (src/models/index.js)"]
+        REPO["Repository Layer (*.repo.ts)"]
+        DL["DataLoader Factory (src/dataloader.ts)"]
+        FIELDS["RequestedFields Utility (src/RequestedFields.ts)"]
+        RMQ["RabbitmqServer (src/factory/rabbitmq_server.ts)"]
+        REDIS_F["Redis Factory (src/factory/redis_server.ts)"]
+        SEQ["Sequelize ORM (src/models/index.ts)"]
     end
 
     subgraph Infrastructure ["Servidores de Banco & Infrafutura"]
@@ -206,7 +211,7 @@ O backend é organizado em 16 módulos de domínio dentro da pasta `src/modules/
 - **Descrição**: O login de usuário é efetuado através da mutation `doLogin` passando `email` e `firebaseUUID`. Caso o usuário exista no banco de dados com essa combinação exata, a API gera e retorna um token JWT assinado.
 - **Motivação**: Garantir que apenas usuários validados pelo provedor de identidade Firebase e cadastrados na base local recebam autorização de sessão.
 - **Implementação**:
-  - **Arquivo**: [src/modules/auth/graphql/auth.resolvers.js](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/auth/graphql/auth.resolvers.js#L25-L40)
+  - **Arquivo**: [src/modules/auth/graphql/auth.resolvers.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/auth/graphql/auth.resolvers.ts#L25-L40)
   - **Entradas**: `args.input: { email: String!, firebaseUUID: String! }`
   - **Processamento**: Consulta `User.findOne({ where: { firebase_uuid, email } })`. Se nulo, lança erro `"Email or FirebaseUUID is invalid"`. Caso contrário, gera token JWT via `jwt.sign({ id: user.firebase_uuid, sub: user.email }, JWT_SECRET, { expiresIn: 900 })`.
   - **Saídas**: String do token JWT.
@@ -217,7 +222,7 @@ O backend é organizado em 16 módulos de domínio dentro da pasta `src/modules/
 - **Descrição**: Resolvers sensíveis são decorados com a composição `compose(authResolver, verifyTokenResolver)`.
 - **Motivação**: Impedir a execução de consultas de dados privados sem a presença de um cabeçalho `Authorization: Bearer <token>` válido e não expirado.
 - **Implementação**:
-  - **Arquivo**: [src/composable_resolvers/auth-resolver.js](file:///c:/Packsys/NetBeansProjects/graphql/src/composable_resolvers/auth-resolver.js) e [src/composable_resolvers/verify-token-resolver.js](file:///c:/Packsys/NetBeansProjects/graphql/src/composable_resolvers/verify-token-resolver.js)
+  - **Arquivo**: [src/composable_resolvers/auth-resolver.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/composable_resolvers/auth-resolver.ts) e [src/composable_resolvers/verify-token-resolver.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/composable_resolvers/verify-token-resolver.ts)
   - **Processamento**: `authResolver` verifica a presença de `context.user` ou `context.authorization`. Se ausente, lança `Error('Unauthorized! Token not provided')`. `verifyTokenResolver` executa `jwt.verify(token, process.env.JWT_SECRET)`.
 - **Impacto**: Retorna erro de autorização GraphQL imediatamente caso o token seja omisso ou inválido.
 
@@ -225,7 +230,7 @@ O backend é organizado em 16 módulos de domínio dentro da pasta `src/modules/
 - **Descrição**: Ao criar, atualizar ou remover um candidato via GraphQL Mutations, a API atualiza sincronizadamente a chave `candidate-${id}` no Redis.
 - **Motivação**: Permitir leituras de altíssima velocidade para listagens de candidatos (`allCandidatesRedis`) sem onerar o banco de dados relacional.
 - **Implementação**:
-  - **Arquivo**: [src/modules/candidates/graphql/candidates.resolvers.js](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/candidates/graphql/candidates.resolvers.js#L40-L57)
+  - **Arquivo**: [src/modules/candidates/graphql/candidates.resolvers.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/candidates/graphql/candidates.resolvers.ts#L40-L57)
   - **Processamento**: Na criação/edição, executa `setRedis("candidate-" + candidate.id, JSON.stringify(candidate))`. Na remoção, define valor `null`.
 - **Impacto**: A consulta `allCandidatesRedis` lê diretamente os dados com `redisClient.mget(keys)` sem tocar no MySQL/PostgreSQL.
 
@@ -233,7 +238,7 @@ O backend é organizado em 16 módulos de domínio dentro da pasta `src/modules/
 - **Descrição**: A mutation `notifyCandidate` publica uma mensagem formatada na fila `notifications` do servidor RabbitMQ.
 - **Motivação**: Desacoplar o envio de e-mails, SMS ou push notifications da thread de resposta GraphQL.
 - **Implementação**:
-  - **Arquivo**: [src/modules/candidates/graphql/candidates.resolvers.js](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/candidates/graphql/candidates.resolvers.js#L58-L66)
+  - **Arquivo**: [src/modules/candidates/graphql/candidates.resolvers.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/candidates/graphql/candidates.resolvers.ts#L58-L66)
   - **Processamento**: Busca candidato pelo `user_id`, monta o objeto `{ action: "contact", type: args.input.type, candidate }` e invoca `ctx.mqserver.publishInQueue('notifications', JSON.stringify(message))`.
 - **Impacto**: Retorna `true` ao cliente GraphQL em milissegundos enquanto workers externos processam a notificação.
 
@@ -241,7 +246,7 @@ O backend é organizado em 16 módulos de domínio dentro da pasta `src/modules/
 - **Descrição**: Permite que um candidato vincule seu ID a uma vaga (`job_id`) inserindo um registro na tabela pivô `jobs_candidates`.
 - **Motivação**: Registrar o interesse do candidato e disponibilizar o perfil para visualização da empresa dona da vaga.
 - **Implementação**:
-  - **Arquivo**: [src/modules/jobs/repository/jobs.repo.js](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/jobs/repository/jobs.repo.js) e [src/models/jobs_candidates.js](file:///c:/Packsys/NetBeansProjects/graphql/src/models/jobs_candidates.js)
+  - **Arquivo**: [src/modules/jobs/repository/jobs.repo.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/jobs/repository/jobs.repo.ts) e [src/models/jobs_candidates.js](file:///c:/Packsys/NetBeansProjects/graphql/src/models/jobs_candidates.js)
   - **Entradas**: `job_id: ID!`, `candidate_id: ID!`
   - **Processamento**: Cria registro de associação entre as chaves primárias.
 - **Impacto**: O candidato passa a ser listado na propriedade `candidates` da entidade `Job`.
@@ -250,7 +255,7 @@ O backend é organizado em 16 módulos de domínio dentro da pasta `src/modules/
 - **Descrição**: Um candidato pode se inscrever em um processo seletivo (`subscribeInSelectiveProcess`). O sistema valida a vigência do processo (`starts_in`, `expires_in`) e se a quantidade de inscritos não ultrapassou `max_candidates`.
 - **Motivação**: Garantir regras de negócio corporativas onde processos seletivos possuem vagas e prazos limitados.
 - **Implementação**:
-  - **Arquivo**: [src/modules/selective_processes/repository/selective_processes.repo.js](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/selective_processes/repository/selective_processes.repo.js)
+  - **Arquivo**: [src/modules/selective_processes/repository/selective_processes.repo.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/selective_processes/repository/selective_processes.repo.ts)
   - **Processamento**: Insere registro na tabela `selective_processes_candidates`.
 - **Impacto**: Bloqueia inscrições caso o processo seletivo esteja expirado ou com limite de candidatos excedido.
 
@@ -258,7 +263,7 @@ O backend é organizado em 16 módulos de domínio dentro da pasta `src/modules/
 - **Descrição**: Comentários de artigos de blog suportam respostas aninhadas (`parent_id`). O DataLoader `commentsParentLoader` agrupa e busca respostas por lote de comentários pais.
 - **Motivação**: Evitar execução de dezenas de queries recursivas em threads de comentários populares.
 - **Implementação**:
-  - **Arquivo**: [src/dataloader.js](file:///c:/Packsys/NetBeansProjects/graphql/src/dataloader.js#L540-L571)
+  - **Arquivo**: [src/dataloader.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/dataloader.ts#L540-L571)
   - **Processamento**: Executa SQL `SELECT ... FROM comments WHERE parent_id IN (...) ORDER BY id ASC`.
 
 ---
@@ -591,7 +596,7 @@ sequenceDiagram
 # 10. INTEGRAÇÕES DE INFRAESTRUTURA
 
 ## 10.1 RabbitMQ (Mensageria)
-- **Classe de Conexão**: [src/factory/rabbitmq_server.js](file:///c:/Packsys/NetBeansProjects/graphql/src/factory/rabbitmq_server.js)
+- **Classe de Conexão**: [src/factory/rabbitmq_server.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/factory/rabbitmq_server.ts)
 - **Fila Principal**: `notifications`
 - **Métodos**: `start()`, `publishInQueue(queue, message)`, `publishInExchange(exchange, routingKey, message)`, `consume(queue, callback)`.
 - **Payload Exemplo**:
@@ -608,7 +613,7 @@ sequenceDiagram
   ```
 
 ## 10.2 Redis (Cache em Memória)
-- **Classe de Conexão**: `src/factory/redis_server.js`
+- **Classe de Conexão**: `src/factory/redis_server.ts`
 - **Padrão de Chave**: `candidate-${id}`
 - **Uso**: Invalidação e sincronização automática em operações de CUD de candidatos.
 
@@ -643,7 +648,7 @@ As configurações da aplicação são gerenciadas via arquivo `.env` (carregado
 
 # 13. LOGS E AUDITORIA
 
-- **Captura de Erros**: Configurada via `express-async-errors` no middleware global do Express em [src/index.js](file:///c:/Packsys/NetBeansProjects/graphql/src/index.js#L55-L63).
+- **Captura de Erros**: Configurada via `express-async-errors` no middleware global do Express em [src/index.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/index.ts#L55-L63).
 - **Formato de Log**: Respostas de erro capturadas retornam HTTP Status 400 ou 500 em formato JSON `{ "message": error.message }`.
 - **Rastreabilidade SQL**: O Sequelize pode ser configurado com `logging: console.log` no arquivo `config/config.json` para auditoria de queries SQL executadas.
 
@@ -712,7 +717,7 @@ Feature: Autenticação e Consulta de Perfil do Usuário
 > [!WARNING]
 > 1. **Serviço de Notificação Incompleto**: O arquivo [src/modules/candidates/services/notification.service.js](file:///c:/Packsys/NetBeansProjects/graphql/src/modules/candidates/services/notification.service.js) contém `throw new Error("NOT IMPLEMENTED YET")`. Atualmente, a notificação é feita diretamente pela mutation `notifyCandidate` via RabbitMQ, contornando este arquivo de serviço.
 > 2. **Validação de Token Sem Validação com Servidor Firebase**: A middleware `extractJWTMiddleware` valida o token JWT localmente contra a base MySQL/PostgreSQL usando `firebase_uuid` do payload, sem realizar uma chamada remota ao Firebase Admin SDK em cada requisição.
-> 3. **Erros Silenciosos no DataLoader**: Alguns DataLoaders em [src/dataloader.js](file:///c:/Packsys/NetBeansProjects/graphql/src/dataloader.js) possuem blocos `try/catch` que apenas imprimem `console.error(error)` sem re-lançar a exceção, o que pode retornar arrays vazios em caso de erro no SQL.
+> 3. **Erros Silenciosos no DataLoader**: Alguns DataLoaders em [src/dataloader.ts](file:///c:/Packsys/NetBeansProjects/graphql/src/dataloader.ts) possuem blocos `try/catch` que apenas imprimem `console.error(error)` sem re-lançar a exceção, o que pode retornar arrays vazios em caso de erro no SQL.
 
 ---
 
@@ -733,12 +738,12 @@ Feature: Autenticação e Consulta de Perfil do Usuário
 
 | RF | Caso de Uso (UC) | API GraphQL / Endpoint | Serviço / Repository | Entidade | Tabela do Banco |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **RF-001** | `UC-001` | `mutation doLogin` | `auth.repo.js` | `User` | `users` |
-| **RF-002** | `UC-001` | `query aboutMe` | `auth.repo.js` | `User`, `Candidate`, `Company` | `users`, `candidates`, `companies` |
-| **RF-003** | `UC-002` | `mutation createJob` | `jobs.repo.js` | `Job` | `jobs` |
-| **RF-004** | `UC-003` | `mutation subscribeInJob` | `jobs.repo.js` | `Job`, `Candidate` | `jobs_candidates` |
-| **RF-005** | `UC-004` | `mutation notifyCandidate` | `candidates.repo.js` | `Candidate` | `candidates` |
-| **RF-006** | `UC-004` | `query allCandidatesRedis` | `candidates.repo.js` | `Candidate` | Cache Redis |
+| **RF-001** | `UC-001` | `mutation doLogin` | `auth.repo.ts` | `User` | `users` |
+| **RF-002** | `UC-001` | `query aboutMe` | `auth.repo.ts` | `User`, `Candidate`, `Company` | `users`, `candidates`, `companies` |
+| **RF-003** | `UC-002` | `mutation createJob` | `jobs.repo.ts` | `Job` | `jobs` |
+| **RF-004** | `UC-003` | `mutation subscribeInJob` | `jobs.repo.ts` | `Job`, `Candidate` | `jobs_candidates` |
+| **RF-005** | `UC-004` | `mutation notifyCandidate` | `candidates.repo.ts` | `Candidate` | `candidates` |
+| **RF-006** | `UC-004` | `query allCandidatesRedis` | `candidates.repo.ts` | `Candidate` | Cache Redis |
 
 ---
 
