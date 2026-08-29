@@ -9,8 +9,8 @@ import { CreateMediaDTO } from '../../../dtos/MediaMutationDTO';
 
 const companiesRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: ["user", "medias"] })
-    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: ["user", "medias"] })
+    const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: ["user", "medias", 'locale', 'contact'] })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: ["user", "medias", 'locale', 'contact'] })
 
     const listRandomLogos = async (info, args) => {
         const fields = getFields(info)

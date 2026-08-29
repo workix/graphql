@@ -11,6 +11,9 @@
 #### [Get by Id]
  - [x] - Getting Candidate by id
 
+#### [Get by UserId]
+ - [x] - Getting Candidate by userId 
+
 #### [Get All]
 - [x] - GetAll with no filters
 - [x] - GetAll with start, max

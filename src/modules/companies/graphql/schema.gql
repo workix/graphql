@@ -19,13 +19,8 @@ type Company {
     createdAt: DateTime
     updatedAt: DateTime
     uuid: String
-    mobilePhone: Int
-    city: String
-    state: String
-    neighborhood: String
-    number: String
-    street: String
-    zipCode: Int
+    contact: Contact
+    locale: Locale
     name: String
     cnpj: Float
     description: String
@@ -33,6 +28,19 @@ type Company {
     segment: String
     user: User
     medias: [CompanyMedia]
+}
+
+type Contact {
+    mobilePhone: Float
+}
+
+type Locale {
+    city: String
+    state: String
+    neighborhood: String
+    number: String
+    street: String
+    zipCode: Int
 }
 
 input CompanyInput {    
