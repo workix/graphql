@@ -1,0 +1,79 @@
+const { BelongsTo } = require('sequelize');
+const Sequelize = require('sequelize');
+/* jshint indent: 2 */
+
+module.exports = function(sequelize, DataTypes) {
+  const Comment = sequelize.define('Comment', {
+    id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.fn('now'),
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.fn('now'),
+    },
+    uuid: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: Sequelize.UUIDV4,
+    },    
+    email: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    text: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    parent_id: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+      primaryKey: false,
+      references: {
+        model: 'Comment',
+        key: 'id'
+      }
+    }    
+  }, {
+    tableName: 'comments',
+    hooks: {
+      afterCreate(instance, options){
+        console.log("HOOK After create")
+      },
+      beforeBulkUpdate(instance, options){
+        console.log("HOOK beforeUpdate")
+        instance.attributes.updated_at = Date.now()
+      }
+    }
+  });
+
+  Comment.associate = function(models) {
+    Comment.belongsToMany(models.Blog, {
+      through: 'blogs_comments',
+      foreignKey: 'blog_id',
+      otherKey: 'comment_id',
+      timestamps: false,
+    });
+
+    Comment.belongsTo(models.Comment, {
+      foreignKey: 'parent_id',
+      as: "parentComment"
+    })
+  }
+
+  return Comment;
+};
+
+export {};

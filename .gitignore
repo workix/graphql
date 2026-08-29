@@ -5,3 +5,5 @@ node_modules/
 .rabbitmq_data
 data
 .redis_data
+dist/
+scratch/

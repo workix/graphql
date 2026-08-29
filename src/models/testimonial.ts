@@ -1,0 +1,70 @@
+const Sequelize = require('sequelize');
+/* jshint indent: 2 */
+
+module.exports = function(sequelize, DataTypes) {
+  const Testimonial = sequelize.define('Testimonial', {
+    id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.fn('now'),
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.fn('now'),
+    },
+    uuid: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: Sequelize.UUIDV4,
+    },    
+    picture: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    signature: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    text: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    author_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      references: {
+        model: 'Author',
+        key: 'id'
+      }
+    }
+  }, {
+    tableName: 'testimonials',
+    hooks: {
+      afterCreate(instance, options){
+        console.log("HOOK After create")
+      },
+      beforeBulkUpdate(instance, options){
+        console.log("HOOK beforeUpdate")
+        instance.attributes.updated_at = Date.now()
+      }
+    }
+  });
+
+  Testimonial.associate = function(models) {
+    // associations can be defined here
+    Testimonial.belongsTo(models.Author, {
+      foreignKey: 'author_id',
+    })
+  }
+
+  return Testimonial;
+};
+
+export {};
