@@ -160,9 +160,9 @@ export const select = async (tableName: string, options: any, connection: any) =
     queryString = `${queryString} WHERE ${where}`;
   }
 
-  if (limit && offset) {
+  if (limit != null && offset != null) {
     queryString = `${queryString} LIMIT ${limit} OFFSET ${offset}`;
-  } else if (limit) {
+  } else if (limit != null) {
     queryString = `${queryString} LIMIT ${limit}`;
   }
 

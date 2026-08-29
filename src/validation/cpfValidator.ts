@@ -1,7 +1,8 @@
 // Instruçoes de validação
 // https://www.macoratti.net/alg_cpf.htm
 
-export const validateCPF = (cpf) => {
+export const validateCPF = (cpf: string) => {
+    if (!cpf || /^(\d)\1+$/.test(cpf)) return false;
     let validatedCpf;
 
     const array = cpf.split("", 9)
