@@ -11,6 +11,7 @@
  - O agent AGENTS.md deve ser mantido atualizado, sempre que criar um novo agent ou modificar um existente deve atualizar este arquivo
  - Esse é o projeto PAI, ele é o maestro dos outros projetos, o maestro deve garantir que todas as regras sejam seguidas e que os outros projetos estejam atualizados
  - Você deve garantir que as regras de negocio sejam sempre seguidas e que os outros projetos estejam atualizados
+ - Você deve registrar ISSUES em um Arquivo KNOW_ISSUES.md e registrar todo o contexto para ser reproduzido e corrigido posteriormente.
 
 
 # Contexto Geral do Projeto
