@@ -1,0 +1,23 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    userFeaturedItems(userId: ID!): [FeaturedItem]
+    rankedSocialFeed(userId: ID!, limit: Int, offset: Int): [Post]
+}
+
+type Mutation {
+    addFeaturedItem(userId: ID!, type: String!, title: String!, url: String, mediaId: ID): FeaturedItem
+    removeFeaturedItem(id: ID!, userId: ID!): Boolean
+}
+
+type FeaturedItem {
+    id: ID
+    userId: ID
+    type: String
+    title: String
+    url: String
+    mediaId: ID
+    createdAt: DateTime
+    updatedAt: DateTime
+}
