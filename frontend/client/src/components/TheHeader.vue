@@ -69,8 +69,10 @@ function handleLogout() {
 
 <style scoped>
 .site-header {
+  position: relative !important;
   background: #fff;
   border-bottom: 1px solid #e2e8f0;
+  z-index: 100;
 }
 .top-bar {
   background: #1e293b;

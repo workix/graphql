@@ -314,10 +314,10 @@ header {
 	line-height: 40px;
 	left: 0;
 	padding: 10px 0;
-	position: fixed;
+	position: relative;
 	top: 0;
 	width: 100%;
-	z-index: 10000;
+	z-index: 100;
 }
 
 	header .container {

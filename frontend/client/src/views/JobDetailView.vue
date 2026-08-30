@@ -5,15 +5,24 @@
     <LoadingOverlay :loading="loading" />
 
     <div v-if="job" class="job-detail-page">
+      <!-- Top Banner -->
       <div class="job-header-banner">
         <div class="container">
-          <div class="row align-items-center">
-            <div class="col-md-8">
-              <h2>{{ job.title }}</h2>
-              <p class="company-sub"><i class="fa fa-building-o"></i> {{ job.company?.name || job.company_name || 'Empresa Parceira' }}</p>
+          <div class="banner-content">
+            <div class="banner-info">
+              <div class="banner-title-row">
+                <h1 class="job-detail-title">{{ job.title }}</h1>
+                <span v-if="job.featured" class="badge-featured">DESTAQUE</span>
+              </div>
+              <div class="banner-meta">
+                <span><i class="fa fa-building-o"></i> {{ job.company?.name || job.company_name || 'Tech Corp Brasil' }}</span>
+                <span><i class="fa fa-map-marker"></i> {{ job.city || 'São Paulo, SP' }}</span>
+                <span class="badge-type">{{ job.jobType || job.contract_type || 'FULLTIME' }}</span>
+              </div>
             </div>
-            <div class="col-md-4 text-right">
-              <button class="btn btn-success btn-lg" @click="handleApply" :disabled="submitting || applied">
+
+            <div class="banner-action">
+              <button class="btn-apply" @click="handleApply" :disabled="submitting || applied">
                 <span v-if="applied"><i class="fa fa-check"></i> Candidatura Enviada</span>
                 <span v-else-if="submitting"><i class="fa fa-spinner fa-spin"></i> Enviando...</span>
                 <span v-else><i class="fa fa-paper-plane"></i> Candidatar-se Agora</span>
@@ -23,35 +32,57 @@
         </div>
       </div>
 
+      <!-- Main Content -->
       <div class="container section-padding">
         <div class="row">
           <div class="col-md-8">
-            <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
-            <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+            <div v-if="successMessage" class="alert alert-success"><i class="fa fa-check-circle"></i> {{ successMessage }}</div>
+            <div v-if="errorMessage" class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> {{ errorMessage }}</div>
 
             <div class="content-box">
-              <h3>Descrição da Vaga</h3>
+              <h3 class="section-heading">Descrição da Vaga</h3>
               <div class="job-description-text" v-html="job.description || '<p>Descrição detalhada da vaga de emprego.</p>'"></div>
 
-              <h3 class="mt-4">Requisitos</h3>
-              <p>{{ job.requirement || job.requirements || 'Experiência relevante na área, proatividade e bom trabalho em equipe.' }}</p>
+              <h3 class="section-heading mt-4">Requisitos</h3>
+              <p class="section-text">{{ job.requirement || job.requirements || 'Experiência relevante na área, proatividade e bom trabalho em equipe.' }}</p>
 
               <div v-if="job.benefits">
-                <h3 class="mt-4">Benefícios</h3>
-                <p>{{ job.benefits }}</p>
+                <h3 class="section-heading mt-4">Benefícios</h3>
+                <p class="section-text">{{ job.benefits }}</p>
               </div>
             </div>
           </div>
 
           <div class="col-md-4">
             <div class="sidebar-box">
-              <h4>Resumo da Vaga</h4>
+              <h4 class="sidebar-heading">Resumo da Oportunidade</h4>
               <ul class="job-overview-list">
-                <li><strong>Categoria:</strong> {{ job.jobCategory || 'Geral' }}</li>
-                <li><strong>Tipo:</strong> {{ job.jobType || job.contract_type || 'CLT' }}</li>
-                <li><strong>Faixa Salarial:</strong> {{ job.minPayment && job.maxPayment ? `R$ ${job.minPayment} - R$ ${job.maxPayment}` : 'A combinar' }}</li>
-                <li><strong>Publicado em:</strong> {{ new Date(job.createdAt || job.created_at || Date.now()).toLocaleDateString() }}</li>
+                <li>
+                  <span class="label-name"><i class="fa fa-tags"></i> Categoria</span>
+                  <span class="label-value">{{ job.jobCategory || 'Tecnologia' }}</span>
+                </li>
+                <li>
+                  <span class="label-name"><i class="fa fa-file-text-o"></i> Tipo de Contrato</span>
+                  <span class="label-value">{{ job.jobType || job.contract_type || 'FULLTIME' }}</span>
+                </li>
+                <li>
+                  <span class="label-name"><i class="fa fa-money"></i> Faixa Salarial</span>
+                  <span class="label-value salary-highlight">
+                    {{ job.minPayment && job.maxPayment ? `R$ ${Number(job.minPayment).toLocaleString('pt-BR')} - R$ ${Number(job.maxPayment).toLocaleString('pt-BR')}` : 'A combinar' }}
+                  </span>
+                </li>
+                <li>
+                  <span class="label-name"><i class="fa fa-calendar"></i> Publicado em</span>
+                  <span class="label-value">{{ new Date(job.createdAt || job.created_at || Date.now()).toLocaleDateString('pt-BR') }}</span>
+                </li>
               </ul>
+
+              <div class="sidebar-apply-box mt-4">
+                <button class="btn-apply-sidebar" @click="handleApply" :disabled="submitting || applied">
+                  <span v-if="applied"><i class="fa fa-check"></i> Inscrito</span>
+                  <span v-else><i class="fa fa-send"></i> Enviar Candidatura</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -117,27 +148,219 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.job-header-banner {
-  background: #0f172a;
-  color: #fff;
-  padding: 40px 0;
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
+
+.job-header-banner {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  padding: 50px 0;
+  border-bottom: 1px solid #334155;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.banner-info {
+  flex: 1;
+}
+
+.banner-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.job-detail-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.badge-featured {
+  background: #f97316;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.banner-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 15px;
+  color: #cbd5e1;
+}
+
+.banner-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.banner-meta i {
+  color: #38bdf8;
+}
+
+.badge-type {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.banner-action {
+  flex-shrink: 0;
+}
+
+.btn-apply {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #10b981;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-apply:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+
+.btn-apply:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .section-padding {
   padding: 50px 0;
 }
+
 .content-box, .sidebar-box {
-  background: #fff;
+  background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 25px;
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.section-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.section-text, .job-description-text {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.sidebar-heading {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 0;
   margin-bottom: 20px;
 }
+
 .job-overview-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
+
 .job-overview-list li {
-  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
   border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+}
+
+.label-name {
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label-name i {
+  color: #0284c7;
+}
+
+.label-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.salary-highlight {
+  color: #047857;
+  font-weight: 700;
+}
+
+.btn-apply-sidebar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #0284c7;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-apply-sidebar:hover:not(:disabled) {
+  background: #0369a1;
+}
+
+@media (max-width: 768px) {
+  .banner-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .banner-action, .btn-apply {
+    width: 100%;
+    justify-content: center;
+  }
 }
 </style>
