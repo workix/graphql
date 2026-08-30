@@ -37,6 +37,35 @@ export interface PaginatedListJob {
 }
 
 export const jobsService = {
+  async getAll(): Promise<{ data: JobModel[] }> {
+    const query = `
+      query AllJobs {
+        allJobs {
+          id
+          title
+          description
+          benefits
+          requirement
+          jobCategory
+          jobType
+          minPayment
+          maxPayment
+          featured
+          activated
+          createdAt
+          company {
+            id
+            name
+            description
+          }
+        }
+      }
+    `;
+
+    const data = await graphqlClient.request<{ allJobs: JobModel[] }>(query);
+    return { data: data.allJobs || [] };
+  },
+
   async getPaginated(params: JobFilterParams): Promise<{ data: PaginatedListJob }> {
     const query = `
       query AllJobsPaginated($page: Int!, $limit: Int!) {
