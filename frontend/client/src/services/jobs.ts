@@ -58,6 +58,10 @@ export const jobsService = {
             name
             description
           }
+          candidates {
+            id
+            name
+          }
         }
       }
     `;
