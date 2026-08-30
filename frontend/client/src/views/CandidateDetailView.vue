@@ -9,8 +9,8 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="col-md-8">
-              <h2>{{ candidate.name || 'Perfil do Candidato' }}</h2>
-              <p class="headline"><i class="fa fa-briefcase"></i> {{ candidate.title || 'Profissional de TI' }}</p>
+              <h2>{{ candidate.candidate?.name || candidate.name || 'Perfil do Candidato' }}</h2>
+              <p class="headline"><i class="fa fa-briefcase"></i> {{ candidate.objective || 'Objetivo Profissional' }} - <span class="label label-info">{{ candidate.carrerLevel || 'Nível não informado' }}</span></p>
             </div>
           </div>
         </div>
@@ -20,24 +20,43 @@
         <div class="row">
           <div class="col-md-8">
             <div class="content-box">
-              <h3>Resumo Profissional</h3>
-              <p>{{ candidate.summary || 'Profissional qualificado com ampla experiência no setor.' }}</p>
+              <h3>Objetivo & Resumo</h3>
+              <p>{{ candidate.objective || candidate.content || 'Profissional qualificado com ampla experiência no setor.' }}</p>
 
-              <h3 class="mt-4">Experiência Profissional</h3>
-              <div v-html="candidate.experience || '<p>Informações de experiência profissional cadastradas no currículo.</p>'"></div>
+              <div v-if="candidate.skills && candidate.skills.length > 0">
+                <h3 class="mt-4">Competências & Habilidades</h3>
+                <div class="skills-chips">
+                  <span v-for="(skill, idx) in candidate.skills" :key="idx" class="badge badge-primary mr-2 mb-2">
+                    {{ skill.skillName }} ({{ skill.months }} meses)
+                  </span>
+                </div>
+              </div>
 
-              <h3 class="mt-4">Formação Acadêmica</h3>
-              <div v-html="candidate.education || '<p>Ensino Superior Completo.</p>'"></div>
+              <div v-if="candidate.experiences && candidate.experiences.length > 0">
+                <h3 class="mt-4">Experiência Profissional</h3>
+                <div v-for="(exp, idx) in candidate.experiences" :key="idx" class="mb-3">
+                  <strong>{{ exp.jobTitle }}</strong> - {{ exp.employerName }}
+                  <p class="text-muted">{{ exp.description }}</p>
+                </div>
+              </div>
+
+              <div v-if="candidate.educations && candidate.educations.length > 0">
+                <h3 class="mt-4">Formação Acadêmica</h3>
+                <div v-for="(edu, idx) in candidate.educations" :key="idx" class="mb-3">
+                  <strong>{{ edu.qualification }}</strong> - {{ edu.schoolName }}
+                  <p class="text-muted">{{ edu.description }}</p>
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="col-md-4">
             <div class="sidebar-box">
-              <h4>Informações de Contato</h4>
+              <h4>Informações Gerais</h4>
               <ul class="contact-info-list">
-                <li><i class="fa fa-envelope"></i> {{ candidate.email || 'Contato restrito a empresas' }}</li>
-                <li><i class="fa fa-phone"></i> {{ candidate.phone || '(11) 99999-9999' }}</li>
-                <li><i class="fa fa-map-marker"></i> {{ candidate.city || 'São Paulo, SP' }}</li>
+                <li><i class="fa fa-map-marker"></i> {{ candidate.candidate?.locale?.city || 'São Paulo, SP' }}</li>
+                <li><i class="fa fa-clock-o"></i> Preferência: {{ candidate.presence || 'REMOTE' }}</li>
+                <li><i class="fa fa-calendar"></i> Cadastrado em: {{ new Date(candidate.createdAt || Date.now()).toLocaleDateString() }}</li>
               </ul>
             </div>
           </div>
