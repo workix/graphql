@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
+      autoIncrement: false,
       references: {
         model: 'JAASUser',
         key: 'id'
@@ -28,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
 
   JAASRoles.associate = function(models) {
     JAASRoles.belongsToMany(models.JAASUser, {
-      through: 'jaas_roles',
+      through: models.JAASRoles,
       foreignKey: 'id',
       otherKey: 'role_name',
       timestamps: false,

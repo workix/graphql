@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.fn('now'),
+      defaultValue: Sequelize.NOW,
     },
     disabled_at: {
       type: DataTypes.DATE,
@@ -37,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
     updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.fn('now'),
+      defaultValue: Sequelize.NOW,
     },
     uuid: {
       type: DataTypes.UUID,
@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
-        model: 'Job',
+        model: 'jobs',
         key: 'id'
       }
     }

@@ -12,12 +12,12 @@ module.exports = function(sequelize, DataTypes) {
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.fn('now'),
+      defaultValue: Sequelize.NOW,
     },
     updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.fn('now'),
+      defaultValue: Sequelize.NOW,
     },
     uuid: {
       type: DataTypes.UUID,

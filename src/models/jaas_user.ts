@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
   JAASUser.associate = function(models) {
     // associations can be defined here
     JAASUser.belongsToMany(models.JAASRole, {
-      through: 'jaas_roles',
+      through: models.JAASRoles,
       foreignKey: 'id',
       otherKey: 'role_name',
       timestamps: false,
