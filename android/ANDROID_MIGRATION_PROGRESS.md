@@ -67,10 +67,10 @@ A tabela abaixo relaciona as 12 telas do Frontend Cliente (`frontend/client/src/
   - Análise dos scripts Gradle e AndroidManifest existentes.
   - Criação do documento oficial de acompanhamento `android/ANDROID_MIGRATION_PROGRESS.md`.
 
-- [ ] **Fase 2: Atualização do Build, Dependências e Arquitetura Base**
-  - Atualização dos scripts Gradle para versões modernas de plugins Kotlin e AndroidX.
-  - Configuração do client HTTP (Retrofit2 + OkHttp / Apollo GraphQL Client).
-  - Estruturação dos pacotes de arquitetura (MVVM / Clean Architecture com ViewModel e Coroutines).
+- [x] **Fase 2: Atualização do Build, Dependências e Arquitetura Base**
+  - Atualização dos scripts Gradle (`android/build.gradle` e `android/app/build.gradle`) com suporte ao Kotlin 1.9.22, AndroidX, SDK Target 34 e Java 17.
+  - Configuração do cliente HTTP Retrofit2 + OkHttp em Kotlin com `AuthInterceptor` (JWT Bearer Token).
+  - Estruturação das interfaces de serviço (`AuthApiService`, `JobsApiService`, `ResumesApiService`, `BlogsApiService`) e encapsulamento de estado de rede via `NetworkResult`.
 
 - [ ] **Fase 3: Autenticação, Sessão e Navegação Principal**
   - Implementação de `LoginActivity` e `RegisterActivity` em Kotlin.
