@@ -1,10 +1,13 @@
 const { QueryTypes } = require('sequelize');
+const jwt = require('jsonwebtoken');
 import { RequestedFields } from '../../../RequestedFields';
 import { User } from '../../../models';
 import Paginator from '../../../utils/Paginator';
 import PaginatedList from '../../../utils/PaginatedList';
 import UserDTO from '../../../dtos/UserDTO';
 import { CreateUserDTO, UpdateUserDTO } from '../../../dtos/UserMutationDTO';
+
+const VERIFICATION_METHODS = ['GOV_ID', 'WORK_EMAIL', 'PHONE'];
 
 const usersRepository = (db: any) => {
     const requestedFields = new RequestedFields();
@@ -78,7 +81,32 @@ const usersRepository = (db: any) => {
         return paginatedList;
     }
 
-    return { findAll, findById, create, destroy, update, findAllPaginated }
+    const requestIdentityVerification = async (userId: number, method: string) => {
+        if (!VERIFICATION_METHODS.includes(method)) {
+            throw new Error(`Invalid verification method ${method}`)
+        }
+
+        const user = await User.findByPk(userId)
+        if (!user) {
+            throw new Error(`User with id: ${userId} not found`)
+        }
+
+        return jwt.sign({ userId, method }, process.env.JWT_SECRET, { expiresIn: '24h' })
+    }
+
+    const confirmIdentityVerification = async (token: string) => {
+        const decoded: any = jwt.verify(token, process.env.JWT_SECRET)
+
+        const user = await User.findByPk(decoded.userId)
+        if (!user) {
+            throw new Error(`User with id: ${decoded.userId} not found`)
+        }
+
+        await user.update({ verified: true, verification_method: decoded.method })
+        return user
+    }
+
+    return { findAll, findById, create, destroy, update, findAllPaginated, requestIdentityVerification, confirmIdentityVerification }
 }
 
 export default usersRepository;

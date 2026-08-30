@@ -12,6 +12,8 @@ type Mutation {
     createUser(input: UserInput!): User
     deleteUser(id: ID!) : Boolean
     updateUser(id: ID!, input: UserInput!): User
+    requestIdentityVerification(userId: ID!, method: String!): String
+    confirmIdentityVerification(token: String!): User
 }
 
 type ElasticUser {
@@ -29,6 +31,8 @@ type User {
     email: String
     firebaseMessageToken: String
     firebaseUUID: String
+    verified: Boolean
+    verificationMethod: String
 }
 
 input UserInput {

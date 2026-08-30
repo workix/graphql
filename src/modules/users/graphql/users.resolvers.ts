@@ -48,6 +48,13 @@ const usersResolvers = {
       await updateIndex(user)
 
       return new UserDTO(user);
+    },
+    requestIdentityVerification: async (parent, args, ctx, info) => {
+      return await usersRepository(ctx.orm).requestIdentityVerification(args.userId, args.method)
+    },
+    confirmIdentityVerification: async (parent, args, ctx, info) => {
+      const user = await usersRepository(ctx.orm).confirmIdentityVerification(args.token)
+      return new UserDTO(user);
     }
   }
 }

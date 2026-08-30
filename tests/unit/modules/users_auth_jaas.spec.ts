@@ -1,8 +1,23 @@
 import usersRepository from '../../../src/modules/users/repository/users.repo';
+import usersResolvers from '../../../src/modules/users/graphql/users.resolvers';
+import UserDTO from '../../../src/dtos/UserDTO';
 import authRepository from '../../../src/modules/auth/repository/auth.repo';
 import jaasUsersRepository from '../../../src/modules/jaas/repository/jaas_users.repo';
 import jaasRolesRepository from '../../../src/modules/jaas/repository/jaas_roles.repo';
 import { User, JAASUser, JAASRole } from '../../../src/models';
+import * as jwt from 'jsonwebtoken';
+
+jest.mock('jsonwebtoken', () => ({
+  sign: jest.fn(),
+  verify: jest.fn()
+}));
+
+jest.mock('../../../src/modules/users/elasticSearch/users.elastic', () => ({
+  matchAnyFields: jest.fn(),
+  createIndex: jest.fn(),
+  deleteIndex: jest.fn(),
+  updateIndex: jest.fn()
+}));
 
 jest.mock('../../../src/models', () => ({
   User: {
@@ -39,6 +54,8 @@ describe('Modules - Users, Auth & JAAS Repositories', () => {
   let mockInfo: any;
 
   beforeEach(() => {
+    jest.clearAllMocks();
+    process.env.JWT_SECRET = 'secret123';
     mockDb = {
       sequelize: {
         transaction: jest.fn().mockImplementation(async (cb: any) => cb({}))
@@ -123,6 +140,86 @@ describe('Modules - Users, Auth & JAAS Repositories', () => {
       (User.findAll as jest.Mock).mockResolvedValue([{ id: 1, name: 'Alice' }]);
       const paginated = await repo.findAllPaginated(mockInfo, { page: 1, limit: 10 });
       expect(paginated.totalPages).toBe(2);
+    });
+
+    describe('identity verification', () => {
+      it('should throw error for an invalid verification method', async () => {
+        await expect(repo.requestIdentityVerification(1, 'CARRIER_PIGEON')).rejects.toThrow('Invalid verification method CARRIER_PIGEON');
+      });
+
+      it('should throw error when requesting verification for a non-existing user', async () => {
+        (User.findByPk as jest.Mock).mockResolvedValue(null);
+        await expect(repo.requestIdentityVerification(99, 'WORK_EMAIL')).rejects.toThrow('User with id: 99 not found');
+      });
+
+      it('should sign a JWT confirmation token for a valid user and method', async () => {
+        (User.findByPk as jest.Mock).mockResolvedValue({ id: 1 });
+        (jwt.sign as jest.Mock).mockReturnValue('signed-token');
+
+        const token = await repo.requestIdentityVerification(1, 'WORK_EMAIL');
+
+        expect(jwt.sign).toHaveBeenCalledWith({ userId: 1, method: 'WORK_EMAIL' }, 'secret123', { expiresIn: '24h' });
+        expect(token).toBe('signed-token');
+      });
+
+      it('should throw error when confirming verification for a non-existing user', async () => {
+        (jwt.verify as jest.Mock).mockReturnValue({ userId: 99, method: 'WORK_EMAIL' });
+        (User.findByPk as jest.Mock).mockResolvedValue(null);
+
+        await expect(repo.confirmIdentityVerification('bad-token')).rejects.toThrow('User with id: 99 not found');
+      });
+
+      it('should propagate jwt verification errors', async () => {
+        (jwt.verify as jest.Mock).mockImplementation(() => {
+          throw new Error('jwt expired');
+        });
+
+        await expect(repo.confirmIdentityVerification('expired-token')).rejects.toThrow('jwt expired');
+      });
+
+      it('should mark the user as verified when the token is valid', async () => {
+        const mockUpdate = jest.fn().mockImplementation(function (this: any, fields: any) {
+          Object.assign(this, fields);
+          return Promise.resolve(this);
+        });
+        const mockUser = { id: 1, verified: false, update: mockUpdate };
+        (jwt.verify as jest.Mock).mockReturnValue({ userId: 1, method: 'WORK_EMAIL' });
+        (User.findByPk as jest.Mock).mockResolvedValue(mockUser);
+
+        const user = await repo.confirmIdentityVerification('valid-token');
+
+        expect(mockUpdate).toHaveBeenCalledWith({ verified: true, verification_method: 'WORK_EMAIL' });
+        expect(user.verified).toBe(true);
+      });
+    });
+  });
+
+  describe('usersResolvers - identity verification', () => {
+    it('should request identity verification and return the signed token', async () => {
+      (User.findByPk as jest.Mock).mockResolvedValue({ id: 1 });
+      (jwt.sign as jest.Mock).mockReturnValue('signed-token');
+
+      const m = usersResolvers.Mutation;
+      const token = await m.requestIdentityVerification(null, { userId: 1, method: 'WORK_EMAIL' }, { orm: mockDb }, mockInfo);
+
+      expect(token).toBe('signed-token');
+    });
+
+    it('should confirm identity verification and return the updated UserDTO', async () => {
+      const mockUpdate = jest.fn().mockImplementation(function (this: any, fields: any) {
+        Object.assign(this, fields);
+        return Promise.resolve(this);
+      });
+      const mockUser = { id: 1, email: 'a@b.com', verified: false, update: mockUpdate };
+      (jwt.verify as jest.Mock).mockReturnValue({ userId: 1, method: 'WORK_EMAIL' });
+      (User.findByPk as jest.Mock).mockResolvedValue(mockUser);
+
+      const m = usersResolvers.Mutation;
+      const user = await m.confirmIdentityVerification(null, { token: 'valid-token' }, { orm: mockDb }, mockInfo);
+
+      expect(user).toBeInstanceOf(UserDTO);
+      expect(user.verified).toBe(true);
+      expect(user.verificationMethod).toBe('WORK_EMAIL');
     });
   });
 

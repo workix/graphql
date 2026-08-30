@@ -27,8 +27,8 @@
 
 - [x] 5.1 **Aprovação obrigatória**: apresentar ao usuário o relatório da migration de ALTER TABLE em `users` (colunas `verified`, `verification_method`) antes de criar o arquivo de migration — aprovado em conversa
 - [x] 5.2 Criar migration de alteração da tabela `users` (após aprovação) e atualizar o model `User`/`UserDTO`
-- [ ] 5.3 Adicionar mutation `verifyIdentity` no módulo `src/modules/users` reaproveitando a infraestrutura JWT existente (BR-001)
-- [ ] 5.4 Criar/estender suíte de testes unitários TDD cobrindo o fluxo de verificação com 100% de cobertura
+- [x] 5.3 Adicionar mutations `requestIdentityVerification`/`confirmIdentityVerification` no módulo `src/modules/users` reaproveitando a infraestrutura JWT existente (BR-001) — split em duas mutations (solicitar/confirmar) em vez de uma única `verifyIdentity`, já que não há serviço de e-mail no projeto para o envio automático do token
+- [x] 5.4 Criar/estender suíte de testes unitários TDD cobrindo o fluxo de verificação com 100% de cobertura
 
 ## 6. Avaliação de Arquitetura (Apollo Federation)
 
