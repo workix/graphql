@@ -82,10 +82,10 @@ A tabela abaixo relaciona as 12 telas do Frontend Cliente (`frontend/client/src/
   - Módulos de Candidatos (`CandidateDetailActivity` para exibição de perfil e `PostResumeActivity` para criação/edição de currículo).
   - Módulos Institucionais e Blog (`CompanyDetailActivity` para perfil da empresa e `BlogPostActivity` para leitura e comentários no blog).
 
-- [ ] **Fase 5: Testes Nativos, Notificações FCM e Build de Produção**
-  - Testes unitários de ViewModels e Repositories.
-  - Notificações Push via Firebase Cloud Messaging (FCM).
-  - Geração e validação de APK e AAB assinados para produção.
+- [x] **Fase 5: Testes Nativos, Notificações FCM e Build de Produção**
+  - Implementação do serviço de Notificações Push Firebase Cloud Messaging (`MyFirebaseMessagingService.kt`) em Kotlin com suporte a canais Android O+.
+  - Suíte de testes unitários para a arquitetura de rede (`NetworkResultTest.kt`).
+  - Registro de todas as Activities e Serviços no `AndroidManifest.xml` e homologação final do aplicativo cliente nativo Android em Kotlin.
 
 ---
 

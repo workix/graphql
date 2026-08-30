@@ -31,38 +31,24 @@
             </intent-filter>
         </receiver>
 
+        <!-- Novas Activities Nativas em Kotlin (Fases 3 e 4) -->
         <activity
-            android:name="br.com.codecode.workix.android.view.activity.login.LoginActivity"
+            android:name="br.com.codecode.workix.android.ui.auth.LoginActivity"
+            android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="br.com.codecode.workix.android.view.activity.JobDetailActivity"
-            android:launchMode="singleTop" />
-
-        <activity
-            android:name="br.com.codecode.workix.android.view.activity.login.ResetPasswordActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name="br.com.codecode.workix.android.view.activity.login.SignupActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name="br.com.codecode.workix.android.view.activity.OptionsActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name="br.com.codecode.workix.android.view.activity.CandidateActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name="br.com.codecode.workix.android.view.activity.MainActivity"
-            android:launchMode="singleTop" />
-
-        <activity
-            android:name="br.com.codecode.workix.android.view.activity.NewMain"
-            android:launchMode="singleTop" />
+        <activity android:name="br.com.codecode.workix.android.ui.auth.RegisterActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.main.MainActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.jobs.JobDetailActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.jobs.PostJobActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.candidates.CandidateDetailActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.candidates.PostResumeActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.companies.CompanyDetailActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.blog.BlogPostActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
