@@ -7,9 +7,9 @@
 ## 2. Premium / Planos e InMail (`premium`)
 
 - [x] 2.1 Criar modelos Sequelize `SubscriptionPlan`, `UserSubscription` e suas migrations
-- [ ] 2.2 Criar módulo GraphQL `src/modules/premium` com schema, DTOs, repositório e resolvers para planos e assinaturas; criar composable `requirePlanResolver` em `src/composable_resolvers`
-- [ ] 2.3 Estender `src/modules/messaging` (`sendMessage`) para permitir InMail a não-conexões com plano ativo, decrementando créditos mensais
-- [ ] 2.4 Criar/estender suítes de testes unitários TDD (`tests/unit/modules/premium.spec.ts` e extensão de `tests/unit/modules/messaging.spec.ts`) com 100% de cobertura
+- [x] 2.2 Criar módulo GraphQL `src/modules/premium` com schema, DTOs, repositório e resolvers para planos e assinaturas; criar composable `requirePlanResolver` em `src/composable_resolvers`
+- [x] 2.3 Estender `src/modules/messaging` (`sendMessage`) para permitir InMail a não-conexões com plano ativo, decrementando créditos mensais
+- [x] 2.4 Criar/estender suítes de testes unitários TDD (`tests/unit/modules/premium.spec.ts` e extensão de `tests/unit/modules/messaging.spec.ts`) com 100% de cobertura
 
 ## 3. LinkedIn Learning (`learning`)
 

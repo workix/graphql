@@ -1,4 +1,5 @@
 import { DirectMessage, Connection } from '../../../models';
+import premiumRepository from '../../premium/repository/premium.repo';
 
 const messagingRepository = (db: any, pubsub?: any) => {
   const sendMessage = async (senderId: number, recipientId: number, content: string) => {
@@ -15,7 +16,11 @@ const messagingRepository = (db: any, pubsub?: any) => {
     });
 
     if (!connection) {
-      throw new Error('Must be connected to send direct messages');
+      const subscription = await premiumRepository(db).getActiveSubscription(senderId);
+      if (!subscription || subscription.inmail_credits_remaining <= 0) {
+        throw new Error('Must be connected to send direct messages');
+      }
+      await premiumRepository(db).decrementInMailCredit(senderId);
     }
 
     const message = await DirectMessage.create({

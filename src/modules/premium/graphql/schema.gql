@@ -1,0 +1,34 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    subscriptionPlans: [SubscriptionPlan]
+    mySubscription(userId: ID!): UserSubscription
+}
+
+type Mutation {
+    createSubscriptionPlan(name: String!, price: Float!, billingPeriod: String, inmailCreditsPerMonth: Int): SubscriptionPlan
+    subscribeToPlan(userId: ID!, planId: ID!): UserSubscription
+}
+
+type SubscriptionPlan {
+    id: ID
+    name: String
+    price: Float
+    billingPeriod: String
+    inmailCreditsPerMonth: Int
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type UserSubscription {
+    id: ID
+    userId: ID
+    planId: ID
+    status: String
+    inmailCreditsRemaining: Int
+    startedAt: DateTime
+    expiresAt: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
+}

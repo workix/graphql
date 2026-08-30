@@ -1,5 +1,6 @@
 import messagingRepository from '../../../src/modules/messaging/repository/messaging.repo';
 import messagingResolvers from '../../../src/modules/messaging/graphql/messaging.resolvers';
+import premiumRepository from '../../../src/modules/premium/repository/premium.repo';
 import DirectMessageDTO from '../../../src/dtos/DirectMessageDTO';
 import { DirectMessage, Connection } from '../../../src/models';
 
@@ -14,9 +15,13 @@ jest.mock('../../../src/models', () => ({
   }
 }));
 
+jest.mock('../../../src/modules/premium/repository/premium.repo', () => jest.fn());
+
 describe('Messaging Module Unit Tests (TDD)', () => {
   let mockCtx: any;
   let mockPubsub: any;
+  let mockGetActiveSubscription: jest.Mock;
+  let mockDecrementInMailCredit: jest.Mock;
 
   beforeEach(() => {
     mockPubsub = {
@@ -29,6 +34,13 @@ describe('Messaging Module Unit Tests (TDD)', () => {
       },
       pubsub: mockPubsub
     };
+
+    mockGetActiveSubscription = jest.fn().mockResolvedValue(null);
+    mockDecrementInMailCredit = jest.fn();
+    (premiumRepository as unknown as jest.Mock).mockReturnValue({
+      getActiveSubscription: mockGetActiveSubscription,
+      decrementInMailCredit: mockDecrementInMailCredit
+    });
   });
 
   describe('messagingRepository', () => {
@@ -37,11 +49,35 @@ describe('Messaging Module Unit Tests (TDD)', () => {
       await expect(repo.sendMessage(1, 1, 'Hello')).rejects.toThrow('Cannot send direct message to yourself');
     });
 
-    it('should throw error when users are not connected', async () => {
+    it('should throw error when users are not connected and sender has no active premium subscription', async () => {
       (Connection.findOne as jest.Mock).mockResolvedValue(null);
+      mockGetActiveSubscription.mockResolvedValue(null);
       const repo = messagingRepository(mockCtx.orm, mockPubsub);
 
       await expect(repo.sendMessage(1, 2, 'Hello')).rejects.toThrow('Must be connected to send direct messages');
+      expect(mockDecrementInMailCredit).not.toHaveBeenCalled();
+    });
+
+    it('should throw error when users are not connected and sender has no InMail credits remaining', async () => {
+      (Connection.findOne as jest.Mock).mockResolvedValue(null);
+      mockGetActiveSubscription.mockResolvedValue({ id: 1, inmail_credits_remaining: 0 });
+      const repo = messagingRepository(mockCtx.orm, mockPubsub);
+
+      await expect(repo.sendMessage(1, 2, 'Hello')).rejects.toThrow('Must be connected to send direct messages');
+      expect(mockDecrementInMailCredit).not.toHaveBeenCalled();
+    });
+
+    it('should send InMail and decrement credit when sender has an active premium subscription with credits', async () => {
+      (Connection.findOne as jest.Mock).mockResolvedValue(null);
+      mockGetActiveSubscription.mockResolvedValue({ id: 1, inmail_credits_remaining: 3 });
+      const mockMsg = { id: 11, sender_id: 1, recipient_id: 2, content: 'InMail hello', read: false };
+      (DirectMessage.create as jest.Mock).mockResolvedValue(mockMsg);
+
+      const repo = messagingRepository(mockCtx.orm, mockPubsub);
+      const result = await repo.sendMessage(1, 2, 'InMail hello');
+
+      expect(mockDecrementInMailCredit).toHaveBeenCalledWith(1);
+      expect(result).toEqual(mockMsg);
     });
 
     it('should send message and publish event to pubsub when connected', async () => {

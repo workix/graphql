@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1788055531112" clover="3.2.0">
-  <project timestamp="1788055531112" name="All files">
-    <metrics statements="3801" coveredstatements="3450" conditionals="727" coveredconditionals="603" methods="943" coveredmethods="776" elements="5471" coveredelements="4829" complexity="0" loc="3801" ncloc="3801" packages="69" files="212" classes="212"/>
+<coverage generated="1788055912056" clover="3.2.0">
+  <project timestamp="1788055912057" name="All files">
+    <metrics statements="3891" coveredstatements="3540" conditionals="771" coveredconditionals="647" methods="963" coveredmethods="796" elements="5625" coveredelements="4983" complexity="0" loc="3891" ncloc="3891" packages="71" files="219" classes="219"/>
     <package name="src">
       <metrics statements="281" coveredstatements="71" conditionals="49" coveredconditionals="8" methods="108" coveredmethods="22"/>
       <file name="RequestedFields.ts" path="C:\Packsys\NetBeansProjects\graphql\src\RequestedFields.ts">
@@ -302,7 +302,7 @@
       </file>
     </package>
     <package name="src.composable_resolvers">
-      <metrics statements="26" coveredstatements="26" conditionals="10" coveredconditionals="9" methods="8" coveredmethods="8"/>
+      <metrics statements="33" coveredstatements="33" conditionals="11" coveredconditionals="10" methods="11" coveredmethods="11"/>
       <file name="auth-resolver.ts" path="C:\Packsys\NetBeansProjects\graphql\src\composable_resolvers\auth-resolver.ts">
         <metrics statements="5" coveredstatements="5" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
         <line num="1" count="2" type="stmt"/>
@@ -327,6 +327,16 @@
         <line num="19" count="8" type="stmt"/>
         <line num="21" count="8" type="stmt"/>
       </file>
+      <file name="require-plan-resolver.ts" path="C:\Packsys\NetBeansProjects\graphql\src\composable_resolvers\require-plan-resolver.ts">
+        <metrics statements="7" coveredstatements="7" conditionals="1" coveredconditionals="1" methods="3" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="7" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+      </file>
       <file name="verify-token-resolver.ts" path="C:\Packsys\NetBeansProjects\graphql\src\composable_resolvers\verify-token-resolver.ts">
         <metrics statements="8" coveredstatements="8" conditionals="4" coveredconditionals="3" methods="3" coveredmethods="3"/>
         <line num="1" count="2" type="stmt"/>
@@ -340,7 +350,7 @@
       </file>
     </package>
     <package name="src.dtos">
-      <metrics statements="723" coveredstatements="719" conditionals="255" coveredconditionals="223" methods="109" coveredmethods="103"/>
+      <metrics statements="743" coveredstatements="739" conditionals="279" coveredconditionals="247" methods="111" coveredmethods="105"/>
       <file name="AuthorDTO.ts" path="C:\Packsys\NetBeansProjects\graphql\src\dtos\AuthorDTO.ts">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="3" type="stmt"/>
@@ -1177,6 +1187,18 @@
         <line num="13" count="3" type="stmt"/>
         <line num="16" count="2" type="stmt"/>
       </file>
+      <file name="SubscriptionPlanDTO.ts" path="C:\Packsys\NetBeansProjects\graphql\src\dtos\SubscriptionPlanDTO.ts">
+        <metrics statements="9" coveredstatements="9" conditionals="9" coveredconditionals="9" methods="1" coveredmethods="1"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="11" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="3" type="cond" truecount="2" falsecount="0"/>
+      </file>
       <file name="TagDTO.ts" path="C:\Packsys\NetBeansProjects\graphql\src\dtos\TagDTO.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="2" type="stmt"/>
@@ -1264,6 +1286,20 @@
         <line num="23" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="24" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="25" count="2" type="cond" truecount="2" falsecount="0"/>
+      </file>
+      <file name="UserSubscriptionDTO.ts" path="C:\Packsys\NetBeansProjects\graphql\src\dtos\UserSubscriptionDTO.ts">
+        <metrics statements="11" coveredstatements="11" conditionals="15" coveredconditionals="15" methods="1" coveredmethods="1"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="13" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="18" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="3" type="cond" truecount="2" falsecount="0"/>
       </file>
     </package>
     <package name="src.factory">
@@ -1364,7 +1400,7 @@
       </file>
     </package>
     <package name="src.models">
-      <metrics statements="318" coveredstatements="277" conditionals="10" coveredconditionals="8" methods="98" coveredmethods="70"/>
+      <metrics statements="326" coveredstatements="285" conditionals="10" coveredconditionals="8" methods="100" coveredmethods="72"/>
       <file name="author.ts" path="C:\Packsys\NetBeansProjects\graphql\src\models\author.ts">
         <metrics statements="9" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
@@ -1552,7 +1588,7 @@
         <line num="21" count="1" type="stmt"/>
       </file>
       <file name="index.ts" path="C:\Packsys\NetBeansProjects\graphql\src\models\index.ts">
-        <metrics statements="77" coveredstatements="76" conditionals="10" coveredconditionals="8" methods="3" coveredmethods="3"/>
+        <metrics statements="79" coveredstatements="78" conditionals="10" coveredconditionals="8" methods="3" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -1564,11 +1600,11 @@
         <line num="12" count="0" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
-        <line num="19" count="57" type="stmt"/>
-        <line num="27" count="56" type="stmt"/>
-        <line num="28" count="56" type="stmt"/>
+        <line num="19" count="59" type="stmt"/>
+        <line num="27" count="58" type="stmt"/>
+        <line num="28" count="58" type="stmt"/>
         <line num="31" count="1" type="stmt"/>
-        <line num="32" count="56" type="cond" truecount="1" falsecount="0"/>
+        <line num="32" count="58" type="cond" truecount="1" falsecount="0"/>
         <line num="33" count="11" type="stmt"/>
         <line num="37" count="1" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
@@ -1628,8 +1664,10 @@
         <line num="93" count="1" type="stmt"/>
         <line num="94" count="1" type="stmt"/>
         <line num="95" count="1" type="stmt"/>
+        <line num="96" count="1" type="stmt"/>
         <line num="97" count="1" type="stmt"/>
-        <line num="98" count="1" type="stmt"/>
+        <line num="99" count="1" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
       </file>
       <file name="jaas_role.ts" path="C:\Packsys\NetBeansProjects\graphql\src\models\jaas_role.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -1828,6 +1866,12 @@
         <line num="38" count="0" type="stmt"/>
         <line num="39" count="0" type="stmt"/>
       </file>
+      <file name="subscription_plans.ts" path="C:\Packsys\NetBeansProjects\graphql\src\models\subscription_plans.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+      </file>
       <file name="testimonial.ts" path="C:\Packsys\NetBeansProjects\graphql\src\models\testimonial.ts">
         <metrics statements="9" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
@@ -1853,6 +1897,12 @@
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="45" count="1" type="stmt"/>
+      </file>
+      <file name="user_subscriptions.ts" path="C:\Packsys\NetBeansProjects\graphql\src\models\user_subscriptions.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.modules.analytics.graphql">
@@ -3604,32 +3654,36 @@
       </file>
     </package>
     <package name="src.modules.messaging.repository">
-      <metrics statements="23" coveredstatements="23" conditionals="10" coveredconditionals="8" methods="4" coveredmethods="4"/>
+      <metrics statements="27" coveredstatements="27" conditionals="13" coveredconditionals="11" methods="4" coveredmethods="4"/>
       <file name="messaging.repo.ts" path="C:\Packsys\NetBeansProjects\graphql\src\modules\messaging\repository\messaging.repo.ts">
-        <metrics statements="23" coveredstatements="23" conditionals="10" coveredconditionals="8" methods="4" coveredmethods="4"/>
+        <metrics statements="27" coveredstatements="27" conditionals="13" coveredconditionals="11" methods="4" coveredmethods="4"/>
         <line num="1" count="2" type="stmt"/>
-        <line num="3" count="2" type="stmt"/>
-        <line num="4" count="9" type="stmt"/>
-        <line num="5" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="9" count="3" type="stmt"/>
-        <line num="17" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="18" count="1" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="11" type="stmt"/>
+        <line num="6" count="6" type="cond" truecount="1" falsecount="0"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="18" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="20" count="3" type="cond" truecount="3" falsecount="0"/>
         <line num="21" count="2" type="stmt"/>
-        <line num="28" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="29" count="2" type="stmt"/>
-        <line num="32" count="2" type="stmt"/>
-        <line num="35" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="36" count="2" type="stmt"/>
-        <line num="47" count="2" type="stmt"/>
-        <line num="50" count="9" type="stmt"/>
-        <line num="51" count="3" type="stmt"/>
-        <line num="55" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="59" count="2" type="stmt"/>
-        <line num="60" count="2" type="stmt"/>
-        <line num="63" count="9" type="stmt"/>
-        <line num="70" count="2" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="33" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="34" count="3" type="stmt"/>
+        <line num="37" count="3" type="stmt"/>
+        <line num="40" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="52" count="2" type="stmt"/>
+        <line num="55" count="11" type="stmt"/>
+        <line num="56" count="3" type="stmt"/>
+        <line num="60" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="64" count="2" type="stmt"/>
+        <line num="65" count="2" type="stmt"/>
+        <line num="68" count="11" type="stmt"/>
+        <line num="75" count="2" type="stmt"/>
       </file>
     </package>
     <package name="src.modules.notifications.graphql">
@@ -3744,6 +3798,69 @@
         <line num="79" count="2" type="stmt"/>
         <line num="85" count="12" type="stmt"/>
         <line num="95" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.modules.premium.graphql">
+      <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="2" methods="5" coveredmethods="5"/>
+      <file name="premium.resolvers.ts" path="C:\Packsys\NetBeansProjects\graphql\src\modules\premium\graphql\premium.resolvers.ts">
+        <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="2" methods="5" coveredmethods="5"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.modules.premium.repository">
+      <metrics statements="38" coveredstatements="38" conditionals="14" coveredconditionals="14" methods="8" coveredmethods="8"/>
+      <file name="premium.repo.ts" path="C:\Packsys\NetBeansProjects\graphql\src\modules\premium\repository\premium.repo.ts">
+        <metrics statements="38" coveredstatements="38" conditionals="14" coveredconditionals="14" methods="8" coveredmethods="8"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="4" count="6" type="stmt"/>
+        <line num="5" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="10" count="6" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="11" type="cond" truecount="3" falsecount="0"/>
+        <line num="15" count="6" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="19" count="20" type="cond" truecount="1" falsecount="0"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="28" count="20" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="32" count="20" type="stmt"/>
+        <line num="33" count="4" type="stmt"/>
+        <line num="34" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="38" count="3" type="stmt"/>
+        <line num="39" count="3" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="49" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="50" count="2" type="stmt"/>
+        <line num="51" count="2" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="57" count="20" type="stmt"/>
+        <line num="58" count="11" type="stmt"/>
+        <line num="59" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="62" count="20" type="stmt"/>
+        <line num="63" count="3" type="stmt"/>
+        <line num="64" count="3" type="cond" truecount="3" falsecount="0"/>
+        <line num="65" count="2" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="69" count="1" type="stmt"/>
+        <line num="72" count="20" type="stmt"/>
+        <line num="81" count="2" type="stmt"/>
       </file>
     </package>
     <package name="src.modules.profiles.graphql">
