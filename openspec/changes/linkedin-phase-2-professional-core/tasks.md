@@ -1,6 +1,6 @@
 ## 1. Páginas de Empresa (`company_pages`)
 
-- [ ] 1.1 Criar modelos Sequelize `CompanyPage`, `CompanyAdmin`, `CompanyFollower` e suas migrations
+- [x] 1.1 Criar modelos Sequelize `CompanyPage`, `CompanyAdmin`, `CompanyFollower` e suas migrations
 - [ ] 1.2 Criar módulo GraphQL `src/modules/companies` com DTOs, repositório e resolvers para gestão e follow de páginas de empresa
 - [ ] 1.3 Criar suíte de testes unitários TDD em `tests/unit/modules/companies_pages.spec.ts` com 100% de cobertura
 
