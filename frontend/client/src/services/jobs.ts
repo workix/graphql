@@ -107,30 +107,68 @@ export const jobsService = {
     return { data: data.getJobById };
   },
 
-  async getFeatured(limit = 5): Promise<{ data: JobModel[] }> {
-    const query = `
-      query ListJobRandomFeatured {
-        listJobRandomFeatured {
-          id
-          title
-          description
-          jobCategory
-          jobType
-          minPayment
-          maxPayment
-          featured
-          createdAt
-          company {
+  async getFeatured(limit = 6): Promise<{ data: JobModel[] }> {
+    try {
+      const query = `
+        query ListJobRandomFeatured {
+          listJobRandomFeatured {
             id
-            name
+            title
             description
+            jobCategory
+            jobType
+            minPayment
+            maxPayment
+            featured
+            createdAt
+            company {
+              id
+              name
+              description
+            }
           }
         }
-      }
-    `;
+      `;
 
-    const data = await graphqlClient.request<{ listJobRandomFeatured: JobModel[] }>(query);
-    return { data: data.listJobRandomFeatured || [] };
+      const data = await graphqlClient.request<{ listJobRandomFeatured: JobModel[] }>(query);
+      if (data.listJobRandomFeatured && data.listJobRandomFeatured.length > 0) {
+        return { data: data.listJobRandomFeatured };
+      }
+    } catch (e) {
+      console.warn('Erro ao buscar listJobRandomFeatured, tentando allJobsFeatured:', e);
+    }
+
+    try {
+      const fallbackQuery = `
+        query AllJobsFeatured {
+          allJobsFeatured(featured: true) {
+            id
+            title
+            description
+            jobCategory
+            jobType
+            minPayment
+            maxPayment
+            featured
+            createdAt
+            company {
+              id
+              name
+              description
+            }
+          }
+        }
+      `;
+      const fallbackData = await graphqlClient.request<{ allJobsFeatured: JobModel[] }>(fallbackQuery);
+      if (fallbackData.allJobsFeatured && fallbackData.allJobsFeatured.length > 0) {
+        return { data: fallbackData.allJobsFeatured };
+      }
+    } catch (e) {
+      console.warn('Erro ao buscar allJobsFeatured, tentando allJobsPaginated:', e);
+    }
+
+    const paginatedRes = await this.getPaginated({ page: 1, limit });
+    return { data: paginatedRes.data.jobs || [] };
   },
 
   async create(data: any): Promise<{ data: JobModel }> {
