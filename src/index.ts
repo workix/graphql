@@ -20,8 +20,13 @@ import RabbitmqServer from './factory/rabbitmq_server';
   const app = express();
   const requestedFields = new RequestedFields();
   const dataLoaderFactory = new DataLoaderFactory(db, requestedFields);
-  const mqserver = new RabbitmqServer(process.env.RABBITMQ_SERVER_HOST);
-  await mqserver.start()
+  const mqserver = new RabbitmqServer(process.env.RABBITMQ_SERVER_HOST || 'amqp://localhost');
+  try {
+    await mqserver.start();
+    console.log('✅ Conectado ao RabbitMQ');
+  } catch (err) {
+    console.warn('⚠️ RabbitMQ não conectado (opcional para ambiente local)');
+  }
   
   app.use(express.json());
   

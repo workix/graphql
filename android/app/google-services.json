@@ -54,7 +54,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:289835208718:android:b0a83568551ec1b5",
         "android_client_info": {
-          "package_name": "br.com.codecode.workix"
+          "package_name": "br.com.codecode.workix.android"
         }
       },
       "oauth_client": [

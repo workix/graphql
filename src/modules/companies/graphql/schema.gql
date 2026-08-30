@@ -4,12 +4,66 @@ scalar DateTime
 type Query {
     companyPage(id: ID!): CompanyPage
     companyFollowersCount(companyId: ID!): Int
+    company(id: ID!): Company
+    getCompanyById(id: ID!): Company
+    allCompanies(start: Int, max: Int): [Company]
+    allCompaniesPaginated(page: Int!, limit: Int!): PaginatedListCompany
+    listCompanyRandomLogos: [Company]
 }
 
 type Mutation {
     createCompanyPage(creatorUserId: ID!, input: CompanyPageInput!): CompanyPage
     followCompany(companyId: ID!, userId: ID!): Boolean
     unfollowCompany(companyId: ID!, userId: ID!): Boolean
+    createCompany(input: CompanyInput!): Company
+    deleteCompany(id: ID!): Boolean
+    updateCompany(id: ID!, input: CompanyInput!): Company
+}
+
+type Company {
+    id: ID
+    name: String
+    email: String
+    cnpj: String
+    phone: String
+    industry: String
+    location: String
+    description: String
+    locale: Locale
+    contact: Contact
+    user: User
+    medias: [Media]
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type Media {
+    id: ID
+    media: String
+    url: String
+}
+
+type Locale {
+    city: String
+    state: String
+    neighborhood: String
+    number: String
+    street: String
+    zipCode: Int
+}
+
+type Contact {
+    mobilePhone: Float
+}
+
+type PaginatedListCompany {
+    companies: [Company]
+    start: Int
+    end: Int
+    totalPages: Int
+    currentPage: Int
+    limitRows: Int
+    maxRows: Int
 }
 
 type CompanyPage {
@@ -22,6 +76,16 @@ type CompanyPage {
     description: String
     createdAt: DateTime
     updatedAt: DateTime
+}
+
+input CompanyInput {
+    name: String!
+    email: String
+    cnpj: String
+    phone: String
+    industry: String
+    location: String
+    description: String
 }
 
 input CompanyPageInput {

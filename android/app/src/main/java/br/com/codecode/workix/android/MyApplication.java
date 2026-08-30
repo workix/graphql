@@ -5,7 +5,7 @@
  */
 package br.com.codecode.workix.android;
 
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 public class MyApplication extends MultiDexApplication {
 

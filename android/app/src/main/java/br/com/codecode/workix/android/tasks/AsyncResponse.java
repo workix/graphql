@@ -6,7 +6,7 @@
  */
 package br.com.codecode.workix.android.tasks;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface AsyncResponse<T> {
 
