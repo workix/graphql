@@ -73,6 +73,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _from, next) => {
+  const enableAuthGuard = import.meta.env.VITE_ENABLE_AUTH_GUARD === 'true';
+  if (!enableAuthGuard) {
+    return next();
+  }
   const adminAuthStore = useAdminAuthStore();
   if (to.meta.requiresAuth && !adminAuthStore.isAuthenticated) {
     next({ name: 'AdminLogin', query: { redirect: to.fullPath } });
