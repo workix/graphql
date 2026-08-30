@@ -77,10 +77,10 @@ A tabela abaixo relaciona as 12 telas do Frontend Cliente (`frontend/client/src/
   - Implementação das telas nativas `LoginActivity` e `RegisterActivity`.
   - Host de navegação principal `MainActivity` com `BottomNavigationView` e os 4 fragmentos base (`HomeFragment`, `JobsListFragment`, `CandidatesListFragment`, `BlogListFragment`).
 
-- [ ] **Fase 4: Implementação Nativa das Telas e Fluxos de Negócio**
-  - Módulos de Vagas (`JobsListFragment`, `JobDetailActivity`, `PostJobActivity`).
-  - Módulos de Candidatos e Currículos (`CandidatesListFragment`, `CandidateDetailActivity`, `PostResumeActivity`).
-  - Módulos Institucionais e Blog (`CompanyDetailActivity`, `BlogListFragment`, `BlogPostActivity`).
+- [x] **Fase 4: Implementação Nativa das Telas e Fluxos de Negócio**
+  - Módulos e detalhamento de Vagas (`JobDetailActivity` com candidatura e `PostJobActivity` para publicação de vagas).
+  - Módulos de Candidatos (`CandidateDetailActivity` para exibição de perfil e `PostResumeActivity` para criação/edição de currículo).
+  - Módulos Institucionais e Blog (`CompanyDetailActivity` para perfil da empresa e `BlogPostActivity` para leitura e comentários no blog).
 
 - [ ] **Fase 5: Testes Nativos, Notificações FCM e Build de Produção**
   - Testes unitários de ViewModels e Repositories.
@@ -95,11 +95,11 @@ A tabela abaixo relaciona as 12 telas do Frontend Cliente (`frontend/client/src/
 * [x] 02. `RegisterView` -> `RegisterActivity`
 * [x] 03. `HomeView` -> `HomeFragment`
 * [x] 04. `JobsListView` -> `JobsListFragment`
-* [ ] 05. `JobDetailView` -> `JobDetailActivity`
-* [ ] 06. `PostJobView` -> `PostJobActivity`
+* [x] 05. `JobDetailView` -> `JobDetailActivity`
+* [x] 06. `PostJobView` -> `PostJobActivity`
 * [x] 07. `CandidatesListView` -> `CandidatesListFragment`
-* [ ] 08. `CandidateDetailView` -> `CandidateDetailActivity`
-* [ ] 09. `PostResumeView` -> `PostResumeActivity`
-* [ ] 10. `CompanyDetailView` -> `CompanyDetailActivity`
+* [x] 08. `CandidateDetailView` -> `CandidateDetailActivity`
+* [x] 09. `PostResumeView` -> `PostResumeActivity`
+* [x] 10. `CompanyDetailView` -> `CompanyDetailActivity`
 * [x] 11. `BlogListView` -> `BlogListFragment`
-* [ ] 12. `BlogPostView` -> `BlogPostActivity`
+* [x] 12. `BlogPostView` -> `BlogPostActivity`
