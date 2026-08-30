@@ -72,6 +72,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _from, next) => {
+  const enableAuthGuard = import.meta.env.VITE_ENABLE_AUTH_GUARD === 'true';
+  if (!enableAuthGuard) {
+    return next();
+  }
   const authStore = useAuthStore();
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'Login', query: { redirect: to.fullPath } });
