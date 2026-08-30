@@ -10,7 +10,7 @@
           <div class="row align-items-center">
             <div class="col-md-8">
               <h2>{{ job.title }}</h2>
-              <p class="company-sub"><i class="fa fa-building-o"></i> {{ job.company_name || 'Empresa Parceira' }} - {{ job.city || 'São Paulo' }}, {{ job.state || 'SP' }}</p>
+              <p class="company-sub"><i class="fa fa-building-o"></i> {{ job.company?.name || job.company_name || 'Empresa Parceira' }}</p>
             </div>
             <div class="col-md-4 text-right">
               <button class="btn btn-success btn-lg" @click="handleApply" :disabled="submitting || applied">
@@ -34,7 +34,12 @@
               <div class="job-description-text" v-html="job.description || '<p>Descrição detalhada da vaga de emprego.</p>'"></div>
 
               <h3 class="mt-4">Requisitos</h3>
-              <p>{{ job.requirements || 'Experiência relevante na área, proatividade e bom trabalho em equipe.' }}</p>
+              <p>{{ job.requirement || job.requirements || 'Experiência relevante na área, proatividade e bom trabalho em equipe.' }}</p>
+
+              <div v-if="job.benefits">
+                <h3 class="mt-4">Benefícios</h3>
+                <p>{{ job.benefits }}</p>
+              </div>
             </div>
           </div>
 
@@ -42,9 +47,10 @@
             <div class="sidebar-box">
               <h4>Resumo da Vaga</h4>
               <ul class="job-overview-list">
-                <li><strong>Tipo:</strong> {{ job.contract_type || 'CLT' }}</li>
-                <li><strong>Salário:</strong> {{ job.salary ? `R$ ${job.salary}` : 'A combinar' }}</li>
-                <li><strong>Publicado em:</strong> {{ new Date(job.created_at || Date.now()).toLocaleDateString() }}</li>
+                <li><strong>Categoria:</strong> {{ job.jobCategory || 'Geral' }}</li>
+                <li><strong>Tipo:</strong> {{ job.jobType || job.contract_type || 'CLT' }}</li>
+                <li><strong>Faixa Salarial:</strong> {{ job.minPayment && job.maxPayment ? `R$ ${job.minPayment} - R$ ${job.maxPayment}` : 'A combinar' }}</li>
+                <li><strong>Publicado em:</strong> {{ new Date(job.createdAt || job.created_at || Date.now()).toLocaleDateString() }}</li>
               </ul>
             </div>
           </div>
@@ -82,27 +88,24 @@ async function loadJob() {
     const jobId = route.params.id as string;
     const response = await jobsService.getById(jobId);
     job.value = response.data;
-  } catch (err) {
+  } catch (err: any) {
     console.error('Erro ao carregar detalhes da vaga:', err);
+    errorMessage.value = err.message || 'Erro ao carregar detalhes da vaga.';
   } finally {
     loading.value = false;
   }
 }
 
 async function handleApply() {
-  if (!authStore.isAuthenticated) {
-    router.push({ path: '/login', query: { redirect: route.fullPath } });
-    return;
-  }
-
   submitting.value = true;
   errorMessage.value = '';
   try {
-    await jobsService.subscribe(job.value.id);
+    const candidateId = authStore.user?.id || 1;
+    await jobsService.subscribe(job.value.id, candidateId);
     applied.value = true;
-    successMessage.value = 'Sua candidatura foi enviada com sucesso!';
+    successMessage.value = 'Sua candidatura foi enviada com sucesso pelo GraphQL!';
   } catch (err: any) {
-    errorMessage.value = err.response?.data?.message || 'Erro ao enviar candidatura.';
+    errorMessage.value = err.message || 'Erro ao enviar candidatura.';
   } finally {
     submitting.value = false;
   }
