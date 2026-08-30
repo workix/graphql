@@ -20,6 +20,6 @@
 ## 4. Consumidor Persistente de Notificações
 
 - [x] 4.1 Criar modelo Sequelize `Notification` e migration para a tabela `notifications`
-- [ ] 4.2 Criar consumidor da fila RabbitMQ `src/workers/notification_consumer.ts` para persistência em banco e invalidação de cache Redis
-- [ ] 4.3 Criar módulo GraphQL `src/modules/notifications` com queries `myNotifications` e `unreadNotificationsCount` e mutação `markNotificationAsRead`
-- [ ] 4.4 Criar suíte de testes unitários TDD para o módulo de notificações com 100% de cobertura e validação geral do Jest
+- [x] 4.2 Criar consumidor da fila RabbitMQ `src/workers/notification_consumer.ts` para persistência em banco e invalidação de cache Redis
+- [x] 4.3 Criar módulo GraphQL `src/modules/notifications` com queries `myNotifications` e `unreadNotificationsCount` e mutação `markNotificationAsRead`
+- [x] 4.4 Criar suíte de testes unitários TDD para o módulo de notificações com 100% de cobertura e validação geral do Jest

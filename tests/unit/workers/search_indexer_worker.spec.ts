@@ -36,6 +36,12 @@ describe('Search Indexer Worker Unit Tests (TDD)', () => {
     expect(res).toEqual({ result: 'deleted' });
   });
 
+  it('should return null for unknown action', async () => {
+    const payload = { action: 'UNKNOWN', index: 'profiles', id: '1' };
+    const res = await processSearchIndexingMessage(JSON.stringify(payload));
+    expect(res).toBeNull();
+  });
+
   it('should return null for null msg or missing content', async () => {
     expect(await handleSearchIndexerMessage(null)).toBeNull();
     expect(await handleSearchIndexerMessage({})).toBeNull();

@@ -1,0 +1,27 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    myNotifications(userId: ID!, limit: Int, offset: Int): [Notification]
+    unreadNotificationsCount(userId: ID!): Int
+}
+
+type Mutation {
+    markNotificationAsRead(id: ID!, userId: ID!): Notification
+}
+
+type Subscription {
+    notificationAdded: Notification
+}
+
+type Notification {
+    id: ID
+    userId: ID
+    type: String
+    title: String
+    body: String
+    read: Boolean
+    data: String
+    createdAt: DateTime
+    updatedAt: DateTime
+}
