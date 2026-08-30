@@ -13,7 +13,7 @@
     "seed": "npx sequelize db:seed:all",
     "seed:test": "npx sequelize db:seed:all --env=test --debug",
     "seed:sqlite": "ts-node src/seeders/populate_all_dummy_data.ts",
-    "prestart": "npx sequelize db:migrate && npx sequelize db:seed:all",
+    "prestart": "npm run seed:sqlite",
     "start": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
