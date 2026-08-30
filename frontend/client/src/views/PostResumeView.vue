@@ -62,6 +62,8 @@ const title = ref('');
 const summary = ref('');
 const experience = ref('');
 const education = ref('');
+const carrerLevel = ref('SENIOR');
+const presence = ref('REMOTE');
 
 const loading = ref(false);
 const successMessage = ref('');
@@ -74,18 +76,19 @@ async function handleSubmit() {
   errorMessage.value = '';
   successMessage.value = '';
   try {
-    await resumesService.createOrUpdate({
-      title: title.value,
-      summary: summary.value,
-      experience: experience.value,
-      education: education.value
+    await resumesService.create({
+      objective: title.value,
+      content: summary.value,
+      carrerLevel: carrerLevel.value,
+      presence: presence.value,
+      candidateId: 1
     });
-    successMessage.value = 'Currículo salvo com sucesso!';
+    successMessage.value = 'Currículo salvo com sucesso via GraphQL!';
     setTimeout(() => {
       router.push('/candidates');
     }, 1500);
   } catch (err: any) {
-    errorMessage.value = err.response?.data?.message || 'Erro ao salvar currículo.';
+    errorMessage.value = err.message || 'Erro ao salvar currículo.';
   } finally {
     loading.value = false;
   }
