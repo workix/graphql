@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.codecode.workix.android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name="br.com.codecode.workix.android.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/MyMaterialTheme">
+        <service android:name="br.com.codecode.workix.android.fcm.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name="br.com.codecode.workix.android.fcm.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="br.com.codecode.workix.android.util.ConnectivityReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="br.com.codecode.workix.android.view.activity.login.LoginActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="br.com.codecode.workix.android.view.activity.JobDetailActivity"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name="br.com.codecode.workix.android.view.activity.login.ResetPasswordActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="br.com.codecode.workix.android.view.activity.login.SignupActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="br.com.codecode.workix.android.view.activity.OptionsActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="br.com.codecode.workix.android.view.activity.CandidateActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="br.com.codecode.workix.android.view.activity.MainActivity"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name="br.com.codecode.workix.android.view.activity.NewMain"
+            android:launchMode="singleTop" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+
+    </application>
+
+</manifest>

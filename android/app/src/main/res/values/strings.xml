@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">Workix</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Register</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="action_settings">Settings</string>
+
+    <string name="email">Email</string>
+    <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
+    <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
+    <string name="change_email">Change Email</string>
+    <string name="change_password">Change Password</string>
+    <string name="send_password_reset_email">Send Password reset email</string>
+    <string name="remove_user">Remove user</string>
+    <string name="new_pass">New Password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_name">Fullname</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_link_to_register">Not a member? Get registered in Workix now!</string>
+    <string name="btn_link_to_login">Already registered. Login Me!</string>
+    <string name="btn_forgot_password">Forgot your password?</string>
+    <string name="btn_reset_password">Reset Password</string>
+    <string name="btn_back">Back</string>
+    <string name="hint_new_email">New Email</string>
+    <string name="btn_change">Change</string>
+    <string name="btn_send">Send</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="lbl_forgot_password">Forgot password?</string>
+    <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
+
+    <!--Material Design -->
+    <string name="action_cart">Cart</string>
+    <string name="action_vehicle">Vehicle</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_jobs">Jobs</string>
+
+
+    <string name="title_jobs">Jobs</string>
+    <string name="contact_developer">Contact Developer</string>
+    <string name="action_personal_data">Personal Data</string>
+    <string name="about">About</string>
+
+
+    <string name="map">Map</string>
+    <string name="click_on_back_button">Click on Back Button</string>
+    <string name="click_on_settings_button">Click on Settings Button</string>
+    <string name="click_on_developer_button">Click on Contact Developer Button</string>
+    <string name="click_on_personalData_button">Click on Personal Data Button</string>
+    <string name="version_of_app">Version of App:</string>
+    <string name="keyUp_back_button">KeyUp Back Button Pressed</string>
+    <string name="keyUp_home_button">KeyUp Home Button Pressed</string>
+    <string name="keyUp_search_button">KeyUp Search Button Pressed</string>
+    <string name="enter_email_address">Enter email address!</string>
+    <string name="enter_password">Enter password!</string>
+    <string name="could_not_authorize">Could not authorize the Candidate, contact the system developer</string>
+    <string name="connected_on_internet">Connected to Internet</string>
+    <string name="not_connected_on_internet">Not connected to internet</string>
+    <string name="auth_error">There was a failed authentication.</string>
+    <string name="register">Register</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_jobs</item>
+        <!--   <item>@string/nav_item_address</item>
+        <item>@string/nav_item_vehicles</item>
+        <item>@string/nav_item_checkouts</item> -->
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+
+    <string name="job_details">Details of Job</string>
+    <string name="update_email_sucess">Email address has been updated. Please enter the new email id!</string>
+    <string name="update_email_failed">Failed to update Email!</string>
+    <string name="password_update_sucess">Password Updated, Enter new Password!</string>
+    <string name="password_update_failed">Failed to update the password!</string>
+    <string name="reset_email_sucess">Email password reset was sent!</string>
+    <string name="reset_email_failed">Failed to send reset email!</string>
+    <string name="delete_account_success">Your profile has been deleted :( Create an account now!</string>
+    <string name="delete_account_failed">Failed to delete your account!</string>
+    <string name="no_email_client_installed">There are no email clients installed.</string>
+    <string name="permission_granted">Permissions Granted!</string>
+    <string name="permission_accepted">Accepted the permission.</string>
+    <string name="permission_not_accepted">Not accepted permission.</string>
+    <string name="send_mail_to_developer">Send an email to the developer ...</string>
+    <string name="enter_email_address_id">Enter your registered email id</string>
+    <string name="repeat_register_operation">Please Repeat the Signup Operation</string>
+    <string name="process_finish">Process Finish</string>
+    <string name="processing">Processing</string>
+    <string name="logo">logo</string>
+    <string name="hint_cpf">Insert a Cpf Number</string>
+    <string name="hint_mobilePhone">Insert Your Mobile Phone Number</string>
+    <string name="hint_phone">Inser Your Phone Number</string>
+    <string name="err_msg_name">Invalid String for Name</string>
+    <string name="err_msg_cpf">Invalid Value for CPF</string>
+    <string name="err_msg_phone">Invalue Value for Phone</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_curriculum">Curriculum</string>
+    <string name="title_selectiveProcesses">Selective Processes</string>
+    <string name="current_user">Guest User</string>
+    <string name="communicate">Communicate</string>
+    <string name="visit_our_site">Visit Our Site</string>
+    <string name="report_a_bug">Report A Bug</string>
+    <string name="action_searh">Search</string>
+    <string name="search_hint">Looking For?</string>
+    <string name="minPayment">Min Payment</string>
+    <string name="action_add_signup">Sign Up</string>
+    <string name="action_see_details">See More Details</string>
+    <string name="reset_password_success" />
+    <string name="reset_password_failed" />
+    <string name="hint_birthDate">Insert your Birth Date</string>
+</resources>
+
+
