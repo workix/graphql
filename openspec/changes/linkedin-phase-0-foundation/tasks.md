@@ -7,9 +7,9 @@
 
 ## 2. Motor de Busca Elasticsearch Operacional
 
-- [ ] 2.1 Criar fábrica singleton `src/factory/elasticsearch_server.ts` para conexão ao Elasticsearch
-- [ ] 2.2 Criar worker de sincronização assíncrona `src/workers/search_indexer_worker.ts` consumindo a fila RabbitMQ `search-index-sync`
-- [ ] 2.3 Criar suíte de testes unitários TDD em `tests/unit/factory/elasticsearch_server.spec.ts` com 100% de cobertura
+- [x] 2.1 Criar fábrica singleton `src/factory/elasticsearch_server.ts` para conexão ao Elasticsearch
+- [x] 2.2 Criar worker de sincronização assíncrona `src/workers/search_indexer_worker.ts` consumindo a fila RabbitMQ `search-index-sync`
+- [x] 2.3 Criar suíte de testes unitários TDD em `tests/unit/factory/elasticsearch_server.spec.ts` com 100% de cobertura
 
 ## 3. GraphQL Subscriptions (WebSocket)
 
