@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express from "express";
+import cors from "cors";
 import { graphqlHTTP } from "express-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 
@@ -29,6 +30,14 @@ import { createWebSocketSubscriptionServer } from './subscriptions';
     console.warn('⚠️ RabbitMQ não conectado (opcional para ambiente local)');
   }
   
+  // Habilita CORS para todas as origens dos frontends (3000, 3001, 5173, etc.)
+  app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+  }));
+  app.options('*', cors());
+
   app.use(express.json());
   
   
