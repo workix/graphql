@@ -24,12 +24,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -55,7 +55,7 @@ public class LoginActivity extends BaseActivity {
 
     private EditText editTextPassword;
 
-    private GoogleApiClient googleApiClient;
+    private GoogleSignInClient googleSignInClient;
 
     private ProgressBar progressBar;
 
@@ -87,12 +87,8 @@ public class LoginActivity extends BaseActivity {
                 .requestEmail()
                 .build();
 
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-        googleApiClient = new GoogleApiClient.Builder(this)
-              //  .enableAutoManage(context /* FragmentActivity */ ,1, context /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
         signInButton.setScopes(gso.getScopeArray());
@@ -159,7 +155,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                Intent signInIntent = googleSignInClient.getSignInIntent();
 
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
@@ -306,28 +302,21 @@ public class LoginActivity extends BaseActivity {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
 
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
-
-            Log.d(TAG, result.toString());
-
-            if (result.isSuccess()) {
-
+            try {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
-
+                GoogleSignInAccount account = task.getResult(ApiException.class);
 
                 showToast(context, "Login efetuado com sucesso", Toast.LENGTH_SHORT);
 
-
                 firebaseAuthWithGoogle(account);
 
-            } else {
+            } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                // ...
+                Log.w(TAG, "Google sign in failed", e);
 
                 showToast(context, "Não foi possível realizar login com sua conta Google", Toast.LENGTH_SHORT);
-
             }
         }
     }

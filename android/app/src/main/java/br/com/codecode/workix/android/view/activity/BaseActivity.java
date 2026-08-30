@@ -152,55 +152,44 @@ public abstract class BaseActivity extends AppCompatActivity implements MyPatter
 
         int id = item.getItemId();
 
-        switch (item.getItemId()) {
+        if (id == android.R.id.home) {
+            Toast.makeText(context, getString(R.string.click_on_back_button), Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_settings) {
 
-            case android.R.id.home: {
-                Toast.makeText(context, getString(R.string.click_on_back_button), Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            case R.id.action_settings: {
+            Toast.makeText(context, getString(R.string.click_on_settings_button), Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(context, getString(R.string.click_on_settings_button), Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_contact_developer) {
 
-                return true;
-            }
+            Toast.makeText(context, getString(R.string.click_on_developer_button), Toast.LENGTH_SHORT).show();
 
-            case R.id.action_contact_developer: {
+            return true;
+        } else if (id == R.id.action_personal_data) {
 
-                Toast.makeText(context, getString(R.string.click_on_developer_button), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, getString(R.string.click_on_personalData_button), Toast.LENGTH_SHORT).show();
 
-                return true;
-            }
+            return true;
+        } else if (id == R.id.action_about) {
 
-            case R.id.action_personal_data: {
+            PackageInfo pinfo = null;
 
-                Toast.makeText(context, getString(R.string.click_on_personalData_button), Toast.LENGTH_SHORT).show();
+            try {
 
-                return true;
-            }
+                pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 
-            case R.id.action_about: {
+            } catch (PackageManager.NameNotFoundException e) {
 
-                PackageInfo pinfo = null;
-
-                try {
-
-                    pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-
-                } catch (PackageManager.NameNotFoundException e) {
-
-                    e.printStackTrace();
-                }
-
-                int versionNumber = pinfo.versionCode;
-
-                String versionName = pinfo.versionName;
-
-                Toast.makeText(context, getString(R.string.version_of_app) + versionName, Toast.LENGTH_LONG).show();
-
-                return true;
+                e.printStackTrace();
             }
 
+            int versionNumber = pinfo.versionCode;
+
+            String versionName = pinfo.versionName;
+
+            Toast.makeText(context, getString(R.string.version_of_app) + versionName, Toast.LENGTH_LONG).show();
+
+            return true;
         }
 
 

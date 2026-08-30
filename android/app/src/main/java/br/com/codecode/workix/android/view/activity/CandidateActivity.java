@@ -21,7 +21,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import br.com.codecode.workix.android.R;
 import br.com.codecode.workix.android.tasks.AsyncResponse;
@@ -150,7 +149,7 @@ public class CandidateActivity extends BaseActivity {
 
     private Candidate doUpdateFields() {
 
-        candidate.getUser().setFirebaseMessageToken(FirebaseInstanceId.getInstance().getToken());
+        candidate.getUser().setFirebaseMessageToken("" /* TODO: Migrate to async FirebaseMessaging.getInstance().getToken() */);
 
         candidate.getUser().setFirebaseUUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -320,20 +319,15 @@ public class CandidateActivity extends BaseActivity {
 
         public void afterTextChanged(Editable editable) {
 
-            switch (view.getId()) {
-
-                case R.id.editTextName:
-                    validateName();
-                    break;
-                case R.id.editTextCPF:
-                    validateCPF();
-                    break;
-                case R.id.editTextPhone:
-                    validatePhone();
-                    break;
-                case R.id.editTextMobilePhone:
-                    validateMobilePhone();
-                    break;
+            int id = view.getId();
+            if (id == R.id.editTextName) {
+                validateName();
+            } else if (id == R.id.editTextCPF) {
+                validateCPF();
+            } else if (id == R.id.editTextPhone) {
+                validatePhone();
+            } else if (id == R.id.editTextMobilePhone) {
+                validateMobilePhone();
             }
         }
     }

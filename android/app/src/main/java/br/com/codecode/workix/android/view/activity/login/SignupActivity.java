@@ -30,7 +30,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import br.com.codecode.workix.android.R;
 import br.com.codecode.workix.android.tasks.AsyncResponse;
@@ -197,7 +196,7 @@ public class SignupActivity extends BaseActivity {
 
                                         user.setEmail(fireUser.getEmail());
 
-                                        user.setFirebaseMessageToken(FirebaseInstanceId.getInstance().getToken());
+                                        user.setFirebaseMessageToken("" /* TODO: Migrate to async FirebaseMessaging.getInstance().getToken() */);
 
                                         new TaskCreateUser(context, new AsyncResponse<User>() {
 

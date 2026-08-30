@@ -9,3 +9,9 @@ dist/
 scratch/
 *.sqlite
 *.sqlite-journal
+
+# Android Security & Credentials
+google-services.json
+**/google-services.json
+*.keystore
+*.jks

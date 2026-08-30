@@ -83,29 +83,21 @@ public class NewMain extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()) {
+        int id = item.getItemId();
+        if (id == R.id.nav_jobs) {
 
-            case R.id.nav_jobs: {
+            Toast.makeText(this, "Clicou em Jobs ", Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(this, "Clicou em Jobs ", Toast.LENGTH_SHORT).show();
+            displayView(0);
+        } else if (id == R.id.nav_curriculum) {
 
-                displayView(0);
-            }
-            case R.id.nav_curriculum: {
+        } else if (id == R.id.nav_selectiveProcesses) {
 
-            }
-            case R.id.nav_selectiveProcesses: {
+        } else if (id == R.id.nav_manage) {
 
-            }
-            case R.id.nav_manage: {
+        } else if (id == R.id.nav_share) {
 
-            }
-            case R.id.nav_share: {
-
-            }
-            case R.id.nav_bug: {
-
-            }
+        } else if (id == R.id.nav_bug) {
 
         }
 
