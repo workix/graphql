@@ -24,8 +24,8 @@
               <h3>Comentários</h3>
               <div v-if="comments.length === 0" class="text-muted">Seja o primeiro a comentar!</div>
               <div v-for="c in comments" :key="c.id" class="comment-item mb-3">
-                <strong>{{ c.author_name || 'Usuário' }}</strong>
-                <p>{{ c.comment }}</p>
+                <strong>{{ c.name || c.author_name || 'Usuário' }}</strong>
+                <p>{{ c.text || c.comment }}</p>
               </div>
 
               <!-- Add Comment Form -->
@@ -79,11 +79,13 @@ async function handleComment() {
   if (!newComment.value || !post.value) return;
   submitting.value = true;
   try {
-    const response = await blogsService.createComment({
-      blog_id: post.value.id,
-      comment: newComment.value
-    });
-    comments.value.push(response.data || { id: Date.now(), comment: newComment.value, author_name: 'Você' });
+    const response = await blogsService.createComment(
+      post.value.id,
+      'Visitante Workix',
+      'visitante@workix.com.br',
+      newComment.value
+    );
+    comments.value.push(response.data || { id: Date.now(), text: newComment.value, name: 'Você' });
     newComment.value = '';
   } catch (err) {
     console.error('Erro ao enviar comentário:', err);
