@@ -38,10 +38,8 @@
             <span class="icon-bar"></span>
           </button>
           <router-link class="navbar-brand brand-logo" to="/">
-            <div class="brand-badge-icon">
-              <i class="fa fa-briefcase"></i>
-            </div>
-            <span class="brand-text">WORK<span class="brand-accent">IX</span></span>
+            <i class="fa fa-users brand-icon"></i>
+            <span class="brand-text">WORKIX</span>
           </router-link>
         </div>
 
@@ -138,32 +136,23 @@ function handleLogout() {
 .brand-logo {
   display: flex !important;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   height: 50px;
-  padding: 5px 15px !important;
+  padding: 0 15px !important;
+  color: #ffffff !important;
   text-decoration: none !important;
 }
-.brand-badge-icon {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-  color: #ffffff;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+.brand-icon {
+  font-size: 26px;
+  color: #ffffff !important;
 }
 .brand-text {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 800;
   color: #ffffff !important;
-  letter-spacing: 1.5px;
-  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 2px;
+  font-family: 'Montserrat', 'Lato', sans-serif;
   text-transform: uppercase;
-}
-.brand-accent {
-  color: #0f172a !important;
+  line-height: 1;
 }
 </style>
