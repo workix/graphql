@@ -57,6 +57,7 @@ export const JobCandidate = db.JobCandidate;
 export const MediaAsset = db.MediaAsset;
 export const Member = db.Member;
 export const MemberMedia = db.MemberMedia;
+export const Notification = db.Notification;
 export const Resume = db.Resume;
 export const ResumeEducation = db.ResumeEducation;
 export const ResumeExperience = db.ResumeExperience;
