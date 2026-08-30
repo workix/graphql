@@ -1,0 +1,33 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    myConnections(userId: ID!): [Connection]
+    pendingConnectionRequests(userId: ID!): [ConnectionRequest]
+    socialDistanceDegree(userId1: ID!, userId2: ID!): String
+}
+
+type Mutation {
+    sendConnectionRequest(requesterId: ID!, recipientId: ID!): ConnectionRequest
+    acceptConnectionRequest(requestId: ID!, recipientId: ID!): Connection
+    rejectConnectionRequest(requestId: ID!, recipientId: ID!): ConnectionRequest
+    followUser(followerId: ID!, followingId: ID!): Boolean
+    unfollowUser(followerId: ID!, followingId: ID!): Boolean
+}
+
+type Connection {
+    id: ID
+    userId1: ID
+    userId2: ID
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type ConnectionRequest {
+    id: ID
+    requesterId: ID
+    recipientId: ID
+    status: String
+    createdAt: DateTime
+    updatedAt: DateTime
+}
