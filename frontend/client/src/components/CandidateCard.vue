@@ -8,12 +8,12 @@
       </div>
       <div class="col-md-7 col-sm-6">
         <h4 class="candidate-name">
-          <router-link :to="`/candidates/${candidate.id}`">{{ candidate.name }}</router-link>
+          <router-link :to="`/candidates/${candidate.id}`">{{ candidate.candidate?.name || candidate.name || 'Candidato' }}</router-link>
         </h4>
-        <p class="candidate-headline">{{ candidate.title || 'Profissional de Tecnologia' }}</p>
+        <p class="candidate-headline">{{ candidate.objective || candidate.carrerLevel || candidate.title || 'Profissional Qualificado' }}</p>
         <div class="candidate-meta">
-          <span><i class="fa fa-map-marker"></i> {{ candidate.city || 'Brasil' }}</span>
-          <span><i class="fa fa-briefcase"></i> {{ candidate.experience_years || '2+' }} anos exp.</span>
+          <span><i class="fa fa-map-marker"></i> {{ candidate.candidate?.locale?.city || candidate.city || 'Brasil' }}</span>
+          <span v-if="candidate.carrerLevel" class="label label-info">{{ candidate.carrerLevel }}</span>
         </div>
       </div>
       <div class="col-md-3 col-sm-3 text-right">
@@ -27,12 +27,17 @@
 import defaultAvatar from '../assets/images/empty.png';
 
 interface Candidate {
-  id: number;
-  name: string;
+  id: string | number;
+  name?: string;
   title?: string;
   avatar?: string;
   city?: string;
-  experience_years?: number;
+  carrerLevel?: string;
+  objective?: string;
+  candidate?: {
+    name?: string;
+    locale?: { city?: string; state?: string };
+  };
 }
 
 defineProps<{
