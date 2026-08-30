@@ -90,12 +90,17 @@ import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 import JobCard from '../components/JobCard.vue';
 import LoadingOverlay from '../components/LoadingOverlay.vue';
-import api from '../services/api';
+import { jobsService } from '../services/jobs';
+import graphqlClient from '../services/graphql';
 
 const searchQuery = ref('');
 const searchLocation = ref('');
 const featuredJobs = ref<any[]>([]);
-const stats = ref<any>({});
+const stats = ref<any>({
+  jobsCount: 0,
+  companiesCount: 0,
+  candidatesCount: 0
+});
 const loading = ref(false);
 
 const router = useRouter();
@@ -110,14 +115,31 @@ function handleSearch() {
 async function loadData() {
   loading.value = true;
   try {
-    const [jobsRes, statsRes] = await Promise.all([
-      api.get('/jobs/random_featured').catch(() => ({ data: [] })),
-      api.get('/statistics').catch(() => ({ data: {} }))
-    ]);
-    featuredJobs.value = Array.isArray(jobsRes.data) ? jobsRes.data : [];
-    stats.value = statsRes.data || {};
+    const jobsPromise = jobsService.getFeatured(6).catch(() => ({ data: [] }));
+    const statsQuery = `
+      query StatisticsCount {
+        statisticsCount {
+          members
+          jobs
+          resumes
+          companies
+        }
+      }
+    `;
+    const statsPromise = graphqlClient.request<any>(statsQuery).catch(() => ({ statisticsCount: {} }));
+
+    const [jobsRes, statsRes] = await Promise.all([jobsPromise, statsPromise]);
+    featuredJobs.value = jobsRes.data || [];
+    
+    if (statsRes?.statisticsCount) {
+      stats.value = {
+        jobsCount: statsRes.statisticsCount.jobs || 0,
+        companiesCount: statsRes.statisticsCount.companies || 0,
+        candidatesCount: statsRes.statisticsCount.resumes || statsRes.statisticsCount.members || 0
+      };
+    }
   } catch (err) {
-    console.error('Erro ao carregar dados da Home:', err);
+    console.error('Erro ao carregar dados da Home via GraphQL:', err);
   } finally {
     loading.value = false;
   }
