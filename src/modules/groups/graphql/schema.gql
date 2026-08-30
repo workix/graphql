@@ -1,0 +1,41 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    group(id: ID!): Group
+    groupPosts(groupId: ID!, limit: Int, offset: Int): [GroupPost]
+}
+
+type Mutation {
+    createGroup(ownerId: ID!, name: String!, description: String, privacy: String): Group
+    joinGroup(groupId: ID!, userId: ID!): GroupMembership
+    approveGroupMembership(membershipId: ID!, adminUserId: ID!): GroupMembership
+    createGroupPost(groupId: ID!, authorId: ID!, content: String!): GroupPost
+}
+
+type Group {
+    id: ID
+    name: String
+    description: String
+    privacy: String
+    ownerId: ID
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type GroupMembership {
+    id: ID
+    groupId: ID
+    userId: ID
+    role: String
+    status: String
+    createdAt: DateTime
+}
+
+type GroupPost {
+    id: ID
+    groupId: ID
+    authorId: ID
+    content: String
+    createdAt: DateTime
+}

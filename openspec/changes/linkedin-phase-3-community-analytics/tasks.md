@@ -1,8 +1,8 @@
 ## 1. Grupos Profissionais (`groups`)
 
 - [x] 1.1 Criar modelos Sequelize `Group`, `GroupMembership`, `GroupPost` e suas migrations
-- [ ] 1.2 Criar módulo GraphQL `src/modules/groups` com schema, DTOs, repositório e resolvers para grupos e posts de grupo
-- [ ] 1.3 Criar suíte de testes unitários TDD em `tests/unit/modules/groups.spec.ts` com 100% de cobertura
+- [x] 1.2 Criar módulo GraphQL `src/modules/groups` com schema, DTOs, repositório e resolvers para grupos e posts de grupo
+- [x] 1.3 Criar suíte de testes unitários TDD em `tests/unit/modules/groups.spec.ts` com 100% de cobertura
 
 ## 2. Eventos Corp / Webinars (`events`)
 
