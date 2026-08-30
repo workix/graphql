@@ -27,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(br.com.codecode.workix.android.R.layout.activity_login)
         
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
@@ -40,12 +41,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        // Exemplo básico de inicialização UI programática ou via layouts
-        etEmail = EditText(this).apply { hint = "E-mail" }
-        etPassword = EditText(this).apply { hint = "Senha" }
-        btnLogin = Button(this).apply { text = "Entrar" }
-        btnRegister = Button(this).apply { text = "Criar Conta" }
-        progressBar = ProgressBar(this)
+        etEmail = findViewById(br.com.codecode.workix.android.R.id.email)
+        etPassword = findViewById(br.com.codecode.workix.android.R.id.password)
+        btnLogin = findViewById(br.com.codecode.workix.android.R.id.btn_login)
+        btnRegister = findViewById(br.com.codecode.workix.android.R.id.btn_signup)
+        progressBar = findViewById(br.com.codecode.workix.android.R.id.progressBar)
 
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString().trim()

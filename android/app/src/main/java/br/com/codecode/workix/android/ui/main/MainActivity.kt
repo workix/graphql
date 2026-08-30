@@ -33,6 +33,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupViews()
+
+        val rootLayout = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            addView(container, android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+            ))
+            addView(bottomNav)
+        }
+        setContentView(rootLayout)
+
         if (savedInstanceState == null) {
             loadFragment(HomeFragment())
         }
