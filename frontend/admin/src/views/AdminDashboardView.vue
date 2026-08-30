@@ -11,7 +11,7 @@
         <v-card color="primary" variant="elevated" class="pa-4 text-white">
           <div class="d-flex justify-space-between align-center">
             <div>
-              <div class="text-h4 font-weight-bold">{{ stats.jobsCount || 120 }}</div>
+              <div class="text-h4 font-weight-bold">{{ stats.jobs || 0 }}</div>
               <div class="text-subtitle-2">Vagas Cadastradas</div>
             </div>
             <v-icon icon="mdi-briefcase-search" size="48" opacity="0.8"></v-icon>
@@ -23,7 +23,7 @@
         <v-card color="success" variant="elevated" class="pa-4 text-white">
           <div class="d-flex justify-space-between align-center">
             <div>
-              <div class="text-h4 font-weight-bold">{{ stats.companiesCount || 45 }}</div>
+              <div class="text-h4 font-weight-bold">{{ stats.companies || 0 }}</div>
               <div class="text-subtitle-2">Empresas Parceiras</div>
             </div>
             <v-icon icon="mdi-domain" size="48" opacity="0.8"></v-icon>
@@ -35,8 +35,8 @@
         <v-card color="info" variant="elevated" class="pa-4 text-white">
           <div class="d-flex justify-space-between align-center">
             <div>
-              <div class="text-h4 font-weight-bold">{{ stats.candidatesCount || 890 }}</div>
-              <div class="text-subtitle-2">Talentos & Currículos</div>
+              <div class="text-h4 font-weight-bold">{{ stats.resumes || 0 }}</div>
+              <div class="text-subtitle-2">Currículos & Talentos</div>
             </div>
             <v-icon icon="mdi-account-group" size="48" opacity="0.8"></v-icon>
           </div>
@@ -47,10 +47,10 @@
         <v-card color="warning" variant="elevated" class="pa-4 text-white">
           <div class="d-flex justify-space-between align-center">
             <div>
-              <div class="text-h4 font-weight-bold">{{ stats.subscriptionsCount || 340 }}</div>
-              <div class="text-subtitle-2">Candidaturas Realizadas</div>
+              <div class="text-h4 font-weight-bold">{{ stats.members || 0 }}</div>
+              <div class="text-subtitle-2">Membros / Usuários</div>
             </div>
-            <v-icon icon="mdi-file-document-check" size="48" opacity="0.8"></v-icon>
+            <v-icon icon="mdi-account-check" size="48" opacity="0.8"></v-icon>
           </div>
         </v-card>
       </v-col>
@@ -75,7 +75,7 @@
           <v-card-text>
             <div class="d-flex align-center mb-2">
               <v-icon icon="mdi-check-circle" color="success" class="mr-2"></v-icon>
-              <span>API GraphQL / REST Backend: <strong>Operacional</strong></span>
+              <span>API GraphQL: <strong>Operacional (Apollo Server)</strong></span>
             </div>
             <div class="d-flex align-center">
               <v-icon icon="mdi-database-check" color="success" class="mr-2"></v-icon>
@@ -91,14 +91,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import AdminLayout from '../layouts/AdminLayout.vue';
-import { adminService } from '../services/admin';
+import { adminStatsService } from '../services/stats.service';
 
-const stats = ref<any>({});
+const stats = ref<any>({
+  jobs: 0,
+  companies: 0,
+  resumes: 0,
+  members: 0
+});
 
 async function loadStats() {
   try {
-    const res = await adminService.getStatistics();
-    stats.value = res.data || {};
+    const res = await adminStatsService.getStatistics();
+    stats.value = res.data;
   } catch (err) {
     console.error('Erro ao carregar estatísticas do dashboard:', err);
   }
