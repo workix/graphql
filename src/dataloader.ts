@@ -225,18 +225,20 @@ export class CompanyMediaLoader {
 export class JAASRoleLoader {
     static async batchRoles(db: any, params: any[], requestedFields: any) {
         const ids = params.map(p => p.key);
-        const info = params[0].info;
-        const fields = requestedFields.getFields(info, { keep: ['id'], exclude: [] });
 
-        const roles = await db.JAASRole.findAll({
-            where: { id: ids },
-            attributes: fields
+        const roles = await db.JAASRoles.findAll({
+            where: { id: ids }
         });
 
         const rolesMap = new Map();
-        roles.forEach(role => rolesMap.set(role.id, role));
+        roles.forEach(role => {
+            if (!rolesMap.has(role.id)) {
+                rolesMap.set(role.id, []);
+            }
+            rolesMap.get(role.id).push(role);
+        });
 
-        return ids.map(id => [rolesMap.get(id)]);
+        return ids.map(id => rolesMap.get(id) || []);
     }
 }
 
