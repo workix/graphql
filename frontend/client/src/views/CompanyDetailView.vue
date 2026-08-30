@@ -34,7 +34,7 @@ import { useRoute } from 'vue-router';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 import LoadingOverlay from '../components/LoadingOverlay.vue';
-import api from '../services/api';
+import { companiesService } from '../services/companies.service';
 
 const route = useRoute();
 const company = ref<any>(null);
@@ -44,7 +44,7 @@ async function loadCompany() {
   loading.value = true;
   try {
     const id = route.params.id as string;
-    const response = await api.get(`/companies/${id}`);
+    const response = await companiesService.getById(id);
     company.value = response.data;
   } catch (err) {
     console.error('Erro ao carregar empresa:', err);
