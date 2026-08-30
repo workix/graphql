@@ -16,3 +16,4 @@ google-services.json
 *.keystore
 *.jks
 .artifacts/
+coverage/
