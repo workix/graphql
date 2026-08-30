@@ -3,7 +3,7 @@
 - [x] 1.1 Criar modelo Sequelize `MediaAsset` e migration para tabela `media_assets`
 - [x] 1.2 Criar fábrica `src/factory/storage_server.ts` para geração de URLs pré-assinadas de upload/download
 - [x] 1.3 Criar suíte de testes unitários TDD em `tests/unit/factory/storage_server.spec.ts` com 100% de cobertura
-- [ ] 1.4 Criar módulo GraphQL `src/modules/media` com schema, resolvers e repositório para `requestUploadUrl` e `confirmUpload`
+- [x] 1.4 Criar módulo GraphQL `src/modules/media` com schema, resolvers e repositório para `requestUploadUrl` e `confirmUpload`
 
 ## 2. Motor de Busca Elasticsearch Operacional
 

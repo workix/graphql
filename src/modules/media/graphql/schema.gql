@@ -1,0 +1,35 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    getMediaById(id: ID!): MediaAsset
+}
+
+type Mutation {
+    requestUploadUrl(input: RequestUploadInput!): RequestUploadResponse
+    confirmUpload(id: ID!): MediaAsset
+}
+
+type MediaAsset {
+    id: ID
+    fileName: String
+    fileType: String
+    context: String
+    url: String
+    status: String
+    userId: ID
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+input RequestUploadInput {
+    fileName: String!
+    fileType: String!
+    context: String!
+    userId: ID
+}
+
+type RequestUploadResponse {
+    mediaAsset: MediaAsset
+    uploadUrl: String
+}
