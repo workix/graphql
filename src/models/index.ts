@@ -93,6 +93,7 @@ export const ResumeSkill = db.ResumeSkill;
 export const SkillEndorsement = db.SkillEndorsement;
 export const SelectiveProcess = db.SelectiveProcess;
 export const SelectiveProcessCandidate = db.SelectiveProcessCandidate;
+export const SocialSellingScore = db.SocialSellingScore;
 export const SubscriptionPlan = db.SubscriptionPlan;
 export const Subscriber = db.Subscriber;
 export const Testimonial = db.Testimonial;
