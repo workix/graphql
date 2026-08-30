@@ -50,6 +50,7 @@ export const Company = db.Company;
 export const CompanyMedia = db.CompanyMedia;
 export const Connection = db.Connection;
 export const ConnectionRequest = db.ConnectionRequest;
+export const DirectMessage = db.DirectMessage;
 export const Follow = db.Follow;
 export const Form = db.Form;
 export const JAASRole = db.JAASRole;

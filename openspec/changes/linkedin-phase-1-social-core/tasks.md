@@ -20,6 +20,6 @@
 
 ## 4. Mensageria Direta 1:1 (`direct_messages`)
 
-- [ ] 4.1 Criar modelos Sequelize `Conversation`, `DirectMessage` e suas migrations
+- [x] 4.1 Criar modelos Sequelize `Conversation`, `DirectMessage` e suas migrations
 - [ ] 4.2 Criar módulo GraphQL `src/modules/messaging` com schema, DTOs, repositório, resolvers e subscription `directMessageAdded`
 - [ ] 4.3 Criar suíte de testes unitários TDD em `tests/unit/modules/messaging.spec.ts` com 100% de cobertura e validação geral do Jest
