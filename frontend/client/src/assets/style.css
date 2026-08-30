@@ -102,10 +102,17 @@ a (hover):              #a0205f (darker cyan)
 /* 1. GLOBAL STYLES
 -------------------------------------------------------------------*/
 
-body {
+html, body {
+	margin: 0 !important;
+	padding: 0 !important;
 	min-width: 320px;
 	overflow-x: hidden;
-	padding-top: 0;
+}
+
+#app, #workix-client-app, .page-wrapper {
+	margin: 0 !important;
+	padding: 0 !important;
+	width: 100%;
 }
 
 	#home {
