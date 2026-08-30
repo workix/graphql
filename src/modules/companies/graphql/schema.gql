@@ -2,86 +2,33 @@ scalar Date
 scalar DateTime
 
 type Query {
-    allCompanies(start: Int, max: Int): [Company]
-    getCompanyById(id: ID!): Company
-    allCompaniesPaginated(page: Int!, limit: Int!): PaginatedListCompany
-    listCompanyRandomLogos(start: Int, max: Int): [Logo]
+    companyPage(id: ID!): CompanyPage
+    companyFollowersCount(companyId: ID!): Int
 }
 
 type Mutation {
-    createCompany(input: CompanyInput!): Company
-    deleteCompany(id: ID!) : Boolean
-    updateCompany(id: ID!, input: CompanyInput!): Company    
+    createCompanyPage(creatorUserId: ID!, input: CompanyPageInput!): CompanyPage
+    followCompany(companyId: ID!, userId: ID!): Boolean
+    unfollowCompany(companyId: ID!, userId: ID!): Boolean
 }
 
-type Company {
-    id: ID,
+type CompanyPage {
+    id: ID
+    name: String
+    industry: String
+    size: String
+    logoUrl: String
+    bannerUrl: String
+    description: String
     createdAt: DateTime
     updatedAt: DateTime
-    uuid: String
-    contact: Contact
-    locale: Locale
-    name: String
-    cnpj: Float
-    description: String
-    logo: String
-    segment: String
-    user: User
-    medias: [CompanyMedia]
 }
 
-type Contact {
-    mobilePhone: Float
-}
-
-type Locale {
-    city: String
-    state: String
-    neighborhood: String
-    number: String
-    street: String
-    zipCode: Int
-}
-
-input CompanyInput {    
-    mobilePhone: Int!
-    city: String!
-    state: String!
-    neighborhood: String!
-    number: String!
-    street: String!
-    zipCode: Int!
+input CompanyPageInput {
     name: String!
-    cnpj: Float!
-    description: String!
-    logo: String!
-    segment: String!
-    userId: Int!
-    medias: [CompanyMediaInput]  
-}
-
-input CompanyMediaInput {
-  media: String!
-  url: String!
-}
-
-  type CompanyMedia {    
-    media: String,
-    url: String
-  }  
-
-  type PaginatedListCompany {
-    companies: [Company]
-    start: Int
-    end: Int,
-    totalPages: Int,
-    currentPage: Int,
-    limitRows: Int,
-    maxRows: Int
-}
-
-type Logo {
-  id: ID
-  name: String
-  logo: String
+    industry: String
+    size: String
+    logoUrl: String
+    bannerUrl: String
+    description: String
 }
