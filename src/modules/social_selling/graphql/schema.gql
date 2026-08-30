@@ -1,0 +1,21 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    mySocialSellingIndex(userId: ID!): SocialSellingScore
+}
+
+type Mutation {
+    recalculateSocialSellingIndex(userId: ID!): SocialSellingScore
+}
+
+type SocialSellingScore {
+    id: ID
+    userId: ID
+    score: Int
+    postsScore: Int
+    networkScore: Int
+    engagementScore: Int
+    relationshipsScore: Int
+    calculatedAt: DateTime
+}

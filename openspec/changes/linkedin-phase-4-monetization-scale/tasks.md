@@ -20,8 +20,8 @@
 ## 4. Social Selling Index (`social_selling`)
 
 - [x] 4.1 Criar modelo Sequelize `SocialSellingScore` e sua migration
-- [ ] 4.2 Criar módulo GraphQL `src/modules/social_selling` com schema, DTOs, repositório e resolver de cálculo/consulta do score
-- [ ] 4.3 Criar suíte de testes unitários TDD em `tests/unit/modules/social_selling.spec.ts` com 100% de cobertura
+- [x] 4.2 Criar módulo GraphQL `src/modules/social_selling` com schema, DTOs, repositório e resolver de cálculo/consulta do score
+- [x] 4.3 Criar suíte de testes unitários TDD em `tests/unit/modules/social_selling.spec.ts` com 100% de cobertura
 
 ## 5. Verificação de Identidade
 
