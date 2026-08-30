@@ -54,6 +54,7 @@ export const JAASRoles = db.JAASRoles;
 export const JAASUser = db.JAASUser;
 export const Job = db.Job;
 export const JobCandidate = db.JobCandidate;
+export const MediaAsset = db.MediaAsset;
 export const Member = db.Member;
 export const MemberMedia = db.MemberMedia;
 export const Resume = db.Resume;
