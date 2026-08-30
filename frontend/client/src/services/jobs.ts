@@ -1,4 +1,4 @@
-import api from './api';
+import graphqlClient from './graphql';
 
 export interface JobFilterParams {
   page?: number;
@@ -8,17 +8,179 @@ export interface JobFilterParams {
   contract_type?: string;
 }
 
+export interface JobModel {
+  id: string | number;
+  title: string;
+  description: string;
+  benefits?: string;
+  requirement?: string;
+  jobCategory?: string;
+  jobType?: string;
+  minPayment?: number;
+  maxPayment?: number;
+  featured?: boolean;
+  activated?: boolean;
+  createdAt?: string;
+  company?: {
+    id: string | number;
+    name: string;
+    description?: string;
+    logo?: string;
+  };
+}
+
+export interface PaginatedListJob {
+  jobs: JobModel[];
+  totalPages: number;
+  currentPage: number;
+  maxRows: number;
+}
+
 export const jobsService = {
-  getPaginated(params: JobFilterParams) {
-    return api.get('/jobs/paginated', { params });
+  async getPaginated(params: JobFilterParams): Promise<{ data: PaginatedListJob }> {
+    const query = `
+      query AllJobsPaginated($page: Int!, $limit: Int!) {
+        allJobsPaginated(page: $page, limit: $limit) {
+          jobs {
+            id
+            title
+            description
+            benefits
+            requirement
+            jobCategory
+            jobType
+            minPayment
+            maxPayment
+            featured
+            activated
+            createdAt
+            company {
+              id
+              name
+              description
+              logo
+            }
+          }
+          totalPages
+          currentPage
+          maxRows
+        }
+      }
+    `;
+
+    const data = await graphqlClient.request<{ allJobsPaginated: PaginatedListJob }>(query, {
+      page: params.page || 1,
+      limit: params.limit || 10
+    });
+
+    return { data: data.allJobsPaginated };
   },
-  getById(id: number | string) {
-    return api.get(`/jobs/${id}`);
+
+  async getById(id: number | string): Promise<{ data: JobModel }> {
+    const query = `
+      query GetJobById($id: ID!) {
+        getJobById(id: $id) {
+          id
+          title
+          description
+          benefits
+          requirement
+          jobCategory
+          jobType
+          minPayment
+          maxPayment
+          featured
+          activated
+          createdAt
+          company {
+            id
+            name
+            description
+            logo
+          }
+        }
+      }
+    `;
+
+    const data = await graphqlClient.request<{ getJobById: JobModel }>(query, {
+      id: String(id)
+    });
+
+    return { data: data.getJobById };
   },
-  create(data: any) {
-    return api.post('/jobs', data);
+
+  async getFeatured(limit = 5): Promise<{ data: JobModel[] }> {
+    const query = `
+      query ListJobRandomFeatured {
+        listJobRandomFeatured {
+          id
+          title
+          description
+          jobCategory
+          jobType
+          minPayment
+          maxPayment
+          featured
+          createdAt
+          company {
+            id
+            name
+            logo
+          }
+        }
+      }
+    `;
+
+    const data = await graphqlClient.request<{ listJobRandomFeatured: JobModel[] }>(query);
+    return { data: data.listJobRandomFeatured || [] };
   },
-  subscribe(jobId: number | string) {
-    return api.post('/jobs/subscribe', { job_id: jobId });
+
+  async create(data: any): Promise<{ data: JobModel }> {
+    const query = `
+      mutation CreateJob($input: JobInput!) {
+        createJob(input: $input) {
+          id
+          title
+          description
+          jobCategory
+          jobType
+        }
+      }
+    `;
+
+    const result = await graphqlClient.request<{ createJob: JobModel }>(query, {
+      input: {
+        title: data.title,
+        description: data.description,
+        benefits: data.benefits || '',
+        requirement: data.requirement || '',
+        jobCategory: data.jobCategory || 'MANAGEMENT',
+        jobType: data.jobType || 'FULLTIME',
+        minPayment: parseFloat(data.minPayment || 0),
+        maxPayment: parseFloat(data.maxPayment || 0),
+        featured: Boolean(data.featured),
+        activated: true,
+        companyId: parseInt(data.companyId || 1, 10)
+      }
+    });
+
+    return { data: result.createJob };
+  },
+
+  async subscribe(jobId: number | string, candidateId: number | string = 1): Promise<{ data: boolean }> {
+    const query = `
+      mutation SubscribeInJob($input: SubscribeInJobInput!) {
+        subscribeInJob(input: $input)
+      }
+    `;
+
+    const result = await graphqlClient.request<{ subscribeInJob: boolean }>(query, {
+      input: {
+        jobId: String(jobId),
+        candidateId: String(candidateId)
+      }
+    });
+
+    return { data: result.subscribeInJob };
   }
 };
