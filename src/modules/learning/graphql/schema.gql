@@ -1,0 +1,48 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    course(id: ID!): Course
+    courseLessons(courseId: ID!): [CourseLesson]
+    courseCompletion(enrollmentId: ID!): CourseCompletion
+}
+
+type Mutation {
+    createCourse(instructorId: ID!, title: String!, description: String, mediaId: ID): Course
+    addCourseLesson(courseId: ID!, title: String!, mediaId: ID, orderIndex: Int): CourseLesson
+    enrollInCourse(courseId: ID!, userId: ID!): CourseEnrollment
+    completeCourse(enrollmentId: ID!): CourseCompletion
+}
+
+type Course {
+    id: ID
+    title: String
+    description: String
+    instructorId: ID
+    mediaId: ID
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type CourseLesson {
+    id: ID
+    courseId: ID
+    title: String
+    mediaId: ID
+    orderIndex: Int
+    createdAt: DateTime
+}
+
+type CourseEnrollment {
+    id: ID
+    courseId: ID
+    userId: ID
+    enrolledAt: DateTime
+}
+
+type CourseCompletion {
+    id: ID
+    enrollmentId: ID
+    completedAt: DateTime
+    certificateUrl: String
+}

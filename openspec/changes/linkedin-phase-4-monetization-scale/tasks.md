@@ -14,8 +14,8 @@
 ## 3. LinkedIn Learning (`learning`)
 
 - [x] 3.1 Criar modelos Sequelize `Course`, `CourseLesson`, `CourseEnrollment`, `CourseCompletion` e suas migrations
-- [ ] 3.2 Criar módulo GraphQL `src/modules/learning` com schema, DTOs, repositório e resolvers para cursos, matrículas e certificados
-- [ ] 3.3 Criar suíte de testes unitários TDD em `tests/unit/modules/learning.spec.ts` com 100% de cobertura
+- [x] 3.2 Criar módulo GraphQL `src/modules/learning` com schema, DTOs, repositório e resolvers para cursos, matrículas e certificados
+- [x] 3.3 Criar suíte de testes unitários TDD em `tests/unit/modules/learning.spec.ts` com 100% de cobertura
 
 ## 4. Social Selling Index (`social_selling`)
 
