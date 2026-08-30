@@ -8,9 +8,9 @@
 ## 2. Perfil Profissional Estendido (`user_profiles`)
 
 - [x] 2.1 Criar modelo Sequelize `UserProfile` e migration para a tabela `user_profiles`
-- [ ] 2.2 Criar módulo GraphQL `src/modules/profiles` com schema, DTO, repositório e resolvers para edição e consulta de perfil
-- [ ] 2.3 Criar integração com worker RabbitMQ `search-index-sync` para atualização de perfis no Elasticsearch
-- [ ] 2.4 Criar suíte de testes unitários TDD em `tests/unit/modules/profiles.spec.ts` com 100% de cobertura
+- [x] 2.2 Criar módulo GraphQL `src/modules/profiles` com schema, DTO, repositório e resolvers para edição e consulta de perfil
+- [x] 2.3 Criar integração com worker RabbitMQ `search-index-sync` para atualização de perfis no Elasticsearch
+- [x] 2.4 Criar suíte de testes unitários TDD em `tests/unit/modules/profiles.spec.ts` com 100% de cobertura
 
 ## 3. Posts, Feed Social, Reações Tipadas e Comentários (`posts`)
 

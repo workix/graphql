@@ -1,0 +1,32 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    getProfileByUserId(userId: ID!): UserProfile
+}
+
+type Mutation {
+    updateMyProfile(userId: ID!, input: ProfileInput!): UserProfile
+}
+
+type UserProfile {
+    id: ID
+    userId: ID
+    headline: String
+    about: String
+    bannerUrl: String
+    location: String
+    industry: String
+    openToWork: Boolean
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+input ProfileInput {
+    headline: String
+    about: String
+    bannerUrl: String
+    location: String
+    industry: String
+    openToWork: Boolean
+}
