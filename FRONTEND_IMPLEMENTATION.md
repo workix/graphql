@@ -69,11 +69,11 @@ O desenvolvimento será executado de forma totalmente modular e incremental em 5
    - Configuração do Vuetify 3 no painel administrativo.
    - Configuração de Vue Router, Pinia stores, serviços HTTP/Axios e tratamento de variáveis de ambiente.
 
-3. **`frontend-phase3-client-implementation`** (Próxima etapa)
+3. **`frontend-phase3-client-implementation`** (Concluído)
    - Implementação das views e componentes do **Frontend do Cliente** baseado no template Jobseek.
    - Integração das chamadas de API do Cliente (Vagas, Currículos, Empresas, Inscrições, Blog).
 
-4. **`frontend-phase4-admin-implementation`**
+4. **`frontend-phase4-admin-implementation`** (Próxima etapa)
    - Implementação das views e componentes do **Frontend Administrativo** utilizando Vuetify 3.
    - Integração das chamadas de API Administrativas (Usuários, JAAS, Vagas, Moderação, Estatísticas).
 
