@@ -48,6 +48,21 @@ const routes: Array<RouteRecordRaw> = [
     name: 'PostResume',
     component: () => import('../views/PostResumeView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/company/:id',
+    name: 'CompanyDetail',
+    component: () => import('../views/CompanyDetailView.vue')
+  },
+  {
+    path: '/blog',
+    name: 'BlogList',
+    component: () => import('../views/BlogListView.vue')
+  },
+  {
+    path: '/blog/:id',
+    name: 'BlogPost',
+    component: () => import('../views/BlogPostView.vue')
   }
 ];
 
