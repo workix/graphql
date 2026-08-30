@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>5/15</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">38.46% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>5/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -97,69 +97,69 @@
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import featuredRepository from '../repository/featured.repo';
 import FeaturedItemDTO from '../../../dtos/FeaturedItemDTO';
 import PostDTO from '../../../dtos/PostDTO';
 &nbsp;
 const featuredResolvers = {
   Query: {
-    userFeaturedItems: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const list = await featuredRepository(ctx.orm).getUserFeaturedItems(args.userId);
-      return list.map((i: any) =&gt; new FeaturedItemDTO(i));
+    userFeaturedItems: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const list = <span class="cstat-no" title="statement not covered" >await featuredRepository(ctx.orm).getUserFeaturedItems(args.userId);</span>
+<span class="cstat-no" title="statement not covered" >      return list.map(<span class="fstat-no" title="function not covered" >(i</span>: any) =&gt; <span class="cstat-no" title="statement not covered" >new FeaturedItemDTO(i))</span>;</span>
     },
-    rankedSocialFeed: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const list = await featuredRepository(ctx.orm).getRankedFeed(args.userId, args.limit, args.offset);
-      return list.map((p: any) =&gt; new PostDTO(p));
+    rankedSocialFeed: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const list = <span class="cstat-no" title="statement not covered" >await featuredRepository(ctx.orm).getRankedFeed(args.userId, args.limit, args.offset);</span>
+<span class="cstat-no" title="statement not covered" >      return list.map(<span class="fstat-no" title="function not covered" >(p</span>: any) =&gt; <span class="cstat-no" title="statement not covered" >new PostDTO(p))</span>;</span>
     }
   },
   Mutation: {
-    addFeaturedItem: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const item = await featuredRepository(ctx.orm).addFeaturedItem(
+    addFeaturedItem: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const item = <span class="cstat-no" title="statement not covered" >await featuredRepository(ctx.orm).addFeaturedItem(</span>
         args.userId,
         args.type,
         args.title,
         args.url,
         args.mediaId
       );
-      return new FeaturedItemDTO(item);
+<span class="cstat-no" title="statement not covered" >      return new FeaturedItemDTO(item);</span>
     },
-    removeFeaturedItem: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const res = await featuredRepository(ctx.orm).removeFeaturedItem(args.id, args.userId);
-      return res;
+    removeFeaturedItem: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const res = <span class="cstat-no" title="statement not covered" >await featuredRepository(ctx.orm).removeFeaturedItem(args.id, args.userId);</span>
+<span class="cstat-no" title="statement not covered" >      return res;</span>
     }
   }
 };
@@ -172,7 +172,7 @@ export default featuredResolvers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

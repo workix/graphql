@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">9.09% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>1/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">9.09% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>1/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -87,7 +87,7 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -98,16 +98,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -121,17 +121,17 @@
   createdAt?: Date;
   updatedAt?: Date;
 &nbsp;
-  constructor(app: any) {
-    this.matchScore = 0;
-    if (app) {
-      this.id = app.id;
-      this.jobId = app.job_id || <span class="branch-1 cbranch-no" title="branch not covered" >app.jobId;</span>
-      this.candidateId = app.candidate_id || <span class="branch-1 cbranch-no" title="branch not covered" >app.candidateId;</span>
-      this.resumeId = app.resume_id || app.resumeId;
-      this.status = app.status;
-      this.matchScore = app.match_score !== undefined ? app.match_score : (<span class="branch-1 cbranch-no" title="branch not covered" >app.matchScore || 0)</span>;
-      this.createdAt = app.created_at || app.createdAt;
-      this.updatedAt = app.updated_at || app.updatedAt;
+<span class="fstat-no" title="function not covered" >  constructor(a</span>pp: any) {
+<span class="cstat-no" title="statement not covered" >    this.matchScore = 0;</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (app) {</span>
+<span class="cstat-no" title="statement not covered" >      this.id = app.id;</span>
+<span class="cstat-no" title="statement not covered" >      this.jobId = app.job_id || app.jobId;</span>
+<span class="cstat-no" title="statement not covered" >      this.candidateId = app.candidate_id || app.candidateId;</span>
+<span class="cstat-no" title="statement not covered" >      this.resumeId = app.resume_id || app.resumeId;</span>
+<span class="cstat-no" title="statement not covered" >      this.status = app.status;</span>
+<span class="cstat-no" title="statement not covered" >      this.matchScore = app.match_score !== undefined ? app.match_score : (app.matchScore || 0);</span>
+<span class="cstat-no" title="statement not covered" >      this.createdAt = app.created_at || app.createdAt;</span>
+<span class="cstat-no" title="statement not covered" >      this.updatedAt = app.updated_at || app.updatedAt;</span>
     }
   }
 }
@@ -142,7 +142,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

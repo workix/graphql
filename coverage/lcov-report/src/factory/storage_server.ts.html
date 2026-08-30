@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">26.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>4/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">15.38% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>2/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -111,29 +111,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export interface UploadUrlOptions {
   fileName: string;
@@ -147,29 +147,29 @@ export interface UploadUrlResult {
   key: string;
 }
 &nbsp;
-export const generatePreSignedUploadUrl = async (options: UploadUrlOptions): Promise&lt;UploadUrlResult&gt; =&gt; {
-  const endpoint = process.env.STORAGE_ENDPOINT || 'https://storage.workix.com';
-  const bucket = process.env.STORAGE_BUCKET || 'workix-media';
+export const generatePreSignedUploadUrl = <span class="fstat-no" title="function not covered" >async </span>(options: UploadUrlOptions): Promise&lt;UploadUrlResult&gt; =&gt; {
+  const endpoint = <span class="cstat-no" title="statement not covered" >process.env.STORAGE_ENDPOINT || 'https://storage.workix.com';</span>
+  const bucket = <span class="cstat-no" title="statement not covered" >process.env.STORAGE_BUCKET || 'workix-media';</span>
   
-  const timestamp = Date.now();
-  const sanitizedFileName = options.fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
-  const key = `${options.context}/${timestamp}-${sanitizedFileName}`;
+  const timestamp = <span class="cstat-no" title="statement not covered" >Date.now();</span>
+  const sanitizedFileName = <span class="cstat-no" title="statement not covered" >options.fileName.replace(/[^a-zA-Z0-9._-]/g, '_');</span>
+  const key = <span class="cstat-no" title="statement not covered" >`${options.context}/${timestamp}-${sanitizedFileName}`;</span>
 &nbsp;
-  const uploadUrl = `${endpoint}/${bucket}/${key}?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Expires=900`;
-  const publicUrl = `${endpoint}/${bucket}/${key}`;
+  const uploadUrl = <span class="cstat-no" title="statement not covered" >`${endpoint}/${bucket}/${key}?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Expires=900`;</span>
+  const publicUrl = <span class="cstat-no" title="statement not covered" >`${endpoint}/${bucket}/${key}`;</span>
 &nbsp;
-  return {
+<span class="cstat-no" title="statement not covered" >  return {</span>
     uploadUrl,
     publicUrl,
     key
   };
 };
 &nbsp;
-export const generatePreSignedDownloadUrl = async (key: string): Promise&lt;string&gt; =&gt; {
-  const endpoint = process.env.STORAGE_ENDPOINT || 'https://storage.workix.com';
-  const bucket = process.env.STORAGE_BUCKET || 'workix-media';
+export const generatePreSignedDownloadUrl = <span class="fstat-no" title="function not covered" >async </span>(key: string): Promise&lt;string&gt; =&gt; {
+  const endpoint = <span class="cstat-no" title="statement not covered" >process.env.STORAGE_ENDPOINT || 'https://storage.workix.com';</span>
+  const bucket = <span class="cstat-no" title="statement not covered" >process.env.STORAGE_BUCKET || 'workix-media';</span>
 &nbsp;
-  return `${endpoint}/${bucket}/${key}?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Expires=3600`;
+<span class="cstat-no" title="statement not covered" >  return `${endpoint}/${bucket}/${key}?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Expires=3600`;</span>
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -178,7 +178,7 @@ export const generatePreSignedDownloadUrl = async (key: string): Promise&lt;stri
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

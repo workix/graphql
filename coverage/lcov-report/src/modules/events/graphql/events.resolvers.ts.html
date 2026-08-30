@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">35.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>5/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">38.46% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>5/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -99,60 +99,60 @@
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import eventsRepository from '../repository/events.repo';
 import EventDTO from '../../../dtos/EventDTO';
 import EventAttendeeDTO from '../../../dtos/EventAttendeeDTO';
 &nbsp;
 const eventsResolvers = {
   Query: {
-    event: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const e = await eventsRepository(ctx.orm).getEventById(args.id);
-      return e ? new EventDTO(e) : null;
+    event: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const e = <span class="cstat-no" title="statement not covered" >await eventsRepository(ctx.orm).getEventById(args.id);</span>
+<span class="cstat-no" title="statement not covered" >      return e ? new EventDTO(e) : null;</span>
     },
-    eventAttendees: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const attendees = await eventsRepository(ctx.orm).getEventAttendees(args.eventId, args.limit, args.offset);
-      return attendees.map((a: any) =&gt; new EventAttendeeDTO(a));
+    eventAttendees: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const attendees = <span class="cstat-no" title="statement not covered" >await eventsRepository(ctx.orm).getEventAttendees(args.eventId, args.limit, args.offset);</span>
+<span class="cstat-no" title="statement not covered" >      return attendees.map(<span class="fstat-no" title="function not covered" >(a</span>: any) =&gt; <span class="cstat-no" title="statement not covered" >new EventAttendeeDTO(a))</span>;</span>
     }
   },
   Mutation: {
-    createEvent: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const event = await eventsRepository(ctx.orm).createEvent(
+    createEvent: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const event = <span class="cstat-no" title="statement not covered" >await eventsRepository(ctx.orm).createEvent(</span>
         args.organizerId,
         args.title,
         args.description,
@@ -161,11 +161,11 @@ const eventsResolvers = {
         args.endTime,
         args.locationOrUrl
       );
-      return new EventDTO(event);
+<span class="cstat-no" title="statement not covered" >      return new EventDTO(event);</span>
     },
-    attendEvent: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const attendee = await eventsRepository(ctx.orm).attendEvent(args.eventId, args.userId, args.status);
-      return new EventAttendeeDTO(attendee);
+    attendEvent: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const attendee = <span class="cstat-no" title="statement not covered" >await eventsRepository(ctx.orm).attendEvent(args.eventId, args.userId, args.status);</span>
+<span class="cstat-no" title="statement not covered" >      return new EventAttendeeDTO(attendee);</span>
     }
   }
 };
@@ -178,7 +178,7 @@ export default eventsResolvers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

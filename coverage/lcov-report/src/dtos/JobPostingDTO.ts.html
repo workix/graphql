@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">6.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>1/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">6.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>1/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -96,7 +96,7 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -108,24 +108,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,25 +140,25 @@
   createdAt?: Date;
   updatedAt?: Date;
 &nbsp;
-  constructor(job: any) {
-    if (job) {
-      this.id = job.id;
-      this.companyId = job.company_id || job.companyId;
-      this.title = job.title;
-      this.description = job.description;
-      this.location = job.location;
-      this.workType = job.work_type || job.workType;
-      if (job.required_skills) {
-        try {
-          this.requiredSkills = typeof job.required_skills === 'string' ? JSON.parse(job.required_skills) : job.required_skills;
+<span class="fstat-no" title="function not covered" >  constructor(j</span>ob: any) {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (job) {</span>
+<span class="cstat-no" title="statement not covered" >      this.id = job.id;</span>
+<span class="cstat-no" title="statement not covered" >      this.companyId = job.company_id || job.companyId;</span>
+<span class="cstat-no" title="statement not covered" >      this.title = job.title;</span>
+<span class="cstat-no" title="statement not covered" >      this.description = job.description;</span>
+<span class="cstat-no" title="statement not covered" >      this.location = job.location;</span>
+<span class="cstat-no" title="statement not covered" >      this.workType = job.work_type || job.workType;</span>
+<span class="cstat-no" title="statement not covered" >      if (job.required_skills) {</span>
+<span class="cstat-no" title="statement not covered" >        try {</span>
+<span class="cstat-no" title="statement not covered" >          this.requiredSkills = typeof job.required_skills === 'string' ? JSON.parse(job.required_skills) : job.required_skills;</span>
         } catch {
-          this.requiredSkills = [];
+<span class="cstat-no" title="statement not covered" >          this.requiredSkills = [];</span>
         }
       } else {
-        this.requiredSkills = job.requiredSkills || [];
+<span class="cstat-no" title="statement not covered" >        this.requiredSkills = job.requiredSkills || [];</span>
       }
-      this.createdAt = job.created_at || job.createdAt;
-      this.updatedAt = job.updated_at || job.updatedAt;
+<span class="cstat-no" title="statement not covered" >      this.createdAt = job.created_at || job.createdAt;</span>
+<span class="cstat-no" title="statement not covered" >      this.updatedAt = job.updated_at || job.updatedAt;</span>
     }
   }
 }
@@ -169,7 +169,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

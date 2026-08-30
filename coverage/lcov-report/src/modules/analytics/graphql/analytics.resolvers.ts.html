@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">31.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>5/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>5/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -95,65 +95,65 @@
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import analyticsRepository from '../repository/analytics.repo';
 import ProfileViewDTO from '../../../dtos/ProfileViewDTO';
 import PostAnalyticsDTO from '../../../dtos/PostAnalyticsDTO';
 &nbsp;
 const analyticsResolvers = {
   Query: {
-    whoViewedMyProfile: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const views = await analyticsRepository(ctx.orm).getProfileViews(args.userId, args.limit, args.offset);
-      return views.map((v: any) =&gt; new ProfileViewDTO(v));
+    whoViewedMyProfile: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const views = <span class="cstat-no" title="statement not covered" >await analyticsRepository(ctx.orm).getProfileViews(args.userId, args.limit, args.offset);</span>
+<span class="cstat-no" title="statement not covered" >      return views.map(<span class="fstat-no" title="function not covered" >(v</span>: any) =&gt; <span class="cstat-no" title="statement not covered" >new ProfileViewDTO(v))</span>;</span>
     },
-    postAnalytics: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const analytics = await analyticsRepository(ctx.orm).getPostAnalytics(args.postId);
-      return analytics ? new PostAnalyticsDTO(analytics) : null;
+    postAnalytics: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const analytics = <span class="cstat-no" title="statement not covered" >await analyticsRepository(ctx.orm).getPostAnalytics(args.postId);</span>
+<span class="cstat-no" title="statement not covered" >      return analytics ? new PostAnalyticsDTO(analytics) : null;</span>
     }
   },
   Mutation: {
-    recordProfileView: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const view = await analyticsRepository(ctx.orm).recordProfileView(args.viewedId, args.viewerId);
-      return new ProfileViewDTO(view);
+    recordProfileView: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const view = <span class="cstat-no" title="statement not covered" >await analyticsRepository(ctx.orm).recordProfileView(args.viewedId, args.viewerId);</span>
+<span class="cstat-no" title="statement not covered" >      return new ProfileViewDTO(view);</span>
     },
-    recordPostView: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const analytics = await analyticsRepository(ctx.orm).recordPostView(args.postId);
-      return new PostAnalyticsDTO(analytics);
+    recordPostView: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const analytics = <span class="cstat-no" title="statement not covered" >await analyticsRepository(ctx.orm).recordPostView(args.postId);</span>
+<span class="cstat-no" title="statement not covered" >      return new PostAnalyticsDTO(analytics);</span>
     },
-    recordPostShare: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const analytics = await analyticsRepository(ctx.orm).recordPostShare(args.postId);
-      return new PostAnalyticsDTO(analytics);
+    recordPostShare: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const analytics = <span class="cstat-no" title="statement not covered" >await analyticsRepository(ctx.orm).recordPostShare(args.postId);</span>
+<span class="cstat-no" title="statement not covered" >      return new PostAnalyticsDTO(analytics);</span>
     }
   }
 };
@@ -166,7 +166,7 @@ export default analyticsResolvers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

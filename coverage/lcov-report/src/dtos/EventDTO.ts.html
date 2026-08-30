@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">8.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>1/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">8.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>1/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -90,7 +90,7 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -103,17 +103,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -129,18 +129,18 @@
   createdAt?: Date;
   updatedAt?: Date;
 &nbsp;
-  constructor(event: any) {
-    if (event) {
-      this.id = event.id;
-      this.title = event.title;
-      this.description = event.description;
-      this.eventType = event.event_type || event.eventType;
-      this.startTime = event.start_time || event.startTime;
-      this.endTime = event.end_time || event.endTime;
-      this.locationOrUrl = event.location_or_url || event.locationOrUrl;
-      this.organizerId = event.organizer_id || event.organizerId;
-      this.createdAt = event.created_at || event.createdAt;
-      this.updatedAt = event.updated_at || event.updatedAt;
+<span class="fstat-no" title="function not covered" >  constructor(e</span>vent: any) {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (event) {</span>
+<span class="cstat-no" title="statement not covered" >      this.id = event.id;</span>
+<span class="cstat-no" title="statement not covered" >      this.title = event.title;</span>
+<span class="cstat-no" title="statement not covered" >      this.description = event.description;</span>
+<span class="cstat-no" title="statement not covered" >      this.eventType = event.event_type || event.eventType;</span>
+<span class="cstat-no" title="statement not covered" >      this.startTime = event.start_time || event.startTime;</span>
+<span class="cstat-no" title="statement not covered" >      this.endTime = event.end_time || event.endTime;</span>
+<span class="cstat-no" title="statement not covered" >      this.locationOrUrl = event.location_or_url || event.locationOrUrl;</span>
+<span class="cstat-no" title="statement not covered" >      this.organizerId = event.organizer_id || event.organizerId;</span>
+<span class="cstat-no" title="statement not covered" >      this.createdAt = event.created_at || event.createdAt;</span>
+<span class="cstat-no" title="statement not covered" >      this.updatedAt = event.updated_at || event.updatedAt;</span>
     }
   }
 }
@@ -151,7 +151,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

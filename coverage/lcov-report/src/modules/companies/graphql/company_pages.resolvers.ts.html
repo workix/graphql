@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">28.57% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>4/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">28.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>4/14</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -94,63 +94,63 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import companyPagesRepository from '../repository/company_pages.repo';
 import CompanyPageDTO from '../../../dtos/CompanyPageDTO';
 &nbsp;
 const companyPagesResolvers = {
   Query: {
-    companyPage: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const page = await companyPagesRepository(ctx.orm).getCompanyPageById(args.id);
-      return page ? new CompanyPageDTO(page) : null;
+    companyPage: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const page = <span class="cstat-no" title="statement not covered" >await companyPagesRepository(ctx.orm).getCompanyPageById(args.id);</span>
+<span class="cstat-no" title="statement not covered" >      return page ? new CompanyPageDTO(page) : null;</span>
     },
-    companyFollowersCount: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const count = await companyPagesRepository(ctx.orm).getCompanyFollowersCount(args.companyId);
-      return count;
+    companyFollowersCount: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const count = <span class="cstat-no" title="statement not covered" >await companyPagesRepository(ctx.orm).getCompanyFollowersCount(args.companyId);</span>
+<span class="cstat-no" title="statement not covered" >      return count;</span>
     }
   },
   Mutation: {
-    createCompanyPage: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const page = await companyPagesRepository(ctx.orm).createCompanyPage(args.creatorUserId, args.input);
-      return new CompanyPageDTO(page);
+    createCompanyPage: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const page = <span class="cstat-no" title="statement not covered" >await companyPagesRepository(ctx.orm).createCompanyPage(args.creatorUserId, args.input);</span>
+<span class="cstat-no" title="statement not covered" >      return new CompanyPageDTO(page);</span>
     },
-    followCompany: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const res = await companyPagesRepository(ctx.orm).followCompany(args.companyId, args.userId);
-      return !!res;
+    followCompany: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const res = <span class="cstat-no" title="statement not covered" >await companyPagesRepository(ctx.orm).followCompany(args.companyId, args.userId);</span>
+<span class="cstat-no" title="statement not covered" >      return !!res;</span>
     },
-    unfollowCompany: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const res = await companyPagesRepository(ctx.orm).unfollowCompany(args.companyId, args.userId);
-      return res;
+    unfollowCompany: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const res = <span class="cstat-no" title="statement not covered" >await companyPagesRepository(ctx.orm).unfollowCompany(args.companyId, args.userId);</span>
+<span class="cstat-no" title="statement not covered" >      return res;</span>
     }
   }
 };
@@ -163,7 +163,7 @@ export default companyPagesResolvers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

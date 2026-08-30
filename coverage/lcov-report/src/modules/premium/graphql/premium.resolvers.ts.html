@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">35.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>5/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">38.46% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>5/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -96,67 +96,67 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import premiumRepository from '../repository/premium.repo';
 import SubscriptionPlanDTO from '../../../dtos/SubscriptionPlanDTO';
 import UserSubscriptionDTO from '../../../dtos/UserSubscriptionDTO';
 &nbsp;
 const premiumResolvers = {
   Query: {
-    subscriptionPlans: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const plans = await premiumRepository(ctx.orm).getPlans();
-      return plans.map((p: any) =&gt; new SubscriptionPlanDTO(p));
+    subscriptionPlans: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const plans = <span class="cstat-no" title="statement not covered" >await premiumRepository(ctx.orm).getPlans();</span>
+<span class="cstat-no" title="statement not covered" >      return plans.map(<span class="fstat-no" title="function not covered" >(p</span>: any) =&gt; <span class="cstat-no" title="statement not covered" >new SubscriptionPlanDTO(p))</span>;</span>
     },
-    mySubscription: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const subscription = await premiumRepository(ctx.orm).getActiveSubscription(args.userId);
-      return subscription ? new UserSubscriptionDTO(subscription) : null;
+    mySubscription: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const subscription = <span class="cstat-no" title="statement not covered" >await premiumRepository(ctx.orm).getActiveSubscription(args.userId);</span>
+<span class="cstat-no" title="statement not covered" >      return subscription ? new UserSubscriptionDTO(subscription) : null;</span>
     }
   },
   Mutation: {
-    createSubscriptionPlan: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const plan = await premiumRepository(ctx.orm).createPlan(
+    createSubscriptionPlan: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const plan = <span class="cstat-no" title="statement not covered" >await premiumRepository(ctx.orm).createPlan(</span>
         args.name,
         args.price,
         args.billingPeriod,
         args.inmailCreditsPerMonth
       );
-      return new SubscriptionPlanDTO(plan);
+<span class="cstat-no" title="statement not covered" >      return new SubscriptionPlanDTO(plan);</span>
     },
-    subscribeToPlan: async (parent: any, args: any, ctx: any, info: any) =&gt; {
-      const subscription = await premiumRepository(ctx.orm).subscribeToPlan(args.userId, args.planId);
-      return new UserSubscriptionDTO(subscription);
+    subscribeToPlan: <span class="fstat-no" title="function not covered" >async </span>(parent: any, args: any, ctx: any, info: any) =&gt; {
+      const subscription = <span class="cstat-no" title="statement not covered" >await premiumRepository(ctx.orm).subscribeToPlan(args.userId, args.planId);</span>
+<span class="cstat-no" title="statement not covered" >      return new UserSubscriptionDTO(subscription);</span>
     }
   }
 };
@@ -169,7 +169,7 @@ export default premiumResolvers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

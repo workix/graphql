@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">21.05% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>4/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">23.52% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>4/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -90,31 +90,31 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { v4 as uuidv4 } from 'uuid';
@@ -122,26 +122,26 @@ import { CreateMediaDTO, UpdateMediaDTO } from './MediaMutationDTO';
 &nbsp;
 export class CreateMemberDTO {
   [key: string]: any;
-    constructor(input) {
-        this.created_at = new Date()
-        this.updated_at = new Date()
-        this.uuid = uuidv4()
-        this.name = input.name
-        this.occupation = input.occupation
-        this.picture = input.picture
-        this.short_text = input.shortText
-        this.medias = input.medias ? input.medias.map(m =&gt; new CreateMediaDTO(m)) : null    
+<span class="fstat-no" title="function not covered" >    constructor(i</span>nput) {
+<span class="cstat-no" title="statement not covered" >        this.created_at = new Date()</span>
+<span class="cstat-no" title="statement not covered" >        this.updated_at = new Date()</span>
+<span class="cstat-no" title="statement not covered" >        this.uuid = uuidv4()</span>
+<span class="cstat-no" title="statement not covered" >        this.name = input.name</span>
+<span class="cstat-no" title="statement not covered" >        this.occupation = input.occupation</span>
+<span class="cstat-no" title="statement not covered" >        this.picture = input.picture</span>
+<span class="cstat-no" title="statement not covered" >        this.short_text = input.shortText</span>
+<span class="cstat-no" title="statement not covered" >        this.medias = input.medias ? input.medias.map(<span class="fstat-no" title="function not covered" >m </span>=&gt; <span class="cstat-no" title="statement not covered" >new CreateMediaDTO(m))</span> : null    </span>
     }
 }
 &nbsp;
 export class UpdateMemberDTO {
   [key: string]: any;
-    constructor(input) {
-        this.name = input.name
-        this.occupation = input.occupation
-        this.picture = input.picture
-        this.short_text = input.shortText
-        this.medias = input.medias ? input.medias.map(m =&gt; new UpdateMediaDTO(m)) : null
+<span class="fstat-no" title="function not covered" >    constructor(i</span>nput) {
+<span class="cstat-no" title="statement not covered" >        this.name = input.name</span>
+<span class="cstat-no" title="statement not covered" >        this.occupation = input.occupation</span>
+<span class="cstat-no" title="statement not covered" >        this.picture = input.picture</span>
+<span class="cstat-no" title="statement not covered" >        this.short_text = input.shortText</span>
+<span class="cstat-no" title="statement not covered" >        this.medias = input.medias ? input.medias.map(<span class="fstat-no" title="function not covered" >m </span>=&gt; <span class="cstat-no" title="statement not covered" >new UpdateMediaDTO(m))</span> : null</span>
     }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -151,7 +151,7 @@ export class UpdateMemberDTO {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

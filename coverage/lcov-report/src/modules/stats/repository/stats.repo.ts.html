@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.23% </span>
+                <span class="strong">29.41% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/17</span>
+                <span class='fraction'>5/17</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>5/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -90,49 +90,49 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { QueryTypes } = require('sequelize');
 import { RequestedFields } from '../../../RequestedFields';
 import { Job, Company, Candidate, Resume } from '../../../models';
 &nbsp;
-const statsRepository = db =&gt; {
-    const requestedFields = new RequestedFields();
-    const getFields = <span class="fstat-no" title="function not covered" >info </span>=&gt; <span class="cstat-no" title="statement not covered" >requestedFields.getFields(info, { keep: ["id"], exclude: [] })</span>
-    const getFieldsWithSubfields = <span class="fstat-no" title="function not covered" >info </span>=&gt; <span class="cstat-no" title="statement not covered" >requestedFields.getFieldsWithSubfields(info, { keep: ["id"], exclude: [] })</span>
+const statsRepository = <span class="fstat-no" title="function not covered" >db </span>=&gt; {
+    const requestedFields = <span class="cstat-no" title="statement not covered" >new RequestedFields();</span>
+    const getFields = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >info </span>=&gt; <span class="cstat-no" title="statement not covered" >requestedFields.getFields(info, { keep: ["id"], exclude: [] })</span></span>
+    const getFieldsWithSubfields = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >info </span>=&gt; <span class="cstat-no" title="statement not covered" >requestedFields.getFieldsWithSubfields(info, { keep: ["id"], exclude: [] })</span></span>
 &nbsp;
-   const statisticsCount = async (info, args) =&gt; {
-    const members = await Candidate.count()
-    const jobs = await Job.count()
-    const resumes = await Resume.count()
-    const companies = await Company.count()
+   const statisticsCount = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(info, args) =&gt; {</span>
+    const members = <span class="cstat-no" title="statement not covered" >await Candidate.count()</span>
+    const jobs = <span class="cstat-no" title="statement not covered" >await Job.count()</span>
+    const resumes = <span class="cstat-no" title="statement not covered" >await Resume.count()</span>
+    const companies = <span class="cstat-no" title="statement not covered" >await Company.count()</span>
 &nbsp;
-    return {
+<span class="cstat-no" title="statement not covered" >    return {</span>
         members,
         jobs,
         resumes,
@@ -140,7 +140,7 @@ const statsRepository = db =&gt; {
     }
    }
 &nbsp;
-    return { statisticsCount }
+<span class="cstat-no" title="statement not covered" >    return { statisticsCount }</span>
 }
 &nbsp;
 export default statsRepository;
@@ -151,7 +151,7 @@ export default statsRepository;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

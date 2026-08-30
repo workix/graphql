@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.44% </span>
+                <span class="strong">22.22% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/18</span>
+                <span class='fraction'>4/18</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">23.52% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>4/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -99,73 +99,73 @@
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import FormDTO from '../../../dtos/FormDTO';
 import formsRepository from '../repository/forms.repo'
 &nbsp;
 const formsResolvers = {
   Query: {
-    allForms: async (parent, args, ctx, info) =&gt; {
-      let forms = await formsRepository(ctx.orm).findAll(info, args)
-      forms = forms.map(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >new FormDTO(f))</span>
-      return forms;
+    allForms: <span class="fstat-no" title="function not covered" >async </span>(parent, args, ctx, info) =&gt; {
+      let forms = <span class="cstat-no" title="statement not covered" >await formsRepository(ctx.orm).findAll(info, args)</span>
+<span class="cstat-no" title="statement not covered" >      forms = forms.map(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >new FormDTO(f))</span></span>
+<span class="cstat-no" title="statement not covered" >      return forms;</span>
     },
-    getFormById: async (parent, args, ctx, info) =&gt; {
-      const form = await formsRepository(ctx.orm).findById(info, args)
-      return new FormDTO(form);
+    getFormById: <span class="fstat-no" title="function not covered" >async </span>(parent, args, ctx, info) =&gt; {
+      const form = <span class="cstat-no" title="statement not covered" >await formsRepository(ctx.orm).findById(info, args)</span>
+<span class="cstat-no" title="statement not covered" >      return new FormDTO(form);</span>
     },
-    allFormsPaginated: async (parent, args, ctx, info) =&gt; {
-      const paginatedList = await formsRepository(ctx.orm).findAllPaginated(info, args)
-      return paginatedList;
+    allFormsPaginated: <span class="fstat-no" title="function not covered" >async </span>(parent, args, ctx, info) =&gt; {
+      const paginatedList = <span class="cstat-no" title="statement not covered" >await formsRepository(ctx.orm).findAllPaginated(info, args)</span>
+<span class="cstat-no" title="statement not covered" >      return paginatedList;</span>
     }
   },
   Mutation: {
-    createForm: async (parent, args, ctx, info) =&gt; {
-      const form = await formsRepository(ctx.orm).create(args)
-      return new FormDTO(form);
+    createForm: <span class="fstat-no" title="function not covered" >async </span>(parent, args, ctx, info) =&gt; {
+      const form = <span class="cstat-no" title="statement not covered" >await formsRepository(ctx.orm).create(args)</span>
+<span class="cstat-no" title="statement not covered" >      return new FormDTO(form);</span>
     },
-    deleteForm: async (parent, args, ctx, info) =&gt; {
-      const deleted = await formsRepository(ctx.orm).destroy(args)          
-      return deleted;
+    deleteForm: <span class="fstat-no" title="function not covered" >async </span>(parent, args, ctx, info) =&gt; {
+      const deleted = <span class="cstat-no" title="statement not covered" >await formsRepository(ctx.orm).destroy(args)          </span>
+<span class="cstat-no" title="statement not covered" >      return deleted;</span>
     },
-    updateForm: async (parent, args, ctx, info) =&gt; {
-      const form = await formsRepository(ctx.orm).update(args)
-      return new FormDTO(form);
+    updateForm: <span class="fstat-no" title="function not covered" >async </span>(parent, args, ctx, info) =&gt; {
+      const form = <span class="cstat-no" title="statement not covered" >await formsRepository(ctx.orm).update(args)</span>
+<span class="cstat-no" title="statement not covered" >      return new FormDTO(form);</span>
     }
 }
 }
@@ -178,7 +178,7 @@ export default formsResolvers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

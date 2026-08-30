@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">21.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>3/14</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">21.42% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>3/14</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -87,52 +87,52 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { v4 as uuidv4 } from 'uuid';
 &nbsp;
 export class CreateUserDTO {
   [key: string]: any;
-    constructor(input){        
-        this.created_at = new Date()
-        this.updated_at = new Date()
-        this.uuid = uuidv4()
-        this.activated = input.activated
-        this.email = input.email
-        this.firebase_message_token = input.firebaseMessageToken
-        this.firebase_uuid = input.firebaseUUID
+<span class="fstat-no" title="function not covered" >    constructor(i</span>nput){        
+<span class="cstat-no" title="statement not covered" >        this.created_at = new Date()</span>
+<span class="cstat-no" title="statement not covered" >        this.updated_at = new Date()</span>
+<span class="cstat-no" title="statement not covered" >        this.uuid = uuidv4()</span>
+<span class="cstat-no" title="statement not covered" >        this.activated = input.activated</span>
+<span class="cstat-no" title="statement not covered" >        this.email = input.email</span>
+<span class="cstat-no" title="statement not covered" >        this.firebase_message_token = input.firebaseMessageToken</span>
+<span class="cstat-no" title="statement not covered" >        this.firebase_uuid = input.firebaseUUID</span>
     }
 }
 &nbsp;
 export class UpdateUserDTO {
   [key: string]: any;
-    constructor(input){
-        this.activated = input.activated
-        this.email = input.email
-        this.firebase_message_token = input.firebaseMessageToken
-        this.firebase_uuid = input.firebaseUUID
+<span class="fstat-no" title="function not covered" >    constructor(i</span>nput){
+<span class="cstat-no" title="statement not covered" >        this.activated = input.activated</span>
+<span class="cstat-no" title="statement not covered" >        this.email = input.email</span>
+<span class="cstat-no" title="statement not covered" >        this.firebase_message_token = input.firebaseMessageToken</span>
+<span class="cstat-no" title="statement not covered" >        this.firebase_uuid = input.firebaseUUID</span>
     }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -142,7 +142,7 @@ export class UpdateUserDTO {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

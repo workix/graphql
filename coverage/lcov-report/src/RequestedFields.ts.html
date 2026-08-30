@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">14.28% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/21</span>
+                <span class='fraction'>3/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/9</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/18</span>
+                <span class='fraction'>3/18</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -97,36 +97,36 @@
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">81x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">81x</span>
-<span class="cline-any cline-yes">80x</span>
-<span class="cline-any cline-yes">80x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">43x</span>
-<span class="cline-any cline-yes">43x</span>
-<span class="cline-any cline-yes">43x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">43x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">64x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">43x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
@@ -135,31 +135,31 @@ import { difference, union, snakeCase } from 'lodash';
 &nbsp;
 export class RequestedFields{
 &nbsp;
-    getFields(info, options) {
-        let fields = Object.keys(graphqlFields(info))
-        fields = fields.map(f =&gt; snakeCase(f))   
+<span class="fstat-no" title="function not covered" >    getFields(</span>info, options) {
+        let fields = <span class="cstat-no" title="statement not covered" >Object.keys(graphqlFields(info))</span>
+<span class="cstat-no" title="statement not covered" >        fields = fields.map(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >snakeCase(f))   </span></span>
            
-        if(!options){ return fields}
-        fields = (options.keep) ? union(fields,options.keep) : <span class="branch-1 cbranch-no" title="branch not covered" >fields        </span>
-        return (options.exclude)
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if(!options){ <span class="cstat-no" title="statement not covered" >return fields}</span></span>
+<span class="cstat-no" title="statement not covered" >        fields = (options.keep) ? union(fields,options.keep) : fields        </span>
+<span class="cstat-no" title="statement not covered" >        return (options.exclude)</span>
             ? difference(fields, options.exclude)
             : fields;
     }
 &nbsp;
-    getFieldsWithSubfields(info, options) {        
-        const graphqlfields = graphqlFields(info, {}, { processArguments: true })
-        const keys = Object.keys(graphqlfields)        
-        const map = new Map()  
+<span class="fstat-no" title="function not covered" >    getFieldsWithSubfields(</span>info, options) {        
+        const graphqlfields = <span class="cstat-no" title="statement not covered" >graphqlFields(info, {}, { processArguments: true })</span>
+        const keys = <span class="cstat-no" title="statement not covered" >Object.keys(graphqlfields)        </span>
+        const map = <span class="cstat-no" title="statement not covered" >new Map()  </span>
         let fields;
         let transformed;
-        keys.forEach(k =&gt; {               
-            fields = Object.keys(graphqlfields[k])
-            fields = fields.map(f =&gt; snakeCase(f))  
-            transformed = (options.keep) ? union(fields,options.keep) : <span class="branch-1 cbranch-no" title="branch not covered" >fields</span>
-            transformed = (options.exclude) ? difference(fields, options.exclude) : <span class="branch-1 cbranch-no" title="branch not covered" >transformed;</span>
-            map.set(k, transformed)
+<span class="cstat-no" title="statement not covered" >        keys.forEach(<span class="fstat-no" title="function not covered" >k </span>=&gt; {               </span>
+<span class="cstat-no" title="statement not covered" >            fields = Object.keys(graphqlfields[k])</span>
+<span class="cstat-no" title="statement not covered" >            fields = fields.map(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >snakeCase(f))  </span></span>
+<span class="cstat-no" title="statement not covered" >            transformed = (options.keep) ? union(fields,options.keep) : fields</span>
+<span class="cstat-no" title="statement not covered" >            transformed = (options.exclude) ? difference(fields, options.exclude) : transformed;</span>
+<span class="cstat-no" title="statement not covered" >            map.set(k, transformed)</span>
         })      
-        return map;
+<span class="cstat-no" title="statement not covered" >        return map;</span>
     }        
 &nbsp;
 }</pre></td></tr></table></pre>
@@ -169,7 +169,7 @@ export class RequestedFields{
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T02:37:23.391Z
+                at 2026-08-30T16:05:04.282Z
             </div>
         <script src="../prettify.js"></script>
         <script>
