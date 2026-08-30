@@ -37,8 +37,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <router-link class="navbar-brand" to="/">
-            <img src="../assets/images/logo.png" alt="Workix Logo" class="logo-img" />
+          <router-link class="navbar-brand brand-logo" to="/">
+            <div class="brand-badge-icon">
+              <i class="fa fa-briefcase"></i>
+            </div>
+            <span class="brand-text">WORK<span class="brand-accent">IX</span></span>
           </router-link>
         </div>
 
@@ -132,7 +135,35 @@ function handleLogout() {
   border: none !important;
   border-radius: 0 !important;
 }
-.logo-img {
-  max-height: 40px;
+.brand-logo {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  height: 50px;
+  padding: 5px 15px !important;
+  text-decoration: none !important;
+}
+.brand-badge-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.brand-text {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff !important;
+  letter-spacing: 1.5px;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+}
+.brand-accent {
+  color: #0f172a !important;
 }
 </style>
