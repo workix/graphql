@@ -53,6 +53,14 @@ describe('Subscriptions & PubSub Unit Tests (TDD)', () => {
       expect(res.user).toHaveProperty('id', 2);
     });
 
+    it('should return authenticated user for valid JWT token without Bearer prefix', () => {
+      const token = jwt.sign({ id: 3, email: 'user3@test.com' }, secret);
+      const res = authenticateWebSocketConnection({ authorization: token });
+
+      expect(res.authenticated).toBe(true);
+      expect(res.user).toHaveProperty('id', 3);
+    });
+
     it('should return unauthenticated for invalid JWT token', () => {
       const res = authenticateWebSocketConnection({ authorization: 'Bearer invalid-token' });
       expect(res.authenticated).toBe(false);
