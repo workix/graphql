@@ -1,23 +1,15 @@
 package br.com.codecode.workix.android.network
 
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.network.okHttpClient
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-/**
- * Cliente HTTP Singleton Retrofit2 para a comunicação nativa da aplicação Android.
- */
-object ApiClient {
-    private const val DEFAULT_BASE_URL = "http://10.0.2.2:4000" // IP do host para o Emulador Android
+object ApolloClientProvider {
+    private const val GRAPHQL_ENDPOINT = "http://10.0.2.2:4000/graphql"
 
-    private var baseUrl: String = DEFAULT_BASE_URL
     private var authTokenProvider: (() -> String?)? = null
-
-    fun setBaseUrl(url: String) {
-        baseUrl = url
-    }
 
     fun setAuthTokenProvider(provider: () -> String?) {
         authTokenProvider = provider
@@ -39,15 +31,10 @@ object ApiClient {
             .build()
     }
 
-    val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+    val apolloClient: ApolloClient by lazy {
+        ApolloClient.Builder()
+            .serverUrl(GRAPHQL_ENDPOINT)
+            .okHttpClient(okHttpClient)
             .build()
-    }
-
-    fun <T> createService(serviceClass: Class<T>): T {
-        return retrofit.create(serviceClass)
     }
 }
