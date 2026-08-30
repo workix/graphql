@@ -24,9 +24,45 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/jaas-users',
+    name: 'AdminJAASUsers',
+    component: () => import('../views/AdminJAASUsersView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/jaas-roles',
+    name: 'AdminJAASRoles',
+    component: () => import('../views/AdminJAASRolesView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/jobs',
     name: 'AdminJobs',
     component: () => import('../views/AdminJobsView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/companies',
+    name: 'AdminCompanies',
+    component: () => import('../views/AdminCompaniesView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/candidates',
+    name: 'AdminCandidates',
+    component: () => import('../views/AdminCandidatesView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/testimonials',
+    name: 'AdminTestimonials',
+    component: () => import('../views/AdminTestimonialsView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/subscribers',
+    name: 'AdminSubscribers',
+    component: () => import('../views/AdminSubscribersView.vue'),
     meta: { requiresAuth: true }
   }
 ];
