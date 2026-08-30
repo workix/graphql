@@ -9,12 +9,15 @@ import { CreateMediaDTO } from '../../../dtos/MediaMutationDTO';
 
 const companiesRepository = db => {
     const requestedFields = new RequestedFields();
-    const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: ["user", "medias", 'locale', 'contact'] })
-    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: ["user", "medias", 'locale', 'contact'] })
+    const virtualFields = ["user", "medias", "locale", "contact", "email", "phone", "industry", "location", "createdAt", "updatedAt"];
+    const getFields = info => requestedFields.getFields(info, { keep: ["id", "user_id"], exclude: virtualFields })
+    const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "user_id"], exclude: virtualFields })
 
     const listRandomLogos = async (info, args) => {
         const fields = getFields(info)
-        const options: any = { attributes: fields, order: [Sequelize.fn('RAND')] }
+        const validColumns = Object.keys(Company.rawAttributes);
+        const safeAttributes = fields.filter(f => validColumns.includes(f));
+        const options: any = { attributes: safeAttributes.length > 0 ? safeAttributes : undefined, order: [Sequelize.fn('RAND')] }
         if (args.start != null && args.max != null) {
             options.offset = args.start;
             options.limit = args.max;
@@ -25,7 +28,9 @@ const companiesRepository = db => {
 
     const findAll = async (info, args) => {
         const fields = getFields(info)
-        const options: any = { attributes: fields, order: ['id'] }
+        const validColumns = Object.keys(Company.rawAttributes);
+        const safeAttributes = fields.filter(f => validColumns.includes(f));
+        const options: any = { attributes: safeAttributes.length > 0 ? safeAttributes : undefined, order: ['id'] }
         if (args.start != null && args.max != null) {
             options.offset = args.start;
             options.limit = args.max;
@@ -36,7 +41,9 @@ const companiesRepository = db => {
 
     const findById = async (info, args) => {
         const fields = getFields(info)
-        const company = await Company.findOne({ where: { id: args.id }, attributes: fields })
+        const validColumns = Object.keys(Company.rawAttributes);
+        const safeAttributes = fields.filter(f => validColumns.includes(f));
+        const company = await Company.findOne({ where: { id: args.id }, attributes: safeAttributes.length > 0 ? safeAttributes : undefined })
         return company;
     }
 
@@ -92,7 +99,12 @@ const companiesRepository = db => {
     const findAllPaginated = async (info, args) => {
 
         const fields = getFieldsWithSubfields(info).get("companies") || []
-        fields.push("user_id")
+        const validColumns = Object.keys(Company.rawAttributes);
+        const safeAttributes = fields.filter(f => validColumns.includes(f));
+        if (safeAttributes.length > 0) {
+            if (!safeAttributes.includes("id")) safeAttributes.push("id");
+            if (!safeAttributes.includes("user_id")) safeAttributes.push("user_id");
+        }
 
         const totalRows = await Company.count()
 
@@ -104,7 +116,7 @@ const companiesRepository = db => {
 
         const end = paginator.getEnd();
 
-        const options: any = { attributes: fields, order: ['id'] }
+        const options: any = { attributes: safeAttributes.length > 0 ? safeAttributes : undefined, order: ['id'] }
         options.offset = start - 1;
         options.limit = args.limit;
 

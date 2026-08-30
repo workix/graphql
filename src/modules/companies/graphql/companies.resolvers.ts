@@ -53,8 +53,18 @@ const companiesResolvers = {
       }
     },
     user: async (parent, args, ctx, info) => {
-      const users = await ctx.dataloaders.usersLoader.load({ key: parent.user_id, info })
+      const userId = parent.userId || parent.user_id;
+      const users = await ctx.dataloaders.usersLoader.load({ key: userId, info })
       return new UserDTO(users[0]);
+    },
+    email: async (parent, args, ctx, info) => {
+      if (parent.email) return parent.email;
+      const userId = parent.userId || parent.user_id;
+      if (userId) {
+        const users = await ctx.dataloaders.usersLoader.load({ key: userId, info });
+        return users && users[0] ? users[0].email : '';
+      }
+      return '';
     },
     medias: async (parent, args, ctx, info) => {
       let medias = await ctx.dataloaders.companyMediaLoader.load({ key: parent.id, info })
