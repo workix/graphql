@@ -3,18 +3,18 @@
     <div class="row align-items-center">
       <div class="col-md-2 col-sm-3 text-center">
         <div class="company-logo">
-          <img :src="job.company_logo || defaultLogo" :alt="job.company_name || 'Empresa'" />
+          <img :src="job.company?.logo || job.company_logo || defaultLogo" :alt="job.company?.name || job.company_name || 'Empresa'" />
         </div>
       </div>
       <div class="col-md-7 col-sm-6">
         <h4 class="job-title">
           <router-link :to="`/jobs/${job.id}`">{{ job.title }}</router-link>
-          <span v-if="job.is_featured" class="label label-warning margin-left">Destaque</span>
+          <span v-if="job.featured || job.is_featured" class="label label-warning margin-left">Destaque</span>
         </h4>
         <div class="job-meta">
-          <span class="company-name"><i class="fa fa-building-o"></i> {{ job.company_name || 'Empresa Parceira' }}</span>
+          <span class="company-name"><i class="fa fa-building-o"></i> {{ job.company?.name || job.company_name || 'Empresa Parceira' }}</span>
           <span class="job-location"><i class="fa fa-map-marker"></i> {{ job.city || 'São Paulo' }}, {{ job.state || 'SP' }}</span>
-          <span class="job-type label label-info">{{ job.contract_type || 'CLT' }}</span>
+          <span class="job-type label label-info">{{ job.jobType || job.contract_type || 'CLT' }}</span>
         </div>
       </div>
       <div class="col-md-3 col-sm-3 text-right">
@@ -28,14 +28,21 @@
 import defaultLogo from '../assets/images/empty.png';
 
 interface Job {
-  id: number;
+  id: string | number;
   title: string;
   company_name?: string;
   company_logo?: string;
   city?: string;
   state?: string;
   contract_type?: string;
+  jobType?: string;
+  featured?: boolean;
   is_featured?: boolean;
+  company?: {
+    id?: string | number;
+    name?: string;
+    logo?: string;
+  };
 }
 
 defineProps<{
