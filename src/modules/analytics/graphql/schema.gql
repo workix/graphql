@@ -1,0 +1,29 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    whoViewedMyProfile(userId: ID!, limit: Int, offset: Int): [ProfileView]
+    postAnalytics(postId: ID!): PostAnalytics
+}
+
+type Mutation {
+    recordProfileView(viewedId: ID!, viewerId: ID!): ProfileView
+    recordPostView(postId: ID!): PostAnalytics
+    recordPostShare(postId: ID!): PostAnalytics
+}
+
+type ProfileView {
+    id: ID
+    viewedId: ID
+    viewerId: ID
+    viewedAt: DateTime
+}
+
+type PostAnalytics {
+    id: ID
+    postId: ID
+    viewsCount: Int
+    sharesCount: Int
+    createdAt: DateTime
+    updatedAt: DateTime
+}
