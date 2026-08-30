@@ -276,12 +276,9 @@ export class CandidateLoader {
 
     static async batchSubscribers(db: any, params: any[], requestedFields: any) {
         const ids = params.map(p => p.key);
-        const info = params[0].info;
-        const fields = requestedFields.getFields(info, { keep: ['id', 'candidate_id'], exclude: [] });
 
         const subscribers = await db.JobCandidate.findAll({
-            where: { job_id: ids },
-            attributes: fields
+            where: { job_id: ids }
         });
 
         const subscribersMap = new Map();
@@ -297,20 +294,17 @@ export class CandidateLoader {
 
     static async batchSubscribersSP(db: any, params: any[], requestedFields: any) {
         const ids = params.map(p => p.key);
-        const info = params[0].info;
-        const fields = requestedFields.getFields(info, { keep: ['id', 'candidate_id'], exclude: [] });
 
         const subscribers = await db.SelectiveProcessCandidate.findAll({
-            where: { selective_process_id: ids },
-            attributes: fields
+            where: { sp_id: ids }
         });
 
         const subscribersMap = new Map();
         subscribers.forEach(sub => {
-            if (!subscribersMap.has(sub.selective_process_id)) {
-                subscribersMap.set(sub.selective_process_id, []);
+            if (!subscribersMap.has(sub.sp_id)) {
+                subscribersMap.set(sub.sp_id, []);
             }
-            subscribersMap.get(sub.selective_process_id).push(sub);
+            subscribersMap.get(sub.sp_id).push(sub);
         });
 
         return ids.map(id => subscribersMap.get(id) || []);

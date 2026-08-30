@@ -8,8 +8,16 @@
           </div>
           <div class="col-sm-6 col-xs-12 text-right">
             <template v-if="authStore.isAuthenticated">
-              <span class="user-info">Olá, {{ authStore.user?.email }}</span>
-              <button class="btn btn-sm btn-link logout-btn" @click="handleLogout">Sair</button>
+              <span class="user-info"><i class="fa fa-user-circle"></i> Olá, {{ authStore.user?.email }}</span>
+              <router-link v-if="authStore.isCompany" to="/my-jobs" class="top-nav-link">
+                <i class="fa fa-briefcase"></i> Minhas Vagas
+              </router-link>
+              <router-link v-else to="/my-applications" class="top-nav-link">
+                <i class="fa fa-paper-plane"></i> Minhas Candidaturas
+              </router-link>
+              <button class="btn btn-sm btn-link logout-btn" @click="handleLogout">
+                <i class="fa fa-sign-out"></i> Sair
+              </button>
             </template>
             <template v-else>
               <router-link to="/login" class="login-link"><i class="fa fa-lock"></i> Entrar</router-link>
@@ -39,8 +47,17 @@
             <li><router-link to="/">Home</router-link></li>
             <li><router-link to="/jobs">Vagas</router-link></li>
             <li><router-link to="/candidates">Candidatos</router-link></li>
-            <li v-if="authStore.isCompany"><router-link to="/post-job">Publicar Vaga</router-link></li>
-            <li v-if="authStore.isCandidate || !authStore.isAuthenticated"><router-link to="/post-resume">Enviar Currículo</router-link></li>
+            <template v-if="authStore.isCompany">
+              <li><router-link to="/my-jobs">Minhas Vagas</router-link></li>
+              <li><router-link to="/post-job">Publicar Vaga</router-link></li>
+            </template>
+            <template v-else-if="authStore.isAuthenticated">
+              <li><router-link to="/my-applications">Minhas Candidaturas</router-link></li>
+              <li><router-link to="/post-resume">Meu Currículo</router-link></li>
+            </template>
+            <template v-else>
+              <li><router-link to="/post-resume">Enviar Currículo</router-link></li>
+            </template>
           </ul>
         </div>
       </div>
@@ -89,6 +106,20 @@ function handleLogout() {
 }
 .top-bar a:hover {
   color: #fff;
+}
+.top-nav-link {
+  color: #38bdf8 !important;
+  font-weight: 600;
+  margin-left: 15px;
+  text-decoration: none;
+}
+.top-nav-link:hover {
+  color: #7dd3fc !important;
+  text-decoration: underline;
+}
+.user-info {
+  color: #e2e8f0;
+  font-weight: 500;
 }
 .logout-btn {
   color: #ef4444;

@@ -34,6 +34,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true, role: 'COMPANY' }
   },
   {
+    path: '/my-jobs',
+    name: 'MyJobs',
+    component: () => import('../views/MyJobsView.vue'),
+    meta: { requiresAuth: true, role: 'COMPANY' }
+  },
+  {
     path: '/candidates',
     name: 'CandidatesList',
     component: () => import('../views/CandidatesListView.vue')
@@ -47,6 +53,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/post-resume',
     name: 'PostResume',
     component: () => import('../views/PostResumeView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/my-applications',
+    name: 'MyApplications',
+    component: () => import('../views/MyApplicationsView.vue'),
     meta: { requiresAuth: true }
   },
   {
