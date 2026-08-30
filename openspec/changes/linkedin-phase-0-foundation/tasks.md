@@ -13,9 +13,9 @@
 
 ## 3. GraphQL Subscriptions (WebSocket)
 
-- [ ] 3.1 Instalar e integrar `graphql-ws` e `ws` ao servidor HTTP Express em `src/index.ts` / `src/server.ts`
-- [ ] 3.2 Criar infraestrutura de PubSub para Subscriptions e autenticação de token JWT em conexões WebSocket
-- [ ] 3.3 Criar suíte de testes unitários TDD para transportadores WebSocket e Subscriptions
+- [x] 3.1 Instalar e integrar `graphql-ws` e `ws` ao servidor HTTP Express em `src/index.ts` / `src/server.ts`
+- [x] 3.2 Criar infraestrutura de PubSub para Subscriptions e autenticação de token JWT em conexões WebSocket
+- [x] 3.3 Criar suíte de testes unitários TDD para transportadores WebSocket e Subscriptions
 
 ## 4. Consumidor Persistente de Notificações
 
