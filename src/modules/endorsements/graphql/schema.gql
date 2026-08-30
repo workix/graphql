@@ -1,0 +1,31 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    skillEndorsements(skillId: ID!): [SkillEndorsement]
+    userRecommendations(userId: ID!): [Recommendation]
+}
+
+type Mutation {
+    endorseSkill(skillId: ID!, endorserId: ID!): Boolean
+    unendorseSkill(skillId: ID!, endorserId: ID!): Boolean
+    createRecommendation(recommenderId: ID!, recipientId: ID!, content: String!): Recommendation
+    respondToRecommendation(recommendationId: ID!, recipientId: ID!, accept: Boolean!): Recommendation
+}
+
+type SkillEndorsement {
+    id: ID
+    skillId: ID
+    endorserId: ID
+    createdAt: DateTime
+}
+
+type Recommendation {
+    id: ID
+    recommenderId: ID
+    recipientId: ID
+    content: String
+    status: String
+    createdAt: DateTime
+    updatedAt: DateTime
+}

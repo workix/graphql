@@ -14,8 +14,8 @@
 ## 3. Endossos de Competências e Recomendações (`endorsements`)
 
 - [x] 3.1 Criar modelos Sequelize `SkillEndorsement`, `Recommendation` e suas migrations
-- [ ] 3.2 Criar módulo GraphQL `src/modules/endorsements` com schema, DTOs, repositório e resolvers para endossos e recomendações
-- [ ] 3.3 Criar suíte de testes unitários TDD em `tests/unit/modules/endorsements.spec.ts` com 100% de cobertura
+- [x] 3.2 Criar módulo GraphQL `src/modules/endorsements` com schema, DTOs, repositório e resolvers para endossos e recomendações
+- [x] 3.3 Criar suíte de testes unitários TDD em `tests/unit/modules/endorsements.spec.ts` com 100% de cobertura
 
 ## 4. Destaques de Perfil & Feed Algorítmico (`featured_items`)
 
