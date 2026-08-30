@@ -1,0 +1,25 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    directMessages(userId1: ID!, userId2: ID!, limit: Int, offset: Int): [DirectMessage]
+}
+
+type Mutation {
+    sendDirectMessage(senderId: ID!, recipientId: ID!, content: String!): DirectMessage
+    markDirectMessageAsRead(messageId: ID!, recipientId: ID!): DirectMessage
+}
+
+type Subscription {
+    directMessageAdded(recipientId: ID!): DirectMessage
+}
+
+type DirectMessage {
+    id: ID
+    senderId: ID
+    recipientId: ID
+    content: String
+    read: Boolean
+    createdAt: DateTime
+    updatedAt: DateTime
+}
