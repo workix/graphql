@@ -261,12 +261,9 @@ export class CompanyLoader {
 export class CandidateLoader {
     static async batchCandidates(db: any, params: any[], requestedFields: any) {
         const ids = params.map(p => p.key);
-        const info = params[0].info;
-        const fields = requestedFields.getFields(info, { keep: ['id'], exclude: [] });
 
         const candidates = await db.Candidate.findAll({
-            where: { id: ids },
-            attributes: fields
+            where: { id: ids }
         });
 
         const candidatesMap = new Map();
@@ -362,18 +359,15 @@ export class MemberLoader {
 export class ResumeLoader {
     static async batchEducations(db: any, params: any[], requestedFields: any) {
         const ids = params.map(p => p.key);
-        const info = params[0].info;
-        const fields = requestedFields.getFields(info, { keep: ['id', 'resume_id'], exclude: [] });
 
         const educations = await db.ResumeEducation.findAll({
-            where: { resume_id: ids },
-            attributes: fields
+            where: { id: ids }
         });
 
         const map = new Map();
         educations.forEach(item => {
-            if (!map.has(item.resume_id)) map.set(item.resume_id, []);
-            map.get(item.resume_id).push(item);
+            if (!map.has(item.id)) map.set(item.id, []);
+            map.get(item.id).push(item);
         });
 
         return ids.map(id => map.get(id) || []);
@@ -381,18 +375,15 @@ export class ResumeLoader {
 
     static async batchExperiences(db: any, params: any[], requestedFields: any) {
         const ids = params.map(p => p.key);
-        const info = params[0].info;
-        const fields = requestedFields.getFields(info, { keep: ['id', 'resume_id'], exclude: [] });
 
         const experiences = await db.ResumeExperience.findAll({
-            where: { resume_id: ids },
-            attributes: fields
+            where: { id: ids }
         });
 
         const map = new Map();
         experiences.forEach(item => {
-            if (!map.has(item.resume_id)) map.set(item.resume_id, []);
-            map.get(item.resume_id).push(item);
+            if (!map.has(item.id)) map.set(item.id, []);
+            map.get(item.id).push(item);
         });
 
         return ids.map(id => map.get(id) || []);
@@ -400,18 +391,15 @@ export class ResumeLoader {
 
     static async batchSkills(db: any, params: any[], requestedFields: any) {
         const ids = params.map(p => p.key);
-        const info = params[0].info;
-        const fields = requestedFields.getFields(info, { keep: ['id', 'resume_id'], exclude: [] });
 
         const skills = await db.ResumeSkill.findAll({
-            where: { resume_id: ids },
-            attributes: fields
+            where: { id: ids }
         });
 
         const map = new Map();
         skills.forEach(item => {
-            if (!map.has(item.resume_id)) map.set(item.resume_id, []);
-            map.get(item.resume_id).push(item);
+            if (!map.has(item.id)) map.set(item.id, []);
+            map.get(item.id).push(item);
         });
 
         return ids.map(id => map.get(id) || []);
@@ -419,12 +407,9 @@ export class ResumeLoader {
 
     static async batchResumes(db: any, params: any[], requestedFields: any) {
         const ids = params.map(p => p.key);
-        const info = params[0].info;
-        const fields = requestedFields.getFields(info, { keep: ['id'], exclude: [] });
 
         const resumes = await db.Resume.findAll({
-            where: { id: ids },
-            attributes: fields
+            where: { id: ids }
         });
 
         const map = new Map();

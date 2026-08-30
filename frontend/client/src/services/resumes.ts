@@ -26,6 +26,36 @@ export interface PaginatedListResume {
 }
 
 export const resumesService = {
+  async getAll(): Promise<{ data: ResumeModel[] }> {
+    const query = `
+      query AllResumes {
+        allResumes {
+          id
+          carrerLevel
+          objective
+          presence
+          content
+          createdAt
+          candidate {
+            id
+            name
+            locale {
+              city
+              state
+            }
+          }
+          skills {
+            skillName
+            months
+          }
+        }
+      }
+    `;
+
+    const data = await graphqlClient.request<{ allResumes: ResumeModel[] }>(query);
+    return { data: data.allResumes || [] };
+  },
+
   async getPaginated(page = 1, limit = 10): Promise<{ data: PaginatedListResume }> {
     const query = `
       query AllResumesPaginated($page: Int!, $limit: Int!) {

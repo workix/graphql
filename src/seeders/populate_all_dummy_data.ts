@@ -215,17 +215,17 @@ async function seedAll() {
     console.log('💼 Vagas de Emprego, Candidaturas e Processo Seletivo criados.');
 
     // 5. Currículo, Experiências, Educação, Habilidades e Recomendações
-    const resume = await db.Resume.create({
-      carrer_level: 'Sênior',
+    const resume1 = await db.Resume.create({
+      carrer_level: 'SENIOR',
       content: 'Desenvolvedor com mais de 6 anos de experiência em TypeScript, Vue.js, Kotlin e Node.js.',
-      objective: 'Atuar como Engenheiro de Software Sênior ou Arquiteto Frontend/Mobile.',
-      presence: 'Híbrido / Remoto',
+      objective: 'Engenheiro de Software Sênior & Arquiteto Frontend',
+      presence: 'REMOTE',
       candidate_id: candidate.id
     });
 
     if (db.ResumeEducation) {
       await db.ResumeEducation.create({
-        id: resume.id,
+        id: resume1.id,
         school_name: 'Universidade de São Paulo (USP)',
         qualification: 'Bacharelado em Ciência da Computação',
         start_date: '2014-02-01',
@@ -235,7 +235,7 @@ async function seedAll() {
 
     if (db.ResumeExperience) {
       await db.ResumeExperience.create({
-        id: resume.id,
+        id: resume1.id,
         employer_name: 'Tech Innovators',
         job_title: 'Desenvolvedor Full Stack Sênior',
         start_date: '2021-01-01',
@@ -244,11 +244,71 @@ async function seedAll() {
     }
 
     if (db.ResumeSkill) {
-      await db.ResumeSkill.create({ id: resume.id, skill_name: 'Kotlin', months: 48 });
+      await db.ResumeSkill.create({ id: resume1.id, skill_name: 'Kotlin', months: 48 });
     }
 
+    // Candidata 2
+    const userCand2 = await db.User.create({
+      email: 'mariana.dev@workix.com',
+      activated: true,
+      firebase_uuid: 'fb-uuid-candidate-002',
+      verified: true
+    });
+
+    const candidate2 = await db.Candidate.create({
+      name: 'Mariana Souza Lima',
+      cpf: 98765432100,
+      birth_date: '1998-08-20',
+      mobile_phone: 11988887777,
+      city: 'São Paulo',
+      state: 'SP',
+      neighborhood: 'Moema',
+      number: '450',
+      street: 'Av. Ibirapuera',
+      zip_code: 4524000,
+      user_id: userCand2.id
+    });
+
+    const resume2 = await db.Resume.create({
+      carrer_level: 'MIDDLE',
+      content: 'Desenvolvedora Frontend apaixonada por UI/UX, Vue 3, React e Design Systems.',
+      objective: 'Desenvolvedora Frontend Pleno',
+      presence: 'REMOTE',
+      candidate_id: candidate2.id
+    });
+
+    // Candidato 3
+    const userCand3 = await db.User.create({
+      email: 'lucas.mendes@workix.com',
+      activated: true,
+      firebase_uuid: 'fb-uuid-candidate-003',
+      verified: true
+    });
+
+    const candidate3 = await db.Candidate.create({
+      name: 'Lucas Mendes Silva',
+      cpf: 45678912300,
+      birth_date: '2001-03-10',
+      mobile_phone: 11977776666,
+      city: 'Campinas',
+      state: 'SP',
+      neighborhood: 'Cambuí',
+      number: '210',
+      street: 'Rua Coronel Silva',
+      zip_code: 1302400,
+      user_id: userCand3.id
+    });
+
+    const resume3 = await db.Resume.create({
+      carrer_level: 'JUNIOR',
+      content: 'Desenvolvedor Backend com sólida base em Node.js, SQL, Express e APIs REST/GraphQL.',
+      objective: 'Desenvolvedor Backend Júnior',
+      presence: 'OFFICE',
+      candidate_id: candidate3.id
+    });
+
     if (db.SkillEndorsement) {
-      await db.SkillEndorsement.create({ skill_id: resume.id, endorser_id: userComp.id });
+      await db.SkillEndorsement.create({ skill_id: resume1.id, endorser_id: userComp.id });
     }
 
     if (db.Recommendation) {
