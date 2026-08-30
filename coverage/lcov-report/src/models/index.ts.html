@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98.3% </span>
+                <span class="strong">98.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>58/59</span>
+                <span class='fraction'>66/67</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98.3% </span>
+                <span class="strong">98.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>58/59</span>
+                <span class='fraction'>66/67</span>
             </div>
         
             
@@ -143,7 +143,15 @@
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
 <a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,7 +169,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-yes">47x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -169,12 +177,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">38x</span>
-<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">46x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">46x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -182,6 +190,14 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -272,17 +288,23 @@ export const BlogTag = db.BlogTag;
 export const Candidate = db.Candidate;
 export const Comment = db.Comment;
 export const Company = db.Company;
+export const CompanyAdmin = db.CompanyAdmin;
+export const CompanyFollower = db.CompanyFollower;
 export const CompanyMedia = db.CompanyMedia;
+export const CompanyPage = db.CompanyPage;
 export const Connection = db.Connection;
 export const ConnectionRequest = db.ConnectionRequest;
 export const DirectMessage = db.DirectMessage;
+export const FeaturedItem = db.FeaturedItem;
 export const Follow = db.Follow;
 export const Form = db.Form;
 export const JAASRole = db.JAASRole;
 export const JAASRoles = db.JAASRoles;
 export const JAASUser = db.JAASUser;
 export const Job = db.Job;
+export const JobApplication = db.JobApplication;
 export const JobCandidate = db.JobCandidate;
+export const JobPosting = db.JobPosting;
 export const MediaAsset = db.MediaAsset;
 export const Member = db.Member;
 export const MemberMedia = db.MemberMedia;
@@ -290,10 +312,12 @@ export const Notification = db.Notification;
 export const Post = db.Post;
 export const PostComment = db.PostComment;
 export const PostReaction = db.PostReaction;
+export const Recommendation = db.Recommendation;
 export const Resume = db.Resume;
 export const ResumeEducation = db.ResumeEducation;
 export const ResumeExperience = db.ResumeExperience;
 export const ResumeSkill = db.ResumeSkill;
+export const SkillEndorsement = db.SkillEndorsement;
 export const SelectiveProcess = db.SelectiveProcess;
 export const SelectiveProcessCandidate = db.SelectiveProcessCandidate;
 export const Subscriber = db.Subscriber;
@@ -310,7 +334,7 @@ module.exports = db;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-30T00:57:55.722Z
+                at 2026-08-30T01:15:13.974Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
