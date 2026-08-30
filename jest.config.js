@@ -3,7 +3,7 @@ module.exports = {
   testEnvironment: 'node',
   clearMocks: true,
   moduleNameMapper: {
-    '^graphql-ws/dist/use/ws$': '<rootDir>/node_modules/graphql-ws/dist/use/ws.cjs'
+    '^graphql-ws/use/ws$': '<rootDir>/node_modules/graphql-ws/dist/use/ws.cjs'
   },
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json' }]

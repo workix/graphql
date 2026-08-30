@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import express from "express";
 import { graphqlHTTP } from "express-graphql";
-import { makeExecutableSchema } from "graphql-tools";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
 import resolvers from "./resolvers";
 import typeDefs from "./schemas";
@@ -14,6 +14,7 @@ import { DataLoaderFactory } from './dataloader';
 import { RequestedFields } from './RequestedFields';
 import { extractJWTMiddleware } from './middleware/extract_jwt'
 import RabbitmqServer from './factory/rabbitmq_server';
+import { createWebSocketSubscriptionServer } from './subscriptions';
 
 (async () => {
   
@@ -69,8 +70,10 @@ import RabbitmqServer from './factory/rabbitmq_server';
   
   const port = process.env.PORT || 4000
   
-  app.listen(port, () => {
+  const server = app.listen(port, () => {
     console.log(`Server is running at Port ${port}`)
     console.log(`http://localhost:${port}/graphql`)
   });
+
+  createWebSocketSubscriptionServer(server, schema);
 })();

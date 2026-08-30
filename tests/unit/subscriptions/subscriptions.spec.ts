@@ -3,7 +3,7 @@ import { authenticateWebSocketConnection, createWebSocketSubscriptionServer } fr
 import jwt from 'jsonwebtoken';
 import http from 'http';
 
-jest.mock('graphql-ws/dist/use/ws', () => ({
+jest.mock('graphql-ws/use/ws', () => ({
   useServer: jest.fn()
 }));
 
@@ -72,7 +72,7 @@ describe('Subscriptions & PubSub Unit Tests (TDD)', () => {
     it('should create WebSocketServer and invoke useServer with schema and hooks', () => {
       const mockServer = http.createServer();
       const mockSchema = {};
-      const { useServer } = require('graphql-ws/dist/use/ws');
+      const { useServer } = require('graphql-ws/use/ws');
 
       const wsServer = createWebSocketSubscriptionServer(mockServer, mockSchema);
       expect(wsServer).toBeDefined();

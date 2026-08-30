@@ -1,8 +1,9 @@
-import { loadFilesSync, mergeResolvers } from "graphql-tools";
+import { loadFilesSync } from "@graphql-tools/load-files";
+import { mergeResolvers } from "@graphql-tools/merge";
 import path from "path";
 
 const mergePath = loadFilesSync(path.join(__dirname, "modules"), { extensions: ['resolvers.ts', 'resolvers.js'] });
 
 const resolvers = mergeResolvers(mergePath);
 
-export default resolvers;
+export default resolvers;

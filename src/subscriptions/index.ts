@@ -1,4 +1,4 @@
-import { useServer } from 'graphql-ws/dist/use/ws';
+import { useServer } from 'graphql-ws/use/ws';
 import { WebSocketServer } from 'ws';
 import jwt from 'jsonwebtoken';
 
