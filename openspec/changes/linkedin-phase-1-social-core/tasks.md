@@ -1,6 +1,6 @@
 ## 1. Grafo de Conexões e Seguir (`connections` & `follows`)
 
-- [ ] 1.1 Criar modelos Sequelize `ConnectionRequest`, `Connection`, `Follow` e suas migrations
+- [x] 1.1 Criar modelos Sequelize `ConnectionRequest`, `Connection`, `Follow` e suas migrations
 - [ ] 1.2 Criar repositório `src/modules/connections/repository/connections.repo.ts` com cálculo de grau de distância social (1º, 2º, 3º grau)
 - [ ] 1.3 Criar módulo GraphQL `src/modules/connections` com schema e resolvers para solicitações, aceite, rejeição e follow
 - [ ] 1.4 Criar suíte de testes unitários TDD em `tests/unit/modules/connections.spec.ts` com 100% de cobertura
