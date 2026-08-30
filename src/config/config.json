@@ -1,35 +1,25 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "workix",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
+    "dialect": "sqlite",
+    "storage": "./database.sqlite",
     "migrationStorage": "sequelize",
     "seederStorage": "sequelize",
     "define": {
       "timestamps": false,
       "underscored": true
     },
-    "dialectOptions": {
-      "multipleStatements": true
-    }
+    "logging": false
   },
   "test": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "workix_test",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
+    "dialect": "sqlite",
+    "storage": "./database_test.sqlite",
     "migrationStorage": "sequelize",
     "seederStorage": "sequelize",
     "define": {
       "timestamps": false,
       "underscored": true
     },
-    "dialectOptions": {
-      "multipleStatements": true
-    }
+    "logging": false
   },
   "production": {
     "use_env_variable": "DATABASE_URL",

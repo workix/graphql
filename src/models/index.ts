@@ -7,11 +7,32 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(path.join(__dirname, '../config/config.json'))[env];
 const db: any = {};
 
+const dialect = process.env.DB_DIALECT || config.dialect || 'sqlite';
+const storage = process.env.DB_STORAGE || config.storage || './database.sqlite';
+
 let sequelize: any;
-if (config.use_env_variable) {
+if (config.use_env_variable && process.env[config.use_env_variable]) {
   sequelize = new Sequelize(process.env[config.use_env_variable] as string, config);
+} else if (dialect === 'sqlite') {
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: storage,
+    logging: config.logging ?? false,
+    define: config.define ?? { timestamps: false, underscored: true }
+  });
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  const dbName = process.env.DB_NAME || config.database || 'workix';
+  const dbUser = process.env.DB_USER || config.username || 'root';
+  const dbPass = process.env.DB_PASS || config.password || '';
+  const dbHost = process.env.DB_HOST || config.host || 'localhost';
+  const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : config.port;
+
+  sequelize = new Sequelize(dbName, dbUser, dbPass, {
+    ...config,
+    host: dbHost,
+    port: dbPort,
+    dialect: dialect
+  });
 }
 
 fs.readdirSync(__dirname)
