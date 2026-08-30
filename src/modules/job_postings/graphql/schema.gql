@@ -1,0 +1,43 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    jobPostings(companyId: ID, limit: Int, offset: Int): [JobPosting]
+    jobPosting(id: ID!): JobPosting
+    jobApplications(jobId: ID!): [JobApplication]
+}
+
+type Mutation {
+    createJobPosting(
+        companyId: ID!
+        title: String!
+        description: String!
+        location: String
+        workType: String
+        requiredSkills: [String]
+    ): JobPosting
+    applyToJob(jobId: ID!, candidateId: ID!, candidateSkills: [String], resumeId: ID): JobApplication
+}
+
+type JobPosting {
+    id: ID
+    companyId: ID
+    title: String
+    description: String
+    location: String
+    workType: String
+    requiredSkills: [String]
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type JobApplication {
+    id: ID
+    jobId: ID
+    candidateId: ID
+    resumeId: ID
+    status: String
+    matchScore: Float
+    createdAt: DateTime
+    updatedAt: DateTime
+}

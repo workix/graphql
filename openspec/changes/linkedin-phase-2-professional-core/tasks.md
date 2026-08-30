@@ -7,9 +7,9 @@
 ## 2. Vagas Estruturadas & Match de Candidatos (`job_postings`)
 
 - [x] 2.1 Criar modelos Sequelize `JobPosting`, `JobApplication` e suas migrations
-- [ ] 2.2 Criar repositório `src/modules/job_postings/repository/job_postings.repo.ts` com algoritmo de cálculo de Match Score de competências
-- [ ] 2.3 Criar módulo GraphQL `src/modules/job_postings` com schema e resolvers para publicação e candidatura rápida
-- [ ] 2.4 Criar suíte de testes unitários TDD em `tests/unit/modules/job_postings.spec.ts` com 100% de cobertura
+- [x] 2.2 Criar repositório `src/modules/job_postings/repository/job_postings.repo.ts` com algoritmo de cálculo de Match Score de competências
+- [x] 2.3 Criar módulo GraphQL `src/modules/job_postings` com schema e resolvers para publicação e candidatura rápida
+- [x] 2.4 Criar suíte de testes unitários TDD em `tests/unit/modules/job_postings.spec.ts` com 100% de cobertura
 
 ## 3. Endossos de Competências e Recomendações (`endorsements`)
 
