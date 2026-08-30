@@ -64,12 +64,12 @@ O desenvolvimento será executado de forma totalmente modular e incremental em 5
    - Levantamento de APIs e Design Spec.
    - Criação da especificação de arquitetura e do arquivo `FRONTEND_IMPLEMENTATION.md`.
 
-2. **`frontend-phase2-setup-architecture`** (Próxima etapa)
+2. **`frontend-phase2-setup-architecture`** (Concluído)
    - Setup dos diretórios `frontend/client` e `frontend/admin` com Vue 3 + Vite.
    - Configuração do Vuetify 3 no painel administrativo.
    - Configuração de Vue Router, Pinia stores, serviços HTTP/Axios e tratamento de variáveis de ambiente.
 
-3. **`frontend-phase3-client-implementation`**
+3. **`frontend-phase3-client-implementation`** (Próxima etapa)
    - Implementação das views e componentes do **Frontend do Cliente** baseado no template Jobseek.
    - Integração das chamadas de API do Cliente (Vagas, Currículos, Empresas, Inscrições, Blog).
 
