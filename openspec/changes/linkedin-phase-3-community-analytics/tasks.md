@@ -6,7 +6,7 @@
 
 ## 2. Eventos Corp / Webinars (`events`)
 
-- [ ] 2.1 Criar modelos Sequelize `Event`, `EventAttendee` e suas migrations
+- [x] 2.1 Criar modelos Sequelize `Event`, `EventAttendee` e suas migrations
 - [ ] 2.2 Criar módulo GraphQL `src/modules/events` com schema, DTOs, repositório e resolvers para gestão de eventos e participantes
 - [ ] 2.3 Criar suíte de testes unitários TDD em `tests/unit/modules/events.spec.ts` com 100% de cobertura
 
