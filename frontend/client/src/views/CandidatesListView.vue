@@ -59,13 +59,9 @@ const loading = ref(false);
 async function fetchCandidates() {
   loading.value = true;
   try {
-    const response = await resumesService.getPaginated({
-      page: currentPage.value,
-      limit: 10,
-      q: searchQuery.value
-    });
+    const response = await resumesService.getPaginated(currentPage.value, 10);
     if (response.data) {
-      candidates.value = response.data.resumes || response.data.rows || response.data || [];
+      candidates.value = response.data.resumes || [];
       totalPages.value = response.data.totalPages || 1;
     }
   } catch (err) {
