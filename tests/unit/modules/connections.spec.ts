@@ -100,17 +100,19 @@ describe('Connections Module Unit Tests (TDD)', () => {
       await expect(repo.rejectConnectionRequest(99, 2)).rejects.toThrow('Pending connection request with id 99 not found');
     });
 
-    it('should follow user and prevent following oneself', async () => {
+    it('should follow user and return existing follow if already following', async () => {
       const repo = connectionsRepository(mockCtx.orm);
       await expect(repo.followUser(1, 1)).rejects.toThrow('Cannot follow yourself');
 
       const mockFollow = { id: 1, follower_id: 1, following_id: 2 };
       (Follow.findOne as jest.Mock).mockResolvedValue(mockFollow);
-      expect(await repo.followUser(1, 2)).toEqual(mockFollow);
+      const resExisting = await repo.followUser(1, 2);
+      expect(resExisting).toEqual(mockFollow);
 
       (Follow.findOne as jest.Mock).mockResolvedValue(null);
       (Follow.create as jest.Mock).mockResolvedValue(mockFollow);
-      expect(await repo.followUser(1, 2)).toEqual(mockFollow);
+      const resNew = await repo.followUser(1, 2);
+      expect(resNew).toEqual(mockFollow);
     });
 
     it('should unfollow user', async () => {
