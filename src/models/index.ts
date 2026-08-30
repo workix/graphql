@@ -54,6 +54,7 @@ export const CompanyPage = db.CompanyPage;
 export const Connection = db.Connection;
 export const ConnectionRequest = db.ConnectionRequest;
 export const DirectMessage = db.DirectMessage;
+export const FeaturedItem = db.FeaturedItem;
 export const Follow = db.Follow;
 export const Form = db.Form;
 export const JAASRole = db.JAASRole;
