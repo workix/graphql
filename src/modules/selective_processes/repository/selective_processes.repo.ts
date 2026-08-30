@@ -80,7 +80,12 @@ const selectiveProcessesRepository = db => {
     }
 
     const subscribe = async args => {
-        await SelectiveProcessCandidate.create({ sp_id: args.input.spId, candidate_id: args.input.candidateId })
+        const spId = parseInt(args.input.spId, 10);
+        const candidateId = parseInt(args.input.candidateId, 10);
+        await SelectiveProcessCandidate.findOrCreate({
+            where: { selective_process_id: spId, candidate_id: candidateId },
+            defaults: { selective_process_id: spId, candidate_id: candidateId }
+        });
         return true;
     }
 

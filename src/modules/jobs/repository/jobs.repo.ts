@@ -113,7 +113,12 @@ const jobsRepository = db => {
     }
 
     const subscribe = async args => {
-        await JobCandidate.create({ job_id: args.input.jobId, candidate_id: args.input.candidateId })
+        const jobId = parseInt(args.input.jobId, 10);
+        const candidateId = parseInt(args.input.candidateId, 10);
+        await JobCandidate.findOrCreate({
+            where: { job_id: jobId, candidate_id: candidateId },
+            defaults: { job_id: jobId, candidate_id: candidateId }
+        });
         return true;
     }
 
