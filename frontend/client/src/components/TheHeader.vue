@@ -70,15 +70,18 @@ function handleLogout() {
 <style scoped>
 .site-header {
   position: relative !important;
-  background: #fff;
-  border-bottom: 1px solid #e2e8f0;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent;
   z-index: 100;
 }
 .top-bar {
-  background: #1e293b;
+  background: #0f172a;
   color: #94a3b8;
   padding: 8px 0;
   font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .top-bar a {
   color: #cbd5e1;
@@ -91,6 +94,12 @@ function handleLogout() {
   color: #ef4444;
   margin-left: 15px;
   text-decoration: none;
+}
+.navbar {
+  margin: 0 !important;
+  padding: 5px 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
 }
 .logo-img {
   max-height: 40px;
