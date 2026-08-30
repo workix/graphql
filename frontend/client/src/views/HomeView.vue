@@ -153,24 +153,37 @@ onMounted(() => {
 <style scoped>
 .hero-section {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #fff;
+  color: #ffffff;
   padding: 80px 0;
+  border-bottom: 1px solid #334155;
 }
 .hero-section h1 {
   font-size: 38px;
   font-weight: 700;
+  color: #ffffff !important;
   margin-bottom: 15px;
+  text-transform: none;
 }
 .hero-subtitle {
   font-size: 18px;
-  color: #cbd5e1;
+  color: #e2e8f0 !important;
   margin-bottom: 40px;
 }
 .search-form {
   background: rgba(255, 255, 255, 0.1);
   padding: 25px;
-  border-radius: 8px;
-  backdrop-filter: blur(5px);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.search-form .form-control {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1;
+  font-weight: 500;
+}
+.search-form .form-control::placeholder {
+  color: #94a3b8 !important;
 }
 .stats-section {
   background: #f8fafc;
