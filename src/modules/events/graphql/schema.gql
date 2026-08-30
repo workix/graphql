@@ -1,0 +1,33 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    event(id: ID!): Event
+    eventAttendees(eventId: ID!, limit: Int, offset: Int): [EventAttendee]
+}
+
+type Mutation {
+    createEvent(organizerId: ID!, title: String!, description: String, eventType: String, startTime: DateTime!, endTime: DateTime, locationOrUrl: String): Event
+    attendEvent(eventId: ID!, userId: ID!, status: String): EventAttendee
+}
+
+type Event {
+    id: ID
+    title: String
+    description: String
+    eventType: String
+    startTime: DateTime
+    endTime: DateTime
+    locationOrUrl: String
+    organizerId: ID
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type EventAttendee {
+    id: ID
+    eventId: ID
+    userId: ID
+    status: String
+    createdAt: DateTime
+}
