@@ -36,5 +36,5 @@
 
 ## 7. Validação Final
 
-- [ ] 7.1 Rodar suíte completa do Jest e atualizar `KNOW_ISSUES.md` caso o débito de cobertura global (ISSUE-001) mude de estado
+- [x] 7.1 Rodar suíte completa do Jest e atualizar `KNOW_ISSUES.md` caso o débito de cobertura global (ISSUE-001) mude de estado
 - [ ] 7.2 Gerar relatório final de migrações da Fase 4 e obter aprovação antes de concluir
