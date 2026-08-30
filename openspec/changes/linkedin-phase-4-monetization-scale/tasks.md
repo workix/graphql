@@ -32,7 +32,7 @@
 
 ## 6. Avaliação de Arquitetura (Apollo Federation)
 
-- [ ] 6.1 Documentar critérios de reavaliação (volume de requisições, tamanho do schema, autonomia de times) e uma recomendação preliminar em `design.md` — sem implementação de subgraphs nesta fase
+- [x] 6.1 Documentar critérios de reavaliação (volume de requisições, tamanho do schema, autonomia de times) e uma recomendação preliminar em `design.md` — sem implementação de subgraphs nesta fase (recomendação: não migrar por ora)
 
 ## 7. Validação Final
 

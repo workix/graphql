@@ -39,18 +39,33 @@
 Seguindo o padrão de `compose(authResolver, verifyTokenResolver)` (BR-002):
 
 ```ts
-const requirePlanResolver = (minPlan: string) => (resolver: any) => async (parent: any, args: any, ctx: any, info: any) => {
+const requirePlanResolver = (minPlan?: string) => (resolver: any) => async (parent: any, args: any, ctx: any, info: any) => {
   const subscription = await premiumRepository(ctx.orm).getActiveSubscription(ctx.user.id);
-  if (!subscription || !planSatisfies(subscription.plan, minPlan)) {
+  if (!subscription) {
     throw new Error('Premium plan required for this action');
   }
   return resolver(parent, args, ctx, info);
 };
 ```
 
+**Nota de implementação**: o parâmetro `minPlan` foi mantido na assinatura para compatibilidade futura, mas a verificação de tiers (`planSatisfies`) não foi implementada — o catálogo de planos (`subscription_plans`) não define uma ordem/hierarquia entre planos, apenas nome, preço e créditos de InMail. A regra de negócio real usada em produção (InMail) só exige "possuir assinatura ativa", não um tier mínimo específico. Se no futuro surgir a necessidade de diferenciar tiers (ex.: um recurso exclusivo do plano "Business" mas não do "Career"), será preciso adicionar um campo de ordenação/nível em `SubscriptionPlan` antes de implementar `planSatisfies`.
+
 ## 4. Avaliação de Arquitetura (Apollo Federation)
 
-Item de documentação: registrar em `openspec/changes/linkedin-phase-4-monetization-scale/design.md` (esta seção) os critérios de reavaliação — volume de requisições, tamanho do schema, necessidade de times independentes por domínio — sem implementação de subgraphs nesta fase.
+### Critérios de reavaliação
+
+| Critério | Situação atual | Gatilho para reavaliar |
+|---|---|---|
+| Volume de requisições | Single instance Express + `express-graphql`, sem métricas de carga em produção reportadas | Necessidade de escalar horizontalmente equipes/domínios de forma independente por saturação de um domínio específico (ex.: feed/posts) |
+| Tamanho do schema | ~30 módulos mesclados via `graphql-tools` (`mergeTypeDefs`/`mergeResolvers`) em um único schema executável | Schema se tornar difícil de revisar/testar como uma unidade, ou builds/deploys ficarem lentos por acoplamento entre domínios não relacionados |
+| Autonomia de times | Um único time (`Felipe Rodrigues Michetti`) mantém todo o backend `graphql` | Múltiplos times/squads precisando deployar domínios (ex.: `jobs`, `social`, `learning`) de forma independente, com ciclos de release próprios |
+| Complexidade operacional aceitável | Um processo Node único, um banco relacional único, RabbitMQ/Redis/Elasticsearch compartilhados | Disposição para operar um gateway + múltiplos subgraphs + service discovery, o que aumenta a complexidade operacional |
+
+### Recomendação preliminar
+
+**Não migrar para Apollo Federation nesta fase.** Nenhum dos gatilhos acima está presente: há um único time mantendo o projeto, o schema mesclado via `graphql-tools` continua gerenciável (arquivos `schema.gql`/`*.resolvers.ts` por módulo, já isolados fisicamente por diretório), e não há relato de saturação de performance que justifique dividir em subgraphs. A modularização atual (`src/modules/<nome>/{graphql,repository}`) já entrega o principal benefício organizacional que a Federation traria (isolamento por domínio) sem o custo operacional de um gateway distribuído.
+
+Revisitar esta decisão quando qualquer um dos gatilhos da tabela acima se concretizar - especialmente a entrada de mais de um time trabalhando no mesmo repositório simultaneamente.
 
 ## 5. Estratégia de Testes TDD
 - Criar suítes de testes unitários isoladas em `tests/unit/modules/` para cada módulo novo (`hashtags`, `premium`, `learning`, `social_selling`).
