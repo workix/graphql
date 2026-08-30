@@ -3,7 +3,7 @@ node_modules/
 .idea
 .env
 .rabbitmq_data
-data
+/data/
 .redis_data
 dist/
 scratch/
