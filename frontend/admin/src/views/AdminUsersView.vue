@@ -3,66 +3,99 @@
     <div class="d-flex justify-space-between align-center mb-6">
       <div>
         <h1 class="text-h4 font-weight-bold">Gestão de Usuários</h1>
-        <p class="text-subtitle-1 text-medium-emphasis">Gerencie todos os usuários do sistema, permissões e contas</p>
+        <p class="text-subtitle-1 text-medium-emphasis">Gerencie contas, credenciais e ativação de usuários via GraphQL</p>
       </div>
       <v-btn color="primary" prepend-icon="mdi-account-plus" @click="openDialog()">Novo Usuário</v-btn>
     </div>
 
-    <!-- Filter Card -->
-    <v-card class="pa-4 mb-4" variant="outlined">
-      <v-row density="compact">
-        <v-col cols="12" sm="6" md="4">
-          <v-text-field v-model="search" label="Pesquisar por nome ou e-mail" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details density="compact"></v-text-field>
-        </v-col>
-      </v-row>
-    </v-card>
+    <v-alert v-if="successMessage" type="success" variant="tonal" class="mb-4" closable @click:close="successMessage = ''">
+      {{ successMessage }}
+    </v-alert>
+
+    <v-alert v-if="errorMessage" type="error" variant="tonal" class="mb-4" closable @click:close="errorMessage = ''">
+      {{ errorMessage }}
+    </v-alert>
 
     <!-- Users Data Table -->
     <v-card variant="outlined">
       <v-data-table
         :headers="headers"
         :items="users"
-        :search="search"
         :loading="loading"
         hover
         class="elevation-0"
       >
-        <template v-slot:item.role="{ item }">
-          <v-chip :color="item.role === 'ROLE_ADMIN' ? 'error' : item.role === 'COMPANY' ? 'primary' : 'info'" size="small">
-            {{ item.role || 'CANDIDATE' }}
+        <template v-slot:item.activated="{ item }">
+          <v-chip :color="item.activated ? 'success' : 'error'" size="small">
+            {{ item.activated ? 'Ativo' : 'Inativo' }}
           </v-chip>
         </template>
 
+        <template v-slot:item.verified="{ item }">
+          <v-chip :color="item.verified ? 'info' : 'grey'" size="small">
+            {{ item.verified ? 'Verificado' : 'Pendente' }}
+          </v-chip>
+        </template>
+
+        <template v-slot:item.createdAt="{ item }">
+          <span>{{ new Date(item.createdAt || Date.now()).toLocaleDateString() }}</span>
+        </template>
+
         <template v-slot:item.actions="{ item }">
-          <v-btn icon size="small" color="info" variant="text" class="mr-1" @click="openDialog(item)">
+          <v-btn icon size="small" color="primary" variant="text" class="mr-1" @click="openDialog(item)">
             <v-icon icon="mdi-pencil"></v-icon>
           </v-btn>
-          <v-btn icon size="small" color="error" variant="text" @click="deleteUserItem(item)">
+          <v-btn icon size="small" color="error" variant="text" @click="confirmDelete(item)">
             <v-icon icon="mdi-delete"></v-icon>
           </v-btn>
         </template>
       </v-data-table>
     </v-card>
 
-    <!-- Edit User Dialog -->
-    <v-dialog v-model="dialog" max-width="500px">
-      <v-card class="pa-4">
-        <v-card-title class="font-weight-bold">{{ editedItem.id ? 'Editar Usuário' : 'Novo Usuário' }}</v-card-title>
-        <v-card-text>
-          <v-form ref="formRef">
-            <v-text-field v-model="editedItem.name" label="Nome Completo" variant="outlined" class="mb-3"></v-text-field>
-            <v-text-field v-model="editedItem.email" label="E-mail" variant="outlined" type="email" class="mb-3"></v-text-field>
-            <v-select
-              v-model="editedItem.role"
-              :items="['CANDIDATE', 'COMPANY', 'ROLE_OPERATOR', 'ROLE_ADMIN']"
-              label="Perfil / Perfil de Acesso"
-              variant="outlined"
-            ></v-select>
+    <!-- Dialog Cadastro / Edição -->
+    <v-dialog v-model="dialog" max-width="500px" persistent>
+      <v-card>
+        <v-card-title class="text-h5 pa-4 font-weight-bold">
+          {{ editedItem.id ? 'Editar Usuário' : 'Novo Usuário' }}
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="pa-4">
+          <v-form ref="formRef" v-model="formValid">
+            <v-text-field
+              v-model="editedItem.email"
+              label="E-mail *"
+              type="email"
+              :rules="[v => !!v || 'E-mail é obrigatório']"
+              required
+            ></v-text-field>
+
+            <v-checkbox
+              v-model="editedItem.activated"
+              label="Usuário Ativo no Sistema"
+              color="success"
+            ></v-checkbox>
           </v-form>
         </v-card-text>
-        <v-card-actions class="justify-end">
-          <v-btn color="grey" variant="text" @click="dialog = false">Cancelar</v-btn>
-          <v-btn color="primary" variant="elevated" @click="saveUser">Salvar</v-btn>
+        <v-divider></v-divider>
+        <v-card-actions class="pa-4">
+          <v-spacer></v-spacer>
+          <v-btn variant="text" @click="dialog = false">Cancelar</v-btn>
+          <v-btn color="primary" :loading="saving" :disabled="!formValid" @click="saveUser">Salvar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Dialog Exclusão -->
+    <v-dialog v-model="deleteDialog" max-width="500px">
+      <v-card>
+        <v-card-title class="text-h6 pa-4">Confirmar Exclusão</v-card-title>
+        <v-card-text class="pa-4">
+          Tem certeza de que deseja remover o usuário <strong>{{ selectedUser?.email }}</strong>?
+        </v-card-text>
+        <v-card-actions class="pa-4">
+          <v-spacer></v-spacer>
+          <v-btn variant="text" @click="deleteDialog = false">Cancelar</v-btn>
+          <v-btn color="error" :loading="deleting" @click="executeDelete">Confirmar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -72,69 +105,99 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import AdminLayout from '../layouts/AdminLayout.vue';
-import { adminService } from '../services/admin';
+import { adminUsersService, AdminUserModel } from '../services/users.service';
 
-const search = ref('');
 const loading = ref(false);
+const saving = ref(false);
+const deleting = ref(false);
 const dialog = ref(false);
-const users = ref<any[]>([]);
+const deleteDialog = ref(false);
+const formValid = ref(false);
+
+const users = ref<AdminUserModel[]>([]);
+const selectedUser = ref<AdminUserModel | null>(null);
+
+const successMessage = ref('');
+const errorMessage = ref('');
 
 const headers = [
   { title: 'ID', key: 'id' },
-  { title: 'Nome', key: 'name' },
   { title: 'E-mail', key: 'email' },
-  { title: 'Perfil', key: 'role' },
+  { title: 'Status', key: 'activated' },
+  { title: 'Identidade', key: 'verified' },
+  { title: 'Criado em', key: 'createdAt' },
   { title: 'Ações', key: 'actions', sortable: false, align: 'end' as const }
 ];
 
 const editedItem = ref<any>({
   id: null,
-  name: '',
   email: '',
-  role: 'CANDIDATE'
+  activated: true
 });
 
 async function fetchUsers() {
   loading.value = true;
+  errorMessage.value = '';
   try {
-    const res = await adminService.getUsers();
-    users.value = Array.isArray(res.data) ? res.data : res.data.users || res.data.rows || [];
-  } catch (err) {
+    const res = await adminUsersService.getPaginated(1, 20);
+    users.value = res.data.users || [];
+  } catch (err: any) {
     console.error('Erro ao carregar usuários:', err);
+    errorMessage.value = err.message || 'Erro ao carregar usuários.';
   } finally {
     loading.value = false;
   }
 }
 
-function openDialog(item?: any) {
+function openDialog(item?: AdminUserModel) {
   if (item) {
-    editedItem.value = { ...item };
+    editedItem.value = {
+      id: item.id,
+      email: item.email,
+      activated: Boolean(item.activated)
+    };
   } else {
-    editedItem.value = { id: null, name: '', email: '', role: 'CANDIDATE' };
+    editedItem.value = { id: null, email: '', activated: true };
   }
   dialog.value = true;
 }
 
 async function saveUser() {
+  saving.value = true;
   try {
     if (editedItem.value.id) {
-      await adminService.updateUser(editedItem.value.id, editedItem.value);
+      await adminUsersService.update(editedItem.value.id, editedItem.value);
+      successMessage.value = 'Usuário atualizado com sucesso pelo GraphQL!';
+    } else {
+      await adminUsersService.create(editedItem.value);
+      successMessage.value = 'Novo usuário criado com sucesso pelo GraphQL!';
     }
     dialog.value = false;
-    fetchUsers();
-  } catch (err) {
-    console.error('Erro ao salvar usuário:', err);
+    await fetchUsers();
+  } catch (err: any) {
+    errorMessage.value = err.message || 'Erro ao salvar usuário.';
+  } finally {
+    saving.value = false;
   }
 }
 
-async function deleteUserItem(item: any) {
-  if (confirm(`Tem certeza que deseja excluir o usuário ${item.email}?`)) {
-    try {
-      await adminService.deleteUser(item.id);
-      fetchUsers();
-    } catch (err) {
-      console.error('Erro ao excluir usuário:', err);
-    }
+function confirmDelete(item: AdminUserModel) {
+  selectedUser.value = item;
+  deleteDialog.value = true;
+}
+
+async function executeDelete() {
+  if (!selectedUser.value?.id) return;
+  deleting.value = true;
+  try {
+    await adminUsersService.delete(selectedUser.value.id);
+    successMessage.value = 'Usuário excluído com sucesso!';
+    deleteDialog.value = false;
+    await fetchUsers();
+  } catch (err: any) {
+    errorMessage.value = err.message || 'Erro ao excluir usuário.';
+  } finally {
+    deleting.value = false;
   }
 }
 
@@ -142,6 +205,3 @@ onMounted(() => {
   fetchUsers();
 });
 </script>
-
-<style scoped>
-</style>
