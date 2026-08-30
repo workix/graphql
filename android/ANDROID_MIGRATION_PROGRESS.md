@@ -72,10 +72,10 @@ A tabela abaixo relaciona as 12 telas do Frontend Cliente (`frontend/client/src/
   - Configuração do cliente HTTP Retrofit2 + OkHttp em Kotlin com `AuthInterceptor` (JWT Bearer Token).
   - Estruturação das interfaces de serviço (`AuthApiService`, `JobsApiService`, `ResumesApiService`, `BlogsApiService`) e encapsulamento de estado de rede via `NetworkResult`.
 
-- [ ] **Fase 3: Autenticação, Sessão e Navegação Principal**
-  - Implementação de `LoginActivity` e `RegisterActivity` em Kotlin.
-  - Gerenciamento seguro de JWT Tokens (`EncryptedSharedPreferences` / DataStore).
-  - Estrutura de navegação principal (`BottomNavigationView` / `Navigation Component`).
+- [x] **Fase 3: Autenticação, Sessão e Navegação Principal**
+  - Gerenciador de sessão `SessionManager` e ViewModel `AuthViewModel` em Kotlin com Coroutines.
+  - Implementação das telas nativas `LoginActivity` e `RegisterActivity`.
+  - Host de navegação principal `MainActivity` com `BottomNavigationView` e os 4 fragmentos base (`HomeFragment`, `JobsListFragment`, `CandidatesListFragment`, `BlogListFragment`).
 
 - [ ] **Fase 4: Implementação Nativa das Telas e Fluxos de Negócio**
   - Módulos de Vagas (`JobsListFragment`, `JobDetailActivity`, `PostJobActivity`).
@@ -91,15 +91,15 @@ A tabela abaixo relaciona as 12 telas do Frontend Cliente (`frontend/client/src/
 
 ## 4. Checklist de Progresso das Telas (12 Telas)
 
-* [ ] 01. `LoginView` -> `LoginActivity`
-* [ ] 02. `RegisterView` -> `RegisterActivity`
-* [ ] 03. `HomeView` -> `HomeFragment`
-* [ ] 04. `JobsListView` -> `JobsListFragment`
+* [x] 01. `LoginView` -> `LoginActivity`
+* [x] 02. `RegisterView` -> `RegisterActivity`
+* [x] 03. `HomeView` -> `HomeFragment`
+* [x] 04. `JobsListView` -> `JobsListFragment`
 * [ ] 05. `JobDetailView` -> `JobDetailActivity`
 * [ ] 06. `PostJobView` -> `PostJobActivity`
-* [ ] 07. `CandidatesListView` -> `CandidatesListFragment`
+* [x] 07. `CandidatesListView` -> `CandidatesListFragment`
 * [ ] 08. `CandidateDetailView` -> `CandidateDetailActivity`
 * [ ] 09. `PostResumeView` -> `PostResumeActivity`
 * [ ] 10. `CompanyDetailView` -> `CompanyDetailActivity`
-* [ ] 11. `BlogListView` -> `BlogListFragment`
+* [x] 11. `BlogListView` -> `BlogListFragment`
 * [ ] 12. `BlogPostView` -> `BlogPostActivity`
