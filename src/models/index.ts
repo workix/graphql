@@ -70,6 +70,7 @@ export const SelectiveProcessCandidate = db.SelectiveProcessCandidate;
 export const Subscriber = db.Subscriber;
 export const Testimonial = db.Testimonial;
 export const User = db.User;
+export const UserProfile = db.UserProfile;
 
 export default db;
 module.exports = db;
