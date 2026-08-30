@@ -47,8 +47,8 @@ const loading = ref(false);
 async function fetchBlogs() {
   loading.value = true;
   try {
-    const response = await blogsService.getPaginated({ page: 1, limit: 10 });
-    posts.value = response.data.blogs || response.data.rows || response.data || [];
+    const response = await blogsService.getPaginated(1, 10);
+    posts.value = response.data.blogs || [];
   } catch (err) {
     console.error('Erro ao buscar blog posts:', err);
   } finally {
