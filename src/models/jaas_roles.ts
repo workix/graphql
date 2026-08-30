@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: false,
       references: {
-        model: 'JAASUser',
+        model: 'jaas_user',
         key: 'id'
       }
     },
@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'JAASRole',
+        model: 'jaas_role',
         key: 'name'
       }
     }
