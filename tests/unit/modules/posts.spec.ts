@@ -1,5 +1,6 @@
 import postsRepository from '../../../src/modules/posts/repository/posts.repo';
 import postsResolvers from '../../../src/modules/posts/graphql/posts.resolvers';
+import hashtagsRepository from '../../../src/modules/hashtags/repository/hashtags.repo';
 import PostDTO from '../../../src/dtos/PostDTO';
 import PostReactionDTO from '../../../src/dtos/PostReactionDTO';
 import PostCommentDTO from '../../../src/dtos/PostCommentDTO';
@@ -24,8 +25,11 @@ jest.mock('../../../src/models', () => ({
   }
 }));
 
+jest.mock('../../../src/modules/hashtags/repository/hashtags.repo', () => jest.fn());
+
 describe('Posts Module Unit Tests (TDD)', () => {
   let mockCtx: any;
+  let mockProcessPostContent: jest.Mock;
 
   beforeEach(() => {
     mockCtx = {
@@ -33,6 +37,8 @@ describe('Posts Module Unit Tests (TDD)', () => {
         Sequelize: { Op: { or: Symbol('or') } }
       }
     };
+    mockProcessPostContent = jest.fn().mockResolvedValue({ tags: [], mentions: [] });
+    (hashtagsRepository as unknown as jest.Mock).mockReturnValue({ processPostContent: mockProcessPostContent });
   });
 
   describe('postsRepository', () => {
@@ -140,12 +146,25 @@ describe('Posts Module Unit Tests (TDD)', () => {
 
       const createdPost = await m.createPost(null, { authorId: 10, content: 'Test' }, mockCtx, {});
       expect(createdPost).toBeInstanceOf(PostDTO);
+      expect(mockProcessPostContent).toHaveBeenCalledWith(mockPost.id, 10, 'Test', undefined);
 
       const reacted = await m.reactToPost(null, { postId: 1, userId: 10, type: 'LIKE' }, mockCtx, {});
       expect(reacted).toBeInstanceOf(PostReactionDTO);
 
       const commented = await m.commentOnPost(null, { postId: 1, authorId: 10, content: 'Comment' }, mockCtx, {});
       expect(commented).toBeInstanceOf(PostCommentDTO);
+    });
+
+    it('should forward content, mentionedUserIds and mqserver to hashtagsRepository on createPost', async () => {
+      const mockPost = { id: 5, author_id: 10, content: 'Loving #GraphQL @mention' };
+      (Post.create as jest.Mock).mockResolvedValue(mockPost);
+      mockCtx.mqserver = { publishInQueue: jest.fn() };
+
+      const m = postsResolvers.Mutation;
+      await m.createPost(null, { authorId: 10, content: 'Loving #GraphQL @mention', mentionedUserIds: [7] }, mockCtx, {});
+
+      expect(hashtagsRepository).toHaveBeenCalledWith(mockCtx.orm, mockCtx.mqserver);
+      expect(mockProcessPostContent).toHaveBeenCalledWith(5, 10, 'Loving #GraphQL @mention', [7]);
     });
   });
 

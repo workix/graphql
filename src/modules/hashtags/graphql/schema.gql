@@ -1,0 +1,13 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    postsByHashtag(tag: String!, limit: Int, offset: Int): [Post]
+    postHashtags(postId: ID!): [Hashtag]
+}
+
+type Hashtag {
+    id: ID
+    tag: String
+    createdAt: DateTime
+}

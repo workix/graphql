@@ -8,7 +8,7 @@ type Query {
 }
 
 type Mutation {
-    createPost(authorId: ID!, content: String!, mediaIds: [ID]): Post
+    createPost(authorId: ID!, content: String!, mediaIds: [ID], mentionedUserIds: [ID]): Post
     reactToPost(postId: ID!, userId: ID!, type: String!): PostReaction
     commentOnPost(postId: ID!, authorId: ID!, content: String!): PostComment
 }

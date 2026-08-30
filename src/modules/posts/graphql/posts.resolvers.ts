@@ -1,4 +1,5 @@
 import postsRepository from '../repository/posts.repo';
+import hashtagsRepository from '../../hashtags/repository/hashtags.repo';
 import PostDTO from '../../../dtos/PostDTO';
 import PostReactionDTO from '../../../dtos/PostReactionDTO';
 import PostCommentDTO from '../../../dtos/PostCommentDTO';
@@ -21,6 +22,12 @@ const postsResolvers = {
   Mutation: {
     createPost: async (parent: any, args: any, ctx: any, info: any) => {
       const post = await postsRepository(ctx.orm).createPost(args.authorId, args.content, args.mediaIds);
+      await hashtagsRepository(ctx.orm, ctx.mqserver).processPostContent(
+        post.id,
+        args.authorId,
+        args.content,
+        args.mentionedUserIds
+      );
       return new PostDTO(post);
     },
     reactToPost: async (parent: any, args: any, ctx: any, info: any) => {

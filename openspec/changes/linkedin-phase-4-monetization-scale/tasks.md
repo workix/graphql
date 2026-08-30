@@ -1,8 +1,8 @@
 ## 1. Hashtags e Menções (`hashtags`) — débito herdado da Fase 3
 
 - [x] 1.1 Criar modelos Sequelize `Hashtag`, `PostHashtag`, `Mention` e suas migrations
-- [ ] 1.2 Criar módulo GraphQL `src/modules/hashtags` com schema, DTOs, repositório e resolvers; integrar parser de `#hashtag`/`@menção` na mutation `createPost` existente e notificar usuário mencionado via RabbitMQ
-- [ ] 1.3 Criar suíte de testes unitários TDD em `tests/unit/modules/hashtags.spec.ts` com 100% de cobertura
+- [x] 1.2 Criar módulo GraphQL `src/modules/hashtags` com schema, DTOs, repositório e resolvers; integrar parser de `#hashtag` (regex) e `mentionedUserIds` explícito na mutation `createPost` existente, notificando usuário mencionado via RabbitMQ (`ctx.mqserver`)
+- [x] 1.3 Criar suíte de testes unitários TDD em `tests/unit/modules/hashtags.spec.ts` com 100% de cobertura, estendendo `tests/unit/modules/posts.spec.ts` para cobrir a integração
 
 ## 2. Premium / Planos e InMail (`premium`)
 
