@@ -58,7 +58,6 @@ export const jobsService = {
               id
               name
               description
-              logo
             }
           }
           totalPages
@@ -96,7 +95,6 @@ export const jobsService = {
             id
             name
             description
-            logo
           }
         }
       }
@@ -125,7 +123,7 @@ export const jobsService = {
           company {
             id
             name
-            logo
+            description
           }
         }
       }

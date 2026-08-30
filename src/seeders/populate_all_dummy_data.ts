@@ -127,8 +127,8 @@ async function seedAll() {
       description: 'Buscamos desenvolvedor Frontend experiente em Vue.js 3, Pinia e APIs GraphQL/REST.',
       requirement: 'Experiência prévia em Vue.js, TypeScript e consumo de GraphQL.',
       benefits: 'Vale Refeição, Vale Transporte, Plano de Saúde, Seguro de Vida.',
-      job_category: 'Desenvolvimento Web',
-      job_type: 'CLT',
+      job_category: 'MANAGEMENT',
+      job_type: 'FULLTIME',
       min_payment: 8500.00,
       max_payment: 11000.00,
       activated: true,
@@ -141,8 +141,8 @@ async function seedAll() {
       description: 'Vaga para desenvolvimento mobile nativo com Kotlin, Retrofit, ViewModel e MVVM.',
       requirement: 'Domínio de Kotlin nativo, Coroutines e consumo de APIs REST.',
       benefits: 'Horário Flexível, Home Office, Gympass, Plano de Saúde.',
-      job_category: 'Desenvolvimento Mobile',
-      job_type: 'PJ',
+      job_category: 'OPERATOR',
+      job_type: 'FULLTIME',
       min_payment: 10000.00,
       max_payment: 14000.00,
       activated: true,
@@ -155,12 +155,40 @@ async function seedAll() {
       description: 'Atuação na modelagem de microsserviços, cache Redis e mensageria RabbitMQ.',
       requirement: 'Experiência com Node.js, Sequelize, TypeScript e GraphQL.',
       benefits: 'PLR, Auxílio Creche, Plano Odontológico, Plano de Saúde.',
-      job_category: 'Backend',
-      job_type: 'CLT',
+      job_category: 'MANAGEMENT',
+      job_type: 'FULLTIME',
       min_payment: 12000.00,
       max_payment: 16000.00,
       activated: true,
-      featured: false,
+      featured: true,
+      company_id: company.id
+    });
+
+    const job4 = await db.Job.create({
+      title: 'Tech Lead / Arquiteto de Software Fullstack',
+      description: 'Responsável técnico por guiar times de engenharia, arquitetar soluções escaláveis e boas práticas.',
+      requirement: 'Experiência prévia como Lead Engineer ou Arquiteto em sistemas distribuídos.',
+      benefits: 'Salário Competitivo, Stock Options, Plano de Saúde Internacional.',
+      job_category: 'MANAGEMENT',
+      job_type: 'FULLTIME',
+      min_payment: 18000.00,
+      max_payment: 25000.00,
+      activated: true,
+      featured: true,
+      company_id: company.id
+    });
+
+    const job5 = await db.Job.create({
+      title: 'Product Designer (UI/UX) - Mobile & Web',
+      description: 'Criação de fluxos de experiência do usuário, wireframes de alta fidelidade e testes de usabilidade.',
+      requirement: 'Figma, Design Systems, Protótipos interativos e pesquisa com usuários.',
+      benefits: 'Horário Flexível, Vale Alimentação, TotalPass.',
+      job_category: 'OPERATOR',
+      job_type: 'FULLTIME',
+      min_payment: 8000.00,
+      max_payment: 12000.00,
+      activated: true,
+      featured: true,
       company_id: company.id
     });
 
