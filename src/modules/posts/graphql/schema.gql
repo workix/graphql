@@ -1,0 +1,39 @@
+scalar Date
+scalar DateTime
+
+type Query {
+    socialFeed(userId: ID!, limit: Int, offset: Int): [Post]
+    postReactions(postId: ID!): [PostReaction]
+    postComments(postId: ID!): [PostComment]
+}
+
+type Mutation {
+    createPost(authorId: ID!, content: String!, mediaIds: [ID]): Post
+    reactToPost(postId: ID!, userId: ID!, type: String!): PostReaction
+    commentOnPost(postId: ID!, authorId: ID!, content: String!): PostComment
+}
+
+type Post {
+    id: ID
+    authorId: ID
+    content: String
+    mediaIds: [ID]
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type PostReaction {
+    id: ID
+    postId: ID
+    userId: ID
+    type: String
+    createdAt: DateTime
+}
+
+type PostComment {
+    id: ID
+    postId: ID
+    authorId: ID
+    content: String
+    createdAt: DateTime
+}

@@ -15,8 +15,8 @@
 ## 3. Posts, Feed Social, Reações Tipadas e Comentários (`posts`)
 
 - [x] 3.1 Criar modelos Sequelize `Post`, `PostReaction`, `PostComment` e suas migrations
-- [ ] 3.2 Criar módulo GraphQL `src/modules/posts` com DTOs, repositório e resolvers para criação de posts com mídias, feed e reações
-- [ ] 3.3 Criar suíte de testes unitários TDD em `tests/unit/modules/posts.spec.ts` com 100% de cobertura
+- [x] 3.2 Criar módulo GraphQL `src/modules/posts` com DTOs, repositório e resolvers para criação de posts com mídias, feed e reações
+- [x] 3.3 Criar suíte de testes unitários TDD em `tests/unit/modules/posts.spec.ts` com 100% de cobertura
 
 ## 4. Mensageria Direta 1:1 (`direct_messages`)
 
