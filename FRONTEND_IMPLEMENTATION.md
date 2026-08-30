@@ -73,11 +73,11 @@ O desenvolvimento será executado de forma totalmente modular e incremental em 5
    - Implementação das views e componentes do **Frontend do Cliente** baseado no template Jobseek.
    - Integração das chamadas de API do Cliente (Vagas, Currículos, Empresas, Inscrições, Blog).
 
-4. **`frontend-phase4-admin-implementation`** (Próxima etapa)
+4. **`frontend-phase4-admin-implementation`** (Concluído)
    - Implementação das views e componentes do **Frontend Administrativo** utilizando Vuetify 3.
    - Integração das chamadas de API Administrativas (Usuários, JAAS, Vagas, Moderação, Estatísticas).
 
-5. **`frontend-phase5-audit-docs-build`**
+5. **`frontend-phase5-audit-docs-build`** (Próxima etapa)
    - Tratamento final de estados (Loading, Sucesso, Erro, Vazio) e formulários com validação.
    - Auditoria de cobertura das rotas e regras de negócio.
    - Build final de produção para ambos os frontends.
