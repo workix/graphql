@@ -40,8 +40,17 @@ module.exports = function(sequelize, DataTypes) {
     firebase_uuid: {
       type: DataTypes.STRING(255),
       allowNull: false
-    }    
-  }  
+    },
+    verified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    verification_method: {
+      type: DataTypes.ENUM('GOV_ID', 'WORK_EMAIL', 'PHONE'),
+      allowNull: true
+    }
+  }
   , {
     tableName: 'users',    
     hooks: {

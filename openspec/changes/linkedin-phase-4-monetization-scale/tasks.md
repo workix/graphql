@@ -25,8 +25,8 @@
 
 ## 5. Verificação de Identidade
 
-- [ ] 5.1 **Aprovação obrigatória**: apresentar ao usuário o relatório da migration de ALTER TABLE em `users` (colunas `verified`, `verification_method`) antes de criar o arquivo de migration
-- [ ] 5.2 Criar migration de alteração da tabela `users` (após aprovação) e atualizar o model `User`/`UserDTO`
+- [x] 5.1 **Aprovação obrigatória**: apresentar ao usuário o relatório da migration de ALTER TABLE em `users` (colunas `verified`, `verification_method`) antes de criar o arquivo de migration — aprovado em conversa
+- [x] 5.2 Criar migration de alteração da tabela `users` (após aprovação) e atualizar o model `User`/`UserDTO`
 - [ ] 5.3 Adicionar mutation `verifyIdentity` no módulo `src/modules/users` reaproveitando a infraestrutura JWT existente (BR-001)
 - [ ] 5.4 Criar/estender suíte de testes unitários TDD cobrindo o fluxo de verificação com 100% de cobertura
 

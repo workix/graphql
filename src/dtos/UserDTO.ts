@@ -9,5 +9,7 @@ export default class UserDTO {
         this.email = user.email
         this.firebaseMessageToken = user.firebase_message_token
         this.firebaseUUID = user.firebase_uuid
+        this.verified = user.verified
+        this.verificationMethod = user.verification_method
     }
 }
