@@ -90,6 +90,17 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/profile/edit',
+    name: 'ProfileEdit',
+    component: () => import('../views/ProfileEditView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/in/:id',
+    name: 'PublicProfile',
+    component: () => import('../views/PublicProfileView.vue')
+  },
+  {
     path: '/hashtag/:tag',
     name: 'HashtagFeed',
     component: () => import('../views/HashtagFeedView.vue')
