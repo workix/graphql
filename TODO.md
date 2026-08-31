@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Endossos e Recomendações)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após conclusão das Fases 1, 2 e 3)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -9,17 +9,17 @@
 
 ## 1. Sumário Executivo e Diagnóstico de Cobertura
 
-O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, LMS/Cursos, Grupos, Eventos, Assinaturas Premium, Analytics e SSI).
+O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, LMS/Cursos, Grupos, Eventos e Assinaturas Premium).
 
-As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, da **Fase 1 (Social Core & Feed)**, da **Fase 2 (Rede, Conexões, Mensageria & Notificações)** e das partes 1 e 2 da **Fase 3 (Perfis Ricos, Destaques, Endossos de Competências e Recomendações)**.
+As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, da **Fase 1 (Social Core & Feed)**, da **Fase 2 (Rede, Conexões, Mensageria & Notificações)** e agora de toda a **Fase 3 (Perfil Profissional Avançado, Endorsements, Recomendações, SSI & Analytics)**.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     ██████████████████░░░░░░░░░░░░░░  56% (18/32 Módulos)
+Frontend Cliente (Web Vue 3)     ████████████████████░░░░░░░░░░░░  63% (20/32 Módulos)
 Frontend Admin (Web Vuetify 3)   █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
-Android App (Kotlin Nativo)      █████████████████░░░░░░░░░░░░░░░  53% (17/32 Módulos)
+Android App (Kotlin Nativo)      ███████████████████░░░░░░░░░░░░░  59% (19/32 Módulos)
 ```
 
 ---
@@ -59,8 +59,8 @@ Legenda de Status:
 | **24** | `events` | `event`, `eventAttendees`, `createEvent`, `attendEvent` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **25** | `learning` | `course`, `courseLessons`, `courseCompletion`, `enrollInCourse`, `completeCourse` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **26** | `premium` | `subscriptionPlans`, `mySubscription`, `subscribeToPlan`, `createSubscriptionPlan` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
-| **27** | `analytics` | `whoViewedMyProfile`, `postAnalytics`, `recordProfileView`, `recordPostView` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
-| **28** | `social_selling`| `mySocialSellingIndex`, `recalculateSocialSellingIndex` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
+| **27** | `analytics` | `whoViewedMyProfile`, `postAnalytics`, `recordProfileView`, `recordPostView` | ✅ Implementado (`ProfileAnalyticsView.vue`, `analyticsStore`) | 🟡 Parcial (Métricas no Dashboard) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
+| **28** | `social_selling`| `mySocialSellingIndex`, `recalculateSocialSellingIndex` | ✅ Implementado (`SocialSellingView.vue`, `analyticsStore`) | 🟡 Parcial (Métricas no Dashboard) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
 | **29** | `hashtags` | `postsByHashtag`, `postHashtags` | ✅ Implementado (`HashtagFeedView`, `hashtags.service`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (Renderização de tags) |
 | **30** | `featured` | `userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem` | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | — (Portfólio de Usuário) | ✅ Implementado (`ProfilesApiService`) |
 | **31** | `job_postings` | `jobPostings`, `jobApplications`, `matchScore`, `applyToJob` | 🟡 Parcial (Usa modelo `jobs` legado) | 🟡 Parcial (Usa modelo `jobs` legado) | 🟡 Parcial (Usa modelo `jobs` legado) |
@@ -97,9 +97,10 @@ Legenda de Status:
 - [x] **Criar Componentes `SkillEndorsementsSection.vue` & `RecommendationsSection.vue`**
 - [x] **Criar Store `endorsementsStore.ts` & Service `src/services/endorsements.service.ts`**
 
-#### 🔴 Módulo Social Selling Index (SSI) & Analytics
-- [ ] **Criar View `SocialSellingView.vue` (`/analytics/ssi`)**: Painel com gráficos do índice de Social Selling (`mySocialSellingIndex`, `recalculateSocialSellingIndex`).
-- [ ] **Criar View `ProfileAnalyticsView.vue` (`/analytics/views`)**: Dashboard de "Quem visualizou seu perfil" (`whoViewedMyProfile`) e métricas de engajamento de posts (`postAnalytics`).
+#### 🟢 Módulo Social Selling Index (SSI) & Analytics (Concluído)
+- [x] **Criar View `SocialSellingView.vue` (`/analytics/ssi`)**: Painel completo do SSI com scores e dicas para os 4 pilares.
+- [x] **Criar View `ProfileAnalyticsView.vue` (`/analytics/views`)**: Painel de visitantes do perfil e métricas de alcance.
+- [x] **Criar Store `analyticsStore.ts` & Service `src/services/analytics.service.ts`**.
 
 #### 🔴 Módulo Comunidades, Eventos & Educação (LMS)
 - [ ] **Criar View `GroupsListView.vue` (`/groups`) & `GroupDetailView.vue` (`/groups/:id`)**:
@@ -185,6 +186,10 @@ Legenda de Status:
 - [x] **Criar `EditProfileActivity.kt`**: Edição nativa de headline, sobre e ativação do selo Open To Work.
 - [x] **Criar `ProfilesApiService.kt` & `EndorsementsApiService.kt`**: Camada de rede em Kotlin.
 
+#### 🟢 Módulo Analytics & Social Selling Mobile (Concluído)
+- [x] **Criar `ProfileAnalyticsActivity.kt`**: Dashboard nativo de SSI (4 pilares) e lista de visitantes do perfil.
+- [x] **Criar `AnalyticsApiService.kt`**: Camada de rede em Kotlin para queries e recálculo do SSI.
+
 #### 🔴 Módulo LMS, Comunidades & Monetização
 - [ ] **Criar `CoursesFragment.kt` & `LessonPlayerActivity.kt`**: Catálogo de cursos e player.
 - [ ] **Criar `GroupsFragment.kt` & `GroupDetailActivity.kt`**: Listagem e interação em grupos.
@@ -211,14 +216,14 @@ graph TD
 ### 🔹 Fase 2: Conexões, Rede & Mensageria em Tempo Real (✅ CONCLUÍDA)
 - **Entregas**: `MyNetworkView.vue`, `MessagingView.vue`, `NotificationsView.vue`, `ChatListFragment.kt`, `DirectChatActivity.kt`, `NotificationsFragment.kt`.
 
-### 🔹 Fase 3: Perfil Profissional Avançado, Endorsements & Analytics (EM ANDAMENTO)
+### 🔹 Fase 3: Perfil Profissional Avançado, Endorsements & Analytics (✅ CONCLUÍDA)
 - **Entregas**:
   - [x] **Parte 1 (Perfil & Destaques)**: `ProfileEditView.vue`, `PublicProfileView.vue`, `profilesStore.ts`, `profiles.service.ts`, `ProfilesApiService.kt`, `ProfileActivity.kt`, `EditProfileActivity.kt`.
   - [x] **Parte 2 (Endorsements & Recomendações)**: `SkillEndorsementsSection.vue`, `RecommendationsSection.vue`, `endorsementsStore.ts`, `endorsements.service.ts`, `EndorsementsApiService.kt`.
-  - [ ] **Parte 3 (Social Selling Index & Analytics)**: `SocialSellingView.vue` (SSI) e `ProfileAnalyticsView.vue`.
+  - [x] **Parte 3 (Social Selling Index & Analytics)**: `SocialSellingView.vue`, `ProfileAnalyticsView.vue`, `analyticsStore.ts`, `analytics.service.ts`, `AnalyticsApiService.kt`, `ProfileAnalyticsActivity.kt`.
 
-### 🔹 Fase 4: Comunidades, Eventos & Educação (LMS)
-- **Objetivo**: Engajar usuários em grupos de interesse, eventos e cursos de capacitação.
+### 🔹 Fase 4: Comunidades, Eventos & Educação (LMS) (PRÓXIMA FASE)
+- **Objetivo**: Engajar usuários em grupos de interesse, eventos presenciais/virtuais e cursos de capacitação com videoaulas.
 - **Entregas**:
   - Frontend Cliente: `GroupsListView.vue`, `EventsListView.vue`, `CoursesCatalogView.vue`, `LessonPlayerView.vue`.
   - Frontend Admin: `AdminCoursesView.vue`, `AdminGroupsView.vue`, `AdminEventsView.vue`.
