@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Mídia Segura e Processos Seletivos Mobile/Admin)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Gestão Admin para Autores, Equipe, Grupos e Eventos)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -9,16 +9,16 @@
 
 ## 1. Sumário Executivo e Diagnóstico de Cobertura
 
-O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, Eventos & RSVP, LMS/Cursos, Monetização Premium, Ouvidoria/Suporte Institucional, Equipe, Processos Seletivos e Mídia Segura).
+O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, Eventos & RSVP, LMS/Cursos, Monetização Premium, Ouvidoria/Suporte Institucional, Equipe, Autores, Processos Seletivos e Mídia Segura).
 
-Todas as **5 Fases Estratégicas** foram completamente desenvolvidas, testadas e validadas com sucesso nas três frentes de interface (**Frontend Cliente**, **Frontend Admin** e **Android App**), elevando o ecossistema a **88% no Cliente Web**, **56% no Admin** e **84% no Android**, cobrindo 100% das jornadas críticas de usuário e governança.
+Todas as **5 Fases Estratégicas** e expansões administrativas foram completamente desenvolvidas, testadas e validadas com sucesso nas três frentes de interface (**Frontend Cliente**, **Frontend Admin** e **Android App**), elevando o ecossistema a **88% no Cliente Web**, **69% no Admin** e **84% no Android**, cobrindo 100% das jornadas críticas de usuário e governança.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
 Frontend Cliente (Web Vue 3)     ████████████████████████████░░░░  88% (28/32 Módulos)
-Frontend Admin (Web Vuetify 3)   ██████████████████░░░░░░░░░░░░░░  56% (18/32 Módulos)
+Frontend Admin (Web Vuetify 3)   ██████████████████████░░░░░░░░░░  69% (22/32 Módulos)
 Android App (Kotlin Nativo)      ███████████████████████████░░░░░  84% (27/32 Módulos)
 ```
 
@@ -41,13 +41,13 @@ Legenda de Status:
 | **06** | `companies` | `allCompanies`, `getCompanyById`, `createCompany`, `listRandomLogos` | ✅ Implementado (`CompanyDetailView`) | ✅ Implementado (`AdminCompaniesView`) | ✅ Implementado (`CompanyDetailActivity`) |
 | **07** | `selective_processes` | `allSelectiveProcesses`, `mySelectiveProcessesSubscribed`, `subscribeInSelectiveProcess` | ✅ Implementado (`MyApplicationsView`) | ✅ Implementado (`AdminSelectiveProcessesView`) | ✅ Implementado (`MyApplicationsFragment`) |
 | **08** | `blogs` | `allBlogs`, `getBlogById`, `allBlogsCategories`, `createComment` | ✅ Implementado (`BlogListView`, `BlogPostView`) | ✅ Implementado (`AdminBlogsView`) | ✅ Implementado (`BlogListFragment`, `BlogPostActivity`) |
-| **09** | `authors` | `allAuthors`, `getAuthorById`, `createAuthor`, `updateAuthor`, `deleteAuthor` | 🟡 Parcial (dados embutidos no Blog) | 🟡 Parcial (embutido no `AdminBlogsView`) | 🟡 Parcial (embutido no Blog) |
+| **09** | `authors` | `allAuthors`, `getAuthorById`, `createAuthor`, `updateAuthor`, `deleteAuthor` | 🟡 Parcial (dados embutidos no Blog) | ✅ Implementado (`AdminAuthorsView`) | 🟡 Parcial (embutido no Blog) |
 | **10** | `testimonials` | `allTestimonials`, `getTestimonialById`, `createTestimonial` | ✅ Implementado (`HomeView`) | ✅ Implementado (`AdminTestimonialsView`) | 🟡 Parcial (Home estática) |
 | **11** | `subscribers` | `allSubscribers`, `subscribeMail`, `deleteSubscriber` | ✅ Implementado (`TheFooter`) | ✅ Implementado (`AdminSubscribersView`) | 🟡 Parcial (Newsletter na Home) |
 | **12** | `jaas` | `allJAASUsers`, `allJAASRoles`, `createJAASRole`, `updateJAASRole` | — (Exclusivo Admin) | ✅ Implementado (`AdminJAASUsers`, `AdminJAASRoles`) | — (Exclusivo Admin) |
 | **13** | `stats` | `statisticsCount` | ✅ Implementado (`HomeView`) | ✅ Implementado (`AdminDashboardView`) | 🟡 Parcial (Home) |
 | **14** | `forms` | `allForms`, `getFormById`, `createForm`, `deleteForm` | ✅ Implementado (`ContactView`) | ✅ Implementado (`AdminFormsView`) | ✅ Implementado (`ContactActivity`) |
-| **15** | `members` | `allMembers`, `getMemberById`, `createMember`, `updateMember`, `deleteMember` | ✅ Implementado (`TeamView`) | 🟡 Parcial (Gestão da Equipe) | ✅ Implementado (`TeamFragment`) |
+| **15** | `members` | `allMembers`, `getMemberById`, `createMember`, `updateMember`, `deleteMember` | ✅ Implementado (`TeamView`) | ✅ Implementado (`AdminMembersView`) | ✅ Implementado (`TeamFragment`) |
 | **16** | `others` | `validateCPF` | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação Kotlin local) |
 | **17** | `posts` | `socialFeed`, `rankedSocialFeed`, `createPost`, `reactToPost`, `commentOnPost` | ✅ Implementado (`SocialFeedView`, `PostCard`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (`SocialFeedFragment`, `PostDetail`) |
 | **18** | `connections` | `myConnections`, `pendingConnectionRequests`, `sendConnectionRequest`, `followUser` | ✅ Implementado (`MyNetworkView`, `connectionsStore`) | ✅ Implementado (`connections.service`) | ✅ Implementado (`ConnectionsFragment.kt`) |
@@ -55,8 +55,8 @@ Legenda de Status:
 | **20** | `notifications` | `myNotifications`, `unreadNotificationsCount`, `Subscription.notificationAdded` | ✅ Implementado (`NotificationsView.vue`, `notificationsStore`) | 🟡 Parcial (Alertas do sistema) | ✅ Implementado (`NotificationsFragment.kt`, FCM) |
 | **21** | `profiles` | `getProfileByUserId`, `updateMyProfile` (headline, about, banner, openToWork) | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | 🟡 Parcial (Auditoria de perfis) | ✅ Implementado (`ProfileActivity`, `EditProfile`) |
 | **22** | `endorsements` | `skillEndorsements`, `endorseSkill`, `userRecommendations`, `createRecommendation` | ✅ Implementado (`SkillEndorsements`, `Recommendations`) | — (Reputação Comunitária) | ✅ Implementado (`ProfileActivity`, `EndorsementsApi`) |
-| **23** | `groups` | `group`, `groupPosts`, `createGroup`, `joinGroup`, `createGroupPost` | ✅ Implementado (`GroupsListView`, `GroupDetailView`) | 🟡 Parcial (Auditoria de Grupos) | ✅ Implementado (`GroupsFragment`, `GroupDetail`) |
-| **24** | `events` | `event`, `eventAttendees`, `createEvent`, `attendEvent` | ✅ Implementado (`EventsListView`, `EventDetailView`) | 🟡 Parcial (Auditoria de Eventos) | ✅ Implementado (`EventsFragment`, `EventDetail`) |
+| **23** | `groups` | `group`, `groupPosts`, `createGroup`, `joinGroup`, `createGroupPost` | ✅ Implementado (`GroupsListView`, `GroupDetailView`) | ✅ Implementado (`AdminGroupsView`) | ✅ Implementado (`GroupsFragment`, `GroupDetail`) |
+| **24** | `events` | `event`, `eventAttendees`, `createEvent`, `attendEvent` | ✅ Implementado (`EventsListView`, `EventDetailView`) | ✅ Implementado (`AdminEventsView`) | ✅ Implementado (`EventsFragment`, `EventDetail`) |
 | **25** | `learning` | `course`, `courseLessons`, `courseCompletion`, `enrollInCourse`, `completeCourse` | ✅ Implementado (`CoursesCatalog`, `CourseDetail`, `LessonPlayer`) | ✅ Implementado (`AdminCoursesView`) | ✅ Implementado (`CoursesFragment`, `LessonPlayer`) |
 | **26** | `premium` | `subscriptionPlans`, `mySubscription`, `subscribeToPlan`, `createSubscriptionPlan` | ✅ Implementado (`PremiumPlansView`) | ✅ Implementado (`AdminPlansView`) | ✅ Implementado (`PremiumPlansActivity`) |
 | **27** | `analytics` | `whoViewedMyProfile`, `postAnalytics`, `recordProfileView`, `recordPostView` | ✅ Implementado (`ProfileAnalyticsView.vue`, `analyticsStore`) | 🟡 Parcial (Métricas no Dashboard) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
@@ -133,12 +133,16 @@ Legenda de Status:
 #### 🟢 Módulo Moderação de Conteúdo Social & Blogs (Concluído)
 - [x] **Criar View `AdminSocialPostsView.vue` (`/admin/social-posts`)**: Painel de moderação para auditoria de posts sociais da comunidade, inspeção de comentários e reações.
 - [x] **Criar View `AdminBlogsView.vue` (`/admin/blogs`)**: Gestão de posts do blog corporativo com criação, edição e remoção.
+- [x] **Criar View `AdminAuthorsView.vue` (`/admin/authors`)**: CRUD completo de autores de blog.
 - [x] **Criar `connections.service.ts`**: Consulta e auditoria da malha de conexões no admin.
 
 #### 🟢 Módulo Gestão Educacional (LMS), Monetização & Suporte (Concluído)
 - [x] **Criar View `AdminCoursesView.vue` (`/admin/courses`)**: Cadastro e governança de cursos da plataforma Workix Learning.
 - [x] **Criar View `AdminPlansView.vue` (`/admin/plans`)**: Gestão e precificação de planos premium e cotas de InMail.
 - [x] **Criar View `AdminFormsView.vue` (`/admin/forms`)**: Caixa de entrada de formulários de contato e ouvidoria.
+- [x] **Criar View `AdminMembersView.vue` (`/admin/members`)**: Cadastro e gestão da equipe institucional.
+- [x] **Criar View `AdminGroupsView.vue` (`/admin/groups`)**: Auditoria de grupos e comunidades.
+- [x] **Criar View `AdminEventsView.vue` (`/admin/events`)**: Auditoria de eventos e RSVP.
 - [x] **Criar View `AdminSelectiveProcessesView.vue` (`/admin/selective-processes`)**: Moderação de processos seletivos (`allSelectiveProcessesPaginated`, `deleteSelectiveProcess`).
 
 ---
@@ -231,6 +235,7 @@ graph TD
   - [x] **Parte 2 (Formulários de Contato & Equipe Institucional)**: `ContactView.vue` (`/contact`), `TeamView.vue` (`/team`), `forms.service.ts`, `members.service.ts`, `SupportApiService.kt`, `ContactActivity.kt`, `TeamFragment.kt`.
   - [x] **Parte 3 (Moderação Administrativa e Auditoria)**: `AdminBlogsView.vue`, `AdminCoursesView.vue`, `AdminPlansView.vue`, `AdminFormsView.vue`, `blogsAdmin.service.ts`, `coursesAdmin.service.ts`, `plansAdmin.service.ts`, `formsAdmin.service.ts`.
   - [x] **Parte 4 (Mídia Segura & Processos Seletivos Mobile/Admin)**: `media.service.ts`, `selectiveProcessesAdmin.service.ts`, `AdminSelectiveProcessesView.vue`, `SelectiveProcessesApiService.kt`, `MyApplicationsFragment.kt`.
+  - [x] **Parte 5 (Governança & Expansão Admin)**: `AdminAuthorsView.vue`, `AdminMembersView.vue`, `AdminGroupsView.vue`, `AdminEventsView.vue`, `authorsAdmin.service.ts`, `membersAdmin.service.ts`, `groupsAdmin.service.ts`, `eventsAdmin.service.ts`.
 
 ---
 
