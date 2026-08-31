@@ -49,16 +49,17 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
-import api from '../services/api';
+import { useAuthStore } from '../stores/auth';
 
 const name = ref('');
 const email = ref('');
 const password = ref('');
-const role = ref('CANDIDATE');
+const role = ref<'CANDIDATE' | 'COMPANY'>('CANDIDATE');
 const loading = ref(false);
 const errorMessage = ref('');
 const successMessage = ref('');
 
+const authStore = useAuthStore();
 const router = useRouter();
 
 async function handleRegister() {
@@ -66,18 +67,34 @@ async function handleRegister() {
   errorMessage.value = '';
   successMessage.value = '';
   try {
-    await api.post('/users', {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      role: role.value
-    });
-    successMessage.value = 'Conta criada com sucesso! Redirecionando para o login...';
+    const userProfile = await authStore.registerWithFirebase(
+      email.value,
+      password.value,
+      name.value,
+      role.value
+    );
+    successMessage.value = 'Conta criada e autenticada com sucesso! Redirecionando...';
     setTimeout(() => {
-      router.push('/login');
-    }, 2000);
+      router.push(userProfile.role === 'COMPANY' ? '/post-job' : '/post-resume');
+    }, 1500);
   } catch (err: any) {
-    errorMessage.value = err.response?.data?.message || 'Erro ao realizar cadastro. Tente novamente.';
+    console.error('Erro no cadastro Firebase:', err);
+    switch (err.code) {
+      case 'auth/email-already-in-use':
+        errorMessage.value = 'Este e-mail já está cadastrado. Tente fazer login.';
+        break;
+      case 'auth/invalid-email':
+        errorMessage.value = 'Formato de e-mail inválido.';
+        break;
+      case 'auth/weak-password':
+        errorMessage.value = 'A senha informada é fraca. Use pelo menos 6 caracteres.';
+        break;
+      case 'auth/network-request-failed':
+        errorMessage.value = 'Falha de conexão com a rede. Verifique sua internet.';
+        break;
+      default:
+        errorMessage.value = err.message || 'Erro ao realizar cadastro com Firebase.';
+    }
   } finally {
     loading.value = false;
   }
