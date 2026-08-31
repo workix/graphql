@@ -84,6 +84,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('../views/NotificationsView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/hashtag/:tag',
     name: 'HashtagFeed',
     component: () => import('../views/HashtagFeedView.vue')
