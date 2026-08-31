@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação do Social Core)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Social Core e Conexões/Rede)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -11,15 +11,15 @@
 
 O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, LMS/Cursos, Grupos, Eventos, Assinaturas Premium, Analytics e SSI).
 
-As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico (Vagas, Currículos, Empresas, Blogs e Autenticação) e agora possuem também o **Social Core & Feed de Publicações (Fase 1)** 100% implementado nas três frentes.
+As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico (Vagas, Currículos, Empresas, Blogs e Autenticação), do **Social Core & Feed de Publicações (Fase 1)** e agora também das **Conexões e Rede Profissional (Fase 2 - Parte 1)**.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     ████████████░░░░░░░░░░░░░░░░░░░░  38% (12/32 Módulos)
-Frontend Admin (Web Vuetify 3)   ████████████░░░░░░░░░░░░░░░░░░░░  38% (12/32 Módulos)
-Android App (Kotlin Nativo)      ███████████░░░░░░░░░░░░░░░░░░░░░  34% (11/32 Módulos)
+Frontend Cliente (Web Vue 3)     █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
+Frontend Admin (Web Vuetify 3)   █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
+Android App (Kotlin Nativo)      ████████████░░░░░░░░░░░░░░░░░░░░  38% (12/32 Módulos)
 ```
 
 ---
@@ -50,7 +50,7 @@ Legenda de Status:
 | **15** | `members` | `allMembers`, `getMemberById`, `createMember`, `updateMember`, `deleteMember` | ❌ Pendente (`TeamView`) | ❌ Pendente (`AdminMembersView`) | ❌ Pendente (`TeamFragment`) |
 | **16** | `others` | `validateCPF` | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação Kotlin local) |
 | **17** | `posts` | `socialFeed`, `rankedSocialFeed`, `createPost`, `reactToPost`, `commentOnPost` | ✅ Implementado (`SocialFeedView`, `PostCard`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (`SocialFeedFragment`, `PostDetail`) |
-| **18** | `connections` | `myConnections`, `pendingConnectionRequests`, `sendConnectionRequest`, `followUser` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
+| **18** | `connections` | `myConnections`, `pendingConnectionRequests`, `sendConnectionRequest`, `followUser` | ✅ Implementado (`MyNetworkView`, `connectionsStore`) | ✅ Implementado (`connections.service`) | ✅ Implementado (`ConnectionsFragment.kt`) |
 | **19** | `messaging` | `directMessages`, `sendDirectMessage`, `Subscription.directMessageAdded` | ❌ Pendente | — (Privado de Usuários) | ❌ Pendente |
 | **20** | `notifications` | `myNotifications`, `unreadNotificationsCount`, `Subscription.notificationAdded` | ❌ Pendente | ❌ Pendente | 🟡 Parcial (Recebe FCM push, sem centro interno) |
 | **21** | `profiles` | `getProfileByUserId`, `updateMyProfile` (headline, about, banner, openToWork) | ❌ Pendente | ❌ Pendente | ❌ Pendente |
@@ -73,21 +73,17 @@ Legenda de Status:
 ### 3.1. Frontend do Cliente (`frontend/client` — Vue 3 + Pinia + Vite)
 
 #### 🟢 Módulo Social & Feed de Publicações (Concluído)
-- [x] **Criar View `SocialFeedView.vue` (`/feed`)**:
-  - Feed infinito com scroll virtual consumindo `socialFeed` e `rankedSocialFeed`.
-  - Caixa de composição de postagens com suporte a texto, menções (`@usuario`), hashtags (`#tag`) e anexos de mídia (`createPost`).
-  - Barra de reações dinâmicas (Like, Celebrate, Support, Love, Insightful, Funny) consumindo `reactToPost` e `postReactions`.
-  - Seção expansível de comentários aninhados do post (`postComments`, `commentOnPost`).
-- [x] **Criar View `HashtagFeedView.vue` (`/hashtag/:tag`)**: Listagem de posts filtrados por hashtag específica (`postsByHashtag`).
-- [x] **Criar Store `postsStore.ts` & Service `src/services/posts.service.ts`**: Gerenciamento reativo de posts, curtidas e comentários.
+- [x] **Criar View `SocialFeedView.vue` (`/feed`)**
+- [x] **Criar View `HashtagFeedView.vue` (`/hashtag/:tag`)**
+- [x] **Criar Store `postsStore.ts` & Service `src/services/posts.service.ts`**
 
-#### 🔴 Módulo Rede & Conexões Profissionais
-- [ ] **Criar View `MyNetworkView.vue` (`/mynetwork`)**:
+#### 🟢 Módulo Rede & Conexões Profissionais (Concluído)
+- [x] **Criar View `MyNetworkView.vue` (`/mynetwork`)**:
   - Lista de conexões ativas (`myConnections`) com busca e filtros.
   - Painel de convites de conexão pendentes (`pendingConnectionRequests`) com ações de Aceitar (`acceptConnectionRequest`) e Recusar (`rejectConnectionRequest`).
   - Cartões de sugestões de pessoas com botão Conectar (`sendConnectionRequest`) e Seguir (`followUser` / `unfollowUser`).
   - Indicador visual do grau de separação social (1º, 2º, 3º grau) via `socialDistanceDegree`.
-- [ ] **Criar Store `connectionsStore.ts` & Service `src/services/connections.service.ts`**.
+- [x] **Criar Store `connectionsStore.ts` & Service `src/services/connections.service.ts`**.
 
 #### 🔴 Módulo Mensageria Direta & Chat em Tempo Real
 - [ ] **Criar View `MessagingView.vue` (`/messaging`) & Drawer de Chat**:
@@ -145,6 +141,7 @@ Legenda de Status:
 
 #### 🟢 Módulo Moderação de Conteúdo Social & Blogs (Parcialmente Concluído)
 - [x] **Criar View `AdminSocialPostsView.vue` (`/admin/social-posts`)**: Painel de moderação para auditoria de posts sociais da comunidade, inspeção de comentários e reações.
+- [x] **Criar `connections.service.ts`**: Consulta e auditoria da malha de conexões no admin.
 - [ ] **Criar View `AdminBlogsView.vue` (`/admin/blogs`)**:
   - Tabela de gerenciamento de posts do blog corporativo (`allBlogsPaginated`).
   - Modal de criação e edição com editor de texto rico, seleção de autor, categorias e upload de imagem de capa (`createBlog`, `updateBlog`, `deleteBlog`).
@@ -190,12 +187,9 @@ Legenda de Status:
 - [x] **Criar `SocialFeedFragment.kt`**: Feed nativo com `RecyclerView` e `PostAdapter` para exibição de postagens.
 - [x] **Criar `PostDetailActivity.kt`**: Visualização detalhada de postagens com árvore de comentários e envio de reações.
 
-#### 🔴 Módulo Rede & Conexões
-- [ ] **Criar `ConnectionsFragment.kt`**:
-  - Aba de conexões ativas e sugestões de pessoas próximas.
-  - Notificação de convites recebidos com botões de Aceitar/Recusar.
-  - Ação rápida de Seguir/Deixar de Seguir.
-- [ ] **Criar `UserNetworkActivity.kt`**: Visualização das conexões mútuas e grau de distância social.
+#### 🟢 Módulo Rede & Conexões (Concluído)
+- [x] **Criar `ConnectionsApiService.kt`**: Camada de rede em Kotlin para convites e conexões.
+- [x] **Criar `ConnectionsFragment.kt`**: Aba de conexões ativas e convites recebidos com botões de Aceitar/Recusar.
 
 #### 🔴 Módulo Chat & Mensageria Direta em Tempo Real
 - [ ] **Criar `ChatListFragment.kt`**: Lista de conversas ativas com foto de perfil, última mensagem e horário.
@@ -246,12 +240,12 @@ graph TD
   - [x] Frontend Admin: `AdminSocialPostsView.vue`, `socialPosts.service.ts`.
   - [x] Android: `PostsApiService.kt`, `SocialFeedFragment.kt`, `PostDetailActivity.kt`.
 
-### 🔹 Fase 2: Conexões, Rede & Mensageria em Tempo Real (PRÓXIMA FASE)
+### 🔹 Fase 2: Conexões, Rede & Mensageria em Tempo Real (EM ANDAMENTO)
 - **Objetivo**: Conectar os usuários entre si e permitir comunicação síncrona.
 - **Entregas**:
-  - Frontend Cliente: `MyNetworkView.vue`, `MessagingView.vue`, `NotificationsView.vue` (com WebSockets).
-  - Frontend Admin: `AdminNotificationsService` e métricas de rede.
-  - Android: `ConnectionsFragment.kt`, `ChatListFragment.kt`, `DirectChatActivity.kt`, `NotificationsFragment.kt`.
+  - [x] **Parte 1 (Conexões)**: `MyNetworkView.vue`, `connectionsStore.ts`, `connections.service.ts`, `ConnectionsApiService.kt`, `ConnectionsFragment.kt`.
+  - [ ] **Parte 2 (Mensageria)**: `MessagingView.vue`, `messagingStore.ts`, `ChatListFragment.kt`, `DirectChatActivity.kt`.
+  - [ ] **Parte 3 (Notificações)**: `NotificationsView.vue`, `notificationsStore.ts`, `NotificationsFragment.kt`.
 
 ### 🔹 Fase 3: Perfil Profissional Avançado, Endorsements & Analytics
 - **Objetivo**: Transformar currículos estáticos em perfis interativos completos com reputação social.
