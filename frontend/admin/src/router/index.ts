@@ -100,6 +100,30 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdminSelectiveProcesses',
     component: () => import('../views/AdminSelectiveProcessesView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/authors',
+    name: 'AdminAuthors',
+    component: () => import('../views/AdminAuthorsView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/members',
+    name: 'AdminMembers',
+    component: () => import('../views/AdminMembersView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/groups',
+    name: 'AdminGroups',
+    component: () => import('../views/AdminGroupsView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/events',
+    name: 'AdminEvents',
+    component: () => import('../views/AdminEventsView.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 
