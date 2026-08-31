@@ -60,6 +60,7 @@
                 </span>
               </router-link>
             </li>
+            <li><router-link to="/premium" class="premium-nav-highlight"><i class="fa fa-diamond"></i> Premium</router-link></li>
             <li><router-link to="/jobs">Vagas</router-link></li>
             <li><router-link to="/candidates">Candidatos</router-link></li>
             <template v-if="authStore.isCompany">
@@ -190,5 +191,13 @@ function handleLogout() {
   padding: 1px 5px;
   border-radius: 10px;
   margin-left: 4px;
+}
+.premium-nav-highlight {
+  color: #eab308 !important;
+  font-weight: 700;
+}
+.premium-nav-highlight i {
+  color: #eab308;
+  margin-right: 3px;
 }
 </style>
