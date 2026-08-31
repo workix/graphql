@@ -183,6 +183,22 @@
               </div>
             </div>
           </div>
+
+          <!-- Skills & Endorsements Section -->
+          <div class="margin-top-30">
+            <SkillEndorsementsSection
+              :user-id="authStore.user?.id || 1"
+              :is-own-profile="true"
+            />
+          </div>
+
+          <!-- Recommendations Section -->
+          <div class="margin-top-30">
+            <RecommendationsSection
+              :user-id="authStore.user?.id || 1"
+              :is-own-profile="true"
+            />
+          </div>
         </div>
 
         <!-- Sidebar Preview Card -->
@@ -222,6 +238,8 @@
 import { ref, reactive, onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import useProfilesStore from '../stores/profiles';
+import SkillEndorsementsSection from '../components/SkillEndorsementsSection.vue';
+import RecommendationsSection from '../components/RecommendationsSection.vue';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 
