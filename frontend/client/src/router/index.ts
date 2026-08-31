@@ -113,6 +113,16 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/groups',
+    name: 'GroupsList',
+    component: () => import('../views/GroupsListView.vue')
+  },
+  {
+    path: '/groups/:id',
+    name: 'GroupDetail',
+    component: () => import('../views/GroupDetailView.vue')
+  },
+  {
     path: '/hashtag/:tag',
     name: 'HashtagFeed',
     component: () => import('../views/HashtagFeedView.vue')
