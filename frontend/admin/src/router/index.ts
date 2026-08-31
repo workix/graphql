@@ -124,6 +124,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdminEvents',
     component: () => import('../views/AdminEventsView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/media',
+    name: 'AdminMedia',
+    component: () => import('../views/AdminMediaView.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 
