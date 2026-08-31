@@ -279,9 +279,12 @@ describe('Modules - Candidates, Resumes & Jobs Repositories', () => {
     });
 
     it('should subscribe candidate to job', async () => {
-      (JobCandidate.create as jest.Mock).mockResolvedValue({});
+      (JobCandidate.findOrCreate as jest.Mock).mockResolvedValue([{ id: 1 }, true]);
       expect(await repo.subscribe({ input: { jobId: 1, candidateId: 2 } })).toBe(true);
-      expect(JobCandidate.create).toHaveBeenCalledWith({ job_id: 1, candidate_id: 2 });
+      expect(JobCandidate.findOrCreate).toHaveBeenCalledWith({
+        where: { job_id: 1, candidate_id: 2 },
+        defaults: { job_id: 1, candidate_id: 2 }
+      });
     });
 
     it('should findMyJobs using ctx user', async () => {
