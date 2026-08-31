@@ -77,7 +77,6 @@ import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
-import api from '../services/api';
 import { useAuthStore } from '../stores/auth';
 
 const email = ref('');
@@ -95,7 +94,8 @@ function quickLogin(type: 'candidate' | 'company') {
       id: 2,
       email: 'empresa@workix.com',
       role: 'COMPANY',
-      name: 'Tech Corp Brasil'
+      name: 'Tech Corp Brasil',
+      firebase_uuid: 'fb-empresa-mock'
     });
     router.push('/post-job');
   } else {
@@ -103,7 +103,8 @@ function quickLogin(type: 'candidate' | 'company') {
       id: 1,
       email: 'candidato@workix.com',
       role: 'CANDIDATE',
-      name: 'Carlos Candidato Silva'
+      name: 'Carlos Candidato Silva',
+      firebase_uuid: 'fb-candidato-mock'
     });
     router.push('/post-resume');
   }
@@ -113,32 +114,31 @@ async function handleLogin() {
   loading.value = true;
   errorMessage.value = '';
   try {
-    const response = await api.post('/auth/login', {
-      email: email.value,
-      password: password.value
-    });
-    if (response.data && response.data.token) {
-      authStore.setAuth(response.data.token, response.data.user || { id: 1, email: email.value, role: 'CANDIDATE' });
-      const redirect = (route.query.redirect as string) || '/';
-      router.push(redirect);
-      return;
-    }
+    const userProfile = await authStore.loginWithFirebase(email.value, password.value);
+    const redirect = (route.query.redirect as string) || (userProfile.role === 'COMPANY' ? '/post-job' : '/post-resume');
+    router.push(redirect);
   } catch (err: any) {
-    // Fallback gracioso para ambiente de testes local
-    if (email.value) {
-      const isComp = email.value.includes('empresa') || email.value.includes('company');
-      const role = isComp ? 'COMPANY' : 'CANDIDATE';
-      authStore.setAuth('token-local-dev', {
-        id: isComp ? 2 : 1,
-        email: email.value,
-        role,
-        name: isComp ? 'Empresa Parceira' : 'Candidato Workix'
-      });
-      const redirect = (route.query.redirect as string) || (isComp ? '/post-job' : '/post-resume');
-      router.push(redirect);
-      return;
+    console.error('Erro no login Firebase:', err);
+    switch (err.code) {
+      case 'auth/invalid-email':
+        errorMessage.value = 'Formato de e-mail inválido.';
+        break;
+      case 'auth/user-not-found':
+        errorMessage.value = 'Nenhuma conta encontrada com este e-mail.';
+        break;
+      case 'auth/wrong-password':
+      case 'auth/invalid-credential':
+        errorMessage.value = 'E-mail ou senha incorretos.';
+        break;
+      case 'auth/too-many-requests':
+        errorMessage.value = 'Muitas tentativas consecutivas. Aguarde alguns instantes.';
+        break;
+      case 'auth/network-request-failed':
+        errorMessage.value = 'Falha de conexão com a rede. Verifique sua internet.';
+        break;
+      default:
+        errorMessage.value = err.message || 'Falha ao autenticar usuário com Firebase.';
     }
-    errorMessage.value = 'E-mail ou senha inválidos.';
   } finally {
     loading.value = false;
   }
