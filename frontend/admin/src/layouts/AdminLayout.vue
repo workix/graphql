@@ -39,6 +39,10 @@
 
         <v-list-item to="/jobs" prepend-icon="mdi-briefcase-check" title="Moderação de Vagas" value="jobs"></v-list-item>
         <v-list-item to="/social-posts" prepend-icon="mdi-post" title="Posts Sociais" value="social-posts"></v-list-item>
+        <v-list-item to="/blogs" prepend-icon="mdi-newspaper-variant-outline" title="Blog Corporativo" value="blogs"></v-list-item>
+        <v-list-item to="/courses" prepend-icon="mdi-school" title="Cursos & LMS" value="courses"></v-list-item>
+        <v-list-item to="/plans" prepend-icon="mdi-diamond" title="Planos Premium" value="plans"></v-list-item>
+        <v-list-item to="/forms" prepend-icon="mdi-email-open-outline" title="Caixa de Suporte" value="forms"></v-list-item>
         <v-list-item to="/companies" prepend-icon="mdi-domain" title="Empresas Parceiras" value="companies"></v-list-item>
         <v-list-item to="/candidates" prepend-icon="mdi-account-search" title="Candidatos & Currículos" value="candidates"></v-list-item>
         <v-list-item to="/testimonials" prepend-icon="mdi-comment-quote" title="Depoimentos" value="testimonials"></v-list-item>
