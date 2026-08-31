@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após conclusão das Fases 1 e 2)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Perfis e Destaques)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -9,17 +9,17 @@
 
 ## 1. Sumário Executivo e Diagnóstico de Cobertura
 
-O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, LMS/Cursos, Grupos, Eventos, Assinaturas Premium, Analytics e SSI).
+O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, LMS/Cursos, Grupos, Eventos, Assinaturas Premium, Analytics e SSI).
 
-As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico (Vagas, Currículos, Empresas, Blogs e Autenticação), do **Social Core & Feed de Publicações (Fase 1)** e de toda a **Rede, Conexões, Mensageria & Notificações (Fase 2)**.
+As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, da **Fase 1 (Social Core & Feed)**, da **Fase 2 (Rede, Conexões, Mensageria & Notificações)** e agora da primeira etapa da **Fase 3 (Perfil Profissional Avançado, Destaques & Selo Open to Work)**.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     ███████████████░░░░░░░░░░░░░░░░░  47% (15/32 Módulos)
+Frontend Cliente (Web Vue 3)     █████████████████░░░░░░░░░░░░░░░  53% (17/32 Módulos)
 Frontend Admin (Web Vuetify 3)   █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
-Android App (Kotlin Nativo)      ██████████████░░░░░░░░░░░░░░░░░░  44% (14/32 Módulos)
+Android App (Kotlin Nativo)      ████████████████░░░░░░░░░░░░░░░░  50% (16/32 Módulos)
 ```
 
 ---
@@ -53,7 +53,7 @@ Legenda de Status:
 | **18** | `connections` | `myConnections`, `pendingConnectionRequests`, `sendConnectionRequest`, `followUser` | ✅ Implementado (`MyNetworkView`, `connectionsStore`) | ✅ Implementado (`connections.service`) | ✅ Implementado (`ConnectionsFragment.kt`) |
 | **19** | `messaging` | `directMessages`, `sendDirectMessage`, `Subscription.directMessageAdded` | ✅ Implementado (`MessagingView.vue`, `messagingStore`) | — (Privado de Usuários) | ✅ Implementado (`ChatListFragment`, `DirectChat`) |
 | **20** | `notifications` | `myNotifications`, `unreadNotificationsCount`, `Subscription.notificationAdded` | ✅ Implementado (`NotificationsView.vue`, `notificationsStore`) | 🟡 Parcial (Alertas do sistema) | ✅ Implementado (`NotificationsFragment.kt`, FCM) |
-| **21** | `profiles` | `getProfileByUserId`, `updateMyProfile` (headline, about, banner, openToWork) | ❌ Pendente | ❌ Pendente | ❌ Pendente |
+| **21** | `profiles` | `getProfileByUserId`, `updateMyProfile` (headline, about, banner, openToWork) | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | 🟡 Parcial (Auditoria de perfis) | ✅ Implementado (`ProfileActivity`, `EditProfile`) |
 | **22** | `endorsements` | `skillEndorsements`, `endorseSkill`, `userRecommendations`, `createRecommendation` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **23** | `groups` | `group`, `groupPosts`, `createGroup`, `joinGroup`, `createGroupPost` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **24** | `events` | `event`, `eventAttendees`, `createEvent`, `attendEvent` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
@@ -62,7 +62,7 @@ Legenda de Status:
 | **27** | `analytics` | `whoViewedMyProfile`, `postAnalytics`, `recordProfileView`, `recordPostView` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **28** | `social_selling`| `mySocialSellingIndex`, `recalculateSocialSellingIndex` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **29** | `hashtags` | `postsByHashtag`, `postHashtags` | ✅ Implementado (`HashtagFeedView`, `hashtags.service`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (Renderização de tags) |
-| **30** | `featured` | `userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
+| **30** | `featured` | `userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem` | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | — (Portfólio de Usuário) | ✅ Implementado (`ProfilesApiService`) |
 | **31** | `job_postings` | `jobPostings`, `jobApplications`, `matchScore`, `applyToJob` | 🟡 Parcial (Usa modelo `jobs` legado) | 🟡 Parcial (Usa modelo `jobs` legado) | 🟡 Parcial (Usa modelo `jobs` legado) |
 | **32** | `media` | `requestUploadUrl`, `confirmUpload`, `getMediaById` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 
@@ -86,19 +86,20 @@ Legenda de Status:
 - [x] **Criar Store `messagingStore.ts` & Service `src/services/messaging.service.ts`**
 
 #### 🟢 Módulo Centro de Notificações (Concluído)
-- [x] **Criar View `NotificationsView.vue` (`/notifications`) & Menu Dropdown no Header**:
-  - Listagem paginada de notificações recebidas (`myNotifications`).
-  - Badge numérico no ícone com contagem de notificações não lidas (`unreadNotificationsCount`).
-  - Ação de marcar notificação como lida (`markNotificationAsRead`).
-- [x] **Criar Store `notificationsStore.ts` & Service `src/services/notifications.service.ts`**.
+- [x] **Criar View `NotificationsView.vue` (`/notifications`) & Menu Dropdown no Header**
+- [x] **Criar Store `notificationsStore.ts` & Service `src/services/notifications.service.ts`**
 
-#### 🔴 Módulo Perfil Profissional Avançado & Competências
-- [ ] **Criar View `ProfileEditView.vue` (`/profile/edit`) & `PublicProfileView.vue` (`/in/:username`)**:
-  - Edição de Headline profissional, Sobre/Bio, Foto de Avatar, Imagem de Capa/Banner, Localização e Setor (`getProfileByUserId`, `updateMyProfile`).
-  - Seletor e badge visual "Open To Work" (disponível para oportunidades).
-  - Seção de Destaques / Portfólio (`userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem`).
-  - Seção de Competências com Endorsements comunitários (`skillEndorsements`, `endorseSkill`, `unendorseSkill`).
-  - Seção de Recomendações Profissionais recebidas e solicitadas (`userRecommendations`, `createRecommendation`, `respondToRecommendation`).
+#### 🟢 Módulo Perfil Profissional Avançado & Portfólio de Destaques (Concluído)
+- [x] **Criar View `ProfileEditView.vue` (`/profile/edit`) & `PublicProfileView.vue` (`/in/:id`)**:
+  - Edição de Headline profissional, Sobre/Bio, Imagem de Capa/Banner, Localização, Setor e Selo Open To Work.
+  - Portfólio de Destaques (`userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem`).
+  - Navegação pública e botões de Conectar / Enviar Mensagem.
+- [x] **Criar Store `profilesStore.ts` & Service `src/services/profiles.service.ts`**.
+
+#### 🔴 Módulo Competências (Endorsements), Recomendações & Analytics / SSI
+- [ ] **Criar componentes de Endorsements & Recomendações em `PublicProfileView.vue` e `ProfileEditView.vue`**:
+  - Endossos comunitários de competências (`skillEndorsements`, `endorseSkill`, `unendorseSkill`).
+  - Recomendações profissionais recebidas e solicitadas (`userRecommendations`, `createRecommendation`, `respondToRecommendation`).
 - [ ] **Criar View `SocialSellingView.vue` (`/analytics/ssi`)**: Painel com gráficos do índice de Social Selling (`mySocialSellingIndex`, `recalculateSocialSellingIndex`).
 - [ ] **Criar View `ProfileAnalyticsView.vue` (`/analytics/views`)**: Dashboard de "Quem visualizou seu perfil" (`whoViewedMyProfile`) e métricas de engajamento de posts (`postAnalytics`).
 
@@ -136,76 +137,62 @@ Legenda de Status:
 - [ ] **Criar View `AdminBlogsView.vue` (`/admin/blogs`)**:
   - Tabela de gerenciamento de posts do blog corporativo (`allBlogsPaginated`).
   - Modal de criação e edição com editor de texto rico, seleção de autor, categorias e upload de imagem de capa (`createBlog`, `updateBlog`, `deleteBlog`).
-- [ ] **Criar View `AdminCommentsView.vue` (`/admin/comments`)**:
-  - Moderação centralizada de comentários de posts de blog (`allCommentsPaginated`, `deleteComment`).
-- [ ] **Criar View `AdminAuthorsView.vue` (`/admin/authors`)**: CRUD completo de autores do blog com foto, biografia e redes sociais (`allAuthors`, `createAuthor`, `updateAuthor`, `deleteAuthor`).
+- [ ] **Criar View `AdminCommentsView.vue` (`/admin/comments`)**: Moderação centralizada de comentários de posts de blog (`allCommentsPaginated`, `deleteComment`).
+- [ ] **Criar View `AdminAuthorsView.vue` (`/admin/authors`)**: CRUD completo de autores do blog (`allAuthors`, `createAuthor`, `updateAuthor`, `deleteAuthor`).
 - [ ] **Criar View `AdminHashtagsView.vue` (`/admin/hashtags`)**: Monitoramento de tags em tendência e bloqueio de hashtags proibidas.
 
 #### 🔴 Módulo Gestão Educacional (LMS) & Comunidade
-- [ ] **Criar View `AdminCoursesView.vue` (`/admin/courses`)**:
-  - Cadastro e edição de cursos, atribuição de instrutor e capa (`createCourse`).
-  - Gerenciamento da grade de aulas e materiais complementares (`addCourseLesson`).
-  - Relatório de alunos matriculados e certificados emitidos.
-- [ ] **Criar View `AdminGroupsView.vue` (`/admin/groups`)**: Auditoria de grupos públicos e privados, moderação de administradores de grupos e histórico de atividades.
-- [ ] **Criar View `AdminEventsView.vue` (`/admin/events`)**: Gestão de eventos cadastrados na plataforma e lista de participantes confirmados.
+- [ ] **Criar View `AdminCoursesView.vue` (`/admin/courses`)**: Cadastro e edição de cursos, atribuição de instrutor e capa (`createCourse`).
+- [ ] **Criar View `AdminGroupsView.vue` (`/admin/groups`)**: Auditoria de grupos públicos e privados.
+- [ ] **Criar View `AdminEventsView.vue` (`/admin/events`)**: Gestão de eventos cadastrados na plataforma.
 
 #### 🔴 Módulo Monetização, Planos & Faturamento
-- [ ] **Criar View `AdminPlansView.vue` (`/admin/plans`)**:
-  - Criação e manutenção de planos de assinatura (`createSubscriptionPlan`), precificação, periodicidade (mensal/anual) e cota de créditos de InMail.
-  - Tabela de assinantes ativos e cancelamentos.
+- [ ] **Criar View `AdminPlansView.vue` (`/admin/plans`)**: Criação e manutenção de planos de assinatura (`createSubscriptionPlan`), precificação e cotas.
 
 #### 🔴 Módulo Operações Corporativas, Suporte & Equipe
-- [ ] **Criar View `AdminFormsView.vue` (`/admin/forms`)**: Caixa de entrada de mensagens de contato, suporte e formulários enviados pelos usuários (`allFormsPaginated`, `deleteForm`).
-- [ ] **Criar View `AdminSelectiveProcessesView.vue` (`/admin/selective-processes`)**: Moderação de processos seletivos abertos por empresas e auditoria de candidatos inscritos (`allSelectiveProcessesPaginated`, `deleteSelectiveProcess`).
-- [ ] **Criar View `AdminMembersView.vue` (`/admin/members`)**: Cadastro institucional dos membros do time exibidos no portal (`allMembers`, `createMember`, `updateMember`, `deleteMember`).
-- [ ] **Criar View `AdminMediaView.vue` (`/admin/media`)**: Auditoria de arquivos e mídias armazenadas no sistema (`getMediaById`).
-- [ ] **Expandir `AdminDashboardView.vue` (`/admin`)**:
-  - Adicionar gráficos analíticos de adesão de novos usuários, distribuição de assinantes premium, taxas de engajamento no feed e métricas de SSI globais.
+- [ ] **Criar View `AdminFormsView.vue` (`/admin/forms`)**: Caixa de entrada de formulários de contato (`allFormsPaginated`, `deleteForm`).
+- [ ] **Criar View `AdminSelectiveProcessesView.vue` (`/admin/selective-processes`)**: Moderação de processos seletivos (`allSelectiveProcessesPaginated`, `deleteSelectiveProcess`).
+- [ ] **Criar View `AdminMembersView.vue` (`/admin/members`)**: Cadastro institucional dos membros do time (`allMembers`, `createMember`, `updateMember`, `deleteMember`).
+- [ ] **Criar View `AdminMediaView.vue` (`/admin/media`)**: Auditoria de arquivos e mídias (`getMediaById`).
+- [ ] **Expandir `AdminDashboardView.vue` (`/admin`)**: Painel de métricas analíticas e engajamento social.
 
 ---
 
 ### 3.3. Aplicativo Mobile Android (`android/` — Kotlin + Jetpack)
 
 #### 🔴 Camada de Rede & Modernização de Arquitetura
-- [ ] **Integrar Apollo Kotlin Client (`com.apollographql.apollo3`)**:
-  - Gerar classes fortemente tipadas para Queries, Mutations e Subscriptions a partir dos arquivos `.graphql`.
-  - Configurar suporte a WebSocket (`SubscriptionEngine`) para chat e notificações em tempo real.
-  - Implementar normalização de cache local (Normalized Cache SQLite/Memory).
-- [ ] **Configurar Injeção de Dependência Moderna (Hilt / Koin)** para gerenciar repositories e ViewModels.
+- [ ] **Integrar Apollo Kotlin Client (`com.apollographql.apollo3`)**.
+- [ ] **Configurar Injeção de Dependência Moderna (Hilt / Koin)**.
 
 #### 🟢 Módulo Social & Feed Mobile (Concluído)
 - [x] **Criar `PostsApiService.kt`**: Camada de rede com Coroutines e cliente GraphQL para feed, reações e comentários.
-- [x] **Criar `SocialFeedFragment.kt`**: Feed nativo com `RecyclerView` e `PostAdapter` para exibição de postagens.
-- [x] **Criar `PostDetailActivity.kt`**: Visualização detalhada de postagens com árvore de comentários e envio de reações.
+- [x] **Criar `SocialFeedFragment.kt`**: Feed nativo com `RecyclerView` e `PostAdapter`.
+- [x] **Criar `PostDetailActivity.kt`**: Detalhes do post com comentários.
 
 #### 🟢 Módulo Rede & Conexões (Concluído)
 - [x] **Criar `ConnectionsApiService.kt`**: Camada de rede em Kotlin para convites e conexões.
-- [x] **Criar `ConnectionsFragment.kt`**: Aba de conexões ativas e convites recebidos com botões de Aceitar/Recusar.
+- [x] **Criar `ConnectionsFragment.kt`**: Aba de conexões ativas e convites recebidos.
 
 #### 🟢 Módulo Chat & Mensageria Direta em Tempo Real (Concluído)
-- [x] **Criar `ChatListFragment.kt`**: Lista de conversas ativas com foto de perfil, última mensagem e horário.
-- [x] **Criar `DirectChatActivity.kt`**: Interface nativa de chat estilo mensageiro com balões de mensagem.
-- [x] **Criar `MessagingApiService.kt`**: Camada de rede em Kotlin para consultas e envio de mensagens diretas.
+- [x] **Criar `ChatListFragment.kt`**: Lista de conversas ativas.
+- [x] **Criar `DirectChatActivity.kt`**: Interface nativa de chat estilo mensageiro.
+- [x] **Criar `MessagingApiService.kt`**: Camada de rede em Kotlin para mensagens diretas.
 
 #### 🟢 Módulo Notificações Internas (In-App) (Concluído)
 - [x] **Criar `NotificationsFragment.kt`**: Central de notificações no app com histórico completo (`myNotifications`).
-- [x] **Criar `NotificationsApiService.kt`**: Camada de rede em Kotlin para consultas e marcação de alertas lidos.
+- [x] **Criar `NotificationsApiService.kt`**: Camada de rede em Kotlin para notificações.
 
-#### 🔴 Módulo Perfil Profissional Completo & Competências
-- [ ] **Criar `ProfileActivity.kt`**:
-  - Exibição de cabeçalho com avatar, banner, cargo, selo Open To Work e resumo.
-  - Lista de Experiências Profissionais e Formação Acadêmica.
-  - Seção de Competências com suporte ao clique para endossar (`endorseSkill`).
-  - Seção de Recomendações e Destaques.
-- [ ] **Criar `EditProfileActivity.kt`**: Edição de dados do perfil profissional.
-- [ ] **Criar `ProfileAnalyticsActivity.kt`**: Visualização de quem visitou o perfil do usuário.
+#### 🟢 Módulo Perfil Profissional Completo & Competências (Concluído)
+- [x] **Criar `ProfileActivity.kt`**: Visualização nativa de perfil profissional, cargo, localização, resumo sobre e portfólio de destaques.
+- [x] **Criar `EditProfileActivity.kt`**: Edição nativa de headline, sobre e ativação do selo Open To Work.
+- [x] **Criar `ProfilesApiService.kt`**: Camada de rede em Kotlin para queries e atualizações de perfil e destaques.
 
 #### 🔴 Módulo LMS, Comunidades & Monetização
-- [ ] **Criar `CoursesFragment.kt` & `LessonPlayerActivity.kt`**: Catálogo de cursos, player de videoaulas nativo e visualização de certificados.
+- [ ] **Criar `CoursesFragment.kt` & `LessonPlayerActivity.kt`**: Catálogo de cursos e player.
 - [ ] **Criar `GroupsFragment.kt` & `GroupDetailActivity.kt`**: Listagem e interação em grupos.
 - [ ] **Criar `EventsFragment.kt` & `EventDetailActivity.kt`**: Lista de eventos e RSVP.
 - [ ] **Criar `PremiumPlansActivity.kt`**: Apresentação de planos e benefícios de assinatura.
-- [ ] **Criar `MyApplicationsFragment.kt`**: Painel do candidato para acompanhar status em processos seletivos (`mySelectiveProcessesSubscribed`).
+- [ ] **Criar `MyApplicationsFragment.kt`**: Painel do candidato para acompanhar status em processos seletivos.
 - [ ] **Criar `ContactActivity.kt`**: Envio de mensagens de suporte/contato.
 
 ---
@@ -224,17 +211,13 @@ graph TD
 - **Entregas**: `SocialFeedView.vue`, `HashtagFeedView.vue`, `PostCard.vue`, `AdminSocialPostsView.vue`, `SocialFeedFragment.kt`, `PostDetailActivity.kt`.
 
 ### 🔹 Fase 2: Conexões, Rede & Mensageria em Tempo Real (✅ CONCLUÍDA)
-- **Entregas**:
-  - [x] **Conexões**: `MyNetworkView.vue`, `connectionsStore.ts`, `connections.service.ts`, `ConnectionsApiService.kt`, `ConnectionsFragment.kt`.
-  - [x] **Mensageria**: `MessagingView.vue`, `messagingStore.ts`, `messaging.service.ts`, `MessagingApiService.kt`, `ChatListFragment.kt`, `DirectChatActivity.kt`.
-  - [x] **Notificações**: `NotificationsView.vue`, `notificationsStore.ts`, `notifications.service.ts`, `NotificationsApiService.kt`, `NotificationsFragment.kt`.
+- **Entregas**: `MyNetworkView.vue`, `MessagingView.vue`, `NotificationsView.vue`, `ChatListFragment.kt`, `DirectChatActivity.kt`, `NotificationsFragment.kt`.
 
-### 🔹 Fase 3: Perfil Profissional Avançado, Endorsements & Analytics (PRÓXIMA FASE)
-- **Objetivo**: Transformar currículos estáticos em perfis interativos completos com reputação social.
+### 🔹 Fase 3: Perfil Profissional Avançado, Endorsements & Analytics (EM ANDAMENTO)
 - **Entregas**:
-  - Frontend Cliente: `ProfileEditView.vue`, Endorsements, Recomendações, `SocialSellingView.vue`, `ProfileAnalyticsView.vue`.
-  - Frontend Admin: Auditoria de perfis e relatórios de SSI.
-  - Android: `ProfileActivity.kt`, `EditProfileActivity.kt`, `ProfileAnalyticsActivity.kt`.
+  - [x] **Parte 1 (Perfil & Destaques)**: `ProfileEditView.vue`, `PublicProfileView.vue`, `profilesStore.ts`, `profiles.service.ts`, `ProfilesApiService.kt`, `ProfileActivity.kt`, `EditProfileActivity.kt`.
+  - [ ] **Parte 2 (Endorsements & Recomendações)**: Endossos de skills e cartas de recomendação.
+  - [ ] **Parte 3 (Social Selling Index & Analytics)**: `SocialSellingView.vue` (SSI) e `ProfileAnalyticsView.vue`.
 
 ### 🔹 Fase 4: Comunidades, Eventos & Educação (LMS)
 - **Objetivo**: Engajar usuários em grupos de interesse, eventos e cursos de capacitação.
