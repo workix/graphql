@@ -38,6 +38,7 @@
         </v-list-subheader>
 
         <v-list-item to="/jobs" prepend-icon="mdi-briefcase-check" title="Moderação de Vagas" value="jobs"></v-list-item>
+        <v-list-item to="/selective-processes" prepend-icon="mdi-clipboard-list-outline" title="Processos Seletivos" value="selective-processes"></v-list-item>
         <v-list-item to="/social-posts" prepend-icon="mdi-post" title="Posts Sociais" value="social-posts"></v-list-item>
         <v-list-item to="/blogs" prepend-icon="mdi-newspaper-variant-outline" title="Blog Corporativo" value="blogs"></v-list-item>
         <v-list-item to="/courses" prepend-icon="mdi-school" title="Cursos & LMS" value="courses"></v-list-item>
