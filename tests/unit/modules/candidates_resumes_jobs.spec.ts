@@ -45,7 +45,8 @@ jest.mock('../../../src/models', () => ({
     count: jest.fn()
   },
   JobCandidate: {
-    create: jest.fn()
+    create: jest.fn(),
+    findOrCreate: jest.fn().mockResolvedValue([{ id: 1 }, true])
   }
 }));
 
