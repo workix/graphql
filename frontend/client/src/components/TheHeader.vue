@@ -65,6 +65,7 @@
             </template>
             <template v-else-if="authStore.isAuthenticated">
               <li><router-link to="/profile/edit">Meu Perfil</router-link></li>
+              <li><router-link to="/analytics/ssi">Analytics</router-link></li>
               <li><router-link to="/my-applications">Minhas Candidaturas</router-link></li>
               <li><router-link to="/post-resume">Meu Currículo</router-link></li>
             </template>
