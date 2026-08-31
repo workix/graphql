@@ -54,6 +54,7 @@
         <activity android:name="br.com.codecode.workix.android.ui.analytics.ProfileAnalyticsActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.groups.GroupDetailActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.events.EventDetailActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.learning.LessonPlayerActivity" />
 
     </application>
 
