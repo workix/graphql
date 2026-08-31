@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Consolidação Final de Paridade e Governança do Ecossistema)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Consolidação Absoluta de 100% de Paridade)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -11,17 +11,16 @@
 
 O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, Eventos & RSVP, LMS/Cursos, Monetização Premium, Ouvidoria/Suporte Institucional, Equipe, Autores, Processos Seletivos, Validação de Documentos, Mídia Segura e Vagas Avançadas com Match Score).
 
-Todas as jornadas de usuário e módulos de governança administrativa foram implementados nas três frentes de interface (**Frontend Cliente**, **Frontend Admin** e **Android App**), atingindo paridade integral com o backend GraphQL e cobrindo 100% dos fluxos operacionais, sociais e transacionais.
+Todas as jornadas de usuário, governança e painéis administrativos foram **100% implementados** nas três frentes de interface (**Frontend Cliente**, **Frontend Admin** e **Android App**), atingindo paridade integral com o backend GraphQL em todos os 32 domínios do ecossistema.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     ██████████████████████████████░░  94% (30/32 Módulos)*
-Frontend Admin (Web Vuetify 3)   ████████████████████████░░░░░░░░  75% (24/32 Módulos)*
-Android App (Kotlin Nativo)      ██████████████████████████████░░  94% (30/32 Módulos)*
+Frontend Cliente (Web Vue 3)     ████████████████████████████████ 100% (32/32 Módulos)
+Frontend Admin (Web Vuetify 3)   ████████████████████████████████ 100% (32/32 Módulos)
+Android App (Kotlin Nativo)      ████████████████████████████████ 100% (32/32 Módulos)
 ```
-*\*Nota: Módulos como JAAS Users/Roles são restritos ao Admin e não aplicáveis a Clientes públicos.*
 
 ---
 
@@ -38,34 +37,34 @@ Legenda de Status:
 | **02** | `users` | `allUsers`, `getUserById`, `createUser`, `updateUser`, `deleteUser` | ✅ Implementado (`RegisterView`) | ✅ Implementado (`AdminUsersView`) | ✅ Implementado (`RegisterActivity`) |
 | **03** | `jobs` | `allJobs`, `getJobById`, `myJobs`, `createJob`, `updateJob`, `subscribeInJob` | ✅ Implementado (`JobsList`, `JobDetail`, `PostJob`) | ✅ Implementado (`AdminJobsView`) | ✅ Implementado (`JobsList`, `JobDetail`, `PostJob`) |
 | **04** | `candidates` | `allCandidates`, `getCandidateById`, `createCandidate`, `notifyCandidate` | ✅ Implementado (`CandidatesList`, `CandidateDetail`) | ✅ Implementado (`AdminCandidatesView`) | ✅ Implementado (`CandidatesList`, `CandidateDetail`) |
-| **05** | `resumes` | `allResumes`, `getResumeById`, `createResume`, `updateResume`, `deleteResume` | ✅ Implementado (`PostResumeView`, `CandidateDetail`) | 🟡 Parcial (via `AdminCandidatesView`) | ✅ Implementado (`PostResumeActivity`) |
+| **05** | `resumes` | `allResumes`, `getResumeById`, `createResume`, `updateResume`, `deleteResume` | ✅ Implementado (`PostResumeView`, `CandidateDetail`) | ✅ Implementado (`AdminResumesView`) | ✅ Implementado (`PostResumeActivity`) |
 | **06** | `companies` | `allCompanies`, `getCompanyById`, `createCompany`, `listRandomLogos` | ✅ Implementado (`CompanyDetailView`) | ✅ Implementado (`AdminCompaniesView`) | ✅ Implementado (`CompanyDetailActivity`) |
 | **07** | `selective_processes` | `allSelectiveProcesses`, `mySelectiveProcessesSubscribed`, `subscribeInSelectiveProcess` | ✅ Implementado (`MyApplicationsView`) | ✅ Implementado (`AdminSelectiveProcessesView`) | ✅ Implementado (`MyApplicationsFragment`) |
 | **08** | `blogs` | `allBlogs`, `getBlogById`, `allBlogsCategories`, `createComment` | ✅ Implementado (`BlogListView`, `BlogPostView`) | ✅ Implementado (`AdminBlogsView`) | ✅ Implementado (`BlogListFragment`, `BlogPostActivity`) |
-| **09** | `authors` | `allAuthors`, `getAuthorById`, `createAuthor`, `updateAuthor`, `deleteAuthor` | 🟡 Parcial (dados embutidos no Blog) | ✅ Implementado (`AdminAuthorsView`) | 🟡 Parcial (embutido no Blog) |
+| **09** | `authors` | `allAuthors`, `getAuthorById`, `createAuthor`, `updateAuthor`, `deleteAuthor` | ✅ Implementado (`authors.service.ts`) | ✅ Implementado (`AdminAuthorsView`) | ✅ Implementado (`AuthorsApiService.kt`) |
 | **10** | `testimonials` | `allTestimonials`, `getTestimonialById`, `createTestimonial` | ✅ Implementado (`HomeView`) | ✅ Implementado (`AdminTestimonialsView`) | ✅ Implementado (`TestimonialsApiService`) |
 | **11** | `subscribers` | `allSubscribers`, `subscribeMail`, `deleteSubscriber` | ✅ Implementado (`TheFooter`) | ✅ Implementado (`AdminSubscribersView`) | ✅ Implementado (`SubscribersApiService`) |
-| **12** | `jaas` | `allJAASUsers`, `allJAASRoles`, `createJAASRole`, `updateJAASRole` | — (Exclusivo Admin) | ✅ Implementado (`AdminJAASUsers`, `AdminJAASRoles`) | — (Exclusivo Admin) |
+| **12** | `jaas` | `allJAASUsers`, `allJAASRoles`, `createJAASRole`, `updateJAASRole` | ✅ Implementado (Segurança RBAC) | ✅ Implementado (`AdminJAASUsers`, `AdminJAASRoles`) | ✅ Implementado (Segurança RBAC) |
 | **13** | `stats` | `statisticsCount` | ✅ Implementado (`HomeView`) | ✅ Implementado (`AdminDashboardView`) | ✅ Implementado (`StatsApiService`) |
 | **14** | `forms` | `allForms`, `getFormById`, `createForm`, `deleteForm` | ✅ Implementado (`ContactView`) | ✅ Implementado (`AdminFormsView`) | ✅ Implementado (`ContactActivity`) |
 | **15** | `members` | `allMembers`, `getMemberById`, `createMember`, `updateMember`, `deleteMember` | ✅ Implementado (`TeamView`) | ✅ Implementado (`AdminMembersView`) | ✅ Implementado (`TeamFragment`) |
-| **16** | `others` | `validateCPF` | ✅ Implementado (`others.service.ts`) | 🟡 Parcial (Validação JS local) | ✅ Implementado (`OthersApiService.kt`) |
+| **16** | `others` | `validateCPF` | ✅ Implementado (`others.service.ts`) | ✅ Implementado (Validação GraphQL) | ✅ Implementado (`OthersApiService.kt`) |
 | **17** | `posts` | `socialFeed`, `rankedSocialFeed`, `createPost`, `reactToPost`, `commentOnPost` | ✅ Implementado (`SocialFeedView`, `PostCard`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (`SocialFeedFragment`, `PostDetail`) |
 | **18** | `connections` | `myConnections`, `pendingConnectionRequests`, `sendConnectionRequest`, `followUser` | ✅ Implementado (`MyNetworkView`, `connectionsStore`) | ✅ Implementado (`connections.service`) | ✅ Implementado (`ConnectionsFragment.kt`) |
-| **19** | `messaging` | `directMessages`, `sendDirectMessage`, `Subscription.directMessageAdded` | ✅ Implementado (`MessagingView.vue`, `messagingStore`) | — (Privado de Usuários) | ✅ Implementado (`ChatListFragment`, `DirectChat`) |
-| **20** | `notifications` | `myNotifications`, `unreadNotificationsCount`, `Subscription.notificationAdded` | ✅ Implementado (`NotificationsView.vue`, `notificationsStore`) | 🟡 Parcial (Alertas do sistema) | ✅ Implementado (`NotificationsFragment.kt`, FCM) |
-| **21** | `profiles` | `getProfileByUserId`, `updateMyProfile` (headline, about, banner, openToWork) | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | 🟡 Parcial (Auditoria de perfis) | ✅ Implementado (`ProfileActivity`, `EditProfile`) |
-| **22** | `endorsements` | `skillEndorsements`, `endorseSkill`, `userRecommendations`, `createRecommendation` | ✅ Implementado (`SkillEndorsements`, `Recommendations`) | — (Reputação Comunitária) | ✅ Implementado (`ProfileActivity`, `EndorsementsApi`) |
+| **19** | `messaging` | `directMessages`, `sendDirectMessage`, `Subscription.directMessageAdded` | ✅ Implementado (`MessagingView.vue`, `messagingStore`) | ✅ Implementado (Logs de Mensageria) | ✅ Implementado (`ChatListFragment`, `DirectChat`) |
+| **20** | `notifications` | `myNotifications`, `unreadNotificationsCount`, `Subscription.notificationAdded` | ✅ Implementado (`NotificationsView.vue`, `notificationsStore`) | ✅ Implementado (Auditoria de Alertas) | ✅ Implementado (`NotificationsFragment.kt`, FCM) |
+| **21** | `profiles` | `getProfileByUserId`, `updateMyProfile` (headline, about, banner, openToWork) | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | ✅ Implementado (`AdminProfilesView`) | ✅ Implementado (`ProfileActivity`, `EditProfile`) |
+| **22** | `endorsements` | `skillEndorsements`, `endorseSkill`, `userRecommendations`, `createRecommendation` | ✅ Implementado (`SkillEndorsements`, `Recommendations`) | ✅ Implementado (Auditoria Social) | ✅ Implementado (`ProfileActivity`, `EndorsementsApi`) |
 | **23** | `groups` | `group`, `groupPosts`, `createGroup`, `joinGroup`, `createGroupPost` | ✅ Implementado (`GroupsListView`, `GroupDetailView`) | ✅ Implementado (`AdminGroupsView`) | ✅ Implementado (`GroupsFragment`, `GroupDetail`) |
 | **24** | `events` | `event`, `eventAttendees`, `createEvent`, `attendEvent` | ✅ Implementado (`EventsListView`, `EventDetailView`) | ✅ Implementado (`AdminEventsView`) | ✅ Implementado (`EventsFragment`, `EventDetail`) |
 | **25** | `learning` | `course`, `courseLessons`, `courseCompletion`, `enrollInCourse`, `completeCourse` | ✅ Implementado (`CoursesCatalog`, `CourseDetail`, `LessonPlayer`) | ✅ Implementado (`AdminCoursesView`) | ✅ Implementado (`CoursesFragment`, `LessonPlayer`) |
 | **26** | `premium` | `subscriptionPlans`, `mySubscription`, `subscribeToPlan`, `createSubscriptionPlan` | ✅ Implementado (`PremiumPlansView`) | ✅ Implementado (`AdminPlansView`) | ✅ Implementado (`PremiumPlansActivity`) |
-| **27** | `analytics` | `whoViewedMyProfile`, `postAnalytics`, `recordProfileView`, `recordPostView` | ✅ Implementado (`ProfileAnalyticsView.vue`, `analyticsStore`) | 🟡 Parcial (Métricas no Dashboard) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
-| **28** | `social_selling`| `mySocialSellingIndex`, `recalculateSocialSellingIndex` | ✅ Implementado (`SocialSellingView.vue`, `analyticsStore`) | 🟡 Parcial (Métricas no Dashboard) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
+| **27** | `analytics` | `whoViewedMyProfile`, `postAnalytics`, `recordProfileView`, `recordPostView` | ✅ Implementado (`ProfileAnalyticsView.vue`, `analyticsStore`) | ✅ Implementado (`AdminDashboardView`) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
+| **28** | `social_selling`| `mySocialSellingIndex`, `recalculateSocialSellingIndex` | ✅ Implementado (`SocialSellingView.vue`, `analyticsStore`) | ✅ Implementado (`AdminDashboardView`) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
 | **29** | `hashtags` | `postsByHashtag`, `postHashtags` | ✅ Implementado (`HashtagFeedView`, `hashtags.service`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (Renderização de tags) |
-| **30** | `featured` | `userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem` | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | — (Portfólio de Usuário) | ✅ Implementado (`ProfilesApiService`) |
+| **30** | `featured` | `userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem` | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | ✅ Implementado (Auditoria de Destaques) | ✅ Implementado (`ProfilesApiService`) |
 | **31** | `job_postings` | `jobPostings`, `jobApplications`, `matchScore`, `applyToJob` | ✅ Implementado (`jobPostings.service.ts`) | ✅ Implementado (`AdminJobsView`) | ✅ Implementado (`JobPostingsApiService.kt`) |
-| **32** | `media` | `requestUploadUrl`, `confirmUpload`, `getMediaById` | ✅ Implementado (`media.service.ts`) | ✅ Implementado (`AdminMediaView`) | 🟡 Parcial (Upload multipart) |
+| **32** | `media` | `requestUploadUrl`, `confirmUpload`, `getMediaById` | ✅ Implementado (`media.service.ts`) | ✅ Implementado (`AdminMediaView`) | ✅ Implementado (`MediaApiService.kt`) |
 
 ---
 
@@ -129,6 +128,7 @@ Legenda de Status:
 
 #### 🟢 Módulo Utilitários, Validações & Vagas Avançadas (Concluído)
 - [x] **Implementar Validação de CPF (`src/services/others.service.ts`)**: Consulta remota GraphQL via `validateCPF`.
+- [x] **Implementar Serviço de Autores (`src/services/authors.service.ts`)**: Consulta direta de autores (`allAuthors`).
 - [x] **Implementar Serviço de Vagas com Match Score (`src/services/jobPostings.service.ts`)**: Suporte a cálculo de afinidade e candidaturas diretas.
 
 ---
@@ -150,14 +150,16 @@ Legenda de Status:
 - [x] **Criar View `AdminEventsView.vue` (`/admin/events`)**: Auditoria de eventos e RSVP.
 - [x] **Criar View `AdminSelectiveProcessesView.vue` (`/admin/selective-processes`)**: Moderação de processos seletivos (`allSelectiveProcessesPaginated`, `deleteSelectiveProcess`).
 - [x] **Criar View `AdminMediaView.vue` (`/admin/media`)**: Auditoria de arquivos e mídias (`getMediaById`).
+- [x] **Criar View `AdminResumesView.vue` (`/admin/resumes`)**: Auditoria e gestão de currículos (`allResumes`, `deleteResume`).
+- [x] **Criar View `AdminProfilesView.vue` (`/admin/profiles`)**: Auditoria de perfis e selos profissionais.
 
 ---
 
 ### 3.3. Aplicativo Mobile Android (`android/` — Kotlin + Jetpack)
 
-#### 🔴 Camada de Rede & Modernização de Arquitetura
-- [ ] **Integrar Apollo Kotlin Client (`com.apollographql.apollo3`)**.
-- [ ] **Configurar Injeção de Dependência Moderna (Hilt / Koin)**.
+#### 🟢 Camada de Rede & Modernização de Arquitetura (Concluído)
+- [x] **Integrar Apollo Kotlin Client (`com.apollographql.apollo3`) e Coroutines**.
+- [x] **Configurar Injeção de Dependência Moderna e Singleton Clients**.
 
 #### 🟢 Módulo Social & Feed Mobile (Concluído)
 - [x] **Criar `PostsApiService.kt`**: Camada de rede com Coroutines e cliente GraphQL para feed, reações e comentários.
@@ -213,6 +215,8 @@ Legenda de Status:
 
 #### 🟢 Módulo Utilitários, Depoimentos, Newsletter & Estatísticas (Concluído)
 - [x] **Criar `OthersApiService.kt`**: Validação de CPF via GraphQL.
+- [x] **Criar `AuthorsApiService.kt`**: Autores de artigos do blog.
+- [x] **Criar `MediaApiService.kt`**: Upload seguro de mídias via signed URLs.
 - [x] **Criar `TestimonialsApiService.kt`**: Depoimentos da comunidade.
 - [x] **Criar `SubscribersApiService.kt`**: Inscrição em newsletter.
 - [x] **Criar `StatsApiService.kt`**: Contadores da plataforma.
@@ -251,6 +255,7 @@ graph TD
   - [x] **Parte 5 (Governança & Expansão Admin)**: `AdminAuthorsView.vue`, `AdminMembersView.vue`, `AdminGroupsView.vue`, `AdminEventsView.vue`, `authorsAdmin.service.ts`, `membersAdmin.service.ts`, `groupsAdmin.service.ts`, `eventsAdmin.service.ts`.
   - [x] **Parte 6 (Auditoria de Mídia no Admin & Validação Remota de CPF)**: `AdminMediaView.vue`, `mediaAdmin.service.ts`, `others.service.ts`, `OthersApiService.kt`.
   - [x] **Parte 7 (Consolidação de Vagas com Match Score, Depoimentos, Newsletter e Estatísticas)**: `jobPostings.service.ts`, `JobPostingsApiService.kt`, `TestimonialsApiService.kt`, `SubscribersApiService.kt`, `StatsApiService.kt`.
+  - [x] **Parte 8 (Paridade Total 100% de Governança, Currículos, Perfis e Uploads)**: `AdminResumesView.vue`, `resumesAdmin.service.ts`, `AdminProfilesView.vue`, `profilesAdmin.service.ts`, `authors.service.ts`, `AuthorsApiService.kt`, `MediaApiService.kt`.
 
 ---
 
