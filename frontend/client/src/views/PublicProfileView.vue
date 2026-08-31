@@ -89,6 +89,22 @@
               </div>
             </div>
           </div>
+
+          <!-- Skills & Endorsements Section -->
+          <div class="margin-top-24">
+            <SkillEndorsementsSection
+              :user-id="targetUserId"
+              :is-own-profile="isOwnProfile"
+            />
+          </div>
+
+          <!-- Recommendations Section -->
+          <div class="margin-top-24">
+            <RecommendationsSection
+              :user-id="targetUserId"
+              :is-own-profile="isOwnProfile"
+            />
+          </div>
         </div>
 
         <!-- Sidebar Right Column -->
@@ -121,6 +137,8 @@ import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import useProfilesStore from '../stores/profiles';
+import SkillEndorsementsSection from '../components/SkillEndorsementsSection.vue';
+import RecommendationsSection from '../components/RecommendationsSection.vue';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 
