@@ -64,6 +64,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdminSubscribers',
     component: () => import('../views/AdminSubscribersView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/social-posts',
+    name: 'AdminSocialPosts',
+    component: () => import('../views/AdminSocialPostsView.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 
