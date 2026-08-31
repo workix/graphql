@@ -123,6 +123,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/GroupDetailView.vue')
   },
   {
+    path: '/events',
+    name: 'EventsList',
+    component: () => import('../views/EventsListView.vue')
+  },
+  {
+    path: '/events/:id',
+    name: 'EventDetail',
+    component: () => import('../views/EventDetailView.vue')
+  },
+  {
     path: '/hashtag/:tag',
     name: 'HashtagFeed',
     component: () => import('../views/HashtagFeedView.vue')
