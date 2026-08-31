@@ -47,6 +47,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><router-link to="/">Home</router-link></li>
             <li><router-link to="/feed">Feed</router-link></li>
+            <li><router-link to="/mynetwork">Minha Rede</router-link></li>
             <li><router-link to="/jobs">Vagas</router-link></li>
             <li><router-link to="/candidates">Candidatos</router-link></li>
             <template v-if="authStore.isCompany">
