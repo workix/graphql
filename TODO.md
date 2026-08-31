@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação do Social Core)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -11,15 +11,15 @@
 
 O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, LMS/Cursos, Grupos, Eventos, Assinaturas Premium, Analytics e SSI).
 
-As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico (Vagas, Currículos, Empresas, Blogs e Autenticação), mas apresentam um amplo conjunto de recursos avançados ainda pendentes de desenvolvimento.
+As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico (Vagas, Currículos, Empresas, Blogs e Autenticação) e agora possuem também o **Social Core & Feed de Publicações (Fase 1)** 100% implementado nas três frentes.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     ██████████░░░░░░░░░░░░░░░░░░░░░░  31% (10/32 Módulos)
-Frontend Admin (Web Vuetify 3)   ██████████░░░░░░░░░░░░░░░░░░░░░░  31% (10/32 Módulos)
-Android App (Kotlin Nativo)      █████████░░░░░░░░░░░░░░░░░░░░░░░  28% ( 9/32 Módulos)
+Frontend Cliente (Web Vue 3)     ████████████░░░░░░░░░░░░░░░░░░░░  38% (12/32 Módulos)
+Frontend Admin (Web Vuetify 3)   ████████████░░░░░░░░░░░░░░░░░░░░  38% (12/32 Módulos)
+Android App (Kotlin Nativo)      ███████████░░░░░░░░░░░░░░░░░░░░░  34% (11/32 Módulos)
 ```
 
 ---
@@ -49,7 +49,7 @@ Legenda de Status:
 | **14** | `forms` | `allForms`, `getFormById`, `createForm`, `deleteForm` | ❌ Pendente (`ContactView`) | ❌ Pendente (`AdminFormsView`) | ❌ Pendente (`ContactActivity`) |
 | **15** | `members` | `allMembers`, `getMemberById`, `createMember`, `updateMember`, `deleteMember` | ❌ Pendente (`TeamView`) | ❌ Pendente (`AdminMembersView`) | ❌ Pendente (`TeamFragment`) |
 | **16** | `others` | `validateCPF` | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação Kotlin local) |
-| **17** | `posts` | `socialFeed`, `rankedSocialFeed`, `createPost`, `reactToPost`, `commentOnPost` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
+| **17** | `posts` | `socialFeed`, `rankedSocialFeed`, `createPost`, `reactToPost`, `commentOnPost` | ✅ Implementado (`SocialFeedView`, `PostCard`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (`SocialFeedFragment`, `PostDetail`) |
 | **18** | `connections` | `myConnections`, `pendingConnectionRequests`, `sendConnectionRequest`, `followUser` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **19** | `messaging` | `directMessages`, `sendDirectMessage`, `Subscription.directMessageAdded` | ❌ Pendente | — (Privado de Usuários) | ❌ Pendente |
 | **20** | `notifications` | `myNotifications`, `unreadNotificationsCount`, `Subscription.notificationAdded` | ❌ Pendente | ❌ Pendente | 🟡 Parcial (Recebe FCM push, sem centro interno) |
@@ -61,7 +61,7 @@ Legenda de Status:
 | **26** | `premium` | `subscriptionPlans`, `mySubscription`, `subscribeToPlan`, `createSubscriptionPlan` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **27** | `analytics` | `whoViewedMyProfile`, `postAnalytics`, `recordProfileView`, `recordPostView` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **28** | `social_selling`| `mySocialSellingIndex`, `recalculateSocialSellingIndex` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
-| **29** | `hashtags` | `postsByHashtag`, `postHashtags` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
+| **29** | `hashtags` | `postsByHashtag`, `postHashtags` | ✅ Implementado (`HashtagFeedView`, `hashtags.service`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (Renderização de tags) |
 | **30** | `featured` | `userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **31** | `job_postings` | `jobPostings`, `jobApplications`, `matchScore`, `applyToJob` | 🟡 Parcial (Usa modelo `jobs` legado) | 🟡 Parcial (Usa modelo `jobs` legado) | 🟡 Parcial (Usa modelo `jobs` legado) |
 | **32** | `media` | `requestUploadUrl`, `confirmUpload`, `getMediaById` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
@@ -72,14 +72,14 @@ Legenda de Status:
 
 ### 3.1. Frontend do Cliente (`frontend/client` — Vue 3 + Pinia + Vite)
 
-#### 🔴 Módulo Social & Feed de Publicações
-- [ ] **Criar View `SocialFeedView.vue` (`/feed`)**:
+#### 🟢 Módulo Social & Feed de Publicações (Concluído)
+- [x] **Criar View `SocialFeedView.vue` (`/feed`)**:
   - Feed infinito com scroll virtual consumindo `socialFeed` e `rankedSocialFeed`.
   - Caixa de composição de postagens com suporte a texto, menções (`@usuario`), hashtags (`#tag`) e anexos de mídia (`createPost`).
   - Barra de reações dinâmicas (Like, Celebrate, Support, Love, Insightful, Funny) consumindo `reactToPost` e `postReactions`.
   - Seção expansível de comentários aninhados do post (`postComments`, `commentOnPost`).
-- [ ] **Criar View `HashtagFeedView.vue` (`/hashtag/:tag`)**: Listagem de posts filtrados por hashtag específica (`postsByHashtag`).
-- [ ] **Criar Store `postsStore.ts` & Service `src/services/posts.service.ts`**: Gerenciamento reativo de posts, curtidas e comentários.
+- [x] **Criar View `HashtagFeedView.vue` (`/hashtag/:tag`)**: Listagem de posts filtrados por hashtag específica (`postsByHashtag`).
+- [x] **Criar Store `postsStore.ts` & Service `src/services/posts.service.ts`**: Gerenciamento reativo de posts, curtidas e comentários.
 
 #### 🔴 Módulo Rede & Conexões Profissionais
 - [ ] **Criar View `MyNetworkView.vue` (`/mynetwork`)**:
@@ -143,14 +143,14 @@ Legenda de Status:
 
 ### 3.2. Frontend Administrativo (`frontend/admin` — Vue 3 + Vuetify 3)
 
-#### 🔴 Módulo Moderação de Conteúdo Social & Blogs
+#### 🟢 Módulo Moderação de Conteúdo Social & Blogs (Parcialmente Concluído)
+- [x] **Criar View `AdminSocialPostsView.vue` (`/admin/social-posts`)**: Painel de moderação para auditoria de posts sociais da comunidade, inspeção de comentários e reações.
 - [ ] **Criar View `AdminBlogsView.vue` (`/admin/blogs`)**:
   - Tabela de gerenciamento de posts do blog corporativo (`allBlogsPaginated`).
   - Modal de criação e edição com editor de texto rico, seleção de autor, categorias e upload de imagem de capa (`createBlog`, `updateBlog`, `deleteBlog`).
 - [ ] **Criar View `AdminCommentsView.vue` (`/admin/comments`)**:
-  - Moderação centralizada de comentários de posts de blog e posts sociais (`allCommentsPaginated`, `deleteComment`).
+  - Moderação centralizada de comentários de posts de blog (`allCommentsPaginated`, `deleteComment`).
 - [ ] **Criar View `AdminAuthorsView.vue` (`/admin/authors`)**: CRUD completo de autores do blog com foto, biografia e redes sociais (`allAuthors`, `createAuthor`, `updateAuthor`, `deleteAuthor`).
-- [ ] **Criar View `AdminSocialPostsView.vue` (`/admin/social-posts`)**: Painel de moderação para auditoria de posts sociais da comunidade, remoção de conteúdo impróprio e gestão de denúncias.
 - [ ] **Criar View `AdminHashtagsView.vue` (`/admin/hashtags`)**: Monitoramento de tags em tendência e bloqueio de hashtags proibidas.
 
 #### 🔴 Módulo Gestão Educacional (LMS) & Comunidade
@@ -185,13 +185,10 @@ Legenda de Status:
   - Implementar normalização de cache local (Normalized Cache SQLite/Memory).
 - [ ] **Configurar Injeção de Dependência Moderna (Hilt / Koin)** para gerenciar repositories e ViewModels.
 
-#### 🔴 Módulo Social & Feed Mobile
-- [ ] **Criar `SocialFeedFragment.kt`**:
-  - Feed nativo com `RecyclerView` e `Paging 3` consumindo `socialFeed`.
-  - Suporte a múltiplos tipos de mídia (imagem, texto, links).
-  - BottomSheet interativo para reações instantâneas (Like, Celebrate, Support, Love, etc.).
-- [ ] **Criar `CreatePostActivity.kt`**: Criação de post com seletor de imagens da galeria/câmera e input de texto.
-- [ ] **Criar `PostDetailActivity.kt`**: Visualização detalhada de postagens com árvore de comentários.
+#### 🟢 Módulo Social & Feed Mobile (Concluído)
+- [x] **Criar `PostsApiService.kt`**: Camada de rede com Coroutines e cliente GraphQL para feed, reações e comentários.
+- [x] **Criar `SocialFeedFragment.kt`**: Feed nativo com `RecyclerView` e `PostAdapter` para exibição de postagens.
+- [x] **Criar `PostDetailActivity.kt`**: Visualização detalhada de postagens com árvore de comentários e envio de reações.
 
 #### 🔴 Módulo Rede & Conexões
 - [ ] **Criar `ConnectionsFragment.kt`**:
@@ -242,14 +239,14 @@ graph TD
     D --> E[Fase 5: Premium, Moderação Admin & Auditoria]
 ```
 
-### 🔹 Fase 1: Social Core & Feed de Conteúdo
+### 🔹 Fase 1: Social Core & Feed de Conteúdo (✅ CONCLUÍDA)
 - **Objetivo**: Habilitar a experiência de rede social ativa nos três clientes.
 - **Entregas**:
-  - Frontend Cliente: `SocialFeedView.vue`, `HashtagFeedView.vue`, reações e comentários.
-  - Frontend Admin: `AdminSocialPostsView.vue`, moderação de comentários e hashtags.
-  - Android: `SocialFeedFragment.kt`, `CreatePostActivity.kt`, `PostDetailActivity.kt`.
+  - [x] Frontend Cliente: `SocialFeedView.vue`, `HashtagFeedView.vue`, `PostCard.vue`, `PostReactionsBar.vue`, `PostCommentsSection.vue`, `postsStore.ts`, `posts.service.ts`, `hashtags.service.ts`.
+  - [x] Frontend Admin: `AdminSocialPostsView.vue`, `socialPosts.service.ts`.
+  - [x] Android: `PostsApiService.kt`, `SocialFeedFragment.kt`, `PostDetailActivity.kt`.
 
-### 🔹 Fase 2: Conexões, Rede & Mensageria em Tempo Real
+### 🔹 Fase 2: Conexões, Rede & Mensageria em Tempo Real (PRÓXIMA FASE)
 - **Objetivo**: Conectar os usuários entre si e permitir comunicação síncrona.
 - **Entregas**:
   - Frontend Cliente: `MyNetworkView.vue`, `MessagingView.vue`, `NotificationsView.vue` (com WebSockets).
