@@ -78,6 +78,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/messaging',
+    name: 'Messaging',
+    component: () => import('../views/MessagingView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/hashtag/:tag',
     name: 'HashtagFeed',
     component: () => import('../views/HashtagFeedView.vue')
