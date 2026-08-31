@@ -94,6 +94,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdminForms',
     component: () => import('../views/AdminFormsView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/selective-processes',
+    name: 'AdminSelectiveProcesses',
+    component: () => import('../views/AdminSelectiveProcessesView.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 
