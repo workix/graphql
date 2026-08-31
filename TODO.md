@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Perfis e Destaques)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Endossos e Recomendações)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -9,17 +9,17 @@
 
 ## 1. Sumário Executivo e Diagnóstico de Cobertura
 
-O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, LMS/Cursos, Grupos, Eventos, Assinaturas Premium, Analytics e SSI).
+O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, LMS/Cursos, Grupos, Eventos, Assinaturas Premium, Analytics e SSI).
 
-As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, da **Fase 1 (Social Core & Feed)**, da **Fase 2 (Rede, Conexões, Mensageria & Notificações)** e agora da primeira etapa da **Fase 3 (Perfil Profissional Avançado, Destaques & Selo Open to Work)**.
+As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, da **Fase 1 (Social Core & Feed)**, da **Fase 2 (Rede, Conexões, Mensageria & Notificações)** e das partes 1 e 2 da **Fase 3 (Perfis Ricos, Destaques, Endossos de Competências e Recomendações)**.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     █████████████████░░░░░░░░░░░░░░░  53% (17/32 Módulos)
+Frontend Cliente (Web Vue 3)     ██████████████████░░░░░░░░░░░░░░  56% (18/32 Módulos)
 Frontend Admin (Web Vuetify 3)   █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
-Android App (Kotlin Nativo)      ████████████████░░░░░░░░░░░░░░░░  50% (16/32 Módulos)
+Android App (Kotlin Nativo)      █████████████████░░░░░░░░░░░░░░░  53% (17/32 Módulos)
 ```
 
 ---
@@ -54,7 +54,7 @@ Legenda de Status:
 | **19** | `messaging` | `directMessages`, `sendDirectMessage`, `Subscription.directMessageAdded` | ✅ Implementado (`MessagingView.vue`, `messagingStore`) | — (Privado de Usuários) | ✅ Implementado (`ChatListFragment`, `DirectChat`) |
 | **20** | `notifications` | `myNotifications`, `unreadNotificationsCount`, `Subscription.notificationAdded` | ✅ Implementado (`NotificationsView.vue`, `notificationsStore`) | 🟡 Parcial (Alertas do sistema) | ✅ Implementado (`NotificationsFragment.kt`, FCM) |
 | **21** | `profiles` | `getProfileByUserId`, `updateMyProfile` (headline, about, banner, openToWork) | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | 🟡 Parcial (Auditoria de perfis) | ✅ Implementado (`ProfileActivity`, `EditProfile`) |
-| **22** | `endorsements` | `skillEndorsements`, `endorseSkill`, `userRecommendations`, `createRecommendation` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
+| **22** | `endorsements` | `skillEndorsements`, `endorseSkill`, `userRecommendations`, `createRecommendation` | ✅ Implementado (`SkillEndorsements`, `Recommendations`) | — (Reputação Comunitária) | ✅ Implementado (`ProfileActivity`, `EndorsementsApi`) |
 | **23** | `groups` | `group`, `groupPosts`, `createGroup`, `joinGroup`, `createGroupPost` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **24** | `events` | `event`, `eventAttendees`, `createEvent`, `attendEvent` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **25** | `learning` | `course`, `courseLessons`, `courseCompletion`, `enrollInCourse`, `completeCourse` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
@@ -90,16 +90,14 @@ Legenda de Status:
 - [x] **Criar Store `notificationsStore.ts` & Service `src/services/notifications.service.ts`**
 
 #### 🟢 Módulo Perfil Profissional Avançado & Portfólio de Destaques (Concluído)
-- [x] **Criar View `ProfileEditView.vue` (`/profile/edit`) & `PublicProfileView.vue` (`/in/:id`)**:
-  - Edição de Headline profissional, Sobre/Bio, Imagem de Capa/Banner, Localização, Setor e Selo Open To Work.
-  - Portfólio de Destaques (`userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem`).
-  - Navegação pública e botões de Conectar / Enviar Mensagem.
-- [x] **Criar Store `profilesStore.ts` & Service `src/services/profiles.service.ts`**.
+- [x] **Criar View `ProfileEditView.vue` (`/profile/edit`) & `PublicProfileView.vue` (`/in/:id`)**
+- [x] **Criar Store `profilesStore.ts` & Service `src/services/profiles.service.ts`**
 
-#### 🔴 Módulo Competências (Endorsements), Recomendações & Analytics / SSI
-- [ ] **Criar componentes de Endorsements & Recomendações em `PublicProfileView.vue` e `ProfileEditView.vue`**:
-  - Endossos comunitários de competências (`skillEndorsements`, `endorseSkill`, `unendorseSkill`).
-  - Recomendações profissionais recebidas e solicitadas (`userRecommendations`, `createRecommendation`, `respondToRecommendation`).
+#### 🟢 Módulo Competências (Endorsements) & Recomendações (Concluído)
+- [x] **Criar Componentes `SkillEndorsementsSection.vue` & `RecommendationsSection.vue`**
+- [x] **Criar Store `endorsementsStore.ts` & Service `src/services/endorsements.service.ts`**
+
+#### 🔴 Módulo Social Selling Index (SSI) & Analytics
 - [ ] **Criar View `SocialSellingView.vue` (`/analytics/ssi`)**: Painel com gráficos do índice de Social Selling (`mySocialSellingIndex`, `recalculateSocialSellingIndex`).
 - [ ] **Criar View `ProfileAnalyticsView.vue` (`/analytics/views`)**: Dashboard de "Quem visualizou seu perfil" (`whoViewedMyProfile`) e métricas de engajamento de posts (`postAnalytics`).
 
@@ -182,10 +180,10 @@ Legenda de Status:
 - [x] **Criar `NotificationsFragment.kt`**: Central de notificações no app com histórico completo (`myNotifications`).
 - [x] **Criar `NotificationsApiService.kt`**: Camada de rede em Kotlin para notificações.
 
-#### 🟢 Módulo Perfil Profissional Completo & Competências (Concluído)
-- [x] **Criar `ProfileActivity.kt`**: Visualização nativa de perfil profissional, cargo, localização, resumo sobre e portfólio de destaques.
+#### 🟢 Módulo Perfil Profissional, Destaques, Endossos & Recomendações (Concluído)
+- [x] **Criar `ProfileActivity.kt`**: Visualização nativa de perfil profissional, cargo, localização, resumo sobre, portfólio de destaques, competências endossáveis e lista de recomendações.
 - [x] **Criar `EditProfileActivity.kt`**: Edição nativa de headline, sobre e ativação do selo Open To Work.
-- [x] **Criar `ProfilesApiService.kt`**: Camada de rede em Kotlin para queries e atualizações de perfil e destaques.
+- [x] **Criar `ProfilesApiService.kt` & `EndorsementsApiService.kt`**: Camada de rede em Kotlin.
 
 #### 🔴 Módulo LMS, Comunidades & Monetização
 - [ ] **Criar `CoursesFragment.kt` & `LessonPlayerActivity.kt`**: Catálogo de cursos e player.
@@ -216,7 +214,7 @@ graph TD
 ### 🔹 Fase 3: Perfil Profissional Avançado, Endorsements & Analytics (EM ANDAMENTO)
 - **Entregas**:
   - [x] **Parte 1 (Perfil & Destaques)**: `ProfileEditView.vue`, `PublicProfileView.vue`, `profilesStore.ts`, `profiles.service.ts`, `ProfilesApiService.kt`, `ProfileActivity.kt`, `EditProfileActivity.kt`.
-  - [ ] **Parte 2 (Endorsements & Recomendações)**: Endossos de skills e cartas de recomendação.
+  - [x] **Parte 2 (Endorsements & Recomendações)**: `SkillEndorsementsSection.vue`, `RecommendationsSection.vue`, `endorsementsStore.ts`, `endorsements.service.ts`, `EndorsementsApiService.kt`.
   - [ ] **Parte 3 (Social Selling Index & Analytics)**: `SocialSellingView.vue` (SSI) e `ProfileAnalyticsView.vue`.
 
 ### 🔹 Fase 4: Comunidades, Eventos & Educação (LMS)
