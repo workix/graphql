@@ -49,6 +49,14 @@
             <li><router-link to="/feed">Feed</router-link></li>
             <li><router-link to="/mynetwork">Minha Rede</router-link></li>
             <li><router-link to="/messaging">Mensagens</router-link></li>
+            <li>
+              <router-link to="/notifications" class="nav-notif-link">
+                Notificações
+                <span v-if="notificationsStore.unreadCount > 0" class="header-notif-badge">
+                  {{ notificationsStore.unreadCount }}
+                </span>
+              </router-link>
+            </li>
             <li><router-link to="/jobs">Vagas</router-link></li>
             <li><router-link to="/candidates">Candidatos</router-link></li>
             <template v-if="authStore.isCompany">
@@ -70,13 +78,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import useNotificationsStore from '../stores/notifications';
 
 const authStore = useAuthStore();
+const notificationsStore = useNotificationsStore();
 const router = useRouter();
 const isNavOpen = ref(false);
+
+onMounted(() => {
+  if (authStore.isAuthenticated) {
+    notificationsStore.fetchUnreadCount();
+  }
+});
 
 function toggleNav() {
   isNavOpen.value = !isNavOpen.value;
@@ -157,5 +173,17 @@ function handleLogout() {
   font-family: 'Montserrat', 'Lato', sans-serif;
   text-transform: uppercase;
   line-height: 1;
+}
+.nav-notif-link {
+  position: relative;
+}
+.header-notif-badge {
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 10px;
+  margin-left: 4px;
 }
 </style>
