@@ -67,6 +67,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/CompanyDetailView.vue')
   },
   {
+    path: '/feed',
+    name: 'SocialFeed',
+    component: () => import('../views/SocialFeedView.vue')
+  },
+  {
+    path: '/hashtag/:tag',
+    name: 'HashtagFeed',
+    component: () => import('../views/HashtagFeedView.vue')
+  },
+  {
     path: '/blog',
     name: 'BlogList',
     component: () => import('../views/BlogListView.vue')
