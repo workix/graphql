@@ -14,8 +14,8 @@
             <ul class="footer-links">
               <li><router-link to="/jobs">Buscar Vagas</router-link></li>
               <li><router-link to="/candidates">Buscar Currículos</router-link></li>
-              <li><router-link to="/post-job">Publicar uma Vaga</router-link></li>
-              <li><router-link to="/post-resume">Cadastrar Currículo</router-link></li>
+              <li><router-link to="/team">Nossa Equipe</router-link></li>
+              <li><router-link to="/contact">Fale Conosco</router-link></li>
             </ul>
           </div>
         </div>
