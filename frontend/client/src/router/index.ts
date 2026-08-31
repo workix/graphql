@@ -153,6 +153,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/HashtagFeedView.vue')
   },
   {
+    path: '/premium',
+    name: 'PremiumPlans',
+    component: () => import('../views/PremiumPlansView.vue')
+  },
+  {
     path: '/blog',
     name: 'BlogList',
     component: () => import('../views/BlogListView.vue')
