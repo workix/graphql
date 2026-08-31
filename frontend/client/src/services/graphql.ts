@@ -42,6 +42,21 @@ class GraphQLClient {
       }
       return config;
     });
+
+    this.http.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          try {
+            const authStore = useAuthStore();
+            authStore.logout();
+          } catch {
+            // Contexto fora do Vue
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   public async request<TData = any, TVariables = Record<string, any>>(
