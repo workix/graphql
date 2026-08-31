@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após conclusão das Fases 1, 2, 3 e 4)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Workix Premium)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -11,15 +11,15 @@
 
 O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, Eventos & RSVP, LMS/Cursos, Monetização Premium e Mídia Segura).
 
-As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico e de todas as **Fases 1, 2, 3 e 4 (Social Core, Rede, Perfil Avançado, Analytics, Grupos, Eventos e Learning LMS)**.
+As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, de todas as **Fases 1, 2, 3 e 4**, e agora avançam na **Fase 5 (Monetização, Assinaturas Premium & Moderação Final)** com a entrega de Planos de Assinatura, InMails e Benefícios Premium.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     ███████████████████████░░░░░░░░░  72% (23/32 Módulos)
+Frontend Cliente (Web Vue 3)     ████████████████████████░░░░░░░░  75% (24/32 Módulos)
 Frontend Admin (Web Vuetify 3)   █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
-Android App (Kotlin Nativo)      ██████████████████████░░░░░░░░░░  69% (22/32 Módulos)
+Android App (Kotlin Nativo)      ███████████████████████░░░░░░░░░  72% (23/32 Módulos)
 ```
 
 ---
@@ -58,7 +58,7 @@ Legenda de Status:
 | **23** | `groups` | `group`, `groupPosts`, `createGroup`, `joinGroup`, `createGroupPost` | ✅ Implementado (`GroupsListView`, `GroupDetailView`) | 🟡 Parcial (Auditoria de Grupos) | ✅ Implementado (`GroupsFragment`, `GroupDetail`) |
 | **24** | `events` | `event`, `eventAttendees`, `createEvent`, `attendEvent` | ✅ Implementado (`EventsListView`, `EventDetailView`) | 🟡 Parcial (Auditoria de Eventos) | ✅ Implementado (`EventsFragment`, `EventDetail`) |
 | **25** | `learning` | `course`, `courseLessons`, `courseCompletion`, `enrollInCourse`, `completeCourse` | ✅ Implementado (`CoursesCatalog`, `CourseDetail`, `LessonPlayer`) | 🟡 Parcial (Auditoria de Cursos) | ✅ Implementado (`CoursesFragment`, `LessonPlayer`) |
-| **26** | `premium` | `subscriptionPlans`, `mySubscription`, `subscribeToPlan`, `createSubscriptionPlan` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
+| **26** | `premium` | `subscriptionPlans`, `mySubscription`, `subscribeToPlan`, `createSubscriptionPlan` | ✅ Implementado (`PremiumPlansView`) | 🟡 Parcial (Gestão de Planos) | ✅ Implementado (`PremiumPlansActivity`) |
 | **27** | `analytics` | `whoViewedMyProfile`, `postAnalytics`, `recordProfileView`, `recordPostView` | ✅ Implementado (`ProfileAnalyticsView.vue`, `analyticsStore`) | 🟡 Parcial (Métricas no Dashboard) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
 | **28** | `social_selling`| `mySocialSellingIndex`, `recalculateSocialSellingIndex` | ✅ Implementado (`SocialSellingView.vue`, `analyticsStore`) | 🟡 Parcial (Métricas no Dashboard) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
 | **29** | `hashtags` | `postsByHashtag`, `postHashtags` | ✅ Implementado (`HashtagFeedView`, `hashtags.service`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (Renderização de tags) |
@@ -114,11 +114,9 @@ Legenda de Status:
 - [x] **Criar View `CoursesCatalogView.vue` (`/learning`), `CourseDetailView.vue` (`/learning/:id`) & `LessonPlayerView.vue` (`/learning/:courseId/lesson/:lessonId`)**
 - [x] **Criar Store `learningStore.ts` & Service `src/services/learning.service.ts`**
 
-#### 🔴 Módulo Monetização & Assinaturas Premium
-- [ ] **Criar View `PremiumPlansView.vue` (`/premium`)**:
-  - Tabela comparativa de planos (Free vs Premium Career vs Recruiter) com preços e benefícios (`subscriptionPlans`).
-  - Fluxo de contratação / assinatura (`subscribeToPlan`).
-  - Exibição de créditos de InMail restantes e status da assinatura ativa (`mySubscription`).
+#### 🟢 Módulo Monetização & Assinaturas Premium (Concluído)
+- [x] **Criar View `PremiumPlansView.vue` (`/premium`)**
+- [x] **Criar Store `premiumStore.ts` & Service `src/services/premium.service.ts`**
 
 #### 🔴 Módulo Institucional & Suporte
 - [ ] **Criar View `ContactView.vue` (`/contact`)**: Formulário de contato e ouvidoria (`createForm`).
@@ -201,8 +199,11 @@ Legenda de Status:
 - [x] **Criar `CoursesFragment.kt` & `LessonPlayerActivity.kt`**: Catálogo nativo de cursos e player de aulas.
 - [x] **Criar `LearningApiService.kt`**: Camada de rede em Kotlin para cursos e aulas.
 
-#### 🔴 Módulo Monetização & Suporte
-- [ ] **Criar `PremiumPlansActivity.kt`**: Apresentação de planos e benefícios de assinatura.
+#### 🟢 Módulo Monetização & Assinaturas Premium Mobile (Concluído)
+- [x] **Criar `PremiumPlansActivity.kt`**: Apresentação de planos e benefícios de assinatura.
+- [x] **Criar `PremiumApiService.kt`**: Camada de rede em Kotlin para planos e assinaturas.
+
+#### 🔴 Módulo Suporte & Operações
 - [ ] **Criar `MyApplicationsFragment.kt`**: Painel do candidato para acompanhar status em processos seletivos.
 - [ ] **Criar `ContactActivity.kt`**: Envio de mensagens de suporte/contato.
 
@@ -215,7 +216,7 @@ graph TD
     A[Fase 1: Social Core & Feed] --> B[Fase 2: Conexões & Mensageria Real-Time]
     B --> C[Fase 3: Perfil Avançado, Endorsements & Analytics]
     C --> D[Fase 4: Grupos, Eventos & Learning LMS]
-    D --> E[Fase 5: Premium, Moderação Admin & Auditoria]
+    D --> E[Fase 5: Premium, Suporte & Moderação Admin]
 ```
 
 ### 🔹 Fase 1: Social Core & Feed de Conteúdo (✅ CONCLUÍDA)
@@ -228,17 +229,13 @@ graph TD
 - **Entregas**: `ProfileEditView.vue`, `PublicProfileView.vue`, `SkillEndorsementsSection.vue`, `RecommendationsSection.vue`, `SocialSellingView.vue`, `ProfileAnalyticsView.vue`, `ProfileActivity.kt`, `ProfileAnalyticsActivity.kt`.
 
 ### 🔹 Fase 4: Comunidades, Eventos & Educação (LMS) (✅ CONCLUÍDA)
-- **Entregas**:
-  - [x] **Parte 1 (Grupos & Comunidades)**: `GroupsListView.vue`, `GroupDetailView.vue`, `groupsStore.ts`, `groups.service.ts`, `GroupsApiService.kt`, `GroupsFragment.kt`, `GroupDetailActivity.kt`.
-  - [x] **Parte 2 (Eventos Profissionais & RSVP)**: `EventsListView.vue`, `EventDetailView.vue`, `eventsStore.ts`, `events.service.ts`, `EventsApiService.kt`, `EventsFragment.kt`, `EventDetailActivity.kt`.
-  - [x] **Parte 3 (Cursos, Aulas & Learning LMS)**: `CoursesCatalogView.vue`, `CourseDetailView.vue`, `LessonPlayerView.vue`, `learningStore.ts`, `learning.service.ts`, `LearningApiService.kt`, `CoursesFragment.kt`, `LessonPlayerActivity.kt`.
+- **Entregas**: `GroupsListView.vue`, `GroupDetailView.vue`, `EventsListView.vue`, `EventDetailView.vue`, `CoursesCatalogView.vue`, `CourseDetailView.vue`, `LessonPlayerView.vue`, `GroupsFragment.kt`, `EventsFragment.kt`, `CoursesFragment.kt`.
 
-### 🔹 Fase 5: Monetização, Assinaturas Premium & Moderação Final (PRÓXIMA FASE)
-- **Objetivo**: Estruturar planos pagos, faturamento e fechar todas as telas administrativas pendentes.
+### 🔹 Fase 5: Monetização, Suporte Institucional & Moderação Final (EM ANDAMENTO)
 - **Entregas**:
-  - Frontend Cliente: `PremiumPlansView.vue`, `ContactView.vue`, `TeamView.vue`, upload seguro de mídia.
-  - Frontend Admin: `AdminPlansView.vue`, `AdminBlogsView.vue`, `AdminAuthorsView.vue`, `AdminMembersView.vue`, `AdminFormsView.vue`, `AdminSelectiveProcessesView.vue`.
-  - Android: `PremiumPlansActivity.kt`, `MyApplicationsFragment.kt`, `ContactActivity.kt`.
+  - [x] **Parte 1 (Monetização & Planos Premium)**: `PremiumPlansView.vue`, `premiumStore.ts`, `premium.service.ts`, `PremiumApiService.kt`, `PremiumPlansActivity.kt`.
+  - [ ] **Parte 2 (Formulários de Contato & Equipe Institucional)**: `ContactView.vue` (`/contact`), `TeamView.vue` (`/team`), `forms.service.ts`, `members.service.ts`, `ContactActivity.kt`, `TeamFragment.kt`.
+  - [ ] **Parte 3 (Moderação Administrativa e Auditoria)**: `AdminBlogsView.vue`, `AdminCommentsView.vue`, `AdminAuthorsView.vue`, `AdminCoursesView.vue`, `AdminPlansView.vue`.
 
 ---
 
