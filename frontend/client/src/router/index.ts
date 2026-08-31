@@ -166,6 +166,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/blog/:id',
     name: 'BlogPost',
     component: () => import('../views/BlogPostView.vue')
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: () => import('../views/ContactView.vue')
+  },
+  {
+    path: '/team',
+    name: 'Team',
+    component: () => import('../views/TeamView.vue')
   }
 ];
 
