@@ -49,6 +49,7 @@
             <li><router-link to="/feed">Feed</router-link></li>
             <li><router-link to="/mynetwork">Minha Rede</router-link></li>
             <li><router-link to="/groups">Grupos</router-link></li>
+            <li><router-link to="/events">Eventos</router-link></li>
             <li><router-link to="/messaging">Mensagens</router-link></li>
             <li>
               <router-link to="/notifications" class="nav-notif-link">
