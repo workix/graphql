@@ -48,6 +48,7 @@
         <v-list-item to="/events" prepend-icon="mdi-calendar-clock" title="Eventos Profissionais" value="events"></v-list-item>
         <v-list-item to="/plans" prepend-icon="mdi-diamond" title="Planos Premium" value="plans"></v-list-item>
         <v-list-item to="/forms" prepend-icon="mdi-email-open-outline" title="Caixa de Suporte" value="forms"></v-list-item>
+        <v-list-item to="/media" prepend-icon="mdi-folder-image" title="Mídias & Arquivos" value="media"></v-list-item>
         <v-list-item to="/companies" prepend-icon="mdi-domain" title="Empresas Parceiras" value="companies"></v-list-item>
         <v-list-item to="/candidates" prepend-icon="mdi-account-search" title="Candidatos & Currículos" value="candidates"></v-list-item>
         <v-list-item to="/testimonials" prepend-icon="mdi-comment-quote" title="Depoimentos" value="testimonials"></v-list-item>
