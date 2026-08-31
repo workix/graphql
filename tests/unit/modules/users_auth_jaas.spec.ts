@@ -2,9 +2,10 @@ import usersRepository from '../../../src/modules/users/repository/users.repo';
 import usersResolvers from '../../../src/modules/users/graphql/users.resolvers';
 import UserDTO from '../../../src/dtos/UserDTO';
 import authRepository from '../../../src/modules/auth/repository/auth.repo';
+import authResolvers from '../../../src/modules/auth/graphql/auth.resolvers';
 import jaasUsersRepository from '../../../src/modules/jaas/repository/jaas_users.repo';
 import jaasRolesRepository from '../../../src/modules/jaas/repository/jaas_roles.repo';
-import { User, JAASUser, JAASRole } from '../../../src/models';
+import { User, JAASUser, JAASRole, Company, Candidate, Resume } from '../../../src/models';
 import * as jwt from 'jsonwebtoken';
 
 jest.mock('jsonwebtoken', () => ({
@@ -46,6 +47,15 @@ jest.mock('../../../src/models', () => ({
     update: jest.fn(),
     destroy: jest.fn(),
     count: jest.fn()
+  },
+  Company: {
+    findOne: jest.fn()
+  },
+  Candidate: {
+    findOne: jest.fn()
+  },
+  Resume: {
+    findOne: jest.fn()
   }
 }));
 
@@ -83,9 +93,90 @@ describe('Modules - Users, Auth & JAAS Repositories', () => {
   });
 
   describe('authRepository', () => {
-    it('should initialize correctly', () => {
-      const repo = authRepository(mockDb);
+    let repo: any;
+
+    beforeEach(() => {
+      repo = authRepository(mockDb);
+    });
+
+    it('should initialize correctly and export expected methods', () => {
       expect(repo).toBeDefined();
+      expect(repo.findByFirebaseUUIDAndEmail).toBeDefined();
+      expect(repo.getAboutMe).toBeDefined();
+      expect(repo.generateToken).toBeDefined();
+    });
+
+    it('should find user by firebase_uuid and email', async () => {
+      const mockUser = { id: 1, email: 'user@workix.com', firebase_uuid: 'fb-uid-123' };
+      (User.findOne as jest.Mock).mockResolvedValue(mockUser);
+
+      const result = await repo.findByFirebaseUUIDAndEmail('fb-uid-123', 'user@workix.com');
+      expect(User.findOne).toHaveBeenCalledWith({
+        where: { firebase_uuid: 'fb-uid-123', email: 'user@workix.com' }
+      });
+      expect(result).toBe(mockUser);
+    });
+
+    it('should return getAboutMe with user, company, candidate and resume', async () => {
+      const mockUser = { id: 1, email: 'user@workix.com', firebase_uuid: 'fb-uid-123' };
+      const mockCompany = { id: 10, user_id: 1, name: 'Workix Corp' };
+      const mockCandidate = { id: 20, user_id: 1 };
+      const mockResume = { id: 30, candidate_id: 20 };
+
+      (User.findOne as jest.Mock).mockResolvedValue(mockUser);
+      (Company.findOne as jest.Mock).mockResolvedValue(mockCompany);
+      (Candidate.findOne as jest.Mock).mockResolvedValue(mockCandidate);
+      (Resume.findOne as jest.Mock).mockResolvedValue(mockResume);
+
+      const result = await repo.getAboutMe('fb-uid-123', 'user@workix.com');
+      expect(result).toEqual({
+        user: mockUser,
+        company: mockCompany,
+        candidate: mockCandidate,
+        resume: mockResume
+      });
+    });
+
+    it('should return getAboutMe with resume as null when candidate is not found', async () => {
+      const mockUser = { id: 1, email: 'company@workix.com', firebase_uuid: 'fb-comp-123' };
+      const mockCompany = { id: 10, user_id: 1, name: 'Workix Corp' };
+
+      (User.findOne as jest.Mock).mockResolvedValue(mockUser);
+      (Company.findOne as jest.Mock).mockResolvedValue(mockCompany);
+      (Candidate.findOne as jest.Mock).mockResolvedValue(null);
+
+      const result = await repo.getAboutMe('fb-comp-123', 'company@workix.com');
+      expect(result).toEqual({
+        user: mockUser,
+        company: mockCompany,
+        candidate: null,
+        resume: null
+      });
+    });
+
+    it('should return nulls in getAboutMe when user is not found', async () => {
+      (User.findOne as jest.Mock).mockResolvedValue(null);
+
+      const result = await repo.getAboutMe('non-existent', 'notfound@workix.com');
+      expect(result).toEqual({
+        user: null,
+        company: null,
+        candidate: null,
+        resume: null
+      });
+    });
+
+    it('should generate JWT token with user firebase_uuid, default expiresIn and fallback secret', () => {
+      delete process.env.JWT_SECRET;
+      (jwt.sign as jest.Mock).mockReturnValue('mock-jwt-token');
+      const defaultRepo = authRepository();
+      const token = defaultRepo.generateToken({ firebase_uuid: 'fb-123', email: 'test@workix.com' });
+      expect(jwt.sign).toHaveBeenCalledWith(
+        { id: 'fb-123', sub: 'test@workix.com' },
+        'secret',
+        { expiresIn: 900 }
+      );
+      expect(token).toBe('mock-jwt-token');
     });
   });
 
@@ -343,4 +434,77 @@ describe('Modules - Users, Auth & JAAS Repositories', () => {
       expect(result.totalPages).toBe(1);
     });
   });
+
+  describe('authResolvers', () => {
+    it('should login successfully and return token in doLogin mutation', async () => {
+      const mockUser = { id: 1, email: 'user@workix.com', firebase_uuid: 'fb-123' };
+      (User.findOne as jest.Mock).mockResolvedValue(mockUser);
+      (jwt.sign as jest.Mock).mockReturnValue('mocked-token-xyz');
+
+      const ctx = { orm: mockDb };
+      const result = await authResolvers.Mutation.doLogin(
+        null,
+        { input: { firebaseUUID: 'fb-123', email: 'user@workix.com' } },
+        ctx,
+        mockInfo
+      );
+
+      expect(result).toBe('mocked-token-xyz');
+    });
+
+    it('should throw error when user is not found in doLogin mutation', async () => {
+      (User.findOne as jest.Mock).mockResolvedValue(null);
+
+      const ctx = { orm: mockDb };
+      await expect(
+        authResolvers.Mutation.doLogin(
+          null,
+          { input: { firebaseUUID: 'wrong-uid', email: 'wrong@workix.com' } },
+          ctx,
+          mockInfo
+        )
+      ).rejects.toThrow('Email or FirebaseUUID is invalid');
+    });
+
+    it('should execute aboutMe query successfully with valid auth context', async () => {
+      const mockUser = { id: 1, email: 'user@workix.com', firebase_uuid: 'fb-123' };
+      const mockCompany = { id: 10, user_id: 1 };
+      const mockCandidate = { id: 20, user_id: 1 };
+      const mockResume = { id: 30, candidate_id: 20 };
+
+      (User.findOne as jest.Mock).mockResolvedValue(mockUser);
+      (Company.findOne as jest.Mock).mockResolvedValue(mockCompany);
+      (Candidate.findOne as jest.Mock).mockResolvedValue(mockCandidate);
+      (Resume.findOne as jest.Mock).mockResolvedValue(mockResume);
+      (jwt.verify as jest.Mock).mockImplementation((token, secret, cb) => cb(null, { id: 'fb-123', sub: 'user@workix.com' }));
+
+      const ctx = {
+        orm: mockDb,
+        user: { id: 1, email: 'user@workix.com', firebase_uuid: 'fb-123' },
+        authorization: 'Bearer valid-token'
+      };
+
+      const result = await authResolvers.Query.aboutMe(null, {}, ctx, mockInfo);
+      expect(result).toEqual({
+        user: mockUser,
+        company: mockCompany,
+        candidate: mockCandidate,
+        resume: mockResume
+      });
+    });
+
+    it('should throw error in aboutMe query when auth context payload is missing', async () => {
+      (jwt.verify as jest.Mock).mockImplementation((token, secret, cb) => cb(null, {}));
+      const ctx = {
+        orm: mockDb,
+        user: {},
+        authorization: 'Bearer valid-token'
+      };
+
+      await expect(
+        authResolvers.Query.aboutMe(null, {}, ctx, mockInfo)
+      ).rejects.toThrow('Unauthorized! Token payload is invalid');
+    });
+  });
 });
+
