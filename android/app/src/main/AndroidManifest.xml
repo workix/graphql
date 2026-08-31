@@ -49,6 +49,8 @@
         <activity android:name="br.com.codecode.workix.android.ui.blog.BlogPostActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.social.PostDetailActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.chat.DirectChatActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.profile.ProfileActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.profile.EditProfileActivity" />
 
     </application>
 
