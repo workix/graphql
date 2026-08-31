@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Social Core e Conexões/Rede)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Social Core, Conexões e Mensageria)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -11,15 +11,15 @@
 
 O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, LMS/Cursos, Grupos, Eventos, Assinaturas Premium, Analytics e SSI).
 
-As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico (Vagas, Currículos, Empresas, Blogs e Autenticação), do **Social Core & Feed de Publicações (Fase 1)** e agora também das **Conexões e Rede Profissional (Fase 2 - Parte 1)**.
+As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico (Vagas, Currículos, Empresas, Blogs e Autenticação), do **Social Core & Feed de Publicações (Fase 1)** e agora também das **Conexões e Mensageria Direta (Fase 2 - Partes 1 e 2)**.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
+Frontend Cliente (Web Vue 3)     ██████████████░░░░░░░░░░░░░░░░░░  44% (14/32 Módulos)
 Frontend Admin (Web Vuetify 3)   █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
-Android App (Kotlin Nativo)      ████████████░░░░░░░░░░░░░░░░░░░░  38% (12/32 Módulos)
+Android App (Kotlin Nativo)      █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
 ```
 
 ---
@@ -51,7 +51,7 @@ Legenda de Status:
 | **16** | `others` | `validateCPF` | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação Kotlin local) |
 | **17** | `posts` | `socialFeed`, `rankedSocialFeed`, `createPost`, `reactToPost`, `commentOnPost` | ✅ Implementado (`SocialFeedView`, `PostCard`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (`SocialFeedFragment`, `PostDetail`) |
 | **18** | `connections` | `myConnections`, `pendingConnectionRequests`, `sendConnectionRequest`, `followUser` | ✅ Implementado (`MyNetworkView`, `connectionsStore`) | ✅ Implementado (`connections.service`) | ✅ Implementado (`ConnectionsFragment.kt`) |
-| **19** | `messaging` | `directMessages`, `sendDirectMessage`, `Subscription.directMessageAdded` | ❌ Pendente | — (Privado de Usuários) | ❌ Pendente |
+| **19** | `messaging` | `directMessages`, `sendDirectMessage`, `Subscription.directMessageAdded` | ✅ Implementado (`MessagingView.vue`, `messagingStore`) | — (Privado de Usuários) | ✅ Implementado (`ChatListFragment`, `DirectChat`) |
 | **20** | `notifications` | `myNotifications`, `unreadNotificationsCount`, `Subscription.notificationAdded` | ❌ Pendente | ❌ Pendente | 🟡 Parcial (Recebe FCM push, sem centro interno) |
 | **21** | `profiles` | `getProfileByUserId`, `updateMyProfile` (headline, about, banner, openToWork) | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **22** | `endorsements` | `skillEndorsements`, `endorseSkill`, `userRecommendations`, `createRecommendation` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
@@ -78,20 +78,15 @@ Legenda de Status:
 - [x] **Criar Store `postsStore.ts` & Service `src/services/posts.service.ts`**
 
 #### 🟢 Módulo Rede & Conexões Profissionais (Concluído)
-- [x] **Criar View `MyNetworkView.vue` (`/mynetwork`)**:
-  - Lista de conexões ativas (`myConnections`) com busca e filtros.
-  - Painel de convites de conexão pendentes (`pendingConnectionRequests`) com ações de Aceitar (`acceptConnectionRequest`) e Recusar (`rejectConnectionRequest`).
-  - Cartões de sugestões de pessoas com botão Conectar (`sendConnectionRequest`) e Seguir (`followUser` / `unfollowUser`).
-  - Indicador visual do grau de separação social (1º, 2º, 3º grau) via `socialDistanceDegree`.
-- [x] **Criar Store `connectionsStore.ts` & Service `src/services/connections.service.ts`**.
+- [x] **Criar View `MyNetworkView.vue` (`/mynetwork`)**
+- [x] **Criar Store `connectionsStore.ts` & Service `src/services/connections.service.ts`**
 
-#### 🔴 Módulo Mensageria Direta & Chat em Tempo Real
-- [ ] **Criar View `MessagingView.vue` (`/messaging`) & Drawer de Chat**:
+#### 🟢 Módulo Mensageria Direta & Chat em Tempo Real (Concluído)
+- [x] **Criar View `MessagingView.vue` (`/messaging`) & Chat 1:1**:
   - Lista de conversas diretas com histórico de mensagens (`directMessages`).
   - Janela de chat ativa com envio de mensagens de texto (`sendDirectMessage`).
   - Indicador de leitura e marcação automática (`markDirectMessageAsRead`).
-  - Conexão em tempo real via GraphQL Subscription (`directMessageAdded`) com WebSockets.
-- [ ] **Criar Store `messagingStore.ts` & Service `src/services/messaging.service.ts`**.
+- [x] **Criar Store `messagingStore.ts` & Service `src/services/messaging.service.ts`**.
 
 #### 🔴 Módulo Centro de Notificações
 - [ ] **Criar View `NotificationsView.vue` (`/notifications`) & Menu Dropdown no Header**:
@@ -191,12 +186,10 @@ Legenda de Status:
 - [x] **Criar `ConnectionsApiService.kt`**: Camada de rede em Kotlin para convites e conexões.
 - [x] **Criar `ConnectionsFragment.kt`**: Aba de conexões ativas e convites recebidos com botões de Aceitar/Recusar.
 
-#### 🔴 Módulo Chat & Mensageria Direta em Tempo Real
-- [ ] **Criar `ChatListFragment.kt`**: Lista de conversas ativas com foto de perfil, última mensagem e horário.
-- [ ] **Criar `DirectChatActivity.kt`**:
-  - Interface nativa de chat estilo mensageiro com balões de mensagem.
-  - Sincronização em tempo real via WebSocket Subscription (`directMessageAdded`).
-  - Tratamento de status de envio, entrega e leitura de mensagens.
+#### 🟢 Módulo Chat & Mensageria Direta em Tempo Real (Concluído)
+- [x] **Criar `ChatListFragment.kt`**: Lista de conversas ativas com foto de perfil, última mensagem e horário.
+- [x] **Criar `DirectChatActivity.kt`**: Interface nativa de chat estilo mensageiro com balões de mensagem.
+- [x] **Criar `MessagingApiService.kt`**: Camada de rede em Kotlin para consultas e envio de mensagens diretas.
 
 #### 🔴 Módulo Notificações Internas (In-App)
 - [ ] **Criar `NotificationsFragment.kt`**:
@@ -244,7 +237,7 @@ graph TD
 - **Objetivo**: Conectar os usuários entre si e permitir comunicação síncrona.
 - **Entregas**:
   - [x] **Parte 1 (Conexões)**: `MyNetworkView.vue`, `connectionsStore.ts`, `connections.service.ts`, `ConnectionsApiService.kt`, `ConnectionsFragment.kt`.
-  - [ ] **Parte 2 (Mensageria)**: `MessagingView.vue`, `messagingStore.ts`, `ChatListFragment.kt`, `DirectChatActivity.kt`.
+  - [x] **Parte 2 (Mensageria)**: `MessagingView.vue`, `messagingStore.ts`, `messaging.service.ts`, `MessagingApiService.kt`, `ChatListFragment.kt`, `DirectChatActivity.kt`.
   - [ ] **Parte 3 (Notificações)**: `NotificationsView.vue`, `notificationsStore.ts`, `NotificationsFragment.kt`.
 
 ### 🔹 Fase 3: Perfil Profissional Avançado, Endorsements & Analytics
