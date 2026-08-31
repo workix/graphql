@@ -47,6 +47,7 @@
         <activity android:name="br.com.codecode.workix.android.ui.candidates.PostResumeActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.companies.CompanyDetailActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.blog.BlogPostActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.social.PostDetailActivity" />
 
     </application>
 
