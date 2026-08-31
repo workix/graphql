@@ -5,6 +5,7 @@ import { Company, CompanyMedia, SelectiveProcess, SelectiveProcessCandidate, Job
 
 jest.mock('../../../src/models', () => ({
   Company: {
+    rawAttributes: { id: {}, name: {}, logo: {} },
     findAll: jest.fn(),
     findOne: jest.fn(),
     findByPk: jest.fn(),
@@ -27,7 +28,8 @@ jest.mock('../../../src/models', () => ({
     count: jest.fn()
   },
   SelectiveProcessCandidate: {
-    create: jest.fn()
+    create: jest.fn(),
+    findOrCreate: jest.fn().mockResolvedValue([{ id: 1 }, true])
   },
   Job: {
     count: jest.fn()
