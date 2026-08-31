@@ -42,6 +42,21 @@ class AdminGraphQLClient {
       }
       return config;
     });
+
+    this.http.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          try {
+            const adminAuthStore = useAdminAuthStore();
+            adminAuthStore.logout();
+          } catch {
+            // Contexto fora do Vue
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   public async request<TData = any, TVariables = Record<string, any>>(
