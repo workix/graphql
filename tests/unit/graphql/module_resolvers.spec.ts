@@ -52,7 +52,7 @@ jest.mock('../../../src/models', () => {
     Candidate: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
     Job: { findAll: jest.fn().mockResolvedValue([mockModelObj]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
     Resume: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
-    Company: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
+    Company: { rawAttributes: { id: {}, name: {}, logo: {} }, findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
     SelectiveProcess: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
     Blog: { findAll: jest.fn().mockResolvedValue([mockModelObj]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
     Comment: { findAll: jest.fn().mockResolvedValue([]), findOne: jest.fn().mockResolvedValue(mockModelObj), findByPk: jest.fn().mockResolvedValue(mockModelObj), create: jest.fn().mockResolvedValue(mockModelObj), update: jest.fn().mockResolvedValue([[1], []]), destroy: jest.fn().mockResolvedValue(1), count: jest.fn().mockResolvedValue(1) },
@@ -69,8 +69,8 @@ jest.mock('../../../src/models', () => {
     BlogTag: { create: jest.fn().mockResolvedValue(mockModelObj) },
     MemberMedia: { create: jest.fn().mockResolvedValue(mockModelObj) },
     CompanyMedia: { create: jest.fn().mockResolvedValue(mockModelObj) },
-    JobCandidate: { create: jest.fn().mockResolvedValue(mockModelObj) },
-    SelectiveProcessCandidate: { create: jest.fn().mockResolvedValue(mockModelObj) }
+    JobCandidate: { create: jest.fn().mockResolvedValue(mockModelObj), findOrCreate: jest.fn().mockResolvedValue([mockModelObj, true]) },
+    SelectiveProcessCandidate: { create: jest.fn().mockResolvedValue(mockModelObj), findOrCreate: jest.fn().mockResolvedValue([mockModelObj, true]) }
   };
 });
 
