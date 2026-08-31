@@ -70,6 +70,30 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdminSocialPosts',
     component: () => import('../views/AdminSocialPostsView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/blogs',
+    name: 'AdminBlogs',
+    component: () => import('../views/AdminBlogsView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/courses',
+    name: 'AdminCourses',
+    component: () => import('../views/AdminCoursesView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/plans',
+    name: 'AdminPlans',
+    component: () => import('../views/AdminPlansView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/forms',
+    name: 'AdminForms',
+    component: () => import('../views/AdminFormsView.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 
