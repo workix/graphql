@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Workix Premium)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Suporte, Ouvidoria e Equipe Institucional)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -9,17 +9,17 @@
 
 ## 1. Sumário Executivo e Diagnóstico de Cobertura
 
-O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, Eventos & RSVP, LMS/Cursos, Monetização Premium e Mídia Segura).
+O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, Eventos & RSVP, LMS/Cursos, Monetização Premium, Ouvidoria/Suporte Institucional, Equipe e Mídia Segura).
 
-As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, de todas as **Fases 1, 2, 3 e 4**, e agora avançam na **Fase 5 (Monetização, Assinaturas Premium & Moderação Final)** com a entrega de Planos de Assinatura, InMails e Benefícios Premium.
+As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, de todas as **Fases 1, 2, 3 e 4**, e agora avançam na **Fase 5 (Monetização, Suporte Institucional & Moderação Final)** com mais de **81% de paridade no Frontend** e **78% no Android**.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     ████████████████████████░░░░░░░░  75% (24/32 Módulos)
+Frontend Cliente (Web Vue 3)     ██████████████████████████░░░░░░  81% (26/32 Módulos)
 Frontend Admin (Web Vuetify 3)   █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
-Android App (Kotlin Nativo)      ███████████████████████░░░░░░░░░  72% (23/32 Módulos)
+Android App (Kotlin Nativo)      █████████████████████████░░░░░░░  78% (25/32 Módulos)
 ```
 
 ---
@@ -46,8 +46,8 @@ Legenda de Status:
 | **11** | `subscribers` | `allSubscribers`, `subscribeMail`, `deleteSubscriber` | ✅ Implementado (`TheFooter`) | ✅ Implementado (`AdminSubscribersView`) | 🟡 Parcial (Newsletter na Home) |
 | **12** | `jaas` | `allJAASUsers`, `allJAASRoles`, `createJAASRole`, `updateJAASRole` | — (Exclusivo Admin) | ✅ Implementado (`AdminJAASUsers`, `AdminJAASRoles`) | — (Exclusivo Admin) |
 | **13** | `stats` | `statisticsCount` | ✅ Implementado (`HomeView`) | ✅ Implementado (`AdminDashboardView`) | 🟡 Parcial (Home) |
-| **14** | `forms` | `allForms`, `getFormById`, `createForm`, `deleteForm` | ❌ Pendente (`ContactView`) | ❌ Pendente (`AdminFormsView`) | ❌ Pendente (`ContactActivity`) |
-| **15** | `members` | `allMembers`, `getMemberById`, `createMember`, `updateMember`, `deleteMember` | ❌ Pendente (`TeamView`) | ❌ Pendente (`AdminMembersView`) | ❌ Pendente (`TeamFragment`) |
+| **14** | `forms` | `allForms`, `getFormById`, `createForm`, `deleteForm` | ✅ Implementado (`ContactView`) | 🟡 Parcial (Caixa de Entrada) | ✅ Implementado (`ContactActivity`) |
+| **15** | `members` | `allMembers`, `getMemberById`, `createMember`, `updateMember`, `deleteMember` | ✅ Implementado (`TeamView`) | 🟡 Parcial (Gestão da Equipe) | ✅ Implementado (`TeamFragment`) |
 | **16** | `others` | `validateCPF` | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação Kotlin local) |
 | **17** | `posts` | `socialFeed`, `rankedSocialFeed`, `createPost`, `reactToPost`, `commentOnPost` | ✅ Implementado (`SocialFeedView`, `PostCard`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (`SocialFeedFragment`, `PostDetail`) |
 | **18** | `connections` | `myConnections`, `pendingConnectionRequests`, `sendConnectionRequest`, `followUser` | ✅ Implementado (`MyNetworkView`, `connectionsStore`) | ✅ Implementado (`connections.service`) | ✅ Implementado (`ConnectionsFragment.kt`) |
@@ -118,9 +118,12 @@ Legenda de Status:
 - [x] **Criar View `PremiumPlansView.vue` (`/premium`)**
 - [x] **Criar Store `premiumStore.ts` & Service `src/services/premium.service.ts`**
 
-#### 🔴 Módulo Institucional & Suporte
-- [ ] **Criar View `ContactView.vue` (`/contact`)**: Formulário de contato e ouvidoria (`createForm`).
-- [ ] **Criar View `TeamView.vue` (`/team`)**: Apresentação dos membros da equipe e redes sociais (`allMembers`).
+#### 🟢 Módulo Institucional & Suporte (Concluído)
+- [x] **Criar View `ContactView.vue` (`/contact`)**: Formulário de contato e ouvidoria (`createForm`).
+- [x] **Criar View `TeamView.vue` (`/team`)**: Apresentação dos membros da equipe e redes sociais (`allMembers`).
+- [x] **Criar `forms.service.ts` & `members.service.ts`**
+
+#### 🔴 Módulo Upload de Mídia
 - [ ] **Implementar Upload Direto de Mídia (`src/services/media.service.ts`)**: Integração de upload de arquivos (avatar, banner, anexos de posts e currículos em PDF) utilizando fluxo assíncrono seguro (`requestUploadUrl`, `confirmUpload`).
 
 ---
@@ -203,9 +206,13 @@ Legenda de Status:
 - [x] **Criar `PremiumPlansActivity.kt`**: Apresentação de planos e benefícios de assinatura.
 - [x] **Criar `PremiumApiService.kt`**: Camada de rede em Kotlin para planos e assinaturas.
 
-#### 🔴 Módulo Suporte & Operações
+#### 🟢 Módulo Suporte & Institucional Mobile (Concluído)
+- [x] **Criar `ContactActivity.kt`**: Envio de mensagens de suporte/contato.
+- [x] **Criar `TeamFragment.kt`**: Apresentação da equipe institucional.
+- [x] **Criar `SupportApiService.kt`**: Camada de rede em Kotlin para ouvidoria e time.
+
+#### 🔴 Módulo Processos Seletivos
 - [ ] **Criar `MyApplicationsFragment.kt`**: Painel do candidato para acompanhar status em processos seletivos.
-- [ ] **Criar `ContactActivity.kt`**: Envio de mensagens de suporte/contato.
 
 ---
 
@@ -234,8 +241,8 @@ graph TD
 ### 🔹 Fase 5: Monetização, Suporte Institucional & Moderação Final (EM ANDAMENTO)
 - **Entregas**:
   - [x] **Parte 1 (Monetização & Planos Premium)**: `PremiumPlansView.vue`, `premiumStore.ts`, `premium.service.ts`, `PremiumApiService.kt`, `PremiumPlansActivity.kt`.
-  - [ ] **Parte 2 (Formulários de Contato & Equipe Institucional)**: `ContactView.vue` (`/contact`), `TeamView.vue` (`/team`), `forms.service.ts`, `members.service.ts`, `ContactActivity.kt`, `TeamFragment.kt`.
-  - [ ] **Parte 3 (Moderação Administrativa e Auditoria)**: `AdminBlogsView.vue`, `AdminCommentsView.vue`, `AdminAuthorsView.vue`, `AdminCoursesView.vue`, `AdminPlansView.vue`.
+  - [x] **Parte 2 (Formulários de Contato & Equipe Institucional)**: `ContactView.vue` (`/contact`), `TeamView.vue` (`/team`), `forms.service.ts`, `members.service.ts`, `SupportApiService.kt`, `ContactActivity.kt`, `TeamFragment.kt`.
+  - [ ] **Parte 3 (Moderação Administrativa e Auditoria)**: `AdminBlogsView.vue`, `AdminCommentsView.vue`, `AdminAuthorsView.vue`, `AdminCoursesView.vue`, `AdminPlansView.vue`, `AdminFormsView.vue`, `AdminMembersView.vue`, `AdminSelectiveProcessesView.vue`.
 
 ---
 
