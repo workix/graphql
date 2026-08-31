@@ -12,14 +12,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import br.com.codecode.workix.android.network.EndorsementsApiService
 import br.com.codecode.workix.android.network.FeaturedItemDto
 import br.com.codecode.workix.android.network.NetworkResult
 import br.com.codecode.workix.android.network.ProfilesApiService
+import br.com.codecode.workix.android.network.RecommendationDto
 import br.com.codecode.workix.android.network.UserProfileDto
 import kotlinx.coroutines.launch
 
 /**
- * Activity nativa Android para visualização de perfil profissional no Workix.
+ * Activity nativa Android para visualização de perfil profissional, destaques, competências e recomendações.
  */
 class ProfileActivity : AppCompatActivity() {
 
@@ -32,6 +34,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvOpenToWork: TextView
     private lateinit var tvAbout: TextView
     private lateinit var featuredContainer: LinearLayout
+    private lateinit var skillsContainer: LinearLayout
+    private lateinit var recommendationsContainer: LinearLayout
     private lateinit var btnEdit: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,6 +145,32 @@ class ProfileActivity : AppCompatActivity() {
         }
         contentLayout.addView(featuredContainer)
 
+        val skillsHeader = TextView(this).apply {
+            text = "Competências e Endossos"
+            textSize = 16f
+            setTextColor(0xFF0F172A.toInt())
+            setPadding(0, 16, 0, 8)
+        }
+        contentLayout.addView(skillsHeader)
+
+        skillsContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+        contentLayout.addView(skillsContainer)
+
+        val recsHeader = TextView(this).apply {
+            text = "Recomendações"
+            textSize = 16f
+            setTextColor(0xFF0F172A.toInt())
+            setPadding(0, 16, 0, 8)
+        }
+        contentLayout.addView(recsHeader)
+
+        recommendationsContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+        contentLayout.addView(recommendationsContainer)
+
         scrollView.addView(contentLayout)
         rootLayout.addView(scrollView)
         setContentView(rootLayout)
@@ -152,6 +182,7 @@ class ProfileActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val profileRes = ProfilesApiService.getProfile(targetUserId)
             val featuredRes = ProfilesApiService.getFeaturedItems(targetUserId)
+            val recsRes = EndorsementsApiService.getUserRecommendations(targetUserId)
 
             progressBar.visibility = View.GONE
 
@@ -163,6 +194,12 @@ class ProfileActivity : AppCompatActivity() {
 
             if (featuredRes is NetworkResult.Success) {
                 renderFeatured(featuredRes.data)
+            }
+
+            renderSkills()
+
+            if (recsRes is NetworkResult.Success) {
+                renderRecommendations(recsRes.data)
             }
         }
     }
@@ -222,6 +259,92 @@ class ProfileActivity : AppCompatActivity() {
             }
 
             featuredContainer.addView(itemBox)
+        }
+    }
+
+    private fun renderSkills() {
+        skillsContainer.removeAllViews()
+        val skills = listOf("TypeScript / Vue.js", "GraphQL & Apollo", "Android Nativo / Kotlin", "Node.js / Express")
+
+        for ((index, skill) in skills.withIndex()) {
+            val skillBox = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(12, 10, 12, 10)
+                setBackgroundColor(0xFFF8FAFC.toInt())
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(0, 0, 0, 6)
+                }
+            }
+
+            val nameTv = TextView(this).apply {
+                text = "★ $skill"
+                textSize = 14f
+                setTextColor(0xFF0F172A.toInt())
+                layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+            }
+            skillBox.addView(nameTv)
+
+            val btnEndorse = Button(this).apply {
+                text = "+ Endossar"
+                textSize = 11f
+                setOnClickListener {
+                    lifecycleScope.launch {
+                        EndorsementsApiService.endorseSkill((index + 1).toString())
+                        text = "✓ Endossado"
+                        isEnabled = false
+                    }
+                }
+            }
+            skillBox.addView(btnEndorse)
+
+            skillsContainer.addView(skillBox)
+        }
+    }
+
+    private fun renderRecommendations(recs: List<RecommendationDto>) {
+        recommendationsContainer.removeAllViews()
+        if (recs.isEmpty()) {
+            val emptyTv = TextView(this).apply {
+                text = "Nenhuma recomendação pública."
+                textSize = 13f
+                setTextColor(0xFF64748B.toInt())
+            }
+            recommendationsContainer.addView(emptyTv)
+            return
+        }
+
+        for (rec in recs) {
+            val recBox = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(12, 10, 12, 10)
+                setBackgroundColor(0xFFF8FAFC.toInt())
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(0, 0, 0, 8)
+                }
+            }
+
+            val textTv = TextView(this).apply {
+                text = "\"${rec.content}\""
+                textSize = 13f
+                setTextColor(0xFF334155.toInt())
+            }
+            val authorTv = TextView(this).apply {
+                text = "— Profissional #${rec.recommenderId}"
+                textSize = 11f
+                setTextColor(0xFF64748B.toInt())
+                setPadding(0, 4, 0, 0)
+            }
+
+            recBox.addView(textTv)
+            recBox.addView(authorTv)
+
+            recommendationsContainer.addView(recBox)
         }
     }
 }
