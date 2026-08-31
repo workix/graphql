@@ -41,7 +41,11 @@
         <v-list-item to="/selective-processes" prepend-icon="mdi-clipboard-list-outline" title="Processos Seletivos" value="selective-processes"></v-list-item>
         <v-list-item to="/social-posts" prepend-icon="mdi-post" title="Posts Sociais" value="social-posts"></v-list-item>
         <v-list-item to="/blogs" prepend-icon="mdi-newspaper-variant-outline" title="Blog Corporativo" value="blogs"></v-list-item>
+        <v-list-item to="/authors" prepend-icon="mdi-account-edit" title="Autores do Blog" value="authors"></v-list-item>
+        <v-list-item to="/members" prepend-icon="mdi-account-tie" title="Equipe Institucional" value="members"></v-list-item>
         <v-list-item to="/courses" prepend-icon="mdi-school" title="Cursos & LMS" value="courses"></v-list-item>
+        <v-list-item to="/groups" prepend-icon="mdi-account-group-outline" title="Grupos & Comunidades" value="groups"></v-list-item>
+        <v-list-item to="/events" prepend-icon="mdi-calendar-clock" title="Eventos Profissionais" value="events"></v-list-item>
         <v-list-item to="/plans" prepend-icon="mdi-diamond" title="Planos Premium" value="plans"></v-list-item>
         <v-list-item to="/forms" prepend-icon="mdi-email-open-outline" title="Caixa de Suporte" value="forms"></v-list-item>
         <v-list-item to="/companies" prepend-icon="mdi-domain" title="Empresas Parceiras" value="companies"></v-list-item>
