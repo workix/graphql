@@ -51,6 +51,7 @@
         <activity android:name="br.com.codecode.workix.android.ui.chat.DirectChatActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.profile.ProfileActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.profile.EditProfileActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.analytics.ProfileAnalyticsActivity" />
 
     </application>
 
