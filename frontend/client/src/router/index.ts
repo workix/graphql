@@ -133,6 +133,21 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/EventDetailView.vue')
   },
   {
+    path: '/learning',
+    name: 'CoursesCatalog',
+    component: () => import('../views/CoursesCatalogView.vue')
+  },
+  {
+    path: '/learning/:id',
+    name: 'CourseDetail',
+    component: () => import('../views/CourseDetailView.vue')
+  },
+  {
+    path: '/learning/:courseId/lesson/:lessonId',
+    name: 'LessonPlayer',
+    component: () => import('../views/LessonPlayerView.vue')
+  },
+  {
     path: '/hashtag/:tag',
     name: 'HashtagFeed',
     component: () => import('../views/HashtagFeedView.vue')
