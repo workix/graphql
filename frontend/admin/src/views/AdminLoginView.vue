@@ -54,7 +54,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import api from '../services/api';
 import { useAdminAuthStore } from '../stores/adminAuth';
 
 const email = ref('');
@@ -70,22 +69,31 @@ async function handleLogin() {
   loading.value = true;
   errorMessage.value = '';
   try {
-    const response = await api.post('/auth/login', {
-      email: email.value,
-      password: password.value
-    });
-    if (response.data && response.data.token) {
-      adminAuthStore.setAdminAuth(
-        response.data.token,
-        response.data.user || { id: 1, email: email.value, role: 'ROLE_ADMIN' }
-      );
-      const redirect = (route.query.redirect as string) || '/dashboard';
-      router.push(redirect);
-    } else {
-      errorMessage.value = 'Credenciais administrativas não reconhecidas.';
-    }
+    await adminAuthStore.loginWithFirebase(email.value, password.value);
+    const redirect = (route.query.redirect as string) || '/dashboard';
+    router.push(redirect);
   } catch (err: any) {
-    errorMessage.value = err.response?.data?.message || 'E-mail ou senha incorretos.';
+    console.error('Erro no login admin Firebase:', err);
+    switch (err.code) {
+      case 'auth/invalid-email':
+        errorMessage.value = 'Formato de e-mail inválido.';
+        break;
+      case 'auth/user-not-found':
+        errorMessage.value = 'Nenhuma conta administrativa encontrada com este e-mail.';
+        break;
+      case 'auth/wrong-password':
+      case 'auth/invalid-credential':
+        errorMessage.value = 'E-mail ou senha administrativa incorretos.';
+        break;
+      case 'auth/too-many-requests':
+        errorMessage.value = 'Muitas tentativas consecutivas. Aguarde alguns instantes.';
+        break;
+      case 'auth/network-request-failed':
+        errorMessage.value = 'Falha de conexão com a rede. Verifique sua internet.';
+        break;
+      default:
+        errorMessage.value = err.message || 'Falha ao autenticar administrador com Firebase.';
+    }
   } finally {
     loading.value = false;
   }
