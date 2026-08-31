@@ -38,6 +38,7 @@
         </v-list-subheader>
 
         <v-list-item to="/jobs" prepend-icon="mdi-briefcase-check" title="Moderação de Vagas" value="jobs"></v-list-item>
+        <v-list-item to="/social-posts" prepend-icon="mdi-post" title="Posts Sociais" value="social-posts"></v-list-item>
         <v-list-item to="/companies" prepend-icon="mdi-domain" title="Empresas Parceiras" value="companies"></v-list-item>
         <v-list-item to="/candidates" prepend-icon="mdi-account-search" title="Candidatos & Currículos" value="candidates"></v-list-item>
         <v-list-item to="/testimonials" prepend-icon="mdi-comment-quote" title="Depoimentos" value="testimonials"></v-list-item>
