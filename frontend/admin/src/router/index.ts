@@ -130,6 +130,18 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdminMedia',
     component: () => import('../views/AdminMediaView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/resumes',
+    name: 'AdminResumes',
+    component: () => import('../views/AdminResumesView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/profiles',
+    name: 'AdminProfiles',
+    component: () => import('../views/AdminProfilesView.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 
