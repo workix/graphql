@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Grupos e Comunidades)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Eventos Profissionais e RSVP)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -9,17 +9,17 @@
 
 ## 1. Sumário Executivo e Diagnóstico de Cobertura
 
-O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, LMS/Cursos, Eventos e Assinaturas Premium).
+O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, Eventos & RSVP, LMS/Cursos e Assinaturas Premium).
 
-As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, das **Fases 1, 2 e 3** e agora avançaram na **Fase 4 (Comunidades, Eventos & Educação - LMS)** com a entrega de Grupos e Comunidades.
+As interfaces de usuário (**Frontend Cliente**, **Frontend Admin** e **Android App**) concluíram a implementação do escopo de recrutamento básico, das **Fases 1, 2 e 3** e agora avançaram na **Fase 4 (Comunidades, Eventos & Educação - LMS)** com a entrega de Grupos e Eventos com RSVP.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     █████████████████████░░░░░░░░░░░  66% (21/32 Módulos)
+Frontend Cliente (Web Vue 3)     ██████████████████████░░░░░░░░░░  69% (22/32 Módulos)
 Frontend Admin (Web Vuetify 3)   █████████████░░░░░░░░░░░░░░░░░░░  41% (13/32 Módulos)
-Android App (Kotlin Nativo)      ████████████████████░░░░░░░░░░░░  63% (20/32 Módulos)
+Android App (Kotlin Nativo)      █████████████████████░░░░░░░░░░░  66% (21/32 Módulos)
 ```
 
 ---
@@ -56,7 +56,7 @@ Legenda de Status:
 | **21** | `profiles` | `getProfileByUserId`, `updateMyProfile` (headline, about, banner, openToWork) | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | 🟡 Parcial (Auditoria de perfis) | ✅ Implementado (`ProfileActivity`, `EditProfile`) |
 | **22** | `endorsements` | `skillEndorsements`, `endorseSkill`, `userRecommendations`, `createRecommendation` | ✅ Implementado (`SkillEndorsements`, `Recommendations`) | — (Reputação Comunitária) | ✅ Implementado (`ProfileActivity`, `EndorsementsApi`) |
 | **23** | `groups` | `group`, `groupPosts`, `createGroup`, `joinGroup`, `createGroupPost` | ✅ Implementado (`GroupsListView`, `GroupDetailView`) | 🟡 Parcial (Auditoria de Grupos) | ✅ Implementado (`GroupsFragment`, `GroupDetail`) |
-| **24** | `events` | `event`, `eventAttendees`, `createEvent`, `attendEvent` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
+| **24** | `events` | `event`, `eventAttendees`, `createEvent`, `attendEvent` | ✅ Implementado (`EventsListView`, `EventDetailView`) | 🟡 Parcial (Auditoria de Eventos) | ✅ Implementado (`EventsFragment`, `EventDetail`) |
 | **25** | `learning` | `course`, `courseLessons`, `courseCompletion`, `enrollInCourse`, `completeCourse` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **26** | `premium` | `subscriptionPlans`, `mySubscription`, `subscribeToPlan`, `createSubscriptionPlan` | ❌ Pendente | ❌ Pendente | ❌ Pendente |
 | **27** | `analytics` | `whoViewedMyProfile`, `postAnalytics`, `recordProfileView`, `recordPostView` | ✅ Implementado (`ProfileAnalyticsView.vue`, `analyticsStore`) | 🟡 Parcial (Métricas no Dashboard) | ✅ Implementado (`ProfileAnalyticsActivity.kt`) |
@@ -106,11 +106,11 @@ Legenda de Status:
 - [x] **Criar View `GroupsListView.vue` (`/groups`) & `GroupDetailView.vue` (`/groups/:id`)**
 - [x] **Criar Store `groupsStore.ts` & Service `src/services/groups.service.ts`**
 
-#### 🔴 Módulo Eventos & Educação (LMS)
-- [ ] **Criar View `EventsListView.vue` (`/events`) & `EventDetailView.vue` (`/events/:id`)**:
-  - Calendário e listagem de eventos virtuais/presenciais (`event`).
-  - Confirmação de presença / RSVP (`attendEvent`, `eventAttendees`).
-  - Formulário para publicar novo evento (`createEvent`).
+#### 🟢 Módulo Eventos Profissionais & RSVP (Concluído)
+- [x] **Criar View `EventsListView.vue` (`/events`) & `EventDetailView.vue` (`/events/:id`)**
+- [x] **Criar Store `eventsStore.ts` & Service `src/services/events.service.ts`**
+
+#### 🔴 Módulo Educação & Cursos (LMS)
 - [ ] **Criar View `CoursesCatalogView.vue` (`/learning`), `CourseDetailView.vue` & `LessonPlayerView.vue`**:
   - Catálogo de cursos profissionais com instrutores e ementa (`course`, `courseLessons`).
   - Inscrição em cursos (`enrollInCourse`).
@@ -195,9 +195,12 @@ Legenda de Status:
 - [x] **Criar `GroupsFragment.kt` & `GroupDetailActivity.kt`**: Listagem nativa de comunidades e feed de posts do grupo.
 - [x] **Criar `GroupsApiService.kt`**: Camada de rede em Kotlin para grupos.
 
-#### 🔴 Módulo LMS, Eventos & Monetização
+#### 🟢 Módulo Eventos Profissionais & RSVP Mobile (Concluído)
+- [x] **Criar `EventsFragment.kt` & `EventDetailActivity.kt`**: Listagem nativa de eventos e RSVP.
+- [x] **Criar `EventsApiService.kt`**: Camada de rede em Kotlin para eventos.
+
+#### 🔴 Módulo LMS & Monetização
 - [ ] **Criar `CoursesFragment.kt` & `LessonPlayerActivity.kt`**: Catálogo de cursos e player.
-- [ ] **Criar `EventsFragment.kt` & `EventDetailActivity.kt`**: Lista de eventos e RSVP.
 - [ ] **Criar `PremiumPlansActivity.kt`**: Apresentação de planos e benefícios de assinatura.
 - [ ] **Criar `MyApplicationsFragment.kt`**: Painel do candidato para acompanhar status em processos seletivos.
 - [ ] **Criar `ContactActivity.kt`**: Envio de mensagens de suporte/contato.
@@ -226,7 +229,7 @@ graph TD
 ### 🔹 Fase 4: Comunidades, Eventos & Educação (LMS) (EM ANDAMENTO)
 - **Entregas**:
   - [x] **Parte 1 (Grupos & Comunidades)**: `GroupsListView.vue`, `GroupDetailView.vue`, `groupsStore.ts`, `groups.service.ts`, `GroupsApiService.kt`, `GroupsFragment.kt`, `GroupDetailActivity.kt`.
-  - [ ] **Parte 2 (Eventos Profissionais & RSVP)**: `EventsListView.vue`, `EventDetailView.vue`, `eventsStore.ts`, `events.service.ts`, `EventsApiService.kt`, `EventsFragment.kt`, `EventDetailActivity.kt`.
+  - [x] **Parte 2 (Eventos Profissionais & RSVP)**: `EventsListView.vue`, `EventDetailView.vue`, `eventsStore.ts`, `events.service.ts`, `EventsApiService.kt`, `EventsFragment.kt`, `EventDetailActivity.kt`.
   - [ ] **Parte 3 (Cursos, Aulas & Learning LMS)**: `CoursesCatalogView.vue`, `CourseDetailView.vue`, `LessonPlayerView.vue`, `learningStore.ts`, `learning.service.ts`, `LearningApiService.kt`, `CoursesFragment.kt`, `LessonPlayerActivity.kt`.
 
 ### 🔹 Fase 5: Monetização, Assinaturas Premium & Moderação Final
