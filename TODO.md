@@ -1,7 +1,7 @@
 # TODO.md — Mapeamento Geral de Paridade e Roadmap de Implementação
 ## Ecossistema Workix: Backend GraphQL vs. Frontend Cliente, Frontend Admin e Android
 
-> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Gestão Admin para Autores, Equipe, Grupos e Eventos)  
+> **Data de Levantamento**: 31 de Agosto de 2026 (Atualizado após implementação de Auditoria de Mídia no Admin e Validação de CPF via GraphQL)  
 > **Projeto Maestro**: `graphql` (`D:\Packsys\NetBeansProjects\graphql`)  
 > **Documentos de Referência**: [`SPECIFICATION.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION.md), [`SPECIFICATION_LINKEDIN.md`](file:///d:/Packsys/NetBeansProjects/graphql/SPECIFICATION_LINKEDIN.md), [`FRONTEND_GRAPHQL_MAPPING.md`](file:///d:/Packsys/NetBeansProjects/graphql/FRONTEND_GRAPHQL_MAPPING.md)
 
@@ -9,17 +9,17 @@
 
 ## 1. Sumário Executivo e Diagnóstico de Cobertura
 
-O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, Eventos & RSVP, LMS/Cursos, Monetização Premium, Ouvidoria/Suporte Institucional, Equipe, Autores, Processos Seletivos e Mídia Segura).
+O backend do ecossistema Workix possui **32 módulos de domínio** implementados no projeto maestro `graphql`, cobrindo tanto o núcleo de recrutamento e seleção (Core Workix) quanto os pilares de uma rede social profissional moderna (LinkedIn Clone: Feed Social, Conexões, Chat em Tempo Real, Notificações, Perfis Ricos, Portfólio de Destaques, Endossos de Competências, Recomendações Sociais, Social Selling Index, Analytics, Comunidades/Grupos, Eventos & RSVP, LMS/Cursos, Monetização Premium, Ouvidoria/Suporte Institucional, Equipe, Autores, Processos Seletivos, Validação de Documentos e Mídia Segura).
 
-Todas as **5 Fases Estratégicas** e expansões administrativas foram completamente desenvolvidas, testadas e validadas com sucesso nas três frentes de interface (**Frontend Cliente**, **Frontend Admin** e **Android App**), elevando o ecossistema a **88% no Cliente Web**, **69% no Admin** e **84% no Android**, cobrindo 100% das jornadas críticas de usuário e governança.
+Todas as jornadas de usuário e módulos de governança administrativa foram implementados nas três frentes de interface (**Frontend Cliente**, **Frontend Admin** e **Android App**), elevando o ecossistema a **91% no Cliente Web**, **72% no Admin** e **88% no Android**, cobrindo 100% dos fluxos operacionais e transacionais.
 
 ### 📊 Indicadores de Paridade Funcional por Plataforma
 
 ```
 Backend GraphQL (32 Módulos)     ████████████████████████████████ 100% (32/32 Módulos)
-Frontend Cliente (Web Vue 3)     ████████████████████████████░░░░  88% (28/32 Módulos)
-Frontend Admin (Web Vuetify 3)   ██████████████████████░░░░░░░░░░  69% (22/32 Módulos)
-Android App (Kotlin Nativo)      ███████████████████████████░░░░░  84% (27/32 Módulos)
+Frontend Cliente (Web Vue 3)     █████████████████████████████░░░  91% (29/32 Módulos)
+Frontend Admin (Web Vuetify 3)   ███████████████████████░░░░░░░░░  72% (23/32 Módulos)
+Android App (Kotlin Nativo)      ████████████████████████████░░░░  88% (28/32 Módulos)
 ```
 
 ---
@@ -48,7 +48,7 @@ Legenda de Status:
 | **13** | `stats` | `statisticsCount` | ✅ Implementado (`HomeView`) | ✅ Implementado (`AdminDashboardView`) | 🟡 Parcial (Home) |
 | **14** | `forms` | `allForms`, `getFormById`, `createForm`, `deleteForm` | ✅ Implementado (`ContactView`) | ✅ Implementado (`AdminFormsView`) | ✅ Implementado (`ContactActivity`) |
 | **15** | `members` | `allMembers`, `getMemberById`, `createMember`, `updateMember`, `deleteMember` | ✅ Implementado (`TeamView`) | ✅ Implementado (`AdminMembersView`) | ✅ Implementado (`TeamFragment`) |
-| **16** | `others` | `validateCPF` | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação JS local) | 🟡 Parcial (Validação Kotlin local) |
+| **16** | `others` | `validateCPF` | ✅ Implementado (`others.service.ts`) | 🟡 Parcial (Validação JS local) | ✅ Implementado (`OthersApiService.kt`) |
 | **17** | `posts` | `socialFeed`, `rankedSocialFeed`, `createPost`, `reactToPost`, `commentOnPost` | ✅ Implementado (`SocialFeedView`, `PostCard`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (`SocialFeedFragment`, `PostDetail`) |
 | **18** | `connections` | `myConnections`, `pendingConnectionRequests`, `sendConnectionRequest`, `followUser` | ✅ Implementado (`MyNetworkView`, `connectionsStore`) | ✅ Implementado (`connections.service`) | ✅ Implementado (`ConnectionsFragment.kt`) |
 | **19** | `messaging` | `directMessages`, `sendDirectMessage`, `Subscription.directMessageAdded` | ✅ Implementado (`MessagingView.vue`, `messagingStore`) | — (Privado de Usuários) | ✅ Implementado (`ChatListFragment`, `DirectChat`) |
@@ -64,7 +64,7 @@ Legenda de Status:
 | **29** | `hashtags` | `postsByHashtag`, `postHashtags` | ✅ Implementado (`HashtagFeedView`, `hashtags.service`) | ✅ Implementado (`AdminSocialPostsView`) | ✅ Implementado (Renderização de tags) |
 | **30** | `featured` | `userFeaturedItems`, `addFeaturedItem`, `removeFeaturedItem` | ✅ Implementado (`ProfileEditView`, `PublicProfile`) | — (Portfólio de Usuário) | ✅ Implementado (`ProfilesApiService`) |
 | **31** | `job_postings` | `jobPostings`, `jobApplications`, `matchScore`, `applyToJob` | 🟡 Parcial (Usa modelo `jobs` legado) | 🟡 Parcial (Usa modelo `jobs` legado) | 🟡 Parcial (Usa modelo `jobs` legado) |
-| **32** | `media` | `requestUploadUrl`, `confirmUpload`, `getMediaById` | ✅ Implementado (`media.service.ts`) | 🟡 Parcial (Upload indireto) | 🟡 Parcial (Upload multipart) |
+| **32** | `media` | `requestUploadUrl`, `confirmUpload`, `getMediaById` | ✅ Implementado (`media.service.ts`) | ✅ Implementado (`AdminMediaView`) | 🟡 Parcial (Upload multipart) |
 
 ---
 
@@ -126,6 +126,9 @@ Legenda de Status:
 #### 🟢 Módulo Upload de Mídia (Concluído)
 - [x] **Implementar Upload Direto de Mídia (`src/services/media.service.ts`)**: Integração de upload de arquivos (avatar, banner, anexos de posts e currículos em PDF) utilizando fluxo assíncrono seguro (`requestUploadUrl`, `confirmUpload`).
 
+#### 🟢 Módulo Utilitários & Validações (Concluído)
+- [x] **Implementar Validação de CPF (`src/services/others.service.ts`)**: Consulta remota GraphQL via `validateCPF`.
+
 ---
 
 ### 3.2. Frontend Administrativo (`frontend/admin` — Vue 3 + Vuetify 3)
@@ -144,6 +147,7 @@ Legenda de Status:
 - [x] **Criar View `AdminGroupsView.vue` (`/admin/groups`)**: Auditoria de grupos e comunidades.
 - [x] **Criar View `AdminEventsView.vue` (`/admin/events`)**: Auditoria de eventos e RSVP.
 - [x] **Criar View `AdminSelectiveProcessesView.vue` (`/admin/selective-processes`)**: Moderação de processos seletivos (`allSelectiveProcessesPaginated`, `deleteSelectiveProcess`).
+- [x] **Criar View `AdminMediaView.vue` (`/admin/media`)**: Auditoria de arquivos e mídias (`getMediaById`).
 
 ---
 
@@ -205,6 +209,9 @@ Legenda de Status:
 - [x] **Criar `MyApplicationsFragment.kt`**: Painel do candidato para acompanhar status em processos seletivos.
 - [x] **Criar `SelectiveProcessesApiService.kt`**: Camada de rede em Kotlin para candidaturas.
 
+#### 🟢 Módulo Utilitários & Validações Mobile (Concluído)
+- [x] **Criar `OthersApiService.kt`**: Validação de CPF via GraphQL.
+
 ---
 
 ## 4. Plano Estratégico de Implementação (Roadmap em 5 Fases)
@@ -236,6 +243,7 @@ graph TD
   - [x] **Parte 3 (Moderação Administrativa e Auditoria)**: `AdminBlogsView.vue`, `AdminCoursesView.vue`, `AdminPlansView.vue`, `AdminFormsView.vue`, `blogsAdmin.service.ts`, `coursesAdmin.service.ts`, `plansAdmin.service.ts`, `formsAdmin.service.ts`.
   - [x] **Parte 4 (Mídia Segura & Processos Seletivos Mobile/Admin)**: `media.service.ts`, `selectiveProcessesAdmin.service.ts`, `AdminSelectiveProcessesView.vue`, `SelectiveProcessesApiService.kt`, `MyApplicationsFragment.kt`.
   - [x] **Parte 5 (Governança & Expansão Admin)**: `AdminAuthorsView.vue`, `AdminMembersView.vue`, `AdminGroupsView.vue`, `AdminEventsView.vue`, `authorsAdmin.service.ts`, `membersAdmin.service.ts`, `groupsAdmin.service.ts`, `eventsAdmin.service.ts`.
+  - [x] **Parte 6 (Auditoria de Mídia no Admin & Validação Remota de CPF)**: `AdminMediaView.vue`, `mediaAdmin.service.ts`, `others.service.ts`, `OthersApiService.kt`.
 
 ---
 
