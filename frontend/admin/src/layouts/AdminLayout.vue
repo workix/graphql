@@ -50,7 +50,9 @@
         <v-list-item to="/forms" prepend-icon="mdi-email-open-outline" title="Caixa de Suporte" value="forms"></v-list-item>
         <v-list-item to="/media" prepend-icon="mdi-folder-image" title="Mídias & Arquivos" value="media"></v-list-item>
         <v-list-item to="/companies" prepend-icon="mdi-domain" title="Empresas Parceiras" value="companies"></v-list-item>
-        <v-list-item to="/candidates" prepend-icon="mdi-account-search" title="Candidatos & Currículos" value="candidates"></v-list-item>
+        <v-list-item to="/candidates" prepend-icon="mdi-account-search" title="Candidatos" value="candidates"></v-list-item>
+        <v-list-item to="/resumes" prepend-icon="mdi-file-document-outline" title="Currículos" value="resumes"></v-list-item>
+        <v-list-item to="/profiles" prepend-icon="mdi-badge-account" title="Perfis de Rede" value="profiles"></v-list-item>
         <v-list-item to="/testimonials" prepend-icon="mdi-comment-quote" title="Depoimentos" value="testimonials"></v-list-item>
         <v-list-item to="/subscribers" prepend-icon="mdi-email-newsletter" title="Inscritos Newsletter" value="subscribers"></v-list-item>
       </v-list>
