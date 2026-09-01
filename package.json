@@ -18,6 +18,9 @@
     "build": "tsc && node scripts/copy-assets.js",
     "typecheck": "tsc --noEmit",
     "serve": "node dist/index.js",
+    "profile:gc": "node --expose-gc --trace-gc dist/index.js",
+    "profile:inspect": "node --inspect=0.0.0.0:9229 dist/index.js",
+    "profile:heap": "node --max-old-space-size=2048 --heapsnapshot-near-heap-limit=3 dist/index.js",
     "test": "jest --coverage",
     "lint": "eslint src/**/*.ts"
   },

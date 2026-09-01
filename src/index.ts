@@ -17,6 +17,8 @@ import { extractJWTMiddleware } from './middleware/extract_jwt'
 import RabbitmqServer from './factory/rabbitmq_server';
 import { createWebSocketSubscriptionServer } from './subscriptions';
 
+import { getRuntimeMetrics } from './utils/metrics';
+
 (async () => {
   
   const app = express();
@@ -65,6 +67,8 @@ import { createWebSocketSubscriptionServer } from './subscriptions';
     }))
   );
   
+  app.get('/health/metrics', (req, res) => res.json(getRuntimeMetrics()));
+  app.get('/health', (req, res) => res.json({ status: 'ok', uptime: Math.floor(process.uptime()) }));
   app.use('/', (req, res) => res.send({ msg: "Workix Graphql" }))
   
   app.use(
