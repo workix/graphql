@@ -37,3 +37,86 @@ Cada issue deve conter:
 - **Comportamento atual**: Cobertura global fica em ~90% statements / ~85% branches / ~91% lines / ~83% functions (medido ao final da Fase 4 completa - hashtags, premium, learning, social_selling e verificação de identidade, todos com 100% de cobertura individual). O módulo `messaging` foi identificado com gap de cobertura pré-existente (fallback `db.Sequelize.Op?.or || '$or'` e `ctx.pubsub || pubsub`, nunca exercitados na branch alternativa) ao ser estendido para o fluxo de InMail na Fase 4. Nenhum módulo novo da Fase 4 contribui para o déficit; a cobertura global vem melhorando levemente a cada fase (Fase 3: ~89/83/91/82, Fase 4: ~90/85/91/83) puramente porque os módulos novos entram com 100%, mas o débito absoluto nos módulos legados (Fases 1-2) permanece sem correção dedicada.
 - **Causa raiz (se identificada)**: Débito de testes das Fases 1 e 2 (branches de erro/edge-case não exercitados nesses módulos). Confirmado via `git stash` que o déficit já existia antes de qualquer código da Fase 3 ser adicionado (medição anterior: ~88% statements / ~78% branches / ~89% lines / ~81% functions apenas com módulos até a Fase 2).
 - **Referências**: `jest.config.js` (coverageThreshold), módulos citados acima; módulos da Fase 3 (`groups`, `events`, `analytics`) foram entregues com 100% de cobertura individual.
+
+---
+
+## [ISSUE-002] Senha de autenticação hardcoded no arquivo `src/factory/redis_server.ts`
+
+- **Status**: Aberto
+- **Data**: 2026-09-01
+- **Módulo(s) afetado(s)**: `src/factory/redis_server.ts`
+- **Contexto**: A constante de conexão `connectionOptions` define estaticamente `password: "eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81"` no código-fonte, violando regras de segurança e boas práticas de 12-factor app.
+- **Passos para reproduzir**:
+  1. Abrir `src/factory/redis_server.ts`.
+  2. Inspecionar as linhas 4-8.
+- **Comportamento esperado**: Credenciais de acesso ao Redis devem ser obtidas via variáveis de ambiente (`process.env.REDIS_PASSWORD`).
+- **Comportamento atual**: Senha estática salva no código-fonte versionado.
+- **Causa raiz (se identificada)**: Configuração estática inicial não parametrizada com `process.env`.
+- **Referências**: Regra de segurança `CLAUDE.md`, proposta OpenSpec `perf-messaging-backpressure-resilience`.
+
+---
+
+## [ISSUE-003] Bloqueio do Event Loop por métodos síncronos de Bcrypt em `src/utils/BcryptEncoderDecoder.ts`
+
+- **Status**: Aberto
+- **Data**: 2026-09-01
+- **Módulo(s) afetado(s)**: `src/utils/BcryptEncoderDecoder.ts`
+- **Contexto**: Operações de criptografia e comparação utilizam `bcrypt.hashSync`, `bcrypt.genSaltSync` e `bcrypt.compareSync`. Como o algoritmo do Bcrypt é intensivo em CPU, isso bloqueia a thread principal do Node.js por 50-100ms+ a cada requisição.
+- **Passos para reproduzir**:
+  1. Executar autenticação ou hashing em carga simultânea.
+  2. Medir atraso do Event Loop (`event_loop_lag_seconds`).
+- **Comportamento esperado**: Hashing e comparação assíncronos delegados ao pool de threads libuv sem travar o Event Loop.
+- **Comportamento atual**: Travamento síncrono da thread principal do Node.js.
+- **Causa raiz (se identificada)**: Uso de APIs síncronas `*Sync` da biblioteca `bcrypt`.
+- **Referências**: Proposta OpenSpec `perf-event-loop-cpu-optimization`, Fase 8 e 25-B.5 do guia de diagnóstico.
+
+---
+
+## [ISSUE-004] Ausência de prefetch no consumidor `RabbitmqServer` (Risco de OOM)
+
+- **Status**: Aberto
+- **Data**: 2026-09-01
+- **Módulo(s) afetado(s)**: `src/factory/rabbitmq_server.ts`, `src/workers/`
+- **Contexto**: O método `consume` não define `channel.prefetch(count)`. Em caso de backlog de mensagens, o broker RabbitMQ empurra todas as mensagens para a memória do processo simultaneamente, podendo causar estouro de Heap (OOM Kill).
+- **Passos para reproduzir**:
+  1. Enfileirar 100.000 mensagens no RabbitMQ.
+  2. Iniciar o consumidor sem prefetch configurado.
+  3. Monitorar o crescimento rápido de RSS/HeapUsed até o crash do processo.
+- **Comportamento esperado**: Consumo limitado e controlado por backpressure (`channel.prefetch(10)`).
+- **Comportamento atual**: Entrega ilimitada e descontrolada de mensagens pelo broker.
+- **Causa raiz (se identificada)**: Falta de invocação de `channel.prefetch()` antes do consumo.
+- **Referências**: Proposta OpenSpec `perf-messaging-backpressure-resilience`, Fases 6, 18 e 25-B.12 do guia de diagnóstico.
+
+---
+
+## [ISSUE-005] Ausência de Heartbeat e Limpeza de Conexões WebSocket Inativas
+
+- **Status**: Aberto
+- **Data**: 2026-09-01
+- **Módulo(s) afetado(s)**: `src/subscriptions/index.ts`
+- **Contexto**: O `WebSocketServer` não possui verificação periódica de vivacidade (ping/pong). Conexões de clientes móveis/web desconectadas de forma anômala permanecem no Heap e no SO indefinitely como sockets zumbis.
+- **Passos para reproduzir**:
+  1. Estabelecer conexões WebSocket de subscrição.
+  2. Forçar desconexão sem handshake TCP FIN.
+  3. Inspecionar `wsServer.clients` e handles abertos do Node.js após repouso.
+- **Comportamento esperado**: Descarte e terminação automática de sockets inativos após 30 segundos (`ws.terminate()`).
+- **Comportamento atual**: Sockets e listeners acumulados indefinidamente.
+- **Causa raiz (se identificada)**: Falta de rotina de ping/pong heartbeat no `WebSocketServer`.
+- **Referências**: Proposta OpenSpec `perf-realtime-subscriptions-lifecycle`, Fases 10 e 25-B.3 do guia de diagnóstico.
+
+---
+
+## [ISSUE-006] Ausência de dimensionamento de Connection Pool para Sequelize ORM
+
+- **Status**: Aberto
+- **Data**: 2026-09-01
+- **Módulo(s) afetado(s)**: `src/config/config.json`, `src/models/index.ts`
+- **Contexto**: As configurações de conexão com banco de dados em `src/config/config.json` não definem os limites de pool (`max`, `min`, `idle`, `acquire`), expondo a aplicação a esgotamento de conexões ou retenção de recursos sob carga.
+- **Passos para reproduzir**:
+  1. Iniciar servidor com carga de 100 requisições simultâneas contra o banco.
+  2. Observar timeouts e alocação não controlada de conexões no banco de dados.
+- **Comportamento esperado**: Configuração explícita de pool dimensionada para PostgreSQL em produção e SQLite em desenvolvimento.
+- **Comportamento atual**: Uso dos padrões não controlados do ORM.
+- **Causa raiz (se identificada)**: Bloco `pool` ausente no `config.json`.
+- **Referências**: Proposta OpenSpec `perf-db-pooling-query-optimization`, Fases 11 e 25-B.8 do guia de diagnóstico.
+
