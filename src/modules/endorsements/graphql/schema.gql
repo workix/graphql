@@ -17,15 +17,19 @@ type SkillEndorsement {
     id: ID
     skillId: ID
     endorserId: ID
+    endorser: User
     createdAt: DateTime
 }
 
 type Recommendation {
     id: ID
     recommenderId: ID
+    recommender: User
     recipientId: ID
+    recipient: User
     content: String
     status: String
     createdAt: DateTime
     updatedAt: DateTime
 }
+

@@ -17,9 +17,12 @@ type Subscription {
 type DirectMessage {
     id: ID
     senderId: ID
+    sender: User
     recipientId: ID
+    recipient: User
     content: String
     read: Boolean
     createdAt: DateTime
     updatedAt: DateTime
 }
+

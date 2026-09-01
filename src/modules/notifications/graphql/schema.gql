@@ -17,6 +17,7 @@ type Subscription {
 type Notification {
     id: ID
     userId: ID
+    user: User
     type: String
     title: String
     body: String
@@ -25,3 +26,4 @@ type Notification {
     createdAt: DateTime
     updatedAt: DateTime
 }
+
