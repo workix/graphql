@@ -19,11 +19,45 @@ export const authenticateWebSocketConnection = (connectionParams: any): any => {
   }
 };
 
+export const setupWebSocketHeartbeat = (wsServer: any, intervalMs: number = 30000) => {
+  wsServer.on('connection', (ws: any) => {
+    ws.isAlive = true;
+    ws.on('pong', () => {
+      ws.isAlive = true;
+    });
+  });
+
+  const heartbeatInterval = setInterval(() => {
+    if (!wsServer.clients) return;
+    wsServer.clients.forEach((ws: any) => {
+      if (ws.isAlive === false) {
+        return ws.terminate();
+      }
+      ws.isAlive = false;
+      if (typeof ws.ping === 'function') {
+        ws.ping();
+      }
+    });
+  }, intervalMs);
+
+  if (heartbeatInterval.unref) {
+    heartbeatInterval.unref();
+  }
+
+  wsServer.on('close', () => {
+    clearInterval(heartbeatInterval);
+  });
+
+  return heartbeatInterval;
+};
+
 export const createWebSocketSubscriptionServer = (server: any, schema: any): WebSocketServer => {
   const wsServer = new WebSocketServer({
     server,
     path: '/graphql'
   });
+
+  setupWebSocketHeartbeat(wsServer);
 
   useServer(
     {

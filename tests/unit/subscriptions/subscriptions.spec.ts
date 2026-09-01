@@ -9,7 +9,10 @@ jest.mock('graphql-ws/use/ws', () => ({
 
 jest.mock('ws', () => {
   return {
-    WebSocketServer: jest.fn().mockImplementation(() => ({}))
+    WebSocketServer: jest.fn().mockImplementation(() => ({
+      on: jest.fn(),
+      clients: new Set()
+    }))
   };
 });
 
