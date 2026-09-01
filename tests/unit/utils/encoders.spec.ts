@@ -13,12 +13,12 @@ describe('Utils - Base64 & Bcrypt Encoders', () => {
   });
 
   describe('BcryptEncoderDecoder', () => {
-    it('should encrypt password and verify match correctly', () => {
+    it('should encrypt password and verify match correctly', async () => {
       const password = 'mySecretPassword123';
-      const hash = encrypt(password);
+      const hash = await encrypt(password);
       expect(hash).not.toBe(password);
-      expect(compare(password, hash)).toBe(true);
-      expect(compare('wrongPassword', hash)).toBe(false);
+      expect(await compare(password, hash)).toBe(true);
+      expect(await compare('wrongPassword', hash)).toBe(false);
     });
   });
 });
