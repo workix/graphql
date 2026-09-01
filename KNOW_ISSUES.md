@@ -108,15 +108,15 @@ Cada issue deve conter:
 
 ## [ISSUE-006] Ausência de dimensionamento de Connection Pool para Sequelize ORM
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-01
 - **Módulo(s) afetado(s)**: `src/config/config.json`, `src/models/index.ts`
-- **Contexto**: As configurações de conexão com banco de dados em `src/config/config.json` não definem os limites de pool (`max`, `min`, `idle`, `acquire`), expondo a aplicação a esgotamento de conexões ou retenção de recursos sob carga.
+- **Contexto**: As configurações de conexão com banco de dados em `src/config/config.json` não definiam limites de pool (`max`, `min`, `idle`, `acquire`), expondo a aplicação a esgotamento de conexões sob carga.
 - **Passos para reproduzir**:
   1. Iniciar servidor com carga de 100 requisições simultâneas contra o banco.
   2. Observar timeouts e alocação não controlada de conexões no banco de dados.
 - **Comportamento esperado**: Configuração explícita de pool dimensionada para PostgreSQL em produção e SQLite em desenvolvimento.
-- **Comportamento atual**: Uso dos padrões não controlados do ORM.
+- **Comportamento atual**: Configurado pool com `max: 20`, `min: 2`, `idle: 10000`, `acquire: 30000`, `evict: 1000` em produção e `max: 5` em desenvolvimento/teste.
 - **Causa raiz (se identificada)**: Bloco `pool` ausente no `config.json`.
-- **Referências**: Proposta OpenSpec `perf-db-pooling-query-optimization`, Fases 11 e 25-B.8 do guia de diagnóstico.
+- **Referências**: Proposta OpenSpec `perf-db-pooling-query-optimization`, commits `24b4aae` e `10d64bd`, Fases 11 e 25-B.8 do guia de diagnóstico.
 
