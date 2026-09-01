@@ -12,13 +12,17 @@ const storage = process.env.DB_STORAGE || config.storage || './database.sqlite';
 
 let sequelize: any;
 if (config.use_env_variable && process.env[config.use_env_variable]) {
-  sequelize = new Sequelize(process.env[config.use_env_variable] as string, config);
+  sequelize = new Sequelize(process.env[config.use_env_variable] as string, {
+    ...config,
+    pool: config.pool ?? { max: 20, min: 2, idle: 10000, acquire: 30000, evict: 1000 }
+  });
 } else if (dialect === 'sqlite') {
   sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: storage,
     logging: config.logging ?? false,
-    define: config.define ?? { timestamps: false, underscored: true }
+    define: config.define ?? { timestamps: false, underscored: true },
+    pool: config.pool ?? { max: 5, min: 1, idle: 10000, acquire: 20000 }
   });
 } else {
   const dbName = process.env.DB_NAME || config.database || 'workix';
@@ -31,7 +35,8 @@ if (config.use_env_variable && process.env[config.use_env_variable]) {
     ...config,
     host: dbHost,
     port: dbPort,
-    dialect: dialect
+    dialect: dialect,
+    pool: config.pool ?? { max: 20, min: 2, idle: 10000, acquire: 30000 }
   });
 }
 

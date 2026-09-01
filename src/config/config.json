@@ -8,6 +8,12 @@
       "timestamps": false,
       "underscored": true
     },
+    "pool": {
+      "max": 5,
+      "min": 1,
+      "idle": 10000,
+      "acquire": 20000
+    },
     "logging": false
   },
   "test": {
@@ -19,12 +25,25 @@
       "timestamps": false,
       "underscored": true
     },
+    "pool": {
+      "max": 5,
+      "min": 1,
+      "idle": 10000,
+      "acquire": 20000
+    },
     "logging": false
   },
   "production": {
     "use_env_variable": "DATABASE_URL",
     "dialect": "postgres",
     "protocol": "postgres",
+    "pool": {
+      "max": 20,
+      "min": 2,
+      "idle": 10000,
+      "acquire": 30000,
+      "evict": 1000
+    },
     "dialectOptions": {
       "multipleStatements": true,
       "ssl": {
@@ -39,4 +58,4 @@
       }
     }
   }
-}
+}
