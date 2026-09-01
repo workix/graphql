@@ -16,6 +16,7 @@ type Mutation {
 type Post {
     id: ID
     authorId: ID
+    author: User
     content: String
     mediaIds: [ID]
     createdAt: DateTime
@@ -26,6 +27,7 @@ type PostReaction {
     id: ID
     postId: ID
     userId: ID
+    user: User
     type: String
     createdAt: DateTime
 }
@@ -34,6 +36,8 @@ type PostComment {
     id: ID
     postId: ID
     authorId: ID
+    author: User
     content: String
     createdAt: DateTime
 }
+

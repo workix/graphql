@@ -3,6 +3,7 @@ import hashtagsRepository from '../../hashtags/repository/hashtags.repo';
 import PostDTO from '../../../dtos/PostDTO';
 import PostReactionDTO from '../../../dtos/PostReactionDTO';
 import PostCommentDTO from '../../../dtos/PostCommentDTO';
+import UserDTO from '../../../dtos/UserDTO';
 
 const postsResolvers = {
   Query: {
@@ -38,7 +39,29 @@ const postsResolvers = {
       const comment = await postsRepository(ctx.orm).commentOnPost(args.postId, args.authorId, args.content);
       return new PostCommentDTO(comment);
     }
+  },
+  Post: {
+    author: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.authorId) return null;
+      const users = await ctx.dataloaders.usersLoader.load({ key: parent.authorId, info });
+      return users && users[0] ? new UserDTO(users[0]) : null;
+    }
+  },
+  PostReaction: {
+    user: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.userId) return null;
+      const users = await ctx.dataloaders.usersLoader.load({ key: parent.userId, info });
+      return users && users[0] ? new UserDTO(users[0]) : null;
+    }
+  },
+  PostComment: {
+    author: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.authorId) return null;
+      const users = await ctx.dataloaders.usersLoader.load({ key: parent.authorId, info });
+      return users && users[0] ? new UserDTO(users[0]) : null;
+    }
   }
 };
 
 export default postsResolvers;
+

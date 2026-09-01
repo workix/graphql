@@ -1,6 +1,7 @@
 import connectionsRepository from '../repository/connections.repo';
 import ConnectionDTO from '../../../dtos/ConnectionDTO';
 import ConnectionRequestDTO from '../../../dtos/ConnectionRequestDTO';
+import UserDTO from '../../../dtos/UserDTO';
 
 const connectionsResolvers = {
   Query: {
@@ -38,7 +39,32 @@ const connectionsResolvers = {
       const deleted = await connectionsRepository(ctx.orm).unfollowUser(args.followerId, args.followingId);
       return deleted;
     }
+  },
+  Connection: {
+    user1: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.userId1) return null;
+      const users = await ctx.dataloaders.usersLoader.load({ key: parent.userId1, info });
+      return users && users[0] ? new UserDTO(users[0]) : null;
+    },
+    user2: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.userId2) return null;
+      const users = await ctx.dataloaders.usersLoader.load({ key: parent.userId2, info });
+      return users && users[0] ? new UserDTO(users[0]) : null;
+    }
+  },
+  ConnectionRequest: {
+    requester: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.requesterId) return null;
+      const users = await ctx.dataloaders.usersLoader.load({ key: parent.requesterId, info });
+      return users && users[0] ? new UserDTO(users[0]) : null;
+    },
+    recipient: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.recipientId) return null;
+      const users = await ctx.dataloaders.usersLoader.load({ key: parent.recipientId, info });
+      return users && users[0] ? new UserDTO(users[0]) : null;
+    }
   }
 };
 
 export default connectionsResolvers;
+

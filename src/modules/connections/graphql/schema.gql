@@ -18,7 +18,9 @@ type Mutation {
 type Connection {
     id: ID
     userId1: ID
+    user1: User
     userId2: ID
+    user2: User
     createdAt: DateTime
     updatedAt: DateTime
 }
@@ -26,8 +28,11 @@ type Connection {
 type ConnectionRequest {
     id: ID
     requesterId: ID
+    requester: User
     recipientId: ID
+    recipient: User
     status: String
     createdAt: DateTime
     updatedAt: DateTime
 }
+
