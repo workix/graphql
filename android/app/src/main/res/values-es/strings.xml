@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Workix</string>
+
+    <!-- Strings de Autenticación -->
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Iniciar sesión o registrarse</string>
+    <string name="action_sign_in_short">Registrarse</string>
+    <string name="action_settings">Configuración</string>
+
+    <string name="email">Correo electrónico</string>
+    <string name="minimum_password">¡Contraseña muy corta, ingresa al menos 6 caracteres!</string>
+    <string name="auth_failed">Error de autenticación, verifica tu correo y contraseña o regístrate</string>
+    <string name="change_email">Cambiar Correo</string>
+    <string name="change_password">Cambiar Contraseña</string>
+    <string name="send_password_reset_email">Enviar correo de restablecimiento de contraseña</string>
+    <string name="remove_user">Eliminar usuario</string>
+    <string name="new_pass">Nueva Contraseña</string>
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="hint_name">Nombre Completo</string>
+    <string name="btn_login">Iniciar Sesión</string>
+    <string name="btn_link_to_register">¿No eres miembro? ¡Regístrate en Workix ahora!</string>
+    <string name="btn_link_to_login">¿Ya registrado? ¡Inicia sesión!</string>
+    <string name="btn_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="btn_reset_password">Restablecer Contraseña</string>
+    <string name="btn_back">Volver</string>
+    <string name="hint_new_email">Nuevo Correo</string>
+    <string name="btn_change">Cambiar</string>
+    <string name="btn_send">Enviar</string>
+    <string name="btn_remove">Eliminar</string>
+    <string name="btn_sign_out">Cerrar Sesión</string>
+    <string name="lbl_forgot_password">¿Olvidaste la contraseña?</string>
+    <string name="forgot_password_msg">Ingresa tu correo registrado para enviarte las instrucciones de restablecimiento.</string>
+
+    <!-- Material Design y Navegación -->
+    <string name="drawer_open">Abrir</string>
+    <string name="drawer_close">Cerrar</string>
+    <string name="navigation_drawer_open">Abrir menú de navegación</string>
+    <string name="navigation_drawer_close">Cerrar menú de navegación</string>
+    <string name="nav_item_jobs">Empleos</string>
+    <string name="title_jobs">Empleos</string>
+    <string name="title_curriculum">Currículum</string>
+    <string name="title_selectiveProcesses">Procesos Selectivos</string>
+    <string name="contact_developer">Contactar Desarrollador</string>
+    <string name="action_personal_data">Datos Personales</string>
+    <string name="about">Acerca de</string>
+    <string name="version_of_app">Versión de la App:</string>
+
+    <!-- Mensajes del Sistema y Red -->
+    <string name="enter_email_address">¡Ingresa tu correo electrónico!</string>
+    <string name="enter_password">¡Ingresa tu contraseña!</string>
+    <string name="could_not_authorize">No se pudo autorizar al candidato, contacta al administrador</string>
+    <string name="connected_on_internet">Conectado a Internet</string>
+    <string name="not_connected_on_internet">Sin conexión a Internet</string>
+    <string name="auth_error">Ocurrió un error de autenticación.</string>
+    <string name="register">Registrarse</string>
+    <string name="job_details">Detalles del Empleo</string>
+    <string name="update_email_sucess">¡Correo electrónico actualizado con éxito!</string>
+    <string name="update_email_failed">¡Error al actualizar el correo electrónico!</string>
+    <string name="password_update_sucess">¡Contraseña actualizada con éxito!</string>
+    <string name="password_update_failed">¡Error al actualizar la contraseña!</string>
+    <string name="reset_email_sucess">¡Correo de restablecimiento enviado con éxito!</string>
+    <string name="reset_email_failed">¡Error al enviar correo de restablecimiento!</string>
+    <string name="delete_account_success">Tu cuenta ha sido eliminada con éxito.</string>
+    <string name="delete_account_failed">¡Error al eliminar tu cuenta!</string>
+    <string name="no_email_client_installed">No hay clientes de correo instalados.</string>
+    <string name="permission_granted">¡Permisos Concedidos!</string>
+    <string name="permission_accepted">Permiso aceptado.</string>
+    <string name="permission_not_accepted">Permiso no aceptado.</string>
+    <string name="send_mail_to_developer">Enviar un correo al desarrollador...</string>
+    <string name="enter_email_address_id">Ingresa tu correo registrado</string>
+    <string name="repeat_register_operation">Por favor, repite la operación de registro</string>
+    <string name="process_finish">Proceso Finalizado</string>
+    <string name="processing">Procesando...</string>
+    <string name="logo">Logotipo</string>
+    <string name="hint_cpf">Ingresa el número de CPF</string>
+    <string name="hint_mobilePhone">Ingresa tu número de Celular</string>
+    <string name="hint_phone">Ingresa tu número de Teléfono</string>
+    <string name="hint_birthDate">Ingresa tu Fecha de Nacimiento</string>
+    <string name="err_msg_name">Nombre no válido</string>
+    <string name="err_msg_cpf">Valor no válido para CPF</string>
+    <string name="err_msg_phone">Valor no válido para Teléfono</string>
+    <string name="current_user">Usuario Invitado</string>
+    <string name="communicate">Comunicación</string>
+    <string name="visit_our_site">Visita Nuestro Sitio</string>
+    <string name="report_a_bug">Reportar un Problema</string>
+    <string name="action_searh">Buscar</string>
+    <string name="search_hint">¿Qué estás buscando?</string>
+    <string name="minPayment">Pretensión Salarial Mínima</string>
+    <string name="action_add_signup">Registrarse</string>
+    <string name="action_see_details">Ver Más Detalles</string>
+</resources>

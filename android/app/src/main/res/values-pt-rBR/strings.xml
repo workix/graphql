@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Workix</string>
+
+    <!-- Strings relacionadas a autenticação -->
+    <string name="prompt_password">Senha</string>
+    <string name="action_sign_in">Entrar ou cadastrar</string>
+    <string name="action_sign_in_short">Cadastrar</string>
+    <string name="action_settings">Configurações</string>
+
+    <string name="email">E-mail</string>
+    <string name="minimum_password">Senha muito curta, insira no mínimo 6 caracteres!</string>
+    <string name="auth_failed">Falha na autenticação, verifique seu e-mail e senha ou cadastre-se</string>
+    <string name="change_email">Alterar E-mail</string>
+    <string name="change_password">Alterar Senha</string>
+    <string name="send_password_reset_email">Enviar e-mail de redefinição de senha</string>
+    <string name="remove_user">Remover usuário</string>
+    <string name="new_pass">Nova Senha</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_password">Senha</string>
+    <string name="hint_name">Nome Completo</string>
+    <string name="btn_login">Entrar</string>
+    <string name="btn_link_to_register">Não é membro? Cadastre-se no Workix agora!</string>
+    <string name="btn_link_to_login">Já é cadastrado? Faça login!</string>
+    <string name="btn_forgot_password">Esqueceu sua senha?</string>
+    <string name="btn_reset_password">Redefinir Senha</string>
+    <string name="btn_back">Voltar</string>
+    <string name="hint_new_email">Novo E-mail</string>
+    <string name="btn_change">Alterar</string>
+    <string name="btn_send">Enviar</string>
+    <string name="btn_remove">Remover</string>
+    <string name="btn_sign_out">Sair</string>
+    <string name="lbl_forgot_password">Esqueceu a senha?</string>
+    <string name="forgot_password_msg">Informe seu e-mail cadastrado para enviarmos as instruções de redefinição de senha.</string>
+
+    <!-- Material Design & Navegação -->
+    <string name="drawer_open">Abrir</string>
+    <string name="drawer_close">Fechar</string>
+    <string name="navigation_drawer_open">Abrir menu de navegação</string>
+    <string name="navigation_drawer_close">Fechar menu de navegação</string>
+    <string name="nav_item_jobs">Vagas</string>
+    <string name="title_jobs">Vagas</string>
+    <string name="title_curriculum">Currículo</string>
+    <string name="title_selectiveProcesses">Processos Seletivos</string>
+    <string name="contact_developer">Contatar Desenvolvedor</string>
+    <string name="action_personal_data">Dados Pessoais</string>
+    <string name="about">Sobre</string>
+    <string name="version_of_app">Versão do App:</string>
+
+    <!-- Mensagens do Sistema e Conexão -->
+    <string name="enter_email_address">Insira o endereço de e-mail!</string>
+    <string name="enter_password">Insira a senha!</string>
+    <string name="could_not_authorize">Não foi possível autorizar o candidato, contate o administrador</string>
+    <string name="connected_on_internet">Conectado à Internet</string>
+    <string name="not_connected_on_internet">Sem conexão com a internet</string>
+    <string name="auth_error">Ocorreu um erro de autenticação.</string>
+    <string name="register">Cadastrar</string>
+    <string name="job_details">Detalhes da Vaga</string>
+    <string name="update_email_sucess">E-mail atualizado com sucesso!</string>
+    <string name="update_email_failed">Falha ao atualizar e-mail!</string>
+    <string name="password_update_sucess">Senha atualizada com sucesso!</string>
+    <string name="password_update_failed">Falha ao atualizar senha!</string>
+    <string name="reset_email_sucess">E-mail de redefinição enviado com sucesso!</string>
+    <string name="reset_email_failed">Falha ao enviar e-mail de redefinição!</string>
+    <string name="delete_account_success">Sua conta foi excluída com sucesso.</string>
+    <string name="delete_account_failed">Falha ao excluir sua conta!</string>
+    <string name="no_email_client_installed">Nenhum cliente de e-mail instalado.</string>
+    <string name="permission_granted">Permissões concedidas!</string>
+    <string name="permission_accepted">Permissão aceita.</string>
+    <string name="permission_not_accepted">Permissão não aceita.</string>
+    <string name="send_mail_to_developer">Enviar e-mail para o desenvolvedor...</string>
+    <string name="enter_email_address_id">Informe seu e-mail cadastrado</string>
+    <string name="repeat_register_operation">Por favor, repita a operação de cadastro</string>
+    <string name="process_finish">Processo Concluído</string>
+    <string name="processing">Processando...</string>
+    <string name="logo">Logotipo</string>
+    <string name="hint_cpf">Insira o número do CPF</string>
+    <string name="hint_mobilePhone">Insira o número do Celular</string>
+    <string name="hint_phone">Insira o número do Telefone</string>
+    <string name="hint_birthDate">Insira sua Data de Nascimento</string>
+    <string name="err_msg_name">Nome inválido</string>
+    <string name="err_msg_cpf">Valor inválido para o CPF</string>
+    <string name="err_msg_phone">Valor inválido para o Telefone</string>
+    <string name="current_user">Usuário Convidado</string>
+    <string name="communicate">Comunicação</string>
+    <string name="visit_our_site">Visite Nosso Site</string>
+    <string name="report_a_bug">Reportar um Problema</string>
+    <string name="action_searh">Pesquisar</string>
+    <string name="search_hint">O que você procura?</string>
+    <string name="minPayment">Pretensão Salarial Mínima</string>
+    <string name="action_add_signup">Cadastrar</string>
+    <string name="action_see_details">Ver Mais Detalhes</string>
+</resources>
