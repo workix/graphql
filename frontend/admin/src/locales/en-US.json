@@ -1,0 +1,103 @@
+{
+  "$vuetify": {
+    "badge": "Badge",
+    "close": "Close",
+    "dataIterator": {
+      "noResultsText": "No matching records found",
+      "loadingText": "Loading items..."
+    },
+    "dataTable": {
+      "itemsPerPageText": "Rows per page:",
+      "ariaLabel": {
+        "sortDescending": "Sorted descending.",
+        "sortAscending": "Sorted ascending.",
+        "sortNone": "Not sorted."
+      },
+      "sortBy": "Sort by"
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Items per page:",
+      "itemsPerPageAll": "All",
+      "nextPage": "Next page",
+      "prevPage": "Previous page",
+      "firstPage": "First page",
+      "lastPage": "Last page",
+      "pageText": "{0}-{1} of {2}"
+    },
+    "datePicker": {
+      "itemsSelected": "{0} selected",
+      "nextMonthAriaLabel": "Next month",
+      "nextYearAriaLabel": "Next year",
+      "prevMonthAriaLabel": "Previous month",
+      "prevYearAriaLabel": "Previous year"
+    },
+    "noDataText": "No data available",
+    "carousel": {
+      "prev": "Previous visual",
+      "next": "Next visual",
+      "ariaLabel": {
+        "delimiter": "Slide {0} of {1}"
+      }
+    },
+    "pagination": {
+      "ariaLabel": {
+        "root": "Pagination Navigation",
+        "next": "Next page",
+        "previous": "Previous page",
+        "page": "Goto Page {0}",
+        "currentPage": "Current Page, Page {0}",
+        "first": "First page",
+        "last": "Last page"
+      }
+    }
+  },
+  "common": {
+    "appName": "Workix Admin",
+    "search": "Search",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "view": "View",
+    "actions": "Actions",
+    "status": "Status",
+    "date": "Date",
+    "language": "Language",
+    "dashboard": "Dashboard",
+    "users": "User Management",
+    "roles": "Roles & Permissions (JAAS)",
+    "jobs": "Job Management",
+    "companies": "Companies",
+    "candidates": "Candidates",
+    "metrics": "Telemetry & Metrics",
+    "audit": "Audit & Logs",
+    "logout": "Sign Out",
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  "dashboard": {
+    "title": "System Overview",
+    "totalUsers": "Total Users",
+    "totalJobs": "Active Jobs",
+    "totalCompanies": "Registered Companies",
+    "systemHealth": "Runtime Health",
+    "memoryUsage": "Memory Usage",
+    "cpuUsage": "CPU Usage",
+    "recentActivity": "Recent Activity"
+  },
+  "users": {
+    "title": "User Administration",
+    "addUser": "New User",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "lastLogin": "Last Login"
+  }
+}

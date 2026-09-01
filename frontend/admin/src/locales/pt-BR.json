@@ -1,0 +1,103 @@
+{
+  "$vuetify": {
+    "badge": "Distintivo",
+    "close": "Fechar",
+    "dataIterator": {
+      "noResultsText": "Nenhum dado encontrado",
+      "loadingText": "Carregando itens..."
+    },
+    "dataTable": {
+      "itemsPerPageText": "Linhas por página:",
+      "ariaLabel": {
+        "sortDescending": "Ordenado decrescente.",
+        "sortAscending": "Ordenado crescente.",
+        "sortNone": "Não ordenado."
+      },
+      "sortBy": "Ordenar por"
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Itens por página:",
+      "itemsPerPageAll": "Todos",
+      "nextPage": "Próxima página",
+      "prevPage": "Página anterior",
+      "firstPage": "Primeira página",
+      "lastPage": "Última página",
+      "pageText": "{0}-{1} de {2}"
+    },
+    "datePicker": {
+      "itemsSelected": "{0} selecionados",
+      "nextMonthAriaLabel": "Próximo mês",
+      "nextYearAriaLabel": "Próximo ano",
+      "prevMonthAriaLabel": "Mês anterior",
+      "prevYearAriaLabel": "Ano anterior"
+    },
+    "noDataText": "Não há dados disponíveis",
+    "carousel": {
+      "prev": "Visual anterior",
+      "next": "Próximo visual",
+      "ariaLabel": {
+        "delimiter": "Slide {0} de {1}"
+      }
+    },
+    "pagination": {
+      "ariaLabel": {
+        "root": "Navegação de paginação",
+        "next": "Próxima página",
+        "previous": "Página anterior",
+        "page": "Ir para página {0}",
+        "currentPage": "Página atual, Página {0}",
+        "first": "Primeira página",
+        "last": "Última página"
+      }
+    }
+  },
+  "common": {
+    "appName": "Workix Admin",
+    "search": "Pesquisar",
+    "loading": "Carregando...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "view": "Visualizar",
+    "actions": "Ações",
+    "status": "Status",
+    "date": "Data",
+    "language": "Idioma",
+    "dashboard": "Painel de Controle",
+    "users": "Gestão de Usuários",
+    "roles": "Perfis & Permissões (JAAS)",
+    "jobs": "Gestão de Vagas",
+    "companies": "Empresas",
+    "candidates": "Candidatos",
+    "metrics": "Telemetria & Métricas",
+    "audit": "Auditoria & Logs",
+    "logout": "Sair",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "pending": "Pendente",
+    "approved": "Aprovado",
+    "rejected": "Rejeitado"
+  },
+  "dashboard": {
+    "title": "Visão Geral do Sistema",
+    "totalUsers": "Total de Usuários",
+    "totalJobs": "Vagas Ativas",
+    "totalCompanies": "Empresas Cadastradas",
+    "systemHealth": "Saúde do Runtime",
+    "memoryUsage": "Uso de Memória",
+    "cpuUsage": "Uso de CPU",
+    "recentActivity": "Atividades Recentes"
+  },
+  "users": {
+    "title": "Administração de Usuários",
+    "addUser": "Novo Usuário",
+    "name": "Nome",
+    "email": "E-mail",
+    "role": "Perfil",
+    "status": "Situação",
+    "lastLogin": "Último Acesso"
+  }
+}

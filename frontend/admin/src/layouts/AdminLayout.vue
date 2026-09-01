@@ -9,6 +9,8 @@
       </v-app-bar-title>
       <v-spacer></v-spacer>
 
+      <AdminLanguageSwitcher class="mr-2" />
+
       <div v-if="adminAuthStore.user" class="mr-4 text-subtitle-2">
         <v-icon icon="mdi-account-circle" class="mr-1"></v-icon>
         {{ adminAuthStore.user.email }}
@@ -71,6 +73,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAdminAuthStore } from '../stores/adminAuth';
+import AdminLanguageSwitcher from '../components/AdminLanguageSwitcher.vue';
 
 const drawer = ref(true);
 const adminAuthStore = useAdminAuthStore();
