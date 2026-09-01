@@ -58,17 +58,17 @@ Cada issue deve conter:
 
 ## [ISSUE-003] Bloqueio do Event Loop por métodos síncronos de Bcrypt em `src/utils/BcryptEncoderDecoder.ts`
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-01
 - **Módulo(s) afetado(s)**: `src/utils/BcryptEncoderDecoder.ts`
-- **Contexto**: Operações de criptografia e comparação utilizam `bcrypt.hashSync`, `bcrypt.genSaltSync` e `bcrypt.compareSync`. Como o algoritmo do Bcrypt é intensivo em CPU, isso bloqueia a thread principal do Node.js por 50-100ms+ a cada requisição.
+- **Contexto**: Operações de criptografia e comparação utilizavam `bcrypt.hashSync`, `bcrypt.genSaltSync` e `bcrypt.compareSync`. Como o algoritmo do Bcrypt é intensivo em CPU, isso bloqueava a thread principal do Node.js por 50-100ms+ a cada requisição.
 - **Passos para reproduzir**:
   1. Executar autenticação ou hashing em carga simultânea.
   2. Medir atraso do Event Loop (`event_loop_lag_seconds`).
 - **Comportamento esperado**: Hashing e comparação assíncronos delegados ao pool de threads libuv sem travar o Event Loop.
-- **Comportamento atual**: Travamento síncrono da thread principal do Node.js.
+- **Comportamento atual**: Refatorado para `async/await` com `bcrypt.hash` e `bcrypt.compare` com 100% de cobertura de testes unitários TDD.
 - **Causa raiz (se identificada)**: Uso de APIs síncronas `*Sync` da biblioteca `bcrypt`.
-- **Referências**: Proposta OpenSpec `perf-event-loop-cpu-optimization`, Fase 8 e 25-B.5 do guia de diagnóstico.
+- **Referências**: Proposta OpenSpec `perf-event-loop-cpu-optimization`, commits `989385f` e `953c6a4`, Fase 8 e 25-B.5 do guia de diagnóstico.
 
 ---
 
