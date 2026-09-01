@@ -1,10 +1,14 @@
 import Redis from "ioredis";
-import { promisify } from "util";
 
-const connectionOptions = {
-    password: "eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81",
+const connectionOptions: any = {
+    host: process.env.REDIS_HOST || '127.0.0.1',
+    port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379,
     lazyConnect: true,
     maxRetriesPerRequest: 1
+};
+
+if (process.env.REDIS_PASSWORD) {
+    connectionOptions.password = process.env.REDIS_PASSWORD;
 }
 
 const redisClient = new Redis(connectionOptions);
@@ -12,14 +16,16 @@ redisClient.on('error', (err) => {
     // Tratar erro silenciosamente em ambiente local sem Redis rodando
 });
 
-function getRedis(value) {
-    const syncRedisGet = promisify(redisClient.get).bind(redisClient);
-    return syncRedisGet(value);
+async function getRedis(key: string): Promise<string | null> {
+    return await redisClient.get(key);
 }
 
-function setRedis(key, value) {
-    const syncRedisSet = promisify(redisClient.set).bind(redisClient);
-    return syncRedisSet(key, value);
+async function setRedis(key: string, value: any): Promise<string | null> {
+    if (value === null || value === undefined) {
+        await redisClient.del(key);
+        return null;
+    }
+    return await redisClient.set(key, typeof value === 'string' ? value : JSON.stringify(value));
 }
 
-export { redisClient, getRedis, setRedis };
+export { redisClient, getRedis, setRedis, connectionOptions };

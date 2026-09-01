@@ -23,7 +23,10 @@ export default class RabbitmqServer {
         return this.channel?.publish(exchange, routingKey, Buffer.from(message));
     }
 
-    async consume(queue: string, callback: (msg: any) => void) {
+    async consume(queue: string, callback: (msg: any) => void, prefetchCount: number = 10) {
+        if (this.channel && prefetchCount > 0) {
+            await this.channel.prefetch(prefetchCount);
+        }
         return this.channel?.consume(queue, message => {
             if (message) {
                 callback(message);
