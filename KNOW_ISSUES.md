@@ -91,18 +91,18 @@ Cada issue deve conter:
 
 ## [ISSUE-005] Ausência de Heartbeat e Limpeza de Conexões WebSocket Inativas
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-01
 - **Módulo(s) afetado(s)**: `src/subscriptions/index.ts`
-- **Contexto**: O `WebSocketServer` não possui verificação periódica de vivacidade (ping/pong). Conexões de clientes móveis/web desconectadas de forma anômala permanecem no Heap e no SO indefinitely como sockets zumbis.
+- **Contexto**: O `WebSocketServer` não possuía verificação periódica de vivacidade (ping/pong). Conexões de clientes móveis/web desconectadas de forma anômala permaneciam no Heap e no SO como sockets zumbis.
 - **Passos para reproduzir**:
   1. Estabelecer conexões WebSocket de subscrição.
   2. Forçar desconexão sem handshake TCP FIN.
   3. Inspecionar `wsServer.clients` e handles abertos do Node.js após repouso.
 - **Comportamento esperado**: Descarte e terminação automática de sockets inativos após 30 segundos (`ws.terminate()`).
-- **Comportamento atual**: Sockets e listeners acumulados indefinidamente.
+- **Comportamento atual**: Implementado `setupWebSocketHeartbeat` com ciclo de ping/pong de 30s e terminação forçada (`terminate()`) de clientes inativos, além de limpeza no `close`.
 - **Causa raiz (se identificada)**: Falta de rotina de ping/pong heartbeat no `WebSocketServer`.
-- **Referências**: Proposta OpenSpec `perf-realtime-subscriptions-lifecycle`, Fases 10 e 25-B.3 do guia de diagnóstico.
+- **Referências**: Proposta OpenSpec `perf-realtime-subscriptions-lifecycle`, commits `7c6b84f` e `9cf85a3`, Fases 10 e 25-B.3 do guia de diagnóstico.
 
 ---
 
