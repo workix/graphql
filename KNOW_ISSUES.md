@@ -42,17 +42,17 @@ Cada issue deve conter:
 
 ## [ISSUE-002] Senha de autenticação hardcoded no arquivo `src/factory/redis_server.ts`
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-01
 - **Módulo(s) afetado(s)**: `src/factory/redis_server.ts`
-- **Contexto**: A constante de conexão `connectionOptions` define estaticamente `password: "eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81"` no código-fonte, violando regras de segurança e boas práticas de 12-factor app.
+- **Contexto**: A constante de conexão `connectionOptions` definia estaticamente `password: "eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81"` no código-fonte, violando regras de segurança e boas práticas de 12-factor app.
 - **Passos para reproduzir**:
   1. Abrir `src/factory/redis_server.ts`.
-  2. Inspecionar as linhas 4-8.
+  2. Inspecionar as opções de conexão.
 - **Comportamento esperado**: Credenciais de acesso ao Redis devem ser obtidas via variáveis de ambiente (`process.env.REDIS_PASSWORD`).
-- **Comportamento atual**: Senha estática salva no código-fonte versionado.
+- **Comportamento atual**: Senha estática removida e parametrizada via `process.env.REDIS_PASSWORD` com `ioredis` nativo assíncrono.
 - **Causa raiz (se identificada)**: Configuração estática inicial não parametrizada com `process.env`.
-- **Referências**: Regra de segurança `CLAUDE.md`, proposta OpenSpec `perf-messaging-backpressure-resilience`.
+- **Referências**: Regra de segurança `CLAUDE.md`, proposta OpenSpec `perf-messaging-backpressure-resilience`, commits `e565133` e `debfb9f`.
 
 ---
 
@@ -74,18 +74,18 @@ Cada issue deve conter:
 
 ## [ISSUE-004] Ausência de prefetch no consumidor `RabbitmqServer` (Risco de OOM)
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-01
 - **Módulo(s) afetado(s)**: `src/factory/rabbitmq_server.ts`, `src/workers/`
-- **Contexto**: O método `consume` não define `channel.prefetch(count)`. Em caso de backlog de mensagens, o broker RabbitMQ empurra todas as mensagens para a memória do processo simultaneamente, podendo causar estouro de Heap (OOM Kill).
+- **Contexto**: O método `consume` não definia `channel.prefetch(count)`. Em caso de backlog de mensagens, o broker RabbitMQ empurrava todas as mensagens para a memória do processo simultaneamente, podendo causar estouro de Heap (OOM Kill).
 - **Passos para reproduzir**:
   1. Enfileirar 100.000 mensagens no RabbitMQ.
   2. Iniciar o consumidor sem prefetch configurado.
   3. Monitorar o crescimento rápido de RSS/HeapUsed até o crash do processo.
 - **Comportamento esperado**: Consumo limitado e controlado por backpressure (`channel.prefetch(10)`).
-- **Comportamento atual**: Entrega ilimitada e descontrolada de mensagens pelo broker.
+- **Comportamento atual**: Implementado `prefetchCount = 10` como padrão configurável no canal antes do consumo.
 - **Causa raiz (se identificada)**: Falta de invocação de `channel.prefetch()` antes do consumo.
-- **Referências**: Proposta OpenSpec `perf-messaging-backpressure-resilience`, Fases 6, 18 e 25-B.12 do guia de diagnóstico.
+- **Referências**: Proposta OpenSpec `perf-messaging-backpressure-resilience`, commits `e565133` e `debfb9f`, Fases 6, 18 e 25-B.12 do guia de diagnóstico.
 
 ---
 
