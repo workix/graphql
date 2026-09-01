@@ -19,6 +19,8 @@ type Course {
     title: String
     description: String
     instructorId: ID
+    instructor: User
+    lessons: [CourseLesson]
     mediaId: ID
     createdAt: DateTime
     updatedAt: DateTime
@@ -27,6 +29,7 @@ type Course {
 type CourseLesson {
     id: ID
     courseId: ID
+    course: Course
     title: String
     mediaId: ID
     orderIndex: Int
@@ -36,7 +39,9 @@ type CourseLesson {
 type CourseEnrollment {
     id: ID
     courseId: ID
+    course: Course
     userId: ID
+    user: User
     enrolledAt: DateTime
 }
 

@@ -19,6 +19,7 @@ type Group {
     description: String
     privacy: String
     ownerId: ID
+    owner: User
     createdAt: DateTime
     updatedAt: DateTime
 }
@@ -26,7 +27,9 @@ type Group {
 type GroupMembership {
     id: ID
     groupId: ID
+    group: Group
     userId: ID
+    user: User
     role: String
     status: String
     createdAt: DateTime
@@ -35,7 +38,10 @@ type GroupMembership {
 type GroupPost {
     id: ID
     groupId: ID
+    group: Group
     authorId: ID
+    author: User
     content: String
     createdAt: DateTime
 }
+

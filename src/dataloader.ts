@@ -433,6 +433,79 @@ export class JobLoader {
     }
 }
 
+export class CourseLoader {
+    static async batchCourses(db: any, params: any[], requestedFields: any) {
+        const ids = params.map(p => p.key);
+        const info = params[0].info;
+        const fields = requestedFields.getFields(info, { keep: ['id'], exclude: [] });
+
+        const courses = await db.Course.findAll({
+            where: { id: ids },
+            attributes: fields
+        });
+
+        const map = new Map();
+        courses.forEach((c: any) => map.set(c.id, c));
+        return ids.map(id => [map.get(id)]);
+    }
+
+    static async batchLessons(db: any, params: any[], requestedFields: any) {
+        const ids = params.map(p => p.key);
+        const info = params[0].info;
+        const fields = requestedFields.getFields(info, { keep: ['id', 'course_id', 'courseId'], exclude: [] });
+
+        const lessons = await db.CourseLesson.findAll({
+            where: { course_id: ids },
+            attributes: fields
+        });
+
+        const map = new Map();
+        lessons.forEach((l: any) => {
+            const courseId = l.course_id || l.courseId;
+            if (!map.has(courseId)) {
+                map.set(courseId, []);
+            }
+            map.get(courseId).push(l);
+        });
+
+        return ids.map(id => map.get(id) || []);
+    }
+}
+
+export class GroupLoader {
+    static async batchGroups(db: any, params: any[], requestedFields: any) {
+        const ids = params.map(p => p.key);
+        const info = params[0].info;
+        const fields = requestedFields.getFields(info, { keep: ['id'], exclude: [] });
+
+        const groups = await db.Group.findAll({
+            where: { id: ids },
+            attributes: fields
+        });
+
+        const map = new Map();
+        groups.forEach((g: any) => map.set(g.id, g));
+        return ids.map(id => [map.get(id)]);
+    }
+}
+
+export class EventLoader {
+    static async batchEvents(db: any, params: any[], requestedFields: any) {
+        const ids = params.map(p => p.key);
+        const info = params[0].info;
+        const fields = requestedFields.getFields(info, { keep: ['id'], exclude: [] });
+
+        const events = await db.Event.findAll({
+            where: { id: ids },
+            attributes: fields
+        });
+
+        const map = new Map();
+        events.forEach((e: any) => map.set(e.id, e));
+        return ids.map(id => [map.get(id)]);
+    }
+}
+
 export class DataLoaderFactory {
     db: any;
     requestedFields: any;
@@ -471,7 +544,11 @@ export class DataLoaderFactory {
             skillsLoader: createLoader(ResumeLoader.batchSkills),
             jobsLoader: createLoader(JobLoader.batchJobs),
             candidatesSubscribedSPLoader: createLoader(CandidateLoader.batchSubscribersSP),
-            resumesLoader: createLoader(ResumeLoader.batchResumes)
+            resumesLoader: createLoader(ResumeLoader.batchResumes),
+            coursesLoader: createLoader(CourseLoader.batchCourses),
+            lessonsLoader: createLoader(CourseLoader.batchLessons),
+            groupsLoader: createLoader(GroupLoader.batchGroups),
+            eventsLoader: createLoader(EventLoader.batchEvents)
         };
     }
 }

@@ -1,6 +1,7 @@
 import eventsRepository from '../repository/events.repo';
 import EventDTO from '../../../dtos/EventDTO';
 import EventAttendeeDTO from '../../../dtos/EventAttendeeDTO';
+import UserDTO from '../../../dtos/UserDTO';
 
 const eventsResolvers = {
   Query: {
@@ -30,7 +31,27 @@ const eventsResolvers = {
       const attendee = await eventsRepository(ctx.orm).attendEvent(args.eventId, args.userId, args.status);
       return new EventAttendeeDTO(attendee);
     }
+  },
+  Event: {
+    organizer: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.organizerId) return null;
+      const users = await ctx.dataloaders.usersLoader.load({ key: parent.organizerId, info });
+      return users && users[0] ? new UserDTO(users[0]) : null;
+    }
+  },
+  EventAttendee: {
+    user: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.userId) return null;
+      const users = await ctx.dataloaders.usersLoader.load({ key: parent.userId, info });
+      return users && users[0] ? new UserDTO(users[0]) : null;
+    },
+    event: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.eventId) return null;
+      const events = await ctx.dataloaders.eventsLoader.load({ key: parent.eventId, info });
+      return events && events[0] ? new EventDTO(events[0]) : null;
+    }
   }
 };
 
 export default eventsResolvers;
+

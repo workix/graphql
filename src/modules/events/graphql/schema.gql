@@ -20,6 +20,7 @@ type Event {
     endTime: DateTime
     locationOrUrl: String
     organizerId: ID
+    organizer: User
     createdAt: DateTime
     updatedAt: DateTime
 }
@@ -27,7 +28,10 @@ type Event {
 type EventAttendee {
     id: ID
     eventId: ID
+    event: Event
     userId: ID
+    user: User
     status: String
     createdAt: DateTime
 }
+
