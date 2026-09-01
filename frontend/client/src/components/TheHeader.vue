@@ -3,25 +3,26 @@
     <div class="top-bar">
       <div class="container">
         <div class="row">
-          <div class="col-sm-6 col-xs-12">
-            <span class="welcome-msg">Bem-vindo ao Workix - Portal de Empregos & Talentos</span>
+          <div class="col-sm-5 col-xs-12">
+            <span class="welcome-msg">Bem-vindo ao Workix</span>
           </div>
-          <div class="col-sm-6 col-xs-12 text-right">
+          <div class="col-sm-7 col-xs-12 text-right header-actions">
+            <LanguageSwitcher class="header-lang-switcher" />
             <template v-if="authStore.isAuthenticated">
-              <span class="user-info"><i class="fa fa-user-circle"></i> Olá, {{ authStore.user?.email }}</span>
+              <span class="user-info"><i class="fa fa-user-circle"></i> {{ authStore.user?.email }}</span>
               <router-link v-if="authStore.isCompany" to="/my-jobs" class="top-nav-link">
-                <i class="fa fa-briefcase"></i> Minhas Vagas
+                <i class="fa fa-briefcase"></i> {{ $t('nav.jobs') }}
               </router-link>
               <router-link v-else to="/my-applications" class="top-nav-link">
-                <i class="fa fa-paper-plane"></i> Minhas Candidaturas
+                <i class="fa fa-paper-plane"></i> {{ $t('jobs.applied') }}
               </router-link>
               <button class="btn btn-sm btn-link logout-btn" @click="handleLogout">
-                <i class="fa fa-sign-out"></i> Sair
+                <i class="fa fa-sign-out"></i> {{ $t('nav.logout') }}
               </button>
             </template>
             <template v-else>
-              <router-link to="/login" class="login-link"><i class="fa fa-lock"></i> Entrar</router-link>
-              <router-link to="/register" class="register-link"><i class="fa fa-user"></i> Cadastrar</router-link>
+              <router-link to="/login" class="login-link"><i class="fa fa-lock"></i> {{ $t('auth.login') }}</router-link>
+              <router-link to="/register" class="register-link"><i class="fa fa-user"></i> {{ $t('auth.register') }}</router-link>
             </template>
           </div>
         </div>
@@ -45,30 +46,30 @@
 
         <div :class="['collapse', 'navbar-collapse', { in: isNavOpen }]" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li><router-link to="/">Home</router-link></li>
+            <li><router-link to="/">{{ $t('nav.home') }}</router-link></li>
             <li><router-link to="/feed">Feed</router-link></li>
-            <li><router-link to="/mynetwork">Minha Rede</router-link></li>
+            <li><router-link to="/mynetwork">{{ $t('nav.network') }}</router-link></li>
             <li><router-link to="/groups">Grupos</router-link></li>
             <li><router-link to="/events">Eventos</router-link></li>
-            <li><router-link to="/learning">Cursos</router-link></li>
-            <li><router-link to="/messaging">Mensagens</router-link></li>
+            <li><router-link to="/learning">{{ $t('nav.learning') }}</router-link></li>
+            <li><router-link to="/messaging">{{ $t('nav.messaging') }}</router-link></li>
             <li>
               <router-link to="/notifications" class="nav-notif-link">
-                Notificações
+                {{ $t('nav.notifications') }}
                 <span v-if="notificationsStore.unreadCount > 0" class="header-notif-badge">
                   {{ notificationsStore.unreadCount }}
                 </span>
               </router-link>
             </li>
             <li><router-link to="/premium" class="premium-nav-highlight"><i class="fa fa-diamond"></i> Premium</router-link></li>
-            <li><router-link to="/jobs">Vagas</router-link></li>
+            <li><router-link to="/jobs">{{ $t('nav.jobs') }}</router-link></li>
             <li><router-link to="/candidates">Candidatos</router-link></li>
             <template v-if="authStore.isCompany">
               <li><router-link to="/my-jobs">Minhas Vagas</router-link></li>
               <li><router-link to="/post-job">Publicar Vaga</router-link></li>
             </template>
             <template v-else-if="authStore.isAuthenticated">
-              <li><router-link to="/profile/edit">Meu Perfil</router-link></li>
+              <li><router-link to="/profile/edit">{{ $t('nav.profile') }}</router-link></li>
               <li><router-link to="/analytics/ssi">Analytics</router-link></li>
               <li><router-link to="/my-applications">Minhas Candidaturas</router-link></li>
               <li><router-link to="/post-resume">Meu Currículo</router-link></li>
@@ -88,6 +89,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import useNotificationsStore from '../stores/notifications';
+import LanguageSwitcher from './LanguageSwitcher.vue';
 
 const authStore = useAuthStore();
 const notificationsStore = useNotificationsStore();

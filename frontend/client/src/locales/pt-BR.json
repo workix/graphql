@@ -1,0 +1,84 @@
+{
+  "common": {
+    "appName": "Workix",
+    "search": "Pesquisar",
+    "loading": "Carregando...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "view": "Visualizar",
+    "actions": "Ações",
+    "status": "Status",
+    "date": "Data",
+    "language": "Idioma",
+    "portuguese": "Português (BR)",
+    "english": "English (US)",
+    "spanish": "Español"
+  },
+  "nav": {
+    "home": "Início",
+    "jobs": "Vagas",
+    "network": "Minha Rede",
+    "messaging": "Mensagens",
+    "notifications": "Notificações",
+    "learning": "Cursos",
+    "profile": "Perfil",
+    "settings": "Configurações",
+    "logout": "Sair"
+  },
+  "auth": {
+    "login": "Entrar",
+    "register": "Cadastre-se",
+    "email": "E-mail",
+    "password": "Senha",
+    "forgotPassword": "Esqueceu a senha?",
+    "loginSuccess": "Login realizado com sucesso!",
+    "registerSuccess": "Cadastro realizado com sucesso!"
+  },
+  "feed": {
+    "shareThoughts": "No que você está pensando?",
+    "publish": "Publicar",
+    "like": "Curtir",
+    "comment": "Comentar",
+    "share": "Compartilhar",
+    "comments": "Comentários",
+    "writeComment": "Escreva um comentário...",
+    "noPosts": "Nenhuma publicação encontrada."
+  },
+  "jobs": {
+    "title": "Vagas de Emprego",
+    "searchPlaceholder": "Cargo, competência ou empresa",
+    "apply": "Candidatar-se",
+    "applied": "Candidatado",
+    "jobType": "Tipo de Vaga",
+    "location": "Localização",
+    "salary": "Faixa Salarial",
+    "details": "Detalhes da Vaga"
+  },
+  "network": {
+    "title": "Minha Rede",
+    "connections": "Conexões",
+    "invitations": "Convites Pendentes",
+    "accept": "Aceitar",
+    "reject": "Recusar",
+    "connect": "Conectar",
+    "follow": "Seguir"
+  },
+  "messaging": {
+    "title": "Mensagens",
+    "typeMessage": "Digite uma mensagem...",
+    "send": "Enviar",
+    "noMessages": "Selecione uma conversa para visualizar as mensagens."
+  },
+  "learning": {
+    "title": "Workix Learning",
+    "courses": "Cursos",
+    "enroll": "Inscrever-se",
+    "enrolled": "Inscrito",
+    "progress": "Progresso",
+    "lessons": "Aulas",
+    "startCourse": "Iniciar Curso"
+  }
+}

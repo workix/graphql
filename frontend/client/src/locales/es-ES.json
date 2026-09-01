@@ -1,0 +1,84 @@
+{
+  "common": {
+    "appName": "Workix",
+    "search": "Buscar",
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "view": "Ver",
+    "actions": "Acciones",
+    "status": "Estado",
+    "date": "Fecha",
+    "language": "Idioma",
+    "portuguese": "Português (BR)",
+    "english": "English (US)",
+    "spanish": "Español"
+  },
+  "nav": {
+    "home": "Inicio",
+    "jobs": "Empleos",
+    "network": "Mi Red",
+    "messaging": "Mensajes",
+    "notifications": "Notificaciones",
+    "learning": "Cursos",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "loginSuccess": "¡Inicio de sesión exitoso!",
+    "registerSuccess": "¡Cuenta creada exitosamente!"
+  },
+  "feed": {
+    "shareThoughts": "¿Sobre qué quieres hablar?",
+    "publish": "Publicar",
+    "like": "Recomendar",
+    "comment": "Comentar",
+    "share": "Compartir",
+    "comments": "Comentarios",
+    "writeComment": "Escribe un comentario...",
+    "noPosts": "No se encontraron publicaciones."
+  },
+  "jobs": {
+    "title": "Oportunidades de Empleo",
+    "searchPlaceholder": "Cargo, aptitud o empresa",
+    "apply": "Solicitar",
+    "applied": "Solicitado",
+    "jobType": "Tipo de Empleo",
+    "location": "Ubicación",
+    "salary": "Rango Salarial",
+    "details": "Detalles del Empleo"
+  },
+  "network": {
+    "title": "Mi Red",
+    "connections": "Contactos",
+    "invitations": "Invitaciones Pendientes",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "connect": "Conectar",
+    "follow": "Seguir"
+  },
+  "messaging": {
+    "title": "Mensajes",
+    "typeMessage": "Escribe un mensaje...",
+    "send": "Enviar",
+    "noMessages": "Selecciona una conversación para ver los mensajes."
+  },
+  "learning": {
+    "title": "Workix Learning",
+    "courses": "Cursos",
+    "enroll": "Inscribirse",
+    "enrolled": "Inscrito",
+    "progress": "Progreso",
+    "lessons": "Lecciones",
+    "startCourse": "Iniciar Curso"
+  }
+}

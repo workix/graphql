@@ -1,0 +1,84 @@
+{
+  "common": {
+    "appName": "Workix",
+    "search": "Search",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "actions": "Actions",
+    "status": "Status",
+    "date": "Date",
+    "language": "Language",
+    "portuguese": "Português (BR)",
+    "english": "English (US)",
+    "spanish": "Español"
+  },
+  "nav": {
+    "home": "Home",
+    "jobs": "Jobs",
+    "network": "My Network",
+    "messaging": "Messaging",
+    "notifications": "Notifications",
+    "learning": "Learning",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Sign Out"
+  },
+  "auth": {
+    "login": "Sign In",
+    "register": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "loginSuccess": "Signed in successfully!",
+    "registerSuccess": "Account created successfully!"
+  },
+  "feed": {
+    "shareThoughts": "What do you want to talk about?",
+    "publish": "Post",
+    "like": "Like",
+    "comment": "Comment",
+    "share": "Share",
+    "comments": "Comments",
+    "writeComment": "Write a comment...",
+    "noPosts": "No posts found."
+  },
+  "jobs": {
+    "title": "Job Opportunities",
+    "searchPlaceholder": "Title, skill, or company",
+    "apply": "Apply",
+    "applied": "Applied",
+    "jobType": "Job Type",
+    "location": "Location",
+    "salary": "Salary Range",
+    "details": "Job Details"
+  },
+  "network": {
+    "title": "My Network",
+    "connections": "Connections",
+    "invitations": "Pending Invitations",
+    "accept": "Accept",
+    "reject": "Ignore",
+    "connect": "Connect",
+    "follow": "Follow"
+  },
+  "messaging": {
+    "title": "Messaging",
+    "typeMessage": "Type a message...",
+    "send": "Send",
+    "noMessages": "Select a conversation to start messaging."
+  },
+  "learning": {
+    "title": "Workix Learning",
+    "courses": "Courses",
+    "enroll": "Enroll",
+    "enrolled": "Enrolled",
+    "progress": "Progress",
+    "lessons": "Lessons",
+    "startCourse": "Start Course"
+  }
+}
