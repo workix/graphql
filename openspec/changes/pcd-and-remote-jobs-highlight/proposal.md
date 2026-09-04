@@ -22,6 +22,7 @@ Promover inclusão e flexibilidade no mercado de trabalho é um dos pilares cent
 ### Modified Capabilities
 - `jobs-search-engine`: Suporte a filtros de busca e facetas agregadas para vagas PCD e remotas (`isPcd`, `isRemote`).
 - `graphql-jobs-feature`: Inclusão dos campos, filtros, badges informativos e atalhos para vagas PCD e remotas no fluxo de criação, edição, detalhes e listagens de vagas.
+- `android-screens-flows`: Exibição de badges de acessibilidade PCD e trabalho remoto na JobDetailActivity, formulário PostJobActivity e listagens no app Android.
 
 ## Impact
 
