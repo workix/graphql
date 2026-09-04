@@ -46,59 +46,65 @@ export interface MobileThemeTokens {
  * Aplica o tema White Label no DOM dinamicamente no navegador (Client-Side).
  */
 export function applyWhiteLabelTheme(config: WhiteLabelConfigDTO): void {
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
+  const g: any = typeof globalThis !== 'undefined' ? globalThis : {};
+  if (!g.window || !g.document) {
     return;
   }
 
-  const root = document.documentElement;
+  const doc = g.document;
+  const root = doc.documentElement;
 
   // 1. Injeta CSS Custom Properties (Design Tokens)
-  if (config.primary_color) root.style.setProperty('--brand-primary', config.primary_color);
-  if (config.secondary_color) root.style.setProperty('--brand-secondary', config.secondary_color);
-  if (config.accent_color) root.style.setProperty('--brand-accent', config.accent_color);
-  if (config.background_color) root.style.setProperty('--brand-background', config.background_color);
-  if (config.text_color) root.style.setProperty('--brand-text', config.text_color);
-  if (config.font_family) root.style.setProperty('--brand-font', config.font_family);
+  if (root && root.style) {
+    if (config.primary_color) root.style.setProperty('--brand-primary', config.primary_color);
+    if (config.secondary_color) root.style.setProperty('--brand-secondary', config.secondary_color);
+    if (config.accent_color) root.style.setProperty('--brand-accent', config.accent_color);
+    if (config.background_color) root.style.setProperty('--brand-background', config.background_color);
+    if (config.text_color) root.style.setProperty('--brand-text', config.text_color);
+    if (config.font_family) root.style.setProperty('--brand-font', config.font_family);
+  }
 
   // 2. Atualiza o título da página
   if (config.app_title) {
-    document.title = config.app_title;
+    doc.title = config.app_title;
   }
 
   // 3. Atualiza ou cria a meta tag de descrição
-  if (config.meta_description) {
-    let metaDesc = document.querySelector('meta[name="description"]');
+  if (config.meta_description && doc.querySelector && doc.createElement && doc.head) {
+    let metaDesc = doc.querySelector('meta[name="description"]');
     if (!metaDesc) {
-      metaDesc = document.createElement('meta');
+      metaDesc = doc.createElement('meta');
       metaDesc.setAttribute('name', 'description');
-      document.head.appendChild(metaDesc);
+      doc.head.appendChild(metaDesc);
     }
     metaDesc.setAttribute('content', config.meta_description);
   }
 
   // 4. Atualiza ou cria o Favicon
-  if (config.favicon_url) {
-    let faviconLink: HTMLLinkElement | null = document.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
+  if (config.favicon_url && doc.querySelector && doc.createElement && doc.head) {
+    let faviconLink = doc.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
     if (!faviconLink) {
-      faviconLink = document.createElement('link');
+      faviconLink = doc.createElement('link');
       faviconLink.setAttribute('rel', 'icon');
-      document.head.appendChild(faviconLink);
+      doc.head.appendChild(faviconLink);
     }
     faviconLink.setAttribute('href', config.favicon_url);
   }
 
   // 5. Injeta CSS Customizado seguro
   const STYLE_TAG_ID = 'workix-whitelabel-custom-styles';
-  let customStyleEl = document.getElementById(STYLE_TAG_ID) as HTMLStyleElement;
-  if (config.custom_css) {
-    if (!customStyleEl) {
-      customStyleEl = document.createElement('style');
-      customStyleEl.id = STYLE_TAG_ID;
-      document.head.appendChild(customStyleEl);
+  if (doc.getElementById && doc.createElement && doc.head) {
+    let customStyleEl = doc.getElementById(STYLE_TAG_ID);
+    if (config.custom_css) {
+      if (!customStyleEl) {
+        customStyleEl = doc.createElement('style');
+        customStyleEl.id = STYLE_TAG_ID;
+        doc.head.appendChild(customStyleEl);
+      }
+      customStyleEl.textContent = config.custom_css;
+    } else if (customStyleEl && customStyleEl.remove) {
+      customStyleEl.remove();
     }
-    customStyleEl.textContent = config.custom_css;
-  } else if (customStyleEl) {
-    customStyleEl.remove();
   }
 }
 
