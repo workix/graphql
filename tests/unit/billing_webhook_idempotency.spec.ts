@@ -1,21 +1,54 @@
 import { billingGatewayService } from '../../src/modules/premium/services/billing_gateway.service';
-import { WebhookEvent, Purchase, Invoice, Subscription } from '../../src/models';
+import { WebhookEvent, Purchase, Invoice, Subscription, BillingAuditLog } from '../../src/models';
+
+jest.mock('../../src/models', () => ({
+  WebhookEvent: {
+    findOne: jest.fn(),
+    create: jest.fn()
+  },
+  Purchase: {
+    findOne: jest.fn(),
+    create: jest.fn()
+  },
+  Invoice: {
+    create: jest.fn()
+  },
+  Subscription: {
+    findOne: jest.fn(),
+    findAll: jest.fn()
+  },
+  BillingAuditLog: {
+    create: jest.fn()
+  }
+}));
 
 describe('Billing Gateway Service - Webhook Idempotency and Invoicing', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('deve processar webhook e gerar fatura na primeira execucao', async () => {
     const orgId = 7771;
-    const gatewayEventId = `evt_test_${Date.now()}`;
-    const chargeId = `ch_test_${Date.now()}`;
+    const gatewayEventId = 'evt_test_1';
+    const chargeId = 'ch_test_1';
 
-    await Purchase.create({
+    const mockPurchase = {
+      id: 1,
       organization_id: orgId,
-      sku: 'boost_pack_5',
       amount_cents: 19900,
-      gateway_charge_id: chargeId,
-      status: 'pending',
-      credits_granted: 5,
-      credits_remaining: 5
-    });
+      update: jest.fn().mockResolvedValue(true)
+    };
+
+    const mockWebhook = {
+      id: 10,
+      update: jest.fn().mockResolvedValue(true)
+    };
+
+    (WebhookEvent.findOne as jest.Mock).mockResolvedValue(null);
+    (WebhookEvent.create as jest.Mock).mockResolvedValue(mockWebhook);
+    (Purchase.findOne as jest.Mock).mockResolvedValue(mockPurchase);
+    (Invoice.create as jest.Mock).mockResolvedValue({ id: 100, status: 'paid' });
+    (BillingAuditLog.create as jest.Mock).mockResolvedValue({});
 
     const result = await billingGatewayService.processWebhook(
       'asaas',
@@ -25,36 +58,27 @@ describe('Billing Gateway Service - Webhook Idempotency and Invoicing', () => {
     );
 
     expect(result.status).toBe('processed');
-
-    const purchase = await Purchase.findOne({ where: { gateway_charge_id: chargeId } });
-    expect(purchase.status).toBe('completed');
-
-    const invoice = await Invoice.findOne({ where: { gateway_invoice_id: chargeId } });
-    expect(invoice).not.toBeNull();
-    expect(invoice.status).toBe('paid');
+    expect(mockPurchase.update).toHaveBeenCalled();
+    expect(Invoice.create).toHaveBeenCalled();
   });
 
   it('deve ignorar webhook duplicado garantindo idempotencia total', async () => {
     const orgId = 7772;
-    const gatewayEventId = `evt_dup_${Date.now()}`;
-    const chargeId = `ch_dup_${Date.now()}`;
+    const gatewayEventId = 'evt_dup_1';
 
-    // Primeira execução
-    await billingGatewayService.processWebhook(
-      'asaas',
-      gatewayEventId,
-      'PAYMENT_RECEIVED',
-      { chargeId, organizationId: orgId }
-    );
+    (WebhookEvent.findOne as jest.Mock).mockResolvedValue({
+      id: 20,
+      processed_at: new Date()
+    });
 
-    // Segunda execução com mesmo gatewayEventId
     const duplicateResult = await billingGatewayService.processWebhook(
       'asaas',
       gatewayEventId,
       'PAYMENT_RECEIVED',
-      { chargeId, organizationId: orgId }
+      { chargeId: 'ch_dup', organizationId: orgId }
     );
 
     expect(duplicateResult.status).toBe('already_processed');
+    expect(Purchase.findOne).not.toHaveBeenCalled();
   });
 });

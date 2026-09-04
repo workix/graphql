@@ -1,36 +1,63 @@
 import { jobBoostService } from '../../src/modules/jobs/services/job_boost.service';
-import { Job, JobBoost } from '../../src/models';
+import { Job, JobBoost, Purchase } from '../../src/models';
+
+jest.mock('../../src/models', () => ({
+  Job: {
+    findByPk: jest.fn(),
+    findAll: jest.fn(),
+    create: jest.fn()
+  },
+  JobBoost: {
+    count: jest.fn(),
+    create: jest.fn()
+  },
+  Purchase: {
+    findByPk: jest.fn()
+  }
+}));
 
 describe('Sponsored Jobs - Rotulagem Imutável e Preservação do Orgânico', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('deve garantir que vaga patrocinada contenha is_sponsored = true e sponsor_label fixo', async () => {
-    const job = await Job.create({
+    const mockJob = {
+      id: 10,
       title: 'Analista de Comex',
-      description: 'Vaga para importação e exportação',
-      requirement: 'Superior completo',
-      benefits: 'VT, VR',
-      job_category: 'MANAGEMENT',
-      job_type: 'FULLTIME',
-      min_payment: 4000,
-      max_payment: 6000,
-      activated: true,
-      featured: false,
-      company_id: 1,
-      outcome_status: 'OPEN'
+      update: jest.fn().mockResolvedValue(true)
+    };
+
+    (Job.findByPk as jest.Mock).mockResolvedValue(mockJob);
+    (JobBoost.count as jest.Mock).mockResolvedValue(1);
+    (JobBoost.create as jest.Mock).mockResolvedValue({
+      id: 1,
+      job_id: 10,
+      organization_id: 1,
+      label: 'Patrocinada',
+      status: 'active'
     });
 
-    const boost = await jobBoostService.boostJob(job.id, 1, 7, 'founder_bonus');
+    const boost = await jobBoostService.boostJob(10, 1, 7, 'founder_bonus');
     expect(boost).not.toBeNull();
-
-    await job.reload();
-    expect(job.is_sponsored).toBe(true);
-    expect(job.sponsor_label).toBe('Patrocinada');
+    expect(mockJob.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        is_sponsored: true,
+        sponsor_label: 'Patrocinada'
+      })
+    );
   });
 
   it('deve retornar slots de destaque sem suprimir vagas do resultado orgânico', async () => {
+    const mockSponsored = [{ id: 1, title: 'Vaga Destaque', is_sponsored: true, sponsor_label: 'Patrocinada' }];
+    const mockOrganic = [{ id: 2, title: 'Vaga Organica', is_sponsored: false }];
+
+    (Job.findAll as jest.Mock)
+      .mockResolvedValueOnce(mockSponsored)
+      .mockResolvedValueOnce(mockOrganic);
+
     const result = await jobBoostService.getSponsoredAndOrganicList({ limit: 10 });
-    expect(result).toHaveProperty('sponsoredJobs');
-    expect(result).toHaveProperty('organicJobs');
-    expect(Array.isArray(result.sponsoredJobs)).toBe(true);
-    expect(Array.isArray(result.organicJobs)).toBe(true);
+    expect(result.sponsoredJobs).toEqual(mockSponsored);
+    expect(result.organicJobs).toEqual(mockOrganic);
   });
 });
