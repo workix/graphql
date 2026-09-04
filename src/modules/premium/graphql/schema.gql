@@ -4,11 +4,59 @@ scalar DateTime
 type Query {
     subscriptionPlans: [SubscriptionPlan]
     mySubscription(userId: ID!): UserSubscription
+    allPlans: [Plan]
+    organizationSubscription(organizationId: ID!): OrganizationSubscription
+    checkCapability(organizationId: ID!, featureKey: String!, quantity: Int): CapabilityCheckResult
 }
 
 type Mutation {
     createSubscriptionPlan(name: String!, price: Float!, billingPeriod: String, inmailCreditsPerMonth: Int): SubscriptionPlan
     subscribeToPlan(userId: ID!, planId: ID!): UserSubscription
+    subscribeOrganizationToPlan(organizationId: ID!, planCode: String!, founderDiscountPct: Float): OrganizationSubscription
+    pauseSubscription(subscriptionId: ID!): Boolean
+    cancelSubscription(subscriptionId: ID!): Boolean
+}
+
+type Plan {
+    id: ID
+    code: String
+    name: String
+    priceCents: Int
+    currency: String
+    interval: String
+    active: Boolean
+    features: [PlanFeature]
+}
+
+type PlanFeature {
+    id: ID
+    planId: ID
+    featureKey: String
+    limitValue: Int
+    enabled: Boolean
+}
+
+type OrganizationSubscription {
+    id: ID
+    organizationId: ID
+    planId: ID
+    status: String
+    gatewayCustomerId: String
+    gatewaySubscriptionId: String
+    currentPeriodStart: DateTime
+    currentPeriodEnd: DateTime
+    trialEndsAt: DateTime
+    cancelAtPeriodEnd: Boolean
+    founderDiscountPct: Float
+    plan: Plan
+}
+
+type CapabilityCheckResult {
+    allow: Boolean
+    reason: String
+    upgradeTo: String
+    limit: Int
+    currentUsage: Int
 }
 
 type SubscriptionPlan {
