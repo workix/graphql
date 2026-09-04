@@ -1,0 +1,40 @@
+type LgpdUserDossier {
+    id: ID!
+    name: String
+    email: String
+    createdAt: String
+}
+
+type LgpdExportDossier {
+    exportDate: String!
+    regulation: String!
+    user: LgpdUserDossier!
+    candidateProfile: String
+    resume: String
+    applicationsCount: Int
+    visibilitySettings: String
+}
+
+type LgpdAnonymizationResult {
+    success: Boolean!
+    userId: ID!
+    anonymizedAt: String!
+    message: String!
+}
+
+type FeatureFlagItem {
+    key: String!
+    enabled: Boolean!
+    isOverridden: Boolean!
+}
+
+type Query {
+    myLgpdDataExport(userId: ID!): LgpdExportDossier!
+    featureFlags(tenantSlug: String): [FeatureFlagItem!]!
+    isFeatureFlagEnabled(flagKey: String!, tenantSlug: String): Boolean!
+}
+
+type Mutation {
+    requestAccountAnonymization(userId: ID!, reason: String): LgpdAnonymizationResult!
+    updateTenantFeatureFlag(tenantSlug: String!, flagKey: String!, enabled: Boolean!): Boolean!
+}
