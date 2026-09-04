@@ -1,0 +1,6 @@
+schema: 1.0
+change: professional-app-final-audit-and-certification
+description: Automação CI/CD e auditoria final com certificação dos 73 critérios de software profissional da plataforma Workix
+authors:
+  - Felipe Rodrigues Michetti <frmichetti@gmail.com>
+date: 2026-09-04
