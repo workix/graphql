@@ -38,6 +38,18 @@ const jobsResolvers = {
             jobs = jobs.map(j => new JobDTO(j))
             return jobs;
         },
+        allSponsoredJobs: async (parent, args, ctx, info) => {
+            const options: any = {
+                where: { is_sponsored: true, activated: true },
+                order: [['updated_at', 'DESC']]
+            };
+            if (args.start != null && args.max != null) {
+                options.offset = args.start;
+                options.limit = args.max;
+            }
+            const jobs = await Job.findAll(options);
+            return jobs.map(j => new JobDTO(j));
+        },
         listJobRandomFeatured: async (parent, args, ctx, info) => {
             let jobs = await jobsRepository(ctx.orm).listRandomFeatured(info, args)
             jobs = jobs.map(j => new JobDTO(j))
@@ -74,6 +86,15 @@ const jobsResolvers = {
         subscribeInJob: async (parent, args, ctx, info) => {
             const subscribed = await jobsRepository(ctx.orm).subscribe(args)
             return subscribed;
+        },
+        expireJobs: async (parent, args, ctx, info) => {
+            const { jobExpirationService } = require('../services/job_expiration.service');
+            return await jobExpirationService.autoExpireJobs();
+        },
+        closeJobWithOutcome: async (parent, args, ctx, info) => {
+            const { jobExpirationService } = require('../services/job_expiration.service');
+            const job = await jobExpirationService.closeJobWithOutcome(args.jobId, args.outcomeStatus);
+            return new JobDTO(job);
         }
     },
     Job: {
