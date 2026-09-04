@@ -73,6 +73,20 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    response_rate_90d: {
+      type: DataTypes.DECIMAL(5, 2),
+      allowNull: false,
+      defaultValue: 100.00
+    },
+    median_response_time_days: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 7
+    },
+    verified_at: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
     user_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
