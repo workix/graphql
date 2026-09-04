@@ -17,11 +17,11 @@
 
 ## 3. Conformidade LGPD & Chaves de Visibilidade do Candidato
 
-- [ ] 3.1 Remover obrigatoriedade do CPF no cadastro inicial de candidatos, adotando validação por e-mail/Firebase
-- [ ] 3.2 Implementar modelo e repositório para `visibility_settings` (as 3 chaves do candidato)
-- [ ] 3.3 Implementar a função server-side `reveal(candidate, viewer_organization, data_scope)` para proteção de dados pessoais
-- [ ] 3.4 Implementar registro e rotina periódica de purga automática de `profile_views` (12 meses Premium / 7 dias Free)
-- [ ] 3.5 Criar queries e mutations GraphQL para gestão de preferências de visibilidade do candidato
+- [x] 3.1 Remover obrigatoriedade do CPF no cadastro inicial de candidatos, adotando validação por e-mail/Firebase
+- [x] 3.2 Implementar modelo e repositório para `visibility_settings` (as 3 chaves do candidato)
+- [x] 3.3 Implementar a função server-side `reveal(candidate, viewer_organization, data_scope)` para proteção de dados pessoais
+- [x] 3.4 Implementar registro e rotina periódica de purga automática de `profile_views` (12 meses Premium / 7 dias Free)
+- [x] 3.5 Criar queries e mutations GraphQL para gestão de preferências de visibilidade do candidato
 
 ## 4. Integridade de Vagas & Taxa de Resposta Pública da Empresa
 
