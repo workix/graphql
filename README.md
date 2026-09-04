@@ -11,7 +11,7 @@
 [![GraphQL](https://img.shields.io/badge/GraphQL-15.x-E10098?style=for-the-badge&logo=graphql&logoColor=white)](https://graphql.org)
 [![Sequelize](https://img.shields.io/badge/Sequelize-5.x-52B0E7?style=for-the-badge&logo=sequelize&logoColor=white)](https://sequelize.org)
 [![Jest](https://img.shields.io/badge/Jest-TDD-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](./LICENSE)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg?style=for-the-badge)](./LICENSE)
 
 [Sobre](#-sobre-o-projeto) •
 [Para quem é](#-para-quem-é-este-projeto) •
