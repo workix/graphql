@@ -1,11 +1,11 @@
 ## 1. Governança Open Core e Documentação Pública
 
-- [ ] 1.1 Criar documento `RANKING.md` detalhando a fórmula de ranqueamento orgânico auditável e as regras de slots patrocinados
-- [ ] 1.2 Criar documento `TRADEMARK.md` com a política de marca registrada Workix e limites de uso em forks AGPLv3
-- [ ] 1.3 Criar documento `CLA.md` com o Contributor License Agreement em português claro
-- [ ] 1.4 Criar documento `PRIVACY.md` especificando o tratamento LGPD, consentimento em 3 chaves e retenção de logs
-- [ ] 1.5 Criar documento `SELF-HOSTING.md` com guia de execução do núcleo aberto e esclarecimento sobre módulos comerciais
-- [ ] 1.6 Atualizar `README.md` e `SPECIFICATION.md` com a seção oficial dos 5 Pactos e o novo modelo de monetização
+- [x] 1.1 Criar documento `RANKING.md` detalhando a fórmula de ranqueamento orgânico auditável e as regras de slots patrocinados
+- [x] 1.2 Criar documento `TRADEMARK.md` com a política de marca registrada Workix e limites de uso em forks AGPLv3
+- [x] 1.3 Criar documento `CLA.md` com o Contributor License Agreement em português claro
+- [x] 1.4 Criar documento `PRIVACY.md` especificando o tratamento LGPD, consentimento em 3 chaves e retenção de logs
+- [x] 1.5 Criar documento `SELF-HOSTING.md` com guia de execução do núcleo aberto e esclarecimento sobre módulos comerciais
+- [x] 1.6 Atualizar `README.md` e `SPECIFICATION.md` com a seção oficial dos 5 Pactos e o novo modelo de monetização
 
 ## 2. Modelagem de Dados e Migrações (Sequelize)
 
