@@ -65,26 +65,52 @@ const jobsResolvers = {
             return new JobDTO(job);
         },
         myJobs: compose(...authGuard)(async (parent, args, ctx, info) => {
-            let jobs = await jobsRepository(ctx.orm).findMyJobs(info, args, ctx)
+            let jobs = await jobsRepository(ctx.orm, ctx.rabbitmqClient).findMyJobs(info, args, ctx)
             jobs = jobs.map(j => new JobDTO(j))
             return jobs;
-        })
+        }),
+        searchJobs: async (parent, args, ctx, info) => {
+            const { jobSearchEngineService } = require('../services/job_search_engine.service');
+            const result = await jobSearchEngineService.search({
+                query: args.query,
+                filter: args.filter,
+                sortBy: args.sortBy,
+                page: args.page,
+                limit: args.limit
+            });
+            return {
+                jobs: result.jobs.map(j => new JobDTO(j)),
+                totalCount: result.totalCount,
+                page: result.page,
+                totalPages: result.totalPages,
+                sponsoredJobs: result.sponsoredJobs.map(j => new JobDTO(j)),
+                facets: result.facets
+            };
+        },
+        jobSearchFacets: async (parent, args, ctx, info) => {
+            const { jobSearchEngineService } = require('../services/job_search_engine.service');
+            return await jobSearchEngineService.getFacets(args.query, args.filter);
+        },
+        jobSearchSuggestions: async (parent, args, ctx, info) => {
+            const { jobSearchEngineService } = require('../services/job_search_engine.service');
+            return await jobSearchEngineService.getSuggestions(args.prefix);
+        }
     },
     Mutation: {
         createJob: async (parent, args, ctx, info) => {
-            const job = await jobsRepository(ctx.orm).create(args)
+            const job = await jobsRepository(ctx.orm, ctx.rabbitmqClient).create(args)
             return new JobDTO(job);
         },
         deleteJob: async (parent, args, ctx, info) => {
-            const deleted = await jobsRepository(ctx.orm).destroy(args)
+            const deleted = await jobsRepository(ctx.orm, ctx.rabbitmqClient).destroy(args)
             return deleted;
         },
         updateJob: async (parent, args, ctx, info) => {
-            const job = await jobsRepository(ctx.orm).update(args)
+            const job = await jobsRepository(ctx.orm, ctx.rabbitmqClient).update(args)
             return new JobDTO(job);
         },
         subscribeInJob: async (parent, args, ctx, info) => {
-            const subscribed = await jobsRepository(ctx.orm).subscribe(args)
+            const subscribed = await jobsRepository(ctx.orm, ctx.rabbitmqClient).subscribe(args)
             return subscribed;
         },
         expireJobs: async (parent, args, ctx, info) => {
@@ -112,6 +138,10 @@ const jobsResolvers = {
                 label: boost.label,
                 status: boost.status
             };
+        },
+        reindexAllJobs: async (parent, args, ctx, info) => {
+            const { jobSearchEngineService } = require('../services/job_search_engine.service');
+            return await jobSearchEngineService.reindexAllJobs();
         }
     },
     Job: {

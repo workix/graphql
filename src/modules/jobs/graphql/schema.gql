@@ -12,6 +12,9 @@ type Query{
     getJobByCompanyId(companyId: ID!) : [Job]
     getJobByIdAndCompanyId(id: ID!, companyId: ID!) : Job
     myJobs: [Job]
+    searchJobs(query: String, filter: JobSearchFilterInput, sortBy: JobSearchSortBy, page: Int, limit: Int): JobSearchResult!
+    jobSearchFacets(query: String, filter: JobSearchFilterInput): JobSearchFacets!
+    jobSearchSuggestions(prefix: String!): [JobSuggestion!]!
 }
 
 type Mutation {
@@ -22,6 +25,11 @@ type Mutation {
     expireJobs: JobExpirationResult
     closeJobWithOutcome(jobId: ID!, outcomeStatus: String!): Job
     boostJob(jobId: ID!, organizationId: ID!, durationDays: Int): JobBoostResult
+    reindexAllJobs: ReindexResult!
+}
+
+type ReindexResult {
+    totalIndexed: Int!
 }
 
 type JobBoostResult {
@@ -39,6 +47,53 @@ type JobExpirationResult {
     expiredJobIds: [ID]
 }
 
+type FacetCount {
+    key: String!
+    count: Int!
+}
+
+type JobSearchFacets {
+    workplaceTypes: [FacetCount!]!
+    jobTypes: [FacetCount!]!
+    levels: [FacetCount!]!
+    states: [FacetCount!]!
+    topSkills: [FacetCount!]!
+}
+
+type JobSuggestion {
+    text: String!
+    category: String!
+}
+
+type JobSearchResult {
+    jobs: [Job!]!
+    totalCount: Int!
+    page: Int!
+    totalPages: Int!
+    sponsoredJobs: [Job!]!
+    facets: JobSearchFacets
+}
+
+enum JobSearchSortBy {
+    RELEVANCE
+    RECENT
+    SALARY_DESC
+    SALARY_ASC
+}
+
+input JobSearchFilterInput {
+    workplaceType: String
+    jobType: String
+    jobCategory: String
+    seniorityLevel: String
+    state: String
+    city: String
+    skills: [String]
+    salaryMin: Float
+    salaryMax: Float
+    companyId: ID
+}
+
 type Job {
     id: ID,
     createdAt: DateTime
@@ -52,6 +107,11 @@ type Job {
     outcomeStatus: String
     isSponsored: Boolean
     sponsorLabel: String
+    skills: [String]
+    workplaceType: String
+    seniorityLevel: String
+    city: String
+    state: String
     jobCategory: JobCategory
     jobType: JobType
     maxPayment: Float
@@ -71,6 +131,11 @@ input JobInput {
     outcomeStatus: String
     isSponsored: Boolean
     sponsorLabel: String
+    skills: [String]
+    workplaceType: String
+    seniorityLevel: String
+    city: String
+    state: String
     jobCategory: JobCategory!
     jobType: JobType!
     maxPayment: Float!
@@ -87,7 +152,6 @@ enum JobCategory {
 enum JobType {
     FREELANCE, FULLTIME, INTERNSHIP, PARTTIME, TEMPORARY, VOLUNTEER
 }
-
 
 type PaginatedListJob {
     jobs: [Job]
