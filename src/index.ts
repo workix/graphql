@@ -14,6 +14,7 @@ import db from './models/index';
 import { DataLoaderFactory } from './dataloader';
 import { RequestedFields } from './RequestedFields';
 import { extractJWTMiddleware } from './middleware/extract_jwt'
+import { tenantMiddleware } from './middleware/tenant.middleware'
 import RabbitmqServer from './factory/rabbitmq_server';
 import { createWebSocketSubscriptionServer } from './subscriptions';
 
@@ -36,11 +37,12 @@ import { getRuntimeMetrics } from './utils/metrics';
   app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-tenant-id', 'x-tenant-slug', 'x-tenant-domain']
   }));
   app.options('*', cors());
 
   app.use(express.json());
+  app.use(tenantMiddleware());
   
   
   const schema = makeExecutableSchema({
