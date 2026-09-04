@@ -83,6 +83,33 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: 'Patrocinada'
     },
+    skills: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: '[]'
+    },
+    workplace_type: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      defaultValue: 'ON_SITE'
+    },
+    seniority_level: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      defaultValue: 'PLENO'
+    },
+    city: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    state: {
+      type: DataTypes.STRING(10),
+      allowNull: true
+    },
+    search_vector: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
     company_id: {
       type: DataTypes.BIGINT,
       allowNull: false,

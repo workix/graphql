@@ -1,7 +1,7 @@
 ## 1. Modelagem & Migrações de Busca
 
-- [ ] 1.1 Criar migração para adicionar campos de busca estruturada (`skills`, `workplace_type`, `seniority_level`, `city`, `state`) na tabela `jobs`
-- [ ] 1.2 Atualizar o modelo `Job` e os DTOs (`CreateJobDTO`, `UpdateJobDTO`, `JobDTO`) com os novos campos
+- [x] 1.1 Criar migração para adicionar campos de busca estruturada (`skills`, `workplace_type`, `seniority_level`, `city`, `state`) na tabela `jobs`
+- [x] 1.2 Atualizar o modelo `Job` e os DTOs (`CreateJobDTO`, `UpdateJobDTO`, `JobDTO`) com os novos campos
 
 ## 2. Drivers de Busca & Estratégia Multi-Engine
 

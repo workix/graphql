@@ -21,6 +21,11 @@ export class CreateJobDTO {
         this.outcome_status = input.outcomeStatus || 'OPEN'
         this.is_sponsored = Boolean(input.isSponsored)
         this.sponsor_label = input.sponsorLabel || (input.isSponsored ? 'Patrocinada' : 'Patrocinada')
+        this.skills = input.skills ? (Array.isArray(input.skills) ? JSON.stringify(input.skills) : input.skills) : '[]'
+        this.workplace_type = input.workplaceType || 'ON_SITE'
+        this.seniority_level = input.seniorityLevel || 'PLENO'
+        this.city = input.city || null
+        this.state = input.state || null
     }
 }
 
@@ -42,5 +47,10 @@ export class UpdateJobDTO {
         if (input.outcomeStatus) this.outcome_status = input.outcomeStatus
         if (input.isSponsored !== undefined) this.is_sponsored = Boolean(input.isSponsored)
         if (input.sponsorLabel) this.sponsor_label = input.sponsorLabel
+        if (input.skills !== undefined) this.skills = Array.isArray(input.skills) ? JSON.stringify(input.skills) : input.skills
+        if (input.workplaceType) this.workplace_type = input.workplaceType
+        if (input.seniorityLevel) this.seniority_level = input.seniorityLevel
+        if (input.city !== undefined) this.city = input.city
+        if (input.state !== undefined) this.state = input.state
     }
 }

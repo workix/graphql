@@ -23,5 +23,22 @@ export default class JobDTO {
         this.outcomeStatus = job.outcome_status || 'OPEN'
         this.isSponsored = Boolean(job.is_sponsored)
         this.sponsorLabel = job.sponsor_label || (job.is_sponsored ? 'Patrocinada' : null)
+        
+        // Campos de busca estruturada
+        let parsedSkills: string[] = [];
+        if (Array.isArray(job.skills)) {
+            parsedSkills = job.skills;
+        } else if (typeof job.skills === 'string') {
+            try {
+                parsedSkills = JSON.parse(job.skills);
+            } catch (e) {
+                parsedSkills = job.skills.split(',').map(s => s.trim()).filter(Boolean);
+            }
+        }
+        this.skills = Array.isArray(parsedSkills) ? parsedSkills : [];
+        this.workplaceType = job.workplace_type || 'ON_SITE';
+        this.seniorityLevel = job.seniority_level || 'PLENO';
+        this.city = job.city || null;
+        this.state = job.state || null;
     }
 }
