@@ -1,0 +1,46 @@
+name: Workix CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  build-and-test:
+    name: Build, Lint & Test Suite
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Check TypeScript Compilation & Build
+        run: npm run build
+
+      - name: Run Full Test Suite (Jest)
+        run: npm test -- --runInBand --no-cache
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test_jwt_secret_key_for_ci_pipeline_1234567890
+
+      - name: Security Vulnerability Scan
+        run: npm audit --audit-level=high
+        continue-on-error: true
