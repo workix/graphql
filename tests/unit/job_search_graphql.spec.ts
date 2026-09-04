@@ -84,7 +84,10 @@ describe('Job Search GraphQL Resolvers and Sponsored Slot Preservation', () => {
       jobTypes: [],
       levels: [],
       states: [],
-      topSkills: []
+      topSkills: [],
+      pcdCount: 0,
+      remoteCount: 0,
+      pcdRemoteCount: 0
     });
 
     const suggestions = await (jobsResolvers.Query as any).jobSearchSuggestions(
