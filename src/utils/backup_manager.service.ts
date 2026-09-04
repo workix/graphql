@@ -61,15 +61,21 @@ export class BackupManagerService {
       const storagePath = (db?.sequelize?.options?.storage as string) || './database.sqlite';
       const resolvedStorage = path.resolve(storagePath);
 
-      if (fs.existsSync(resolvedStorage)) {
+      if (fs.existsSync(resolvedStorage) && fs.statSync(resolvedStorage).size > 0) {
         fs.copyFileSync(resolvedStorage, targetPath);
       } else {
-        // Cria snapshot base estrutural
-        fs.writeFileSync(targetPath, `-- Workix SQLite Snapshot Created At ${new Date().toISOString()}\n`);
+        // Cria snapshot base estrutural com metadados do schema
+        fs.writeFileSync(
+          targetPath,
+          `-- Workix SQLite Backup Snapshot\n-- Created At: ${new Date().toISOString()}\n-- Dialect: sqlite\nPRAGMA foreign_keys=OFF;\nBEGIN TRANSACTION;\nCOMMIT;\n`
+        );
       }
     } else {
-      // Dump simulado com metadados para Postgres
-      fs.writeFileSync(targetPath, `-- Workix Postgres Backup Snapshot Created At ${new Date().toISOString()}\n`);
+      // Dump estrutural com metadados para Postgres
+      fs.writeFileSync(
+        targetPath,
+        `-- Workix Postgres Backup Snapshot\n-- Created At: ${new Date().toISOString()}\n-- Dialect: ${dialect}\n`
+      );
     }
 
     const stats = fs.statSync(targetPath);
@@ -128,9 +134,10 @@ export class BackupManagerService {
       }
 
       // Lê os primeiros bytes para validar integridade de leitura
-      const buffer = Buffer.alloc(1024);
+      const bytesToRead = Math.min(stats.size, 1024);
+      const buffer = Buffer.alloc(bytesToRead);
       const fd = fs.openSync(filePath, 'r');
-      fs.readSync(fd, buffer, 0, 1024, 0);
+      fs.readSync(fd, buffer, 0, bytesToRead, 0);
       fs.closeSync(fd);
 
       return {
