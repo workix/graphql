@@ -22,8 +22,12 @@ const companiesResolvers = {
       let logos = await companiesRepository(ctx.orm).listRandomLogos(info, args)
       logos = logos.map(l => new CompanyDTO(l))
       return logos;
+    },
+    companyIntegrityMetrics: async (parent, args, ctx, info) => {
+      const { companyIntegrityService } = require('../services/company_integrity.service');
+      const metrics = await companyIntegrityService.calculateResponseRate90d(args.companyId);
+      return metrics;
     }
-
   },
   Mutation: {
     createCompany: async (parent, args, ctx, info) => {
@@ -66,6 +70,14 @@ const companiesResolvers = {
       }
       return '';
     },
+    responseRate90d: (parent: any) => {
+      return parent.response_rate_90d != null ? parseFloat(parent.response_rate_90d) : 100.0;
+    },
+    medianResponseTimeDays: (parent: any) => {
+      return parent.median_response_time_days != null ? parseInt(parent.median_response_time_days, 10) : 7;
+    },
+    verifiedAt: (parent: any) => parent.verified_at || parent.verifiedAt || null,
+    isVerified: (parent: any) => Boolean(parent.verified_at || parent.verifiedAt),
     medias: async (parent, args, ctx, info) => {
       let medias = await ctx.dataloaders.companyMediaLoader.load({ key: parent.id, info })
       medias = medias.map(m => new MediaDTO(m))
