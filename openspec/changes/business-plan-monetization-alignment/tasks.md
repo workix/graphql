@@ -58,7 +58,7 @@
 
 ## 9. Testes Automatizados TDD e Validação
 
-- [ ] 9.1 Escrever testes unitários para a função `can()` cobrindo todas as combinações de planos, limites e contadores
-- [ ] 9.2 Escrever testes unitários para a função `reveal()` cobrindo todas as 3 chaves de visibilidade e negações de acesso
-- [ ] 9.3 Escrever testes de integração para o webhook idempotente e transações de faturamento
-- [ ] 9.4 Escrever testes de contrato GraphQL garantindo que `is_sponsored = true` nunca omita o `sponsor_label`
+- [x] 9.1 Escrever testes unitários para a função `can()` cobrindo todas as combinações de planos, limites e contadores
+- [x] 9.2 Escrever testes unitários para a função `reveal()` cobrindo todas as 3 chaves de visibilidade e negações de acesso
+- [x] 9.3 Escrever testes de integração para o webhook idempotente e transações de faturamento
+- [x] 9.4 Escrever testes de contrato GraphQL garantindo que `is_sponsored = true` nunca omita o `sponsor_label`
