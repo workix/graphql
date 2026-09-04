@@ -21,6 +21,17 @@ type Mutation {
     subscribeInJob(input: SubscribeInJobInput!): Boolean
     expireJobs: JobExpirationResult
     closeJobWithOutcome(jobId: ID!, outcomeStatus: String!): Job
+    boostJob(jobId: ID!, organizationId: ID!, durationDays: Int): JobBoostResult
+}
+
+type JobBoostResult {
+    id: ID
+    jobId: ID
+    organizationId: ID
+    startsAt: DateTime
+    endsAt: DateTime
+    label: String
+    status: String
 }
 
 type JobExpirationResult {

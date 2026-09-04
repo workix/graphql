@@ -95,6 +95,23 @@ const jobsResolvers = {
             const { jobExpirationService } = require('../services/job_expiration.service');
             const job = await jobExpirationService.closeJobWithOutcome(args.jobId, args.outcomeStatus);
             return new JobDTO(job);
+        },
+        boostJob: async (parent, args, ctx, info) => {
+            const { jobBoostService } = require('../services/job_boost.service');
+            const boost = await jobBoostService.boostJob(
+                args.jobId,
+                args.organizationId,
+                args.durationDays || 7
+            );
+            return {
+                id: boost.id,
+                jobId: boost.job_id,
+                organizationId: boost.organization_id,
+                startsAt: boost.starts_at,
+                endsAt: boost.ends_at,
+                label: boost.label,
+                status: boost.status
+            };
         }
     },
     Job: {
