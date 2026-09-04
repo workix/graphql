@@ -25,10 +25,10 @@
 
 ## 4. Integridade de Vagas & Taxa de Resposta Pública da Empresa
 
-- [ ] 4.1 Implementar validação e expiração compulsória de vagas vencidas (`expires_at`) com solicitação de desfecho
-- [ ] 4.2 Implementar rotina diária para cálculo da taxa de resposta de 90 dias (`response_rate_90d`) e tempo médio de resposta
-- [ ] 4.3 Exibir publicamente a taxa de resposta da empresa na Company Page e schema GraphQL
-- [ ] 4.4 Implementar verificação de critérios de mérito e suspensão automática para o Selo de Empresa Verificada
+- [x] 4.1 Implementar validação e expiração compulsória de vagas vencidas (`expires_at`) com solicitação de desfecho
+- [x] 4.2 Implementar rotina diária para cálculo da taxa de resposta de 90 dias (`response_rate_90d`) e tempo médio de resposta
+- [x] 4.3 Exibir publicamente a taxa de resposta da empresa na Company Page e schema GraphQL
+- [x] 4.4 Implementar verificação de critérios de mérito e suspensão automática para o Selo de Empresa Verificada
 
 ## 5. Motor de Entitlements e Planos Versionados
 
