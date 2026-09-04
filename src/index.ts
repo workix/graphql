@@ -15,10 +15,12 @@ import { DataLoaderFactory } from './dataloader';
 import { RequestedFields } from './RequestedFields';
 import { extractJWTMiddleware } from './middleware/extract_jwt'
 import { tenantMiddleware } from './middleware/tenant.middleware'
+import { traceMiddleware } from './middleware/trace.middleware'
+import { idempotencyMiddleware } from './utils/idempotency.service'
+import { createHealthRouter } from './utils/health'
+import { formatGraphQLError, expressErrorHandler } from './utils/error_formatter'
 import RabbitmqServer from './factory/rabbitmq_server';
 import { createWebSocketSubscriptionServer } from './subscriptions';
-
-import { getRuntimeMetrics } from './utils/metrics';
 
 (async () => {
   
@@ -37,12 +39,25 @@ import { getRuntimeMetrics } from './utils/metrics';
   app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-tenant-id', 'x-tenant-slug', 'x-tenant-domain']
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Accept',
+      'x-tenant-id',
+      'x-tenant-slug',
+      'x-tenant-domain',
+      'x-trace-id',
+      'x-correlation-id',
+      'idempotency-key'
+    ],
+    exposedHeaders: ['x-trace-id', 'x-idempotent-replay']
   }));
   app.options('*', cors());
 
   app.use(express.json());
+  app.use(traceMiddleware());
   app.use(tenantMiddleware());
+  app.use(idempotencyMiddleware());
   
   
   const schema = makeExecutableSchema({
@@ -65,23 +80,15 @@ import { getRuntimeMetrics } from './utils/metrics';
     graphqlHTTP(req => ({
       schema,
       graphiql: true,
-      context: req['context']
+      context: req['context'],
+      customFormatErrorFn: (error: any) => formatGraphQLError(error, req['context'])
     }))
   );
   
-  app.get('/health/metrics', (req, res) => res.json(getRuntimeMetrics()));
-  app.get('/health', (req, res) => res.json({ status: 'ok', uptime: Math.floor(process.uptime()) }));
+  app.use('/health', createHealthRouter(db, mqserver));
   app.use('/', (req, res) => res.send({ msg: "Workix Graphql" }))
   
-  app.use(
-    (error, request, response, next) => {
-      if (error instanceof Error) {
-        return response.status(400).json({ message: error.message });
-      }
-  
-      return response.status(500).json(error);
-    }
-  );
+  app.use(expressErrorHandler());
   
   const port = process.env.PORT || 4000
   
