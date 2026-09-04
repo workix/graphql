@@ -51,10 +51,10 @@
 
 ## 8. Faturamento Nacional e Webhooks Idempotentes
 
-- [ ] 8.1 Implementar serviço de integração com gateway de pagamento nacional (Asaas/Iugu) para Pix, Cartão e Boleto
-- [ ] 8.2 Implementar endpoint de webhook com persistência prévia em `webhook_events` e garantia de idempotência
-- [ ] 8.3 Implementar gravação e consulta de NFS-e emitida em `invoices` e `purchases`
-- [ ] 8.4 Implementar máquina de estados de cobrança e dunning (recuperação de falhas de pagamento)
+- [x] 8.1 Implementar serviço de integração com gateway de pagamento nacional (Asaas/Iugu) para Pix, Cartão e Boleto
+- [x] 8.2 Implementar endpoint de webhook com persistência prévia em `webhook_events` e garantia de idempotência
+- [x] 8.3 Implementar gravação e consulta de NFS-e emitida em `invoices` e `purchases`
+- [x] 8.4 Implementar máquina de estados de cobrança e dunning (recuperação de falhas de pagamento)
 
 ## 9. Testes Automatizados TDD e Validação
 
