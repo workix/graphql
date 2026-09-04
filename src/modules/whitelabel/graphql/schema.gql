@@ -1,0 +1,69 @@
+type WhiteLabelInstitutionalLinks {
+    about_url: String
+    terms_url: String
+    privacy_url: String
+    help_url: String
+}
+
+input WhiteLabelInstitutionalLinksInput {
+    about_url: String
+    terms_url: String
+    privacy_url: String
+    help_url: String
+}
+
+type WhiteLabelConfig {
+    id: ID!
+    slug: String!
+    name: String!
+    custom_domain: String
+    logo_url: String
+    logo_dark_url: String
+    favicon_url: String
+    primary_color: String!
+    secondary_color: String!
+    accent_color: String!
+    background_color: String!
+    text_color: String!
+    font_family: String!
+    app_title: String!
+    meta_description: String
+    institutional_links: WhiteLabelInstitutionalLinks
+    custom_css: String
+    css_variables: String
+    is_active: Boolean!
+    created_at: String
+    updated_at: String
+}
+
+input UpsertWhiteLabelConfigInput {
+    id: ID
+    slug: String!
+    name: String!
+    custom_domain: String
+    logo_url: String
+    logo_dark_url: String
+    favicon_url: String
+    primary_color: String
+    secondary_color: String
+    accent_color: String
+    background_color: String
+    text_color: String
+    font_family: String
+    app_title: String
+    meta_description: String
+    institutional_links: WhiteLabelInstitutionalLinksInput
+    custom_css: String
+    is_active: Boolean
+}
+
+type Query {
+    whiteLabelConfig(slug: String, domain: String): WhiteLabelConfig!
+    allWhiteLabelConfigs: [WhiteLabelConfig!]!
+    currentTenant: WhiteLabelConfig!
+}
+
+type Mutation {
+    upsertWhiteLabelConfig(input: UpsertWhiteLabelConfigInput!): WhiteLabelConfig!
+    deleteWhiteLabelConfig(id: ID!): Boolean!
+}
