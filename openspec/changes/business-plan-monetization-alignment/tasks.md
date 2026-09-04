@@ -9,11 +9,11 @@
 
 ## 2. Modelagem de Dados e Migrações (Sequelize)
 
-- [ ] 2.1 Criar migrações para novas tabelas de faturamento e planos (`plans`, `plan_features`, `subscriptions`, `subscription_overrides`, `usage_counters`, `purchases`, `invoices`, `webhook_events`, `billing_audit_log`)
-- [ ] 2.2 Criar migrações para controle de visibilidade e consentimento (`visibility_settings`, `profile_views`, `contact_unlocks`)
-- [ ] 2.3 Criar migrações para impulsionamento de vagas (`job_boosts`, `profile_boosts`)
-- [ ] 2.4 Atualizar tabelas existentes (`candidates`, `companies`, `jobs`) adicionando campos de validade, taxas de resposta e desfecho
-- [ ] 2.5 Criar seeders para catálogo de planos versionados (`free_v1`, `starter_v1`, `pro_v1`, `business_v1`) e seus limites em `plan_features`
+- [x] 2.1 Criar migrações para novas tabelas de faturamento e planos (`plans`, `plan_features`, `subscriptions`, `subscription_overrides`, `usage_counters`, `purchases`, `invoices`, `webhook_events`, `billing_audit_log`)
+- [x] 2.2 Criar migrações para controle de visibilidade e consentimento (`visibility_settings`, `profile_views`, `contact_unlocks`)
+- [x] 2.3 Criar migrações para impulsionamento de vagas (`job_boosts`, `profile_boosts`)
+- [x] 2.4 Atualizar tabelas existentes (`candidates`, `companies`, `jobs`) adicionando campos de validade, taxas de resposta e desfecho
+- [x] 2.5 Criar seeders para catálogo de planos versionados (`free_v1`, `starter_v1`, `pro_v1`, `business_v1`) e seus limites em `plan_features`
 
 ## 3. Conformidade LGPD & Chaves de Visibilidade do Candidato
 
