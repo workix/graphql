@@ -50,6 +50,26 @@ const premiumResolvers = {
     },
     checkCapability: async (parent: any, args: any) => {
       return await entitlementsService.can(args.organizationId, args.featureKey, args.quantity || 1);
+    },
+    organizationInvoices: async (parent: any, args: any) => {
+      const { Invoice } = require('../../../models');
+      const invoices = await Invoice.findAll({
+        where: { organization_id: args.organizationId },
+        order: [['created_at', 'DESC']]
+      });
+      return invoices.map((inv: any) => ({
+        id: inv.id,
+        organizationId: inv.organization_id,
+        subscriptionId: inv.subscription_id,
+        amountCents: inv.amount_cents,
+        status: inv.status,
+        gatewayInvoiceId: inv.gateway_invoice_id,
+        nfseNumber: inv.nfse_number,
+        nfseUrl: inv.nfse_url,
+        dueDate: inv.due_date,
+        paidAt: inv.paid_at,
+        createdAt: inv.created_at
+      }));
     }
   },
   Mutation: {
@@ -128,6 +148,25 @@ const premiumResolvers = {
       await sub.update({ status: 'canceled', cancel_at_period_end: true, updated_at: new Date() });
       await entitlementsService.gracefulDowngrade(sub.organization_id);
       return true;
+    },
+    createPixCharge: async (parent: any, args: any) => {
+      const { billingGatewayService } = require('../services/billing_gateway.service');
+      return await billingGatewayService.createPixCharge(
+        args.organizationId,
+        args.sku,
+        args.amountCents,
+        args.creditsCount || 1
+      );
+    },
+    simulateGatewayWebhook: async (parent: any, args: any) => {
+      const { billingGatewayService } = require('../services/billing_gateway.service');
+      const payload = JSON.parse(args.payloadJson);
+      return await billingGatewayService.processWebhook(
+        args.gateway,
+        args.gatewayEventId,
+        args.type,
+        payload
+      );
     }
   },
   Plan: {

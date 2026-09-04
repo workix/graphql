@@ -7,6 +7,7 @@ type Query {
     allPlans: [Plan]
     organizationSubscription(organizationId: ID!): OrganizationSubscription
     checkCapability(organizationId: ID!, featureKey: String!, quantity: Int): CapabilityCheckResult
+    organizationInvoices(organizationId: ID!): [Invoice]
 }
 
 type Mutation {
@@ -15,6 +16,35 @@ type Mutation {
     subscribeOrganizationToPlan(organizationId: ID!, planCode: String!, founderDiscountPct: Float): OrganizationSubscription
     pauseSubscription(subscriptionId: ID!): Boolean
     cancelSubscription(subscriptionId: ID!): Boolean
+    createPixCharge(organizationId: ID!, sku: String!, amountCents: Int!, creditsCount: Int): PixChargeResult
+    simulateGatewayWebhook(gateway: String!, gatewayEventId: String!, type: String!, payloadJson: String!): WebhookProcessResult
+}
+
+type PixChargeResult {
+    purchaseId: ID
+    amountCents: Int
+    qrCode: String
+    copyPastePix: String
+    gatewayChargeId: String
+}
+
+type WebhookProcessResult {
+    status: String
+    eventId: ID
+}
+
+type Invoice {
+    id: ID
+    organizationId: ID
+    subscriptionId: ID
+    amountCents: Int
+    status: String
+    gatewayInvoiceId: String
+    nfseNumber: String
+    nfseUrl: String
+    dueDate: DateTime
+    paidAt: DateTime
+    createdAt: DateTime
 }
 
 type Plan {
