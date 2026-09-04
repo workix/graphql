@@ -8,6 +8,8 @@ type Query{
     debugJob: [Job],
     allJobsFeatured(start: Int, max: Int, featured: Boolean!): [Job]
     allSponsoredJobs(start: Int, max: Int): [Job]
+    allPcdJobs(start: Int, max: Int): [Job]
+    allRemoteJobs(start: Int, max: Int): [Job]
     listJobRandomFeatured: [Job]
     getJobByCompanyId(companyId: ID!) : [Job]
     getJobByIdAndCompanyId(id: ID!, companyId: ID!) : Job
@@ -58,6 +60,9 @@ type JobSearchFacets {
     levels: [FacetCount!]!
     states: [FacetCount!]!
     topSkills: [FacetCount!]!
+    pcdCount: Int!
+    remoteCount: Int!
+    pcdRemoteCount: Int!
 }
 
 type JobSuggestion {
@@ -92,6 +97,8 @@ input JobSearchFilterInput {
     salaryMin: Float
     salaryMax: Float
     companyId: ID
+    isPcd: Boolean
+    isRemote: Boolean
 }
 
 type Job {
@@ -107,6 +114,10 @@ type Job {
     outcomeStatus: String
     isSponsored: Boolean
     sponsorLabel: String
+    isPcd: Boolean
+    isRemote: Boolean
+    pcdDetails: String
+    accessibilityFeatures: [String]
     skills: [String]
     workplaceType: String
     seniorityLevel: String
@@ -131,6 +142,10 @@ input JobInput {
     outcomeStatus: String
     isSponsored: Boolean
     sponsorLabel: String
+    isPcd: Boolean
+    isRemote: Boolean
+    pcdDetails: String
+    accessibilityFeatures: [String]
     skills: [String]
     workplaceType: String
     seniorityLevel: String

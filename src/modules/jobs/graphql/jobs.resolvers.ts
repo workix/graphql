@@ -50,6 +50,37 @@ const jobsResolvers = {
             const jobs = await Job.findAll(options);
             return jobs.map(j => new JobDTO(j));
         },
+        allPcdJobs: async (parent, args, ctx, info) => {
+            const options: any = {
+                where: { is_pcd: true, activated: true },
+                order: [['created_at', 'DESC']]
+            };
+            if (args.start != null && args.max != null) {
+                options.offset = args.start;
+                options.limit = args.max;
+            }
+            const jobs = await Job.findAll(options);
+            return jobs.map(j => new JobDTO(j));
+        },
+        allRemoteJobs: async (parent, args, ctx, info) => {
+            const { Op } = require('sequelize');
+            const options: any = {
+                where: {
+                    activated: true,
+                    [Op.or]: [
+                        { is_remote: true },
+                        { workplace_type: 'REMOTE' }
+                    ]
+                },
+                order: [['created_at', 'DESC']]
+            };
+            if (args.start != null && args.max != null) {
+                options.offset = args.start;
+                options.limit = args.max;
+            }
+            const jobs = await Job.findAll(options);
+            return jobs.map(j => new JobDTO(j));
+        },
         listJobRandomFeatured: async (parent, args, ctx, info) => {
             let jobs = await jobsRepository(ctx.orm).listRandomFeatured(info, args)
             jobs = jobs.map(j => new JobDTO(j))
