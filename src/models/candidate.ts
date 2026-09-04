@@ -62,7 +62,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     cpf: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: true,
       unique: true
     },
     user_id: {
