@@ -66,6 +66,19 @@ export class AdaptiveSearchDriver implements JobSearchDriver {
       return new Date(job.expires_at).getTime() > now;
     });
 
+    // Filter by isPcd if specified
+    if (filter.isPcd !== undefined) {
+      filteredJobs = filteredJobs.filter((job: any) => Boolean(job.is_pcd) === Boolean(filter.isPcd));
+    }
+
+    // Filter by isRemote if specified
+    if (filter.isRemote !== undefined) {
+      filteredJobs = filteredJobs.filter((job: any) => {
+        const isJobRemote = Boolean(job.is_remote) || job.workplace_type === 'REMOTE';
+        return isJobRemote === Boolean(filter.isRemote);
+      });
+    }
+
     // Score jobs
     const scoredJobs = filteredJobs.map((job: any) => {
       let baseScore = 0;
@@ -147,7 +160,7 @@ export class AdaptiveSearchDriver implements JobSearchDriver {
   async getFacets(query?: string, filter?: JobSearchFilter): Promise<JobSearchFacets> {
     const jobs = await Job.findAll({
       where: { activated: true },
-      attributes: ['workplace_type', 'job_type', 'seniority_level', 'state', 'skills']
+      attributes: ['workplace_type', 'job_type', 'seniority_level', 'state', 'skills', 'is_pcd', 'is_remote']
     });
 
     const workplaceCounts: Record<string, number> = {};
@@ -155,8 +168,18 @@ export class AdaptiveSearchDriver implements JobSearchDriver {
     const levelCounts: Record<string, number> = {};
     const stateCounts: Record<string, number> = {};
     const skillCounts: Record<string, number> = {};
+    let pcdCount = 0;
+    let remoteCount = 0;
+    let pcdRemoteCount = 0;
 
     for (const job of jobs) {
+      const isJobPcd = Boolean(job.is_pcd);
+      const isJobRemote = Boolean(job.is_remote) || job.workplace_type === 'REMOTE';
+
+      if (isJobPcd) pcdCount++;
+      if (isJobRemote) remoteCount++;
+      if (isJobPcd && isJobRemote) pcdRemoteCount++;
+
       if (job.workplace_type) {
         workplaceCounts[job.workplace_type] = (workplaceCounts[job.workplace_type] || 0) + 1;
       }
@@ -193,7 +216,10 @@ export class AdaptiveSearchDriver implements JobSearchDriver {
       topSkills: Object.entries(skillCounts)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 10)
-        .map(([key, count]) => ({ key, count }))
+        .map(([key, count]) => ({ key, count })),
+      pcdCount,
+      remoteCount,
+      pcdRemoteCount
     };
   }
 

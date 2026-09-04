@@ -31,6 +31,20 @@ export class PostgresSearchDriver implements JobSearchDriver {
     if (filter.salaryMax != null) {
       where.min_payment = { [Op.lte]: filter.salaryMax };
     }
+    if (filter.isPcd !== undefined) {
+      where.is_pcd = filter.isPcd;
+    }
+    if (filter.isRemote !== undefined) {
+      if (filter.isRemote) {
+        where[Op.or] = [
+          { is_remote: true },
+          { workplace_type: 'REMOTE' }
+        ];
+      } else {
+        where.is_remote = false;
+        where.workplace_type = { [Op.ne]: 'REMOTE' };
+      }
+    }
 
     let order: any[] = [];
     if (params.query && params.query.trim()) {
@@ -79,6 +93,8 @@ export class PostgresSearchDriver implements JobSearchDriver {
     };
     if (filter.workplaceType) sponsoredWhere.workplace_type = filter.workplaceType;
     if (filter.jobType) sponsoredWhere.job_type = filter.jobType;
+    if (filter.isPcd !== undefined) sponsoredWhere.is_pcd = filter.isPcd;
+    if (filter.isRemote !== undefined) sponsoredWhere.is_remote = filter.isRemote;
 
     const sponsoredJobs = await Job.findAll({
       where: sponsoredWhere,
@@ -102,7 +118,7 @@ export class PostgresSearchDriver implements JobSearchDriver {
   async getFacets(query?: string, filter?: JobSearchFilter): Promise<JobSearchFacets> {
     const jobs = await Job.findAll({
       where: { activated: true },
-      attributes: ['workplace_type', 'job_type', 'seniority_level', 'state', 'skills']
+      attributes: ['workplace_type', 'job_type', 'seniority_level', 'state', 'skills', 'is_pcd', 'is_remote']
     });
 
     const workplaceCounts: Record<string, number> = {};
@@ -110,8 +126,18 @@ export class PostgresSearchDriver implements JobSearchDriver {
     const levelCounts: Record<string, number> = {};
     const stateCounts: Record<string, number> = {};
     const skillCounts: Record<string, number> = {};
+    let pcdCount = 0;
+    let remoteCount = 0;
+    let pcdRemoteCount = 0;
 
     for (const job of jobs) {
+      const isJobPcd = Boolean(job.is_pcd);
+      const isJobRemote = Boolean(job.is_remote) || job.workplace_type === 'REMOTE';
+
+      if (isJobPcd) pcdCount++;
+      if (isJobRemote) remoteCount++;
+      if (isJobPcd && isJobRemote) pcdRemoteCount++;
+
       if (job.workplace_type) {
         workplaceCounts[job.workplace_type] = (workplaceCounts[job.workplace_type] || 0) + 1;
       }
@@ -148,7 +174,10 @@ export class PostgresSearchDriver implements JobSearchDriver {
       topSkills: Object.entries(skillCounts)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 10)
-        .map(([key, count]) => ({ key, count }))
+        .map(([key, count]) => ({ key, count })),
+      pcdCount,
+      remoteCount,
+      pcdRemoteCount
     };
   }
 

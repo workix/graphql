@@ -34,6 +34,24 @@ export class ElasticsearchSearchDriver implements JobSearchDriver {
     if (filter.salaryMax != null) {
       mustQueries.push({ range: { min_payment: { lte: filter.salaryMax } } });
     }
+    if (filter.isPcd !== undefined) {
+      mustQueries.push({ term: { is_pcd: filter.isPcd } });
+    }
+    if (filter.isRemote !== undefined) {
+      if (filter.isRemote) {
+        mustQueries.push({
+          bool: {
+            should: [
+              { term: { is_remote: true } },
+              { term: { workplace_type: 'REMOTE' } }
+            ],
+            minimum_should_match: 1
+          }
+        });
+      } else {
+        mustQueries.push({ term: { is_remote: false } });
+      }
+    }
 
     let query: any;
     if (params.query && params.query.trim()) {
@@ -101,7 +119,9 @@ export class ElasticsearchSearchDriver implements JobSearchDriver {
             jobTypes: { terms: { field: 'job_type.keyword' } },
             levels: { terms: { field: 'seniority_level.keyword' } },
             states: { terms: { field: 'state.keyword' } },
-            topSkills: { terms: { field: 'skills.keyword', size: 10 } }
+            topSkills: { terms: { field: 'skills.keyword', size: 10 } },
+            pcdCount: { filter: { term: { is_pcd: true } } },
+            remoteCount: { filter: { term: { is_remote: true } } }
           }
         }
       });
@@ -134,7 +154,10 @@ export class ElasticsearchSearchDriver implements JobSearchDriver {
         jobTypes: (aggs.jobTypes?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
         levels: (aggs.levels?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
         states: (aggs.states?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
-        topSkills: (aggs.topSkills?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count }))
+        topSkills: (aggs.topSkills?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
+        pcdCount: aggs.pcdCount?.doc_count || 0,
+        remoteCount: aggs.remoteCount?.doc_count || 0,
+        pcdRemoteCount: 0
       };
 
       return {
@@ -161,7 +184,10 @@ export class ElasticsearchSearchDriver implements JobSearchDriver {
       jobTypes: [],
       levels: [],
       states: [],
-      topSkills: []
+      topSkills: [],
+      pcdCount: 0,
+      remoteCount: 0,
+      pcdRemoteCount: 0
     };
   }
 
@@ -226,6 +252,17 @@ export class ElasticsearchSearchDriver implements JobSearchDriver {
       }
     }
 
+    let parsedAccessibility: string[] = [];
+    if (Array.isArray(job.accessibility_features)) {
+      parsedAccessibility = job.accessibility_features;
+    } else if (typeof job.accessibility_features === 'string') {
+      try {
+        parsedAccessibility = JSON.parse(job.accessibility_features);
+      } catch {
+        parsedAccessibility = job.accessibility_features.split(',').map((s: string) => s.trim()).filter(Boolean);
+      }
+    }
+
     const doc = {
       id: job.id,
       title: job.title,
@@ -244,6 +281,10 @@ export class ElasticsearchSearchDriver implements JobSearchDriver {
       featured: Boolean(job.featured),
       is_sponsored: Boolean(job.is_sponsored),
       sponsor_label: job.sponsor_label || 'Patrocinada',
+      is_pcd: Boolean(job.is_pcd),
+      is_remote: job.is_remote !== undefined ? Boolean(job.is_remote) : (job.workplace_type === 'REMOTE'),
+      pcd_details: job.pcd_details || null,
+      accessibility_features: parsedAccessibility,
       company_id: job.company_id,
       created_at: job.created_at || new Date().toISOString(),
       updated_at: job.updated_at || new Date().toISOString(),

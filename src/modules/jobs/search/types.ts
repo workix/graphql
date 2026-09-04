@@ -9,6 +9,8 @@ export interface JobSearchFilter {
   salaryMin?: number;
   salaryMax?: number;
   companyId?: number;
+  isPcd?: boolean;
+  isRemote?: boolean;
 }
 
 export type JobSearchSortBy = 'RELEVANCE' | 'RECENT' | 'SALARY_DESC' | 'SALARY_ASC';
@@ -32,6 +34,9 @@ export interface JobSearchFacets {
   levels: FacetCount[];
   states: FacetCount[];
   topSkills: FacetCount[];
+  pcdCount: number;
+  remoteCount: number;
+  pcdRemoteCount: number;
 }
 
 export interface JobSearchResult {
