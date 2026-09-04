@@ -6,7 +6,7 @@ import PaginatedList from '../../../utils/PaginatedList';
 import JobDTO from '../../../dtos/JobDTO';
 import { CreateJobDTO, UpdateJobDTO } from '../../../dtos/JobMutationDTO'
 
-const jobsRepository = db => {
+const jobsRepository = (db: any, rabbitmqClient?: any) => {
     const requestedFields = new RequestedFields();
     const getFields = info => requestedFields.getFields(info, { keep: ["id", "company_id"], exclude: ["company", "candidates"] })
     const getFieldsWithSubfields = info => requestedFields.getFieldsWithSubfields(info, { keep: ["id", "company_id"], exclude: ["company", "candidates"] })
@@ -61,14 +61,34 @@ const jobsRepository = db => {
         return job;
     }
 
+    const publishSearchSync = async (action: 'INDEX' | 'DELETE', jobData: any) => {
+        try {
+            if (rabbitmqClient) {
+                const searchSyncPayload = JSON.stringify({
+                    action,
+                    index: 'jobs',
+                    id: String(jobData.id),
+                    document: jobData
+                });
+                await rabbitmqClient.publishInQueue('search-index-sync', searchSyncPayload);
+            }
+        } catch (err) {
+            console.warn('Could not publish search-index-sync event:', err);
+        }
+    };
+
     const create = async args => {
         const job = await Job.create(new CreateJobDTO(args.input))
         await job.reload()
+        await publishSearchSync('INDEX', job.toJSON ? job.toJSON() : job);
         return job;
     }
 
     const destroy = async args => {
         const deleted = await Job.destroy({ where: { id: args.id } })
+        if (deleted > 0) {
+            await publishSearchSync('DELETE', { id: args.id });
+        }
         return deleted > 0
     }
 
@@ -82,7 +102,9 @@ const jobsRepository = db => {
         const [jobs, meta] = await Job.update(new UpdateJobDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true })
 
         const job = await Job.findOne({ where: { id: args.id } })
-
+        if (job) {
+            await publishSearchSync('INDEX', job.toJSON ? job.toJSON() : job);
+        }
         return job;
     }
 
