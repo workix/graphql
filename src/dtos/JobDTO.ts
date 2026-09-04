@@ -40,5 +40,22 @@ export default class JobDTO {
         this.seniorityLevel = job.seniority_level || 'PLENO';
         this.city = job.city || null;
         this.state = job.state || null;
+
+        // Campos de Inclusão e Modalidade (PCD & Remoto)
+        this.isPcd = Boolean(job.is_pcd);
+        this.isRemote = job.is_remote !== undefined ? Boolean(job.is_remote) : (job.workplace_type === 'REMOTE');
+        this.pcdDetails = job.pcd_details || null;
+
+        let parsedAccessibility: string[] = [];
+        if (Array.isArray(job.accessibility_features)) {
+            parsedAccessibility = job.accessibility_features;
+        } else if (typeof job.accessibility_features === 'string') {
+            try {
+                parsedAccessibility = JSON.parse(job.accessibility_features);
+            } catch (e) {
+                parsedAccessibility = job.accessibility_features.split(',').map(s => s.trim()).filter(Boolean);
+            }
+        }
+        this.accessibilityFeatures = Array.isArray(parsedAccessibility) ? parsedAccessibility : [];
     }
 }

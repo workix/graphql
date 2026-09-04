@@ -110,6 +110,25 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
+    is_pcd: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    is_remote: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    pcd_details: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    accessibility_features: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: '[]'
+    },
     company_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
