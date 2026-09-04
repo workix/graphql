@@ -9,6 +9,13 @@ type Query {
     allCompanies(start: Int, max: Int): [Company]
     allCompaniesPaginated(page: Int!, limit: Int!): PaginatedListCompany
     listCompanyRandomLogos: [Company]
+    companyIntegrityMetrics(companyId: ID!): CompanyIntegrityMetrics
+}
+
+type CompanyIntegrityMetrics {
+    responseRate90d: Float
+    medianResponseTimeDays: Int
+    isVerified: Boolean
 }
 
 type Mutation {
@@ -29,6 +36,10 @@ type Company {
     industry: String
     location: String
     description: String
+    responseRate90d: Float
+    medianResponseTimeDays: Int
+    verifiedAt: DateTime
+    isVerified: Boolean
     locale: Locale
     contact: Contact
     user: User
