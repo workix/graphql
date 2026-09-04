@@ -25,28 +25,37 @@ Sistemas tradicionais de recrutamento e seleção enfrentam desafios críticos d
 4. **Alta Performance em Consultas de Vagas e Candidatos**: Cache em Redis para listagens randômicas, destaques e buscas frequentes.
 5. **Autenticação Unificada**: Integração entre tokens JWT locais e IDs do Firebase Authenticator.
 
-### 1.1.1 Documentação de Implementações Técnicas e Matriz de Paridade
+### 1.1.1 Os 5 Pactos de Transparência da Workix (Single Source of Truth)
+1. **Participar é sempre gratuito**: Candidatar-se, criar perfil, publicar vaga ativa básica e ser listado na busca orgânica são 100% gratuitos.
+2. **Toda visibilidade paga é identificada, sempre**: Vagas em destaque (`job_boosts`) carregam `is_sponsored = true` e o rótulo fixo imutável `sponsor_label = 'Patrocinada'`.
+3. **Ninguém desaparece por não pagar**: O resultado orgânico é preservado e ordenado pela fórmula auditável de relevância ([`RANKING.md`](./RANKING.md)). Pagar adiciona slots dedicados, nunca rebaixa o orgânico.
+4. **Contato só é liberado com consentimento**: O candidato controla sua visibilidade via `visibility_settings` (3 chaves) e a liberação de contato exige registro em `contact_unlocks` com notificação obrigatória.
+5. **Sem vaga fantasma**: Vagas possuem validade compulsória (`expires_at`), desfecho obrigatório de processo, e a taxa de resposta de 90 dias (`response_rate_90d`) da empresa é pública.
+
+### 1.1.2 Documentação de Implementações Técnicas e Matriz de Paridade
 Toda a auditoria técnica de paridade de recursos e estrutura entre os 4 projetos do ecossistema (`graphql`, `java-stack`, `workix-spring-boot`, `workix-frontend-vue`) está unificada no relatório [`IMPLEMENTAÇÕES_TECNICAS.md`](file:///c:/Packsys/NetBeansProjects/graphql/IMPLEMENTA%C3%87%C3%95ES_TECNICAS.md) localizado na raiz deste projeto pai (`graphql`).
 
 ## 1.2 Escopo
 
 ### Incluído
-- Gestão de Usuários e Autenticação (JWT + Firebase UUID).
-- Módulo de Candidatos e perfis de endereço/contato.
+- Gestão de Usuários e Autenticação (JWT + Firebase UUID com e-mail verificado).
+- Módulo de Candidatos com chaves de visibilidade (`visibility_settings`) e autorização server-side `reveal()`.
 - Módulo de Currículos (Resumes) com Histórico Profissional, Formação Acadêmica e Habilidades.
-- Módulo de Empresas (Companies), mídias sociais e segmentos de mercado.
-- Módulo de Vagas (Jobs) com categorização, faixas salariais, benefícios e vagas destacadas (*featured*).
+- Módulo de Empresas (Companies), cálculo de taxa de resposta (`response_rate_90d`) e Selo Verificado.
+- Módulo de Vagas (Jobs) com expiração compulsória (`expires_at`), desfecho de candidatos e impulsionamento rotulado (`job_boosts`, `is_sponsored`).
+- Módulo de Entitlements e Planos Versionados (`plans`, `plan_features`, `subscriptions`, `usage_counters`) com autorização server-side `can()`.
+- Módulo de Desbloqueio de Contato com notificação compulsória ao candidato (`contact_unlocks`).
+- Módulo de Faturamento e Webhooks Idempotentes (`invoices`, `purchases`, `webhook_events`, `billing_audit_log`).
 - Módulo de Processos Seletivos (Selective Processes) com limite de vagas, vigência e inscrições de candidatos.
 - Módulo de Blog, Autores, Mídias, Categorias, Tags e Comentários aninhados (*Parent-Child*).
 - Módulo de Membros da Equipe (Members) e Testemunhos (Testimonials).
 - Módulo de Contato/Formulários (Forms) e Inscrição de Newsletter (Subscribers).
 - Módulo JAAS (Usuários e Papéis/Roles de administração).
-- Validação remota de CPF e Métricas Globais do Sistema.
 - Barramento de Notificações RabbitMQ e Caching Redis.
 
 ### Não Incluído
-- Interface gráfica de Frontend integrada na mesma aplicação (o repositório é estritamente a API GraphQL / Engine Express Backend, fornecendo a interface de navegação GraphiQL para desenvolvimento).
-- Processamento direto de pagamentos ou folha de pagamento.
+- Interface gráfica de Frontend integrada na mesma aplicação (o repositório é estritamente a API GraphQL / Engine Express Backend).
+- Motor comercial fechado de leilão complexo de CPC e analytics preditivos (pertencentes ao módulo enterprise proprietário).
 - Armazenamento físico de arquivos binários (as imagens e mídias são armazenadas como URLs/referências em string).
 
 ## 1.3 Fluxo Geral do Sistema
