@@ -7,12 +7,14 @@ type Query {
     getCandidateById(id: ID!): Candidate
     findCandidateByUserId(userId: ID!): Candidate
     allCandidatesPaginated(page: Int!, limit: Int!): PaginatedListCandidate
+    myVisibilitySettings(candidateId: ID!): VisibilitySettings
 }
 
 type Mutation {
     createCandidate(input: CandidateInput!): Candidate
     deleteCandidate(id: ID!) : Boolean
     updateCandidate(id: ID!, input: CandidateInput!): Candidate
+    updateVisibilitySettings(candidateId: ID!, input: VisibilitySettingsInput!): VisibilitySettings
     notifyCandidate(input: NotificationInput!): Boolean
 }
 
@@ -28,6 +30,21 @@ type Candidate {
     cpf: Float   
     user: User 
     resume: Resume
+    visibilitySettings: VisibilitySettings
+}
+
+type VisibilitySettings {
+    id: ID
+    candidateId: ID
+    searchableByRecruiters: Boolean
+    openToWorkVisible: Boolean
+    showAsViewed: Boolean
+}
+
+input VisibilitySettingsInput {
+    searchableByRecruiters: Boolean
+    openToWorkVisible: Boolean
+    showAsViewed: Boolean
 }
 
 type Contact {
@@ -53,7 +70,7 @@ input CandidateInput {
     zipCode: Int!
     name: String!
     birthDate: Date!
-    cpf: Float!   
+    cpf: Float   
     userId: Int!    
 }
 
