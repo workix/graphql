@@ -39,15 +39,15 @@
 
 ## 6. Motor de Vagas em Destaque e Rotulagem Obrigatória
 
-- [ ] 6.1 Implementar repositório e regras de negócio para alocação de `job_boosts` respeitando limite de slots por região/categoria
-- [ ] 6.2 Implementar injeção obrigatória e imutável de `is_sponsored = true` e `sponsor_label = 'Patrocinada'` nos resolvers de busca
-- [ ] 6.3 Garantir a preservação integral do resultado orgânico retornado abaixo dos blocos de destaque
-- [ ] 6.4 Implementar mutations GraphQL para contratação de destaque avulso e ativação via créditos do plano
+- [x] 6.1 Implementar repositório e regras de negócio para alocação de `job_boosts` respeitando limite de slots por região/categoria
+- [x] 6.2 Implementar injeção obrigatória e imutável de `is_sponsored = true` e `sponsor_label = 'Patrocinada'` nos resolvers de busca
+- [x] 6.3 Garantir a preservação integral do resultado orgânico retornado abaixo dos blocos de destaque
+- [x] 6.4 Implementar mutations GraphQL para contratação de destaque avulso e ativação via créditos do plano
 
 ## 7. Desbloqueio de Contato com Notificação Obrigatória
 
-- [ ] 7.1 Implementar mutation `unlockCandidateContact` registrando o acesso em `contact_unlocks` com débito de créditos
-- [ ] 7.2 Integrar notificação assíncrona obrigatória ao candidato titular (`notified_candidate_at`) via fila RabbitMQ/e-mail
+- [x] 7.1 Implementar mutation `unlockCandidateContact` registrando o acesso em `contact_unlocks` com débito de créditos
+- [x] 7.2 Integrar notificação assíncrona obrigatória ao candidato titular (`notified_candidate_at`) via fila RabbitMQ/e-mail
 
 ## 8. Faturamento Nacional e Webhooks Idempotentes
 
