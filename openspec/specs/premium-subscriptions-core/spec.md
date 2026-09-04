@@ -6,25 +6,25 @@ Especifica o comportamento, regras de exibição e fluxo de assinatura de planos
 ## Requirements
 
 ### Requirement: Tabela de Planos de Assinatura
-O sistema SHALL listar os planos de assinatura disponíveis via query `subscriptionPlans` exibindo nome, preço, período de faturamento e créditos de InMail mensais.
+O sistema SHALL listar os planos B2B de assinatura disponíveis (Free, Starter, Pro, Business) e o plano B2C (Workix Premium) via query `subscriptionPlans` exibindo código, nome, preço mensal/anual, limites de vagas simultâneas, usuários, créditos de contato/InMail e créditos de destaque inclusos.
 
 #### Scenario: Visualização de planos premium
-- **WHEN** o usuário acessa `/premium`
-- **THEN** a tabela comparativa de benefícios (Free, Premium Career, Recruiter) é exibida.
+- **WHEN** o usuário ou empresa acessa a página de planos ou `/pricing`
+- **THEN** a tabela comparativa de planos e benefícios orientada a `plan_features` é exibida de forma clara com a lista do que nunca é cobrado ou vendido.
 
 ### Requirement: Consulta de Assinatura Ativa
-O sistema SHALL permitir que o usuário consulte o status de sua assinatura ativa e saldo de créditos InMail via query `mySubscription(userId)`.
+O sistema SHALL permitir que a organização ou usuário consulte o status de sua assinatura ativa (`trialing`, `active`, `past_due`, `paused`, `canceled`), créditos restantes e histórico de faturas via query `mySubscription(organizationId)`.
 
 #### Scenario: Visualização do plano ativo
-- **WHEN** o usuário consulta o painel de assinatura
-- **THEN** o sistema exibe o status (ACTIVE, EXPIRED), data de renovação e créditos InMail restantes.
+- **WHEN** o usuário consulta o painel de assinatura da empresa
+- **THEN** o sistema exibe o status atual, vigência do ciclo de faturamento, contadores de uso de créditos e notas fiscais emitidas.
 
 ### Requirement: Contratação / Assinatura de Plano
-O sistema SHALL permitir que usuários autenticados assinem um plano premium via mutation `subscribeToPlan(userId, planId)`.
+O sistema SHALL permitir que organizações assinem planos e gerenciem upgrades/downgrades ou pausas através da mutation `subscribeToPlan(organizationId, planId, paymentMethodInput)` com suporte a período de teste de 14 dias sem cartão e desconto vitalício de fundador quando aplicável.
 
 #### Scenario: Assinatura com sucesso
-- **WHEN** o usuário escolhe um plano e confirma a contratação
-- **THEN** a assinatura é ativada e os créditos de InMail são creditados.
+- **WHEN** a organização escolhe um plano e confirma a assinatura com método de pagamento válido
+- **THEN** a assinatura é registrada em `subscriptions`, os limites são atribuídos via `plan_features` e o acesso correspondente é liberado imediatamente.
 
 ### Requirement: Interface Mobile de Planos no Android
 O sistema SHALL disponibilizar suporte a planos de assinatura no app Android através do `PremiumPlansActivity.kt`.
