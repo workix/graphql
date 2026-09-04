@@ -92,6 +92,21 @@ const candidatesResolvers = {
       await ctx.mqserver.publishInQueue('notifications', JSON.stringify(message));
 
       return true
+    },
+    unlockCandidateContact: async (parent, args, ctx, info) => {
+      const { contactUnlockService } = require('../services/contact_unlock.service');
+      const result = await contactUnlockService.unlockContact(
+        args.organizationId,
+        args.userId,
+        args.candidateId,
+        ctx.mqserver
+      );
+      return {
+        unlocked: result.unlocked,
+        unlockedAt: result.unlockedAt,
+        notifiedAt: result.notifiedAt,
+        candidate: new CandidateDTO(result.candidate)
+      };
     }
   },
   Candidate: {

@@ -16,6 +16,14 @@ type Mutation {
     updateCandidate(id: ID!, input: CandidateInput!): Candidate
     updateVisibilitySettings(candidateId: ID!, input: VisibilitySettingsInput!): VisibilitySettings
     notifyCandidate(input: NotificationInput!): Boolean
+    unlockCandidateContact(organizationId: ID!, userId: ID!, candidateId: ID!): ContactUnlockResult
+}
+
+type ContactUnlockResult {
+    unlocked: Boolean
+    unlockedAt: DateTime
+    notifiedAt: DateTime
+    candidate: Candidate
 }
 
 type Candidate {
