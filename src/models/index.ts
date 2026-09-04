@@ -140,6 +140,7 @@ export const ContactUnlock = db.ContactUnlock;
 export const Invoice = db.Invoice;
 export const WebhookEvent = db.WebhookEvent;
 export const BillingAuditLog = db.BillingAuditLog;
+export const WhiteLabelConfig = db.WhiteLabelConfig;
 
 export default db;
 module.exports = db;
