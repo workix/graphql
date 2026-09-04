@@ -64,6 +64,25 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    expires_at: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    outcome_status: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      defaultValue: 'OPEN'
+    },
+    is_sponsored: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    sponsor_label: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      defaultValue: 'Patrocinada'
+    },
     company_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
