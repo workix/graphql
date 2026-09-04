@@ -7,6 +7,7 @@ type Query{
     allJobsPaginated(page: Int!, limit: Int!): PaginatedListJob
     debugJob: [Job],
     allJobsFeatured(start: Int, max: Int, featured: Boolean!): [Job]
+    allSponsoredJobs(start: Int, max: Int): [Job]
     listJobRandomFeatured: [Job]
     getJobByCompanyId(companyId: ID!) : [Job]
     getJobByIdAndCompanyId(id: ID!, companyId: ID!) : Job
@@ -18,8 +19,14 @@ type Mutation {
     deleteJob(id: ID!) : Boolean
     updateJob(id: ID!, input: JobInput!): Job
     subscribeInJob(input: SubscribeInJobInput!): Boolean
+    expireJobs: JobExpirationResult
+    closeJobWithOutcome(jobId: ID!, outcomeStatus: String!): Job
 }
 
+type JobExpirationResult {
+    totalExpired: Int
+    expiredJobIds: [ID]
+}
 
 type Job {
     id: ID,
@@ -30,6 +37,10 @@ type Job {
     benefits: String
     description: String
     featured: Boolean
+    expiresAt: DateTime
+    outcomeStatus: String
+    isSponsored: Boolean
+    sponsorLabel: String
     jobCategory: JobCategory
     jobType: JobType
     maxPayment: Float
@@ -45,6 +56,10 @@ input JobInput {
     benefits: String!
     description: String!
     featured: Boolean!
+    expiresAt: DateTime
+    outcomeStatus: String
+    isSponsored: Boolean
+    sponsorLabel: String
     jobCategory: JobCategory!
     jobType: JobType!
     maxPayment: Float!
