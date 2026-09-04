@@ -18,6 +18,10 @@ export default class JobDTO {
         this.minPayment = job.min_payment
         this.requirement = job.requirement
         this.title = job.title
-        this.companyId = job.company_id       
+        this.companyId = job.company_id
+        this.expiresAt = job.expires_at || null
+        this.outcomeStatus = job.outcome_status || 'OPEN'
+        this.isSponsored = Boolean(job.is_sponsored)
+        this.sponsorLabel = job.sponsor_label || (job.is_sponsored ? 'Patrocinada' : null)
     }
 }
