@@ -32,10 +32,10 @@
 
 ## 5. Motor de Entitlements e Planos Versionados
 
-- [ ] 5.1 Implementar repositórios de acesso a planos, limites e contadores de uso (`usage_counters`)
-- [ ] 5.2 Implementar a função server-side `can(organization, feature_key, quantity)` integrada ao contexto GraphQL
-- [ ] 5.3 Implementar lógica de degradação suave e arquivamento de vagas excedentes no downgrade de plano
-- [ ] 5.4 Criar queries e mutations GraphQL para catálogo de planos e consulta de status de assinatura da empresa
+- [x] 5.1 Implementar repositórios de acesso a planos, limites e contadores de uso (`usage_counters`)
+- [x] 5.2 Implementar a função server-side `can(organization, feature_key, quantity)` integrada ao contexto GraphQL
+- [x] 5.3 Implementar lógica de degradação suave e arquivamento de vagas excedentes no downgrade de plano
+- [x] 5.4 Criar queries e mutations GraphQL para catálogo de planos e consulta de status de assinatura da empresa
 
 ## 6. Motor de Vagas em Destaque e Rotulagem Obrigatória
 
