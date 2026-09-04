@@ -55,7 +55,7 @@ export class CertificateMonitorService {
     };
 
     if (status === 'CRITICAL' || status === 'EXPIRED') {
-      logger.error(`Certificado SSL/TLS crítico para o domínio ${hostname}: expira em ${daysRemaining} dias`, {
+      logger.error(`Certificado SSL/TLS crítico para o domínio ${hostname}: expira em ${daysRemaining} dias`, undefined, {
         operation: 'SSL_MONITOR',
         context: { hostname, daysRemaining, status }
       });
@@ -74,7 +74,8 @@ export class CertificateMonitorService {
    */
   public async checkRemoteCertificate(hostname: string, port: number = 443, timeoutMs: number = 5000): Promise<CertificateInfo> {
     return new Promise((resolve, reject) => {
-      const socket = tls.connect(
+      let socket: tls.TLSSocket;
+      socket = tls.connect(
         {
           host: hostname,
           port: port,
@@ -82,6 +83,7 @@ export class CertificateMonitorService {
           rejectUnauthorized: false
         },
         () => {
+          if (!socket) return;
           const peerCertificate = socket.getPeerCertificate();
           socket.end();
 
@@ -89,9 +91,13 @@ export class CertificateMonitorService {
             return reject(new Error(`Não foi possível recuperar o certificado TLS do host ${hostname}`));
           }
 
-          const issuerStr = typeof peerCertificate.issuer === 'object' 
-            ? (peerCertificate.issuer.O || peerCertificate.issuer.CN || JSON.stringify(peerCertificate.issuer))
-            : String(peerCertificate.issuer);
+          let issuerStr: string | undefined;
+          if (peerCertificate.issuer) {
+            const rawIssuer: any = peerCertificate.issuer;
+            const org = Array.isArray(rawIssuer.O) ? rawIssuer.O.join(', ') : rawIssuer.O;
+            const cn = Array.isArray(rawIssuer.CN) ? rawIssuer.CN.join(', ') : rawIssuer.CN;
+            issuerStr = org || cn || (typeof rawIssuer === 'string' ? rawIssuer : JSON.stringify(rawIssuer));
+          }
 
           const result = this.evaluateCertificate(peerCertificate.valid_to, hostname, issuerStr);
           resolve(result);
@@ -120,7 +126,7 @@ export class CertificateMonitorService {
         const certInfo = await this.checkRemoteCertificate(domain);
         results.push(certInfo);
       } catch (err: any) {
-        logger.error(`Falha ao verificar certificado SSL do domínio ${domain}: ${err?.message}`, {
+        logger.error(`Falha ao verificar certificado SSL do domínio ${domain}: ${err?.message}`, err, {
           operation: 'SSL_MONITOR_ERROR',
           context: { domain, error: err?.message }
         });
