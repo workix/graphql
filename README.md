@@ -28,11 +28,23 @@
 
 ## 💡 Sobre o Projeto
 
-O **Workix GraphQL API** é o **novo backend (projeto maestro 🎼)** da plataforma **Workix** — um ecossistema de recrutamento e empregabilidade **100% gratuito**, criado para conectar candidatos e empresas sem taxas, sem pegadinhas e com muita transparência.
+O **Workix GraphQL API** é o **novo backend (projeto maestro 🎼)** da plataforma **Workix** — uma rede profissional e plataforma de recrutamento enxuta, feita para conectar quem contrata a quem procura.
 
-> *"Imagine uma plataforma de empregos onde você não paga para publicar seu currículo, é avisado quando visualizam seu perfil, recebe mensagens do recrutador direto no celular e é notificado em cada etapa do processo seletivo... Agora imagine que isso é de graça."*
+A Workix adota um modelo sustentável de **acesso e visibilidade** (com planos B2B para empresas e vagas patrocinadas identificadas), diferenciando-se radicalmente dos concorrentes tradicionais por salvaguardas rigorosas de transparência e integridade pública.
 
-Este repositório substitui as antigas APIs REST (`java-stack`) por um **gateway GraphQL único**, com batching/caching via `DataLoader`, autenticação unificada JWT + Firebase Auth, cache distribuído em **Redis**, mensageria assíncrona via **RabbitMQ** e busca avançada com **Elasticsearch**.
+### 📜 Os 5 Pactos da Workix
+
+1. **Participar é sempre gratuito**: Criar perfil, candidatar-se, publicar uma vaga ativa e buscar no resultado orgânico não custam nada, para ninguém.
+2. **Toda visibilidade paga é identificada, sempre**: Vagas em destaque ou perfis impulsionados aparecem com rótulo visível e imutável (`is_sponsored = true`, `sponsor_label = 'Patrocinada'`). Conteúdo pago nunca é disfarçado de resultado orgânico.
+3. **Ninguém desaparece por não pagar**: O resultado orgânico é sempre preservado e ordenado pela fórmula aberta de relevância ([`RANKING.md`](./RANKING.md)). Pagar compra posições adicionais demarcadas, nunca o lugar do orgânico.
+4. **Seu contato só é liberado com seu consentimento**: Dados de contato direto nunca são entregues silenciosamente. O candidato controla suas chaves de visibilidade ([`PRIVACY.md`](./PRIVACY.md)) e é sempre notificado sobre desbloqueios de contato.
+5. **Sem vaga fantasma**: Toda vaga possui validade/expiração obrigatória (`expires_at`), desfecho compulsório, e a taxa de resposta da empresa nos últimos 90 dias é calculada e exibida publicamente.
+
+### 🏛️ Governança Open Core & Licenciamento
+
+- **Núcleo Aberto (AGPLv3)**: Perfis, busca orgânica com fórmula auditável, candidaturas, kanban, mensageria e middlewares de proteção de privacidade. Ver [`SELF-HOSTING.md`](./SELF-HOSTING.md) e [`CLA.md`](./CLA.md).
+- **Proteção de Marca**: A marca "Workix" e logotipos são protegidos. Ver [`TRADEMARK.md`](./TRADEMARK.md).
+- **Módulos Comerciais (Enterprise)**: Motor de alocação de leilão de anúncios e faturamento avançado são mantidos em repositório proprietário para financiar a sustentabilidade do ecossistema.
 
 ### 🎯 Problema que resolvemos
 
@@ -41,8 +53,9 @@ Sistemas tradicionais de recrutamento sofrem com:
 - 📦 *Over-fetching* / *under-fetching* de dados entre clientes Web e Mobile
 - 🔗 Acoplamento forte entre endpoints REST específicos por cliente
 - 🔔 Falta de padronização em notificações e atualizações de status
+- 👻 Proliferação de vagas fantasmas e opacidade na venda de visibilidade
 
-O Workix GraphQL resolve tudo isso com uma **API declarativa única**, otimizada e auditável.
+O Workix GraphQL resolve tudo isso com uma **API declarativa única**, otimizada, auditável e transparente.
 
 ---
 
