@@ -127,5 +127,19 @@ export const User = db.User;
 export const UserProfile = db.UserProfile;
 export const UserSubscription = db.UserSubscription;
 
+export const Plan = db.Plan;
+export const PlanFeature = db.PlanFeature;
+export const Subscription = db.Subscription;
+export const SubscriptionOverride = db.SubscriptionOverride;
+export const UsageCounter = db.UsageCounter;
+export const Purchase = db.Purchase;
+export const JobBoost = db.JobBoost;
+export const ProfileBoost = db.ProfileBoost;
+export const VisibilitySetting = db.VisibilitySetting;
+export const ContactUnlock = db.ContactUnlock;
+export const Invoice = db.Invoice;
+export const WebhookEvent = db.WebhookEvent;
+export const BillingAuditLog = db.BillingAuditLog;
+
 export default db;
 module.exports = db;
