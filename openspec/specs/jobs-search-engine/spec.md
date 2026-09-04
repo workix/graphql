@@ -13,11 +13,11 @@ O sistema SHALL disponibilizar a query `searchJobs` com suporte a busca textual 
 - **THEN** o sistema retorna vagas em que o termo no título tem maior relevância que menções apenas no corpo da descrição, aplicando bônus temporal para vagas publicadas nos últimos 14 dias.
 
 ### Requirement: Filtros Facetados e Agregações Estatísticas
-O sistema SHALL permitir que a busca de vagas receba filtros facetados estruturados (`workplace_type`, `job_type`, `seniority_level`, `state`, `city`, `skills`, faixa salarial `salary_min`/`salary_max`) e SHALL retornar contadores agregados de facetas na query `searchJobs` e na query dedicada `jobSearchFacets` para construção dinâmica de filtros na interface.
+O sistema SHALL permitir que a busca de vagas receba filtros facetados estruturados (`workplace_type`, `job_type`, `seniority_level`, `state`, `city`, `skills`, `is_pcd`, `is_remote`, faixa salarial `salary_min`/`salary_max`) e SHALL retornar contadores agregados de facetas na query `searchJobs` e na query dedicada `jobSearchFacets` (incluindo `pcdCount`, `remoteCount` e contagens por modalidade) para construção dinâmica de filtros na interface.
 
 #### Scenario: Aplicação de Filtros Facetados e Retorno de Agregações
-- **WHEN** o usuário aplica o filtro de modalidade "REMOTE" e senioridade "PLENO"
-- **THEN** o sistema filtra a listagem retornando apenas vagas correspondentes e inclui contagens atualizadas de facetas disponíveis para os demais atributos.
+- **WHEN** o usuário aplica o filtro de modalidade "REMOTE", "isPcd: true" ou senioridade "PLENO"
+- **THEN** o sistema filtra a listagem retornando apenas vagas correspondentes e inclui contagens atualizadas de facetas disponíveis para os demais atributos, incluindo contadores de vagas PCD e remotas.
 
 ### Requirement: Autocompletação e Sugestões de Busca (Typeahead)
 O sistema SHALL disponibilizar a query `jobSearchSuggestions(prefix: String!)` retornando sugestões automáticas categorizadas de títulos de vagas, competências/skills e nomes de empresas a partir do prefixo digitado.
@@ -39,3 +39,10 @@ O sistema SHALL disparar mensagens para a fila RabbitMQ `search-index-sync` semp
 #### Scenario: Publicação de Evento de Indexação
 - **WHEN** uma vaga é salva ou tem seus dados alterados
 - **THEN** um evento contendo os dados normalizados da vaga é publicado na fila para indexação automática.
+
+### Requirement: Filtros Especiais de Inclusão e Modalidade (PCD e Remoto)
+O motor de busca SHALL suportar filtros diretos combinados e atalhos rápidos para vagas destinadas a pessoas com deficiência (`isPcd`) e vagas de trabalho remoto (`isRemote` / `workplaceType: REMOTE`), permitindo consultas específicas como "Somente PCD", "Somente Remota" e "PCD e Remota simultaneamente".
+
+#### Scenario: Busca Combinada de Vagas PCD e Remotas
+- **WHEN** o usuário seleciona simultaneamente os critérios "Somente vagas PCD" e "Somente vagas remotas"
+- **THEN** o sistema retorna exclusivamente vagas ativas que possuem `is_pcd: true` e `is_remote: true` (ou `workplace_type: REMOTE`), exibindo badges correspondentes e atualizando os contadores de facetas.
