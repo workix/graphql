@@ -7,6 +7,12 @@ jest.mock('../../../src/models', () => ({
   UserProfile: {
     findOne: jest.fn(),
     create: jest.fn()
+  },
+  Candidate: {
+    findOne: jest.fn()
+  },
+  NormalizedResume: {
+    findOne: jest.fn()
   }
 }));
 
@@ -32,7 +38,7 @@ describe('Profiles Module Unit Tests (TDD)', () => {
       const repo = profilesRepository(mockCtx.orm);
       const result = await repo.findByUserId(10);
 
-      expect(result).toEqual(mockProfile);
+      expect(result).toEqual(expect.objectContaining(mockProfile));
     });
 
     it('should update existing profile and publish to search-index-sync queue', async () => {

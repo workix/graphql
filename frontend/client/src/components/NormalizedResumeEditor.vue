@@ -213,11 +213,21 @@ async function handleAutoNormalize() {
   isNormalizing.value = true;
   try {
     const profile = props.candidateProfile || {};
-    const name = profile.name || profile.fullName || 'Profissional';
-    const headline = profile.headline || profile.title || 'Desenvolvedor(a) de Software';
-    const location = profile.location || (profile.locale ? `${profile.locale.city}, ${profile.locale.state}` : 'Brasil');
-    const about = profile.about || profile.summary || 'Profissional proativo com foco em soluções de alto impacto.';
-    
+    const candidateId = profile.candidateId || 1;
+    let classicResume: any = null;
+    try {
+      const { resumesService } = await import('../services/resumes');
+      const all = await resumesService.getAll();
+      classicResume = (all.data || []).find((r: any) => String(r.candidate?.id || r.candidateId) === String(candidateId));
+    } catch (e) {
+      console.warn('Não foi possível carregar currículo para auto-normalizar:', e);
+    }
+
+    const name = profile.name || profile.fullName || classicResume?.candidate?.name || 'Profissional';
+    const headline = profile.headline || profile.title || classicResume?.objective || 'Desenvolvedor(a) de Software';
+    const location = profile.location || (classicResume?.candidate?.locale ? `${classicResume.candidate.locale.city}, ${classicResume.candidate.locale.state}` : 'Brasil');
+    const about = profile.about || profile.summary || classicResume?.content || 'Profissional com sólida atuação no mercado e foco em desenvolvimento contínuo.';
+
     let compiled = `# ${name}\n**${headline}** | ${location}\n\n`;
     compiled += `## Resumo Profissional\n${about}\n\n`;
 
@@ -225,21 +235,37 @@ async function handleAutoNormalize() {
       compiled += `## Transição de Carreira\n- **Objetivo Alvo:** ${profile.careerTransitionTarget || 'Nova Área de Atuação'}\n\n`;
     }
 
+    // Experiências
     compiled += `## Experiência Profissional\n`;
-    if (profile.experiences && profile.experiences.length > 0) {
-      for (const exp of profile.experiences) {
-        compiled += `### ${exp.title} - ${exp.company}\n- Período: ${exp.startDate || '2022'} - ${exp.endDate || 'Atual'}\n- ${exp.description || 'Principais entregas e atribuições'}\n\n`;
+    const experiences = (classicResume?.experiences && classicResume.experiences.length > 0) ? classicResume.experiences : (profile.experiences || []);
+    if (experiences.length > 0) {
+      for (const exp of experiences) {
+        const title = exp.jobTitle || exp.title || 'Desenvolvedor';
+        const emp = exp.employerName || exp.company || 'Empresa';
+        const desc = exp.description || exp.responsibilities || 'Atuação e entregas no projeto.';
+        compiled += `### ${title} - ${emp}\n- ${desc}\n\n`;
       }
     } else {
       compiled += `### Desenvolvedor(a) de Software\n- Implementação de arquiteturas limpas e serviços performáticos\n- Colaboração contínua em equipes ágeis\n\n`;
     }
 
-    compiled += `## Habilidades Técnicas\n`;
-    if (profile.skills && profile.skills.length > 0) {
-      compiled += `- ${profile.skills.join(', ')}\n`;
-    } else {
-      compiled += `- JavaScript, TypeScript, Node.js, Vue.js, GraphQL, SQL, Git\n`;
+    // Formação
+    const educations = (classicResume?.educations && classicResume.educations.length > 0) ? classicResume.educations : (profile.educations || []);
+    if (educations.length > 0) {
+      compiled += `## Formação Acadêmica\n`;
+      for (const edu of educations) {
+        const qual = edu.qualification || 'Graduação';
+        const school = edu.schoolName || 'Instituição de Ensino';
+        compiled += `### ${qual} - ${school}\n- ${edu.description || 'Formação acadêmica'}\n\n`;
+      }
     }
+
+    // Habilidades
+    compiled += `## Habilidades Técnicas\n`;
+    const skills = (classicResume?.skills && classicResume.skills.length > 0)
+      ? classicResume.skills.map((s: any) => s.skillName || s)
+      : (profile.skills || ['JavaScript', 'TypeScript', 'Node.js', 'Vue.js', 'GraphQL', 'SQL', 'Git']);
+    compiled += `- ${skills.join(', ')}\n`;
 
     markdownText.value = compiled;
     calculateScore();

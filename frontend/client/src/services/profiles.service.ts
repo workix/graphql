@@ -6,9 +6,16 @@ export interface UserProfileModel {
   headline?: string;
   about?: string;
   bannerUrl?: string;
+  avatarUrl?: string;
   location?: string;
   industry?: string;
   openToWork?: boolean;
+  lookingForJob?: boolean;
+  inCareerTransition?: boolean;
+  careerTransitionTarget?: string;
+  acceptsEntryLevel?: boolean;
+  normalizedResume?: string;
+  resumeScore?: number;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -17,9 +24,15 @@ export interface ProfileInput {
   headline?: string;
   about?: string;
   bannerUrl?: string;
+  avatarUrl?: string;
   location?: string;
   industry?: string;
   openToWork?: boolean;
+  lookingForJob?: boolean;
+  inCareerTransition?: boolean;
+  careerTransitionTarget?: string;
+  acceptsEntryLevel?: boolean;
+  normalizedResume?: string;
 }
 
 export interface FeaturedItemModel {
@@ -43,9 +56,16 @@ export const profilesService = {
           headline
           about
           bannerUrl
+          avatarUrl
           location
           industry
           openToWork
+          lookingForJob
+          inCareerTransition
+          careerTransitionTarget
+          acceptsEntryLevel
+          normalizedResume
+          resumeScore
           createdAt
           updatedAt
         }
@@ -72,9 +92,16 @@ export const profilesService = {
           headline
           about
           bannerUrl
+          avatarUrl
           location
           industry
           openToWork
+          lookingForJob
+          inCareerTransition
+          careerTransitionTarget
+          acceptsEntryLevel
+          normalizedResume
+          resumeScore
           updatedAt
         }
       }

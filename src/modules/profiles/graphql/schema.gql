@@ -15,9 +15,16 @@ type UserProfile {
     headline: String
     about: String
     bannerUrl: String
+    avatarUrl: String
     location: String
     industry: String
     openToWork: Boolean
+    lookingForJob: Boolean
+    inCareerTransition: Boolean
+    careerTransitionTarget: String
+    acceptsEntryLevel: Boolean
+    normalizedResume: String
+    resumeScore: Int
     createdAt: DateTime
     updatedAt: DateTime
 }
@@ -26,7 +33,13 @@ input ProfileInput {
     headline: String
     about: String
     bannerUrl: String
+    avatarUrl: String
     location: String
     industry: String
     openToWork: Boolean
+    lookingForJob: Boolean
+    inCareerTransition: Boolean
+    careerTransitionTarget: String
+    acceptsEntryLevel: Boolean
+    normalizedResume: String
 }

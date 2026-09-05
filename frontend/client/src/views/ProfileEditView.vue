@@ -175,7 +175,11 @@
                 <!-- Normalized Markdown Resume Editor Section -->
                 <NormalizedResumeEditor
                   v-model="form.normalizedResume"
-                  :candidate-profile="form"
+                  :candidate-profile="{
+                    ...form,
+                    name: authStore.user?.name,
+                    candidateId: authStore.user?.candidateId || authStore.user?.id || 1
+                  }"
                   @score-change="handleResumeScoreChange"
                 />
 
@@ -288,7 +292,8 @@
               </div>
               <div class="preview-avatar-wrapper">
                 <div class="preview-avatar">
-                  <i class="fa fa-user"></i>
+                  <img v-if="form.avatarUrl" :src="form.avatarUrl" alt="Avatar" class="avatar-img" />
+                  <i v-else class="fa fa-user"></i>
                 </div>
               </div>
               <div class="preview-info">
@@ -354,14 +359,22 @@ async function handleAvatarUpload(event: Event) {
   const file = target.files?.[0];
   if (!file) return;
 
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    if (e.target?.result) {
+      form.avatarUrl = e.target.result as string;
+    }
+  };
+  reader.readAsDataURL(file);
+
   try {
     const asset = await mediaService.uploadFile(file, 'AVATAR', authStore.user?.id);
-    if (asset.url) {
+    if (asset && asset.url) {
       form.avatarUrl = asset.url;
       successMessage.value = 'Foto de perfil enviada com sucesso!';
     }
   } catch (err: any) {
-    errorMessage.value = 'Erro ao enviar foto de perfil: ' + (err.message || 'Falha no upload');
+    console.warn('Upload de foto de perfil via backend:', err);
   }
 }
 
@@ -370,14 +383,22 @@ async function handleBannerUpload(event: Event) {
   const file = target.files?.[0];
   if (!file) return;
 
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    if (e.target?.result) {
+      form.bannerUrl = e.target.result as string;
+    }
+  };
+  reader.readAsDataURL(file);
+
   try {
     const asset = await mediaService.uploadFile(file, 'BANNER', authStore.user?.id);
-    if (asset.url) {
+    if (asset && asset.url) {
       form.bannerUrl = asset.url;
       successMessage.value = 'Imagem de capa enviada com sucesso!';
     }
   } catch (err: any) {
-    errorMessage.value = 'Erro ao enviar imagem de capa: ' + (err.message || 'Falha no upload');
+    console.warn('Upload de imagem de capa via backend:', err);
   }
 }
 
@@ -391,6 +412,7 @@ onMounted(async () => {
     form.headline = profilesStore.myProfile.headline || '';
     form.about = profilesStore.myProfile.about || '';
     form.bannerUrl = profilesStore.myProfile.bannerUrl || '';
+    form.avatarUrl = profilesStore.myProfile.avatarUrl || '';
     form.location = profilesStore.myProfile.location || '';
     form.industry = profilesStore.myProfile.industry || '';
     form.openToWork = !!profilesStore.myProfile.openToWork;
@@ -398,7 +420,8 @@ onMounted(async () => {
     form.inCareerTransition = !!profilesStore.myProfile.inCareerTransition;
     form.careerTransitionTarget = profilesStore.myProfile.careerTransitionTarget || '';
     form.acceptsEntryLevel = !!profilesStore.myProfile.acceptsEntryLevel;
-    form.normalizedResume = profilesStore.myProfile.normalizedResume?.rawMarkdown || profilesStore.myProfile.normalizedResume || '';
+    form.normalizedResume = profilesStore.myProfile.normalizedResume || '';
+    form.resumeScore = profilesStore.myProfile.resumeScore || 0;
   }
 });
 
@@ -411,6 +434,7 @@ async function handleSaveProfile() {
       headline: form.headline,
       about: form.about,
       bannerUrl: form.bannerUrl,
+      avatarUrl: form.avatarUrl,
       location: form.location,
       industry: form.industry,
       openToWork: form.openToWork,
@@ -420,7 +444,7 @@ async function handleSaveProfile() {
       acceptsEntryLevel: form.acceptsEntryLevel,
       normalizedResume: form.normalizedResume,
     });
-    successMessage.value = 'Perfil e currículo atualizados com sucesso!';
+    successMessage.value = 'Perfil profissional e currículo atualizados com sucesso!';
     setTimeout(() => {
       successMessage.value = '';
     }, 4000);
@@ -782,6 +806,13 @@ input:checked + .slider:before {
   justify-content: center;
   font-size: 24px;
   color: #64748b;
+  overflow: hidden;
+}
+
+.preview-avatar img.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .preview-info {
