@@ -52,6 +52,21 @@ export const resumesService = {
             skillName
             months
           }
+          experiences {
+            employerName
+            jobTitle
+            description
+            responsibilities
+            startDate
+            endDate
+          }
+          educations {
+            schoolName
+            qualification
+            description
+            startDate
+            endDate
+          }
         }
       }
     `;
@@ -82,6 +97,17 @@ export const resumesService = {
             skills {
               skillName
               months
+            }
+            experiences {
+              employerName
+              jobTitle
+              description
+              responsibilities
+            }
+            educations {
+              schoolName
+              qualification
+              description
             }
           }
           totalPages
@@ -125,11 +151,16 @@ export const resumesService = {
             employerName
             jobTitle
             description
+            responsibilities
+            startDate
+            endDate
           }
           educations {
             schoolName
             qualification
             description
+            startDate
+            endDate
           }
         }
       }
@@ -150,6 +181,26 @@ export const resumesService = {
           objective
           carrerLevel
           presence
+          content
+          experiences {
+            employerName
+            jobTitle
+            description
+            responsibilities
+            startDate
+            endDate
+          }
+          educations {
+            schoolName
+            qualification
+            description
+            startDate
+            endDate
+          }
+          skills {
+            skillName
+            months
+          }
         }
       }
     `;

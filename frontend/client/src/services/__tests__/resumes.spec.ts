@@ -49,19 +49,61 @@ describe('resumesService (Client)', () => {
   });
 
   it('create envia ResumeInput com experiencias e educacao', async () => {
+    const mockCreated = {
+      id: '12',
+      objective: 'Tech Lead',
+      carrerLevel: 'SENIOR',
+      presence: 'HYBRID',
+      content: 'Resumo profissional completo',
+      experiences: [
+        {
+          employerName: 'Empresa X',
+          jobTitle: 'Desenvolvedor Java Sênior',
+          description: 'Desenvolvimento em microsserviços',
+          responsibilities: 'Arquitetura e liderança'
+        }
+      ],
+      educations: [
+        {
+          schoolName: 'USP',
+          qualification: 'Ciência da Computação',
+          description: 'Bacharelado'
+        }
+      ],
+      skills: [{ skillName: 'Vue.js', months: 36 }]
+    };
+
     (graphqlClient.request as any).mockResolvedValueOnce({
-      createResume: { id: '12', objective: 'Tech Lead', carrerLevel: 'SENIOR', presence: 'HYBRID' }
+      createResume: mockCreated
     });
 
     const result = await resumesService.create({
       carrerLevel: 'SENIOR',
       objective: 'Tech Lead',
       presence: 'HYBRID',
+      content: 'Resumo profissional completo',
       candidateId: 1,
+      experiences: [
+        {
+          employerName: 'Empresa X',
+          jobTitle: 'Desenvolvedor Java Sênior',
+          description: 'Desenvolvimento em microsserviços',
+          responsibilities: 'Arquitetura e liderança'
+        }
+      ],
+      educations: [
+        {
+          schoolName: 'USP',
+          qualification: 'Ciência da Computação',
+          description: 'Bacharelado'
+        }
+      ],
       skills: [{ skillName: 'Vue.js', months: 36 }]
     });
 
     expect(result.data.id).toBe('12');
+    expect(result.data.experiences).toHaveLength(1);
+    expect(result.data.educations).toHaveLength(1);
     expect(graphqlClient.request).toHaveBeenCalledTimes(1);
   });
 });

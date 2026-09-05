@@ -31,37 +31,62 @@ const resumesRepository = db => {
     }
 
     const create = async args => {
-        const options: any = { include: [] };
-        if (args.input.experiences) {
-            options.include.push({ model: ResumeExperience, as: "experiences" })
+        const candidateId = Number(args.input.candidateId || 1);
+        const existing = await Resume.findOne({ where: { candidate_id: candidateId } });
+        if (existing) {
+            return await update({ id: existing.id, input: args.input });
         }
-        if (args.input.educations){
-            options.include.push({ model: ResumeEducation, as: "educations" })
-        }
-        if (args.input.skills) {
-            options.include.push({ model: ResumeSkill, as: "skills" })
-        }
-        try {
-            const resume = await Resume.create(new CreateResumeDTO(args.input), options)
-            if (resume && typeof resume.reload === 'function') {
-                await resume.reload()
-            }
-            return resume;
-        } catch (err: any) {
-            if (err.name === 'SequelizeUniqueConstraintError' || err.name === 'SequelizeValidationError' || (err.message || '').toLowerCase().includes('unique') || (err.message || '').toLowerCase().includes('validation error')) {
-                const existing = await Resume.findOne({ where: { candidate_id: args.input.candidateId } });
-                if (existing) {
-                    if (typeof existing.update === 'function') {
-                        await existing.update(new UpdateResumeDTO(args.input));
-                    }
-                    if (typeof existing.reload === 'function') {
-                        await existing.reload();
-                    }
-                    return existing;
+
+        let resume;
+        await db.sequelize.transaction(async transaction => {
+            resume = await Resume.create(new CreateResumeDTO(args.input), { transaction });
+            const resumeId = resume.id;
+
+            if (args.input.educations && Array.isArray(args.input.educations)) {
+                for (const e of args.input.educations) {
+                    const educationInput = {
+                        id: resumeId,
+                        description: e.description || '',
+                        endDate: e.endDate || null,
+                        qualification: e.qualification || '',
+                        schoolName: e.schoolName || '',
+                        startDate: e.startDate || new Date().toISOString().slice(0, 10)
+                    };
+                    await ResumeEducation.create(new CreateEducationDTO(educationInput), { transaction });
                 }
             }
-            throw err;
+
+            if (args.input.experiences && Array.isArray(args.input.experiences)) {
+                for (const e of args.input.experiences) {
+                    const experienceInput = {
+                        id: resumeId,
+                        description: e.description || '',
+                        employerName: e.employerName || '',
+                        endDate: e.endDate || null,
+                        jobTitle: e.jobTitle || '',
+                        responsibilities: e.responsibilities || e.description || '',
+                        startDate: e.startDate || new Date().toISOString().slice(0, 10)
+                    };
+                    await ResumeExperience.create(new CreateExperienceDTO(experienceInput), { transaction });
+                }
+            }
+
+            if (args.input.skills && Array.isArray(args.input.skills)) {
+                for (const s of args.input.skills) {
+                    const skillInput = {
+                        id: resumeId,
+                        months: Number(s.months || 0),
+                        skillName: s.skillName || ''
+                    };
+                    await ResumeSkill.create(new CreateSkillDTO(skillInput), { transaction });
+                }
+            }
+        });
+
+        if (resume && typeof resume.reload === 'function') {
+            await resume.reload();
         }
+        return resume;
     }
 
     const destroy = async args => {
@@ -78,38 +103,56 @@ const resumesRepository = db => {
 
         let resume;
         await db.sequelize.transaction(async transaction => {
-            // chain all your queries here. make sure you return them.
-            const [resumes, meta] = await Resume.update(new UpdateResumeDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true }, { transaction })
+            await Resume.update(new UpdateResumeDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true, transaction });
 
-            resume = await Resume.findOne({ where: { id: args.id } })
+            resume = await Resume.findOne({ where: { id: args.id }, transaction });
 
-            if (args.input.educations) {
-                await ResumeEducation.destroy({ where: { id: args.id } }, { transaction })
+            if (args.input.educations && Array.isArray(args.input.educations)) {
+                await ResumeEducation.destroy({ where: { id: args.id }, transaction });
 
                 for (const e of args.input.educations) {
-                    const educationInput = { id: args.id, description: e.description, endDate: e.endDate, qualification: e.qualification, schoolName: e.schoolName, startDate: e.startDate }
-                    await ResumeEducation.create(new CreateEducationDTO(educationInput), { transaction })
+                    const educationInput = {
+                        id: args.id,
+                        description: e.description || '',
+                        endDate: e.endDate || null,
+                        qualification: e.qualification || '',
+                        schoolName: e.schoolName || '',
+                        startDate: e.startDate || new Date().toISOString().slice(0, 10)
+                    };
+                    await ResumeEducation.create(new CreateEducationDTO(educationInput), { transaction });
                 }
             }
 
-            if (args.input.experiences) {
-                await ResumeExperience.destroy({ where: { id: args.id } }, { transaction })
+            if (args.input.experiences && Array.isArray(args.input.experiences)) {
+                await ResumeExperience.destroy({ where: { id: args.id }, transaction });
 
                 for (const e of args.input.experiences) {
-                    const experienceInput = { id: args.id, description: e.description, employerName: e.employerName, endDate: e.endDate, jobTitle: e.jobTitle, responsibilities: e.responsibilities, startDate: e.startDate }
-                    await ResumeExperience.create(new CreateExperienceDTO(experienceInput), { transaction })
+                    const experienceInput = {
+                        id: args.id,
+                        description: e.description || '',
+                        employerName: e.employerName || '',
+                        endDate: e.endDate || null,
+                        jobTitle: e.jobTitle || '',
+                        responsibilities: e.responsibilities || e.description || '',
+                        startDate: e.startDate || new Date().toISOString().slice(0, 10)
+                    };
+                    await ResumeExperience.create(new CreateExperienceDTO(experienceInput), { transaction });
                 }
             }
 
-            if (args.input.skills) {
-                await ResumeSkill.destroy({ where: { id: args.id } }, { transaction })
+            if (args.input.skills && Array.isArray(args.input.skills)) {
+                await ResumeSkill.destroy({ where: { id: args.id }, transaction });
 
                 for (const s of args.input.skills) {
-                    const skillInput = { id: args.id, months: s.months, skillName: s.skillName }
-                    await ResumeSkill.create(new CreateSkillDTO(skillInput), { transaction })
+                    const skillInput = {
+                        id: args.id,
+                        months: Number(s.months || 0),
+                        skillName: s.skillName || ''
+                    };
+                    await ResumeSkill.create(new CreateSkillDTO(skillInput), { transaction });
                 }
             }
-        })
+        });
 
         return resume;
     }

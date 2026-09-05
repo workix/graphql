@@ -73,6 +73,113 @@ const loading = ref(false);
 const successMessage = ref('');
 const errorMessage = ref('');
 
+function parseExperiences(text: string) {
+  if (!text || !text.trim()) return [];
+  const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+  
+  return blocks.map(block => {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    const headerLine = lines[0] || '';
+    const bodyLines = lines.slice(1).join('\n').trim();
+
+    let jobTitle = headerLine;
+    let employerName = 'Empresa';
+
+    if (headerLine.includes(' - ')) {
+      const parts = headerLine.split(' - ');
+      jobTitle = parts[0].trim();
+      employerName = parts.slice(1).join(' - ').trim();
+    } else if (headerLine.includes(' – ')) {
+      const parts = headerLine.split(' – ');
+      jobTitle = parts[0].trim();
+      employerName = parts.slice(1).join(' – ').trim();
+    } else if (headerLine.includes(' | ')) {
+      const parts = headerLine.split(' | ');
+      jobTitle = parts[0].trim();
+      employerName = parts.slice(1).join(' | ').trim();
+    } else if (headerLine.toLowerCase().includes(' na ')) {
+      const parts = headerLine.split(/ na /i);
+      jobTitle = parts[0].trim();
+      employerName = parts.slice(1).join(' na ').trim();
+    } else if (headerLine.toLowerCase().includes(' no ')) {
+      const parts = headerLine.split(/ no /i);
+      jobTitle = parts[0].trim();
+      employerName = parts.slice(1).join(' no ').trim();
+    } else if (headerLine.toLowerCase().includes(' em ')) {
+      const parts = headerLine.split(/ em /i);
+      jobTitle = parts[0].trim();
+      employerName = parts.slice(1).join(' em ').trim();
+    }
+
+    const description = bodyLines || headerLine;
+    const responsibilities = bodyLines || description;
+    
+    const yearMatch = block.match(/\b(19\d\d|20\d\d)\b/);
+    const startDate = yearMatch ? `${yearMatch[1]}-01-01` : '2020-01-01';
+
+    return {
+      jobTitle: jobTitle || 'Cargo',
+      employerName: employerName || 'Empresa',
+      description: description || 'Atuação profissional',
+      responsibilities: responsibilities || 'Responsabilidades no cargo',
+      startDate,
+      endDate: null
+    };
+  });
+}
+
+function parseEducations(text: string) {
+  if (!text || !text.trim()) return [];
+  const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+
+  return blocks.map(block => {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    const headerLine = lines[0] || '';
+    const bodyLines = lines.slice(1).join('\n').trim();
+
+    let schoolName = 'Instituição de Ensino';
+    let qualification = headerLine;
+
+    if (headerLine.includes(' - ')) {
+      const parts = headerLine.split(' - ');
+      schoolName = parts[0].trim();
+      qualification = parts.slice(1).join(' - ').trim();
+    } else if (headerLine.includes(' – ')) {
+      const parts = headerLine.split(' – ');
+      schoolName = parts[0].trim();
+      qualification = parts.slice(1).join(' – ').trim();
+    } else if (headerLine.includes(' | ')) {
+      const parts = headerLine.split(' | ');
+      schoolName = parts[0].trim();
+      qualification = parts.slice(1).join(' | ').trim();
+    } else if (headerLine.toLowerCase().includes(' na ')) {
+      const parts = headerLine.split(/ na /i);
+      qualification = parts[0].trim();
+      schoolName = parts.slice(1).join(' na ').trim();
+    } else if (headerLine.toLowerCase().includes(' no ')) {
+      const parts = headerLine.split(/ no /i);
+      qualification = parts[0].trim();
+      schoolName = parts.slice(1).join(' no ').trim();
+    } else if (headerLine.toLowerCase().includes(' em ')) {
+      const parts = headerLine.split(/ em /i);
+      qualification = parts[0].trim();
+      schoolName = parts.slice(1).join(' em ').trim();
+    }
+
+    const description = bodyLines || qualification;
+    const yearMatch = block.match(/\b(19\d\d|20\d\d)\b/);
+    const startDate = yearMatch ? `${yearMatch[1]}-01-01` : '2018-01-01';
+
+    return {
+      schoolName: schoolName || 'Instituição',
+      qualification: qualification || 'Formação / Curso',
+      description: description || 'Formação acadêmica',
+      startDate,
+      endDate: null
+    };
+  });
+}
+
 onMounted(async () => {
   const currentCandidateId = authStore.user?.candidateId || authStore.user?.id || 1;
   try {
@@ -86,10 +193,20 @@ onMounted(async () => {
       if (myResume.carrerLevel) carrerLevel.value = myResume.carrerLevel;
       if (myResume.presence) presence.value = myResume.presence;
       if (myResume.experiences && myResume.experiences.length > 0) {
-        experience.value = myResume.experiences.map((e: any) => `${e.jobTitle || ''} - ${e.employerName || ''}\n${e.description || ''}`.trim()).join('\n\n');
+        experience.value = myResume.experiences.map((e: any) => {
+          const job = e.jobTitle || '';
+          const comp = e.employerName ? ` - ${e.employerName}` : '';
+          const desc = e.description || e.responsibilities ? `\n${e.description || e.responsibilities}` : '';
+          return `${job}${comp}${desc}`.trim();
+        }).join('\n\n');
       }
       if (myResume.educations && myResume.educations.length > 0) {
-        education.value = myResume.educations.map((e: any) => `${e.schoolName || ''} - ${e.qualification || ''}`.trim()).join('\n\n');
+        education.value = myResume.educations.map((e: any) => {
+          const school = e.schoolName || '';
+          const qual = e.qualification ? ` - ${e.qualification}` : '';
+          const desc = e.description && e.description !== qual ? `\n${e.description}` : '';
+          return `${school}${qual}${desc}`.trim();
+        }).join('\n\n');
       }
     }
   } catch (e) {
@@ -103,13 +220,18 @@ async function handleSubmit() {
   successMessage.value = '';
   const currentCandidateId = authStore.user?.candidateId || authStore.user?.id || 1;
 
+  const parsedExperiences = parseExperiences(experience.value);
+  const parsedEducations = parseEducations(education.value);
+
   try {
     await resumesService.create({
       objective: title.value,
       content: summary.value,
       carrerLevel: carrerLevel.value,
       presence: presence.value,
-      candidateId: currentCandidateId
+      candidateId: currentCandidateId,
+      experiences: parsedExperiences,
+      educations: parsedEducations
     });
     successMessage.value = 'Currículo salvo com sucesso via GraphQL!';
     setTimeout(() => {

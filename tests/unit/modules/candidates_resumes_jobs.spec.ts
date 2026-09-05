@@ -174,8 +174,9 @@ describe('Modules - Candidates, Resumes & Jobs Repositories', () => {
       expect(await repo.findById(mockInfo, { id: 1 })).toEqual({ id: 1 });
     });
 
-    it('should create resume with nested educations, experiences, and skills includes', async () => {
+    it('should create resume with nested educations, experiences, and skills', async () => {
       const mockResume = { id: 1, reload: jest.fn().mockResolvedValue({}) };
+      (Resume.findOne as jest.Mock).mockResolvedValue(null);
       (Resume.create as jest.Mock).mockResolvedValue(mockResume);
 
       const input = {
@@ -187,16 +188,28 @@ describe('Modules - Candidates, Resumes & Jobs Repositories', () => {
 
       const result = await repo.create({ input });
       expect(result).toBe(mockResume);
-      expect(Resume.create).toHaveBeenCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-          include: expect.arrayContaining([
-            { model: ResumeExperience, as: 'experiences' },
-            { model: ResumeEducation, as: 'educations' },
-            { model: ResumeSkill, as: 'skills' }
-          ])
-        })
-      );
+      expect(Resume.create).toHaveBeenCalled();
+      expect(ResumeEducation.create).toHaveBeenCalled();
+      expect(ResumeExperience.create).toHaveBeenCalled();
+      expect(ResumeSkill.create).toHaveBeenCalled();
+    });
+
+    it('should delegate to update if resume already exists for candidate on create', async () => {
+      (Resume.findOne as jest.Mock).mockResolvedValue({ id: 1 });
+      (Resume.findByPk as jest.Mock).mockResolvedValue({ id: 1 });
+      (Resume.update as jest.Mock).mockResolvedValue([[1], []]);
+
+      const input = {
+        candidateId: 1,
+        educations: [{ schoolName: 'MIT' }],
+        experiences: [{ employerName: 'Google' }],
+        skills: [{ skillName: 'TypeScript' }]
+      };
+
+      const result = await repo.create({ input });
+      expect(result).toEqual({ id: 1 });
+      expect(ResumeEducation.destroy).toHaveBeenCalled();
+      expect(ResumeExperience.destroy).toHaveBeenCalled();
     });
 
     it('should destroy resume', async () => {
