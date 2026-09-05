@@ -103,7 +103,7 @@ const resumesRepository = db => {
 
         let resume;
         await db.sequelize.transaction(async transaction => {
-            await Resume.update(new UpdateResumeDTO(args.input), { where: { id: args.id }, returning: true, individualHooks: true, transaction });
+            await Resume.update(new UpdateResumeDTO(args.input), { where: { id: args.id }, transaction });
 
             resume = await Resume.findOne({ where: { id: args.id }, transaction });
 
