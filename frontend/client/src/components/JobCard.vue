@@ -21,7 +21,7 @@
         <div class="job-meta">
           <span class="meta-item">
             <i :class="(job.isConfidential || job.is_confidential) ? 'fa fa-shield' : 'fa fa-building-o'"></i>
-            {{ (job.isConfidential || job.is_confidential) ? 'Empresa Confidencial' : (job.company?.name || job.company_name || 'Tech Corp Brasil') }}
+            {{ (job.isConfidential || job.is_confidential) ? 'Empresa Confidencial' : (job.company?.name || job.company_name || 'Empresa Parceira') }}
           </span>
           <span class="meta-item">
             <i class="fa fa-map-marker"></i>

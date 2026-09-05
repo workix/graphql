@@ -155,7 +155,7 @@
             </div>
             <div class="row connections-grid">
               <div
-                v-for="sug in SUGGESTED_USERS"
+                v-for="sug in suggestedUsers"
                 :key="sug.id"
                 class="col-md-4 col-sm-6 col-xs-12"
               >
@@ -201,6 +201,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import useConnectionsStore from '../stores/connections';
+import { resumesService } from '../services/resumes';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 
@@ -209,18 +210,24 @@ const connectionsStore = useConnectionsStore();
 
 const activeTab = ref('all');
 const searchTerm = ref('');
-
-const SUGGESTED_USERS = [
-  { id: 2, name: 'Lucas Andrade', role: 'Engenheiro de Software Sênior' },
-  { id: 3, name: 'Juliana Costa', role: 'Tech Recruiter & Talent Partner' },
-  { id: 4, name: 'Mariana Lima', role: 'Product Manager' },
-  { id: 5, name: 'Rafael Souza', role: 'Desenvolvedor Full Stack' },
-  { id: 6, name: 'Fernanda Martins', role: 'Designer de Produto / UI/UX' },
-  { id: 7, name: 'Bruno Henrique', role: 'Especialista em Cloud & DevOps' }
-];
+const suggestedUsers = ref<any[]>([]);
 
 onMounted(async () => {
   await connectionsStore.fetchNetworkData();
+  try {
+    const resumesRes = await resumesService.getAll();
+    const currentUserId = authStore.user?.id || 1;
+    const candidates = resumesRes.data || [];
+    suggestedUsers.value = candidates
+      .filter((cand: any) => String(cand.candidate?.user_id || cand.candidateId) !== String(currentUserId))
+      .map((cand: any) => ({
+        id: cand.candidate?.user_id || cand.candidate?.id || cand.id,
+        name: cand.candidate?.name || cand.name || `Profissional #${cand.id}`,
+        role: cand.objective || (cand.carrerLevel ? `Especialista (${cand.carrerLevel})` : 'Especialista Workix')
+      }));
+  } catch (e) {
+    console.warn('Erro ao buscar sugestões de conexões:', e);
+  }
 });
 
 const filteredConnections = computed(() => {

@@ -1,16 +1,13 @@
 import { defineStore } from 'pinia';
 import messagingService, { DirectMessageModel, ConversationSummary } from '../services/messaging.service';
+import connectionsService from '../services/connections.service';
 import { useAuthStore } from './auth';
 
 export const useMessagingStore = defineStore('messaging', {
   state: () => ({
     activeContactId: null as string | number | null,
     messages: [] as DirectMessageModel[],
-    recentConversations: [
-      { contactId: 2, contactName: 'Lucas Andrade (Engenheiro Sênior)', lastMessage: 'Olá! Vi seu perfil no Workix...', lastMessageDate: '10:45', unreadCount: 1 },
-      { contactId: 3, contactName: 'Juliana Costa (Tech Recruiter)', lastMessage: 'Temos uma vaga que combina com você.', lastMessageDate: 'Ontem', unreadCount: 0 },
-      { contactId: 4, contactName: 'Mariana Lima (Product Manager)', lastMessage: 'Obrigado por conectar!', lastMessageDate: '28/08', unreadCount: 0 }
-    ] as ConversationSummary[],
+    recentConversations: [] as ConversationSummary[],
     isLoading: false,
     isSending: false,
     error: null as string | null
@@ -26,6 +23,40 @@ export const useMessagingStore = defineStore('messaging', {
   },
 
   actions: {
+    async fetchConversations() {
+      const authStore = useAuthStore();
+      const currentUserId = authStore.user?.id || 1;
+
+      this.isLoading = true;
+      this.error = null;
+
+      try {
+        // Busca conexões ativas para listar conversas disponíveis
+        const myConns = await connectionsService.getMyConnections(currentUserId);
+        const summaries: ConversationSummary[] = [];
+
+        for (const conn of myConns) {
+          const otherUserId = String(conn.userId1) === String(currentUserId) ? conn.userId2 : conn.userId1;
+          const directMsgs = await messagingService.getDirectMessages(currentUserId, otherUserId, 1, 0);
+          const lastMsg = directMsgs.length > 0 ? directMsgs[directMsgs.length - 1] : null;
+
+          summaries.push({
+            contactId: otherUserId,
+            contactName: conn.connectedUser?.name || `Profissional #${otherUserId}`,
+            lastMessage: lastMsg?.content || 'Nenhuma mensagem recente',
+            lastMessageDate: lastMsg?.createdAt ? new Date(lastMsg.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : 'Recente',
+            unreadCount: lastMsg && !lastMsg.read && String(lastMsg.recipientId) === String(currentUserId) ? 1 : 0
+          });
+        }
+
+        this.recentConversations = summaries;
+      } catch (err: any) {
+        console.warn('Falha ao sincronizar conversas:', err);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
     async selectContact(contactId: string | number) {
       this.activeContactId = contactId;
       await this.fetchMessages(contactId);

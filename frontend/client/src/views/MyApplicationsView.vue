@@ -42,7 +42,7 @@
               </div>
 
               <div class="app-job-meta">
-                <span class="meta-company"><i class="fa fa-building"></i> {{ job.company?.name || 'Tech Corp Brasil' }}</span>
+                <span class="meta-company"><i class="fa fa-building"></i> {{ job.company?.name || 'Empresa Parceira' }}</span>
                 <span class="meta-type badge-type">{{ job.jobType || 'FULLTIME' }}</span>
                 <span class="meta-category badge-cat">{{ job.jobCategory || 'MANAGEMENT' }}</span>
                 <span class="meta-salary" v-if="job.minPayment">
@@ -94,12 +94,7 @@ async function loadMyApplications() {
       return job.candidates.some((c: any) => String(c.id) === String(currentCandidateId));
     });
 
-    // Se o usuário estiver logado e tiver inscrições, exibe-as; caso contrário, exibe as vagas onde o candidato ID 1 está inscrito
-    if (mySubscribedJobs.length > 0) {
-      applications.value = mySubscribedJobs;
-    } else {
-      applications.value = allJobsList.filter((job: any) => (job.candidates || []).length > 0);
-    }
+    applications.value = mySubscribedJobs;
   } catch (err) {
     console.error('Erro ao buscar candidaturas:', err);
   } finally {

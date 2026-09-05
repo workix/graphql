@@ -33,21 +33,21 @@
           <div class="col-md-4 col-sm-4">
             <div class="stat-box">
               <i class="fa fa-briefcase fa-3x text-primary"></i>
-              <h2>{{ stats.jobsCount || 120 }}</h2>
+              <h2>{{ stats.jobsCount || 0 }}</h2>
               <p>Vagas Ativas</p>
             </div>
           </div>
           <div class="col-md-4 col-sm-4">
             <div class="stat-box">
               <i class="fa fa-building fa-3x text-primary"></i>
-              <h2>{{ stats.companiesCount || 45 }}</h2>
+              <h2>{{ stats.companiesCount || 0 }}</h2>
               <p>Empresas Cadastradas</p>
             </div>
           </div>
           <div class="col-md-4 col-sm-4">
             <div class="stat-box">
               <i class="fa fa-users fa-3x text-primary"></i>
-              <h2>{{ stats.candidatesCount || 890 }}</h2>
+              <h2>{{ stats.candidatesCount || 0 }}</h2>
               <p>Talentos Cadastrados</p>
             </div>
           </div>

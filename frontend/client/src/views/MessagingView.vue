@@ -51,6 +51,14 @@
                   </div>
                 </div>
               </div>
+
+              <div v-if="filteredConversations.length === 0" class="empty-conversations-sidebar text-center p-4">
+                <i class="fa fa-comments-o text-muted fa-2x mb-2"></i>
+                <p class="text-muted small">Nenhuma conversa encontrada</p>
+                <router-link to="/mynetwork" class="btn btn-xs btn-outline-primary mt-2">
+                  <i class="fa fa-user-plus"></i> Conectar com Pessoas
+                </router-link>
+              </div>
             </div>
           </div>
 
@@ -165,7 +173,8 @@ const activeContactName = computed(() => {
   return messagingStore.activeContact?.contactName || `Profissional #${messagingStore.activeContactId}`;
 });
 
-onMounted(() => {
+onMounted(async () => {
+  await messagingStore.fetchConversations();
   if (messagingStore.recentConversations.length > 0 && !messagingStore.activeContactId) {
     selectContact(messagingStore.recentConversations[0].contactId);
   }

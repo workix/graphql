@@ -20,7 +20,7 @@
               <div class="banner-meta">
                 <span>
                   <i :class="(job.isConfidential || job.is_confidential) ? 'fa fa-shield' : 'fa fa-building-o'"></i>
-                  {{ (job.isConfidential || job.is_confidential) ? 'Empresa Confidencial' : (job.company?.name || job.company_name || 'Tech Corp Brasil') }}
+                  {{ (job.isConfidential || job.is_confidential) ? 'Empresa Confidencial' : (job.company?.name || job.company_name || 'Empresa Parceira') }}
                 </span>
                 <span><i class="fa fa-map-marker"></i> {{ job.city || 'São Paulo, SP' }}</span>
                 <span class="badge-type">{{ job.jobType || job.contract_type || 'FULLTIME' }}</span>
