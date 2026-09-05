@@ -21,9 +21,12 @@ const authResolvers = {
     Mutation: {
         doLogin: async (parent, args, ctx, info) => {
             const repo = authRepository(ctx?.orm);
-            const user = await repo.findByFirebaseUUIDAndEmail(args.input.firebaseUUID, args.input.email);
+            const { firebaseUUID, email } = args.input || {};
+            console.log(`[AUTH] Tentativa de doLogin: email="${email}", firebaseUUID="${firebaseUUID}"`);
+            const user = await repo.findByFirebaseUUIDAndEmail(firebaseUUID, email);
 
             if (!user) {
+                console.warn(`[AUTH] Usuário não localizado no banco para email="${email}", firebaseUUID="${firebaseUUID}"`);
                 throw new Error("Email or FirebaseUUID is invalid");
             }
 

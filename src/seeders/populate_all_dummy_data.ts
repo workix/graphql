@@ -54,6 +54,19 @@ async function seedAll() {
       verification_method: 'PHONE'
     });
 
+    // Usuários de teste adicionais para desenvolvimento local
+    const extraEmails = ['admin@admin.com', 'teste@teste.com', 'user@workix.com', 'candidato@test.com', 'empresa@test.com', 'frmichetti@gmail.com'];
+    for (let i = 0; i < extraEmails.length; i++) {
+      const e = extraEmails[i];
+      await db.User.create({
+        email: e,
+        activated: true,
+        firebase_uuid: `fb-uuid-extra-${i + 1}`,
+        verified: true,
+        verification_method: 'WORK_EMAIL'
+      });
+    }
+
     if (db.UserProfile) {
       await db.UserProfile.create({
         user_id: userCand.id,
