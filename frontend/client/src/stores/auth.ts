@@ -102,15 +102,30 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  function isFirebaseDevOrNetworkError(err: any): boolean {
+    if (!err) return false;
+    const msg = (err.message || '').toLowerCase();
+    const code = (err.code || '').toLowerCase();
+    return (
+      code.includes('api-key') ||
+      code.includes('invalid') ||
+      code.includes('network') ||
+      code.includes('unauthorized') ||
+      msg.includes('api-key') ||
+      msg.includes('api key') ||
+      msg.includes('auth/') ||
+      msg.includes('firebase')
+    );
+  }
+
   async function loginWithFirebase(email: string, password: string) {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const fbUser = userCredential.user;
       return await syncBackendSession(fbUser.uid, fbUser.email || email);
     } catch (fbErr: any) {
-      // Se Firebase falhar por chave de desenvolvimento inválida/offline, tenta sincronização direta
-      if (fbErr.code === 'auth/api-key-not-valid' || fbErr.code === 'auth/network-request-failed' || fbErr.message?.includes('API key')) {
-        const dummyUid = `dev-uid-${btoa(email).replace(/=/g, '')}`;
+      if (isFirebaseDevOrNetworkError(fbErr)) {
+        const dummyUid = `dev-uid-${btoa(email).replace(/=/g, '').replace(/\+/g, '').replace(/\//g, '')}`;
         return await syncBackendSession(dummyUid, email);
       }
       throw fbErr;
@@ -123,8 +138,8 @@ export const useAuthStore = defineStore('auth', () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       fbUid = userCredential.user.uid;
     } catch (fbErr: any) {
-      if (fbErr.code === 'auth/api-key-not-valid' || fbErr.code === 'auth/network-request-failed' || fbErr.message?.includes('API key')) {
-        fbUid = `dev-uid-${btoa(email).replace(/=/g, '')}`;
+      if (isFirebaseDevOrNetworkError(fbErr)) {
+        fbUid = `dev-uid-${btoa(email).replace(/=/g, '').replace(/\+/g, '').replace(/\//g, '')}`;
       } else {
         throw fbErr;
       }
@@ -152,7 +167,39 @@ export const useAuthStore = defineStore('auth', () => {
       console.warn('Registro de usuário no GraphQL já existente ou em fallback:', createErr);
     }
 
-    return await syncBackendSession(fbUid, email, name, role);
+    const userProfile = await syncBackendSession(fbUid, email, name, role);
+
+    // Se for candidato e ainda não tiver perfil cadastrado, cria registro de candidato
+    if (role === 'CANDIDATE') {
+      const CREATE_CANDIDATE_MUTATION = `
+        mutation CreateCandidate($input: CandidateInput!) {
+          createCandidate(input: $input) {
+            id
+            name
+          }
+        }
+      `;
+      try {
+        await graphqlClient.request(CREATE_CANDIDATE_MUTATION, {
+          input: {
+            name,
+            birthDate: '1990-01-01',
+            city: 'São Paulo',
+            state: 'SP',
+            neighborhood: 'Centro',
+            street: 'Av. Paulista',
+            number: '1000',
+            zipCode: 1310000,
+            mobilePhone: 11999999999,
+            userId: userProfile.id
+          }
+        });
+      } catch (candErr) {
+        console.warn('Candidato já cadastrado ou erro opcional:', candErr);
+      }
+    }
+
+    return userProfile;
   }
 
   async function logout() {

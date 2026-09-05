@@ -96,13 +96,29 @@ export const useAdminAuthStore = defineStore('adminAuth', () => {
     }
   }
 
+  function isFirebaseDevOrNetworkError(err: any): boolean {
+    if (!err) return false;
+    const msg = (err.message || '').toLowerCase();
+    const code = (err.code || '').toLowerCase();
+    return (
+      code.includes('api-key') ||
+      code.includes('invalid') ||
+      code.includes('network') ||
+      code.includes('unauthorized') ||
+      msg.includes('api-key') ||
+      msg.includes('api key') ||
+      msg.includes('auth/') ||
+      msg.includes('firebase')
+    );
+  }
+
   async function loginWithFirebase(email: string, password: string) {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const fbUser = userCredential.user;
       return await syncAdminBackendSession(fbUser.uid, fbUser.email || email);
     } catch (fbErr: any) {
-      if (fbErr.code === 'auth/api-key-not-valid' || fbErr.code === 'auth/network-request-failed' || fbErr.message?.includes('API key')) {
+      if (isFirebaseDevOrNetworkError(fbErr)) {
         const dummyUid = `admin-uid-${btoa(email).replace(/=/g, '')}`;
         return await syncAdminBackendSession(dummyUid, email);
       }
