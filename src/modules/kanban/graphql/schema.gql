@@ -1,0 +1,92 @@
+type KanbanStage {
+    id: ID!
+    uuid: String!
+    companyId: ID!
+    jobId: ID
+    name: String!
+    color: String!
+    orderPosition: Int!
+    isSystemStage: Boolean!
+    cards: [KanbanCard!]!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type KanbanCardHistory {
+    id: ID!
+    cardId: ID!
+    fromStageId: ID
+    toStageId: ID!
+    movedByUserId: ID
+    notes: String
+    createdAt: DateTime!
+}
+
+type KanbanCard {
+    id: ID!
+    uuid: String!
+    stageId: ID!
+    candidateId: ID!
+    jobId: ID
+    orderPosition: Int!
+    rating: Int
+    notes: String
+    tags: [String!]!
+    candidate: Candidate
+    histories: [KanbanCardHistory!]!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type KanbanBoard {
+    jobId: ID!
+    companyId: ID!
+    stages: [KanbanStage!]!
+}
+
+input CreateKanbanStageInput {
+    companyId: ID!
+    jobId: ID
+    name: String!
+    color: String
+    orderPosition: Int
+}
+
+input UpdateKanbanStageInput {
+    name: String
+    color: String
+    orderPosition: Int
+}
+
+input MoveKanbanCardInput {
+    cardId: ID!
+    targetStageId: ID!
+    targetPosition: Int
+    notes: String
+}
+
+input UpdateKanbanCardInput {
+    rating: Int
+    notes: String
+    tags: [String!]
+}
+
+input AddCandidateToBoardInput {
+    companyId: ID!
+    jobId: ID!
+    candidateId: ID!
+    stageId: ID
+}
+
+type Query {
+    getRecruitmentBoard(jobId: ID!, companyId: ID!): KanbanBoard!
+}
+
+type Mutation {
+    createKanbanStage(input: CreateKanbanStageInput!): KanbanStage!
+    updateKanbanStage(id: ID!, input: UpdateKanbanStageInput!): KanbanStage!
+    reorderKanbanStages(companyId: ID!, jobId: ID, stageIds: [ID!]!): [KanbanStage!]!
+    moveKanbanCard(input: MoveKanbanCardInput!): KanbanCard!
+    updateKanbanCard(id: ID!, input: UpdateKanbanCardInput!): KanbanCard!
+    addCandidateToBoard(input: AddCandidateToBoardInput!): KanbanCard!
+}

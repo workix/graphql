@@ -35,10 +35,10 @@
 
 ## 6. Regras de Negócio e APIs: Kanban de Triagem de Recrutamento (Premium)
 
-- [ ] 6.1 Criar schema GraphQL para `KanbanStage`, `KanbanCard`, `KanbanBoard` e mutations (`createKanbanStage`, `updateKanbanStage`, `moveKanbanCard`, `reorderKanbanStages`)
-- [ ] 6.2 Implementar validação de plano Premium (`can('USE_RECRUITMENT_KANBAN')`) no serviço `KanbanService`
-- [ ] 6.3 Implementar registro de auditoria em `kanban_card_histories` a cada transição de etapa
-- [ ] 6.4 Criar testes unitários para movimentação, ordenação e permissões do Kanban
+- [x] 6.1 Criar schema GraphQL para `KanbanStage`, `KanbanCard`, `KanbanBoard` e mutations (`createKanbanStage`, `updateKanbanStage`, `moveKanbanCard`, `reorderKanbanStages`)
+- [x] 6.2 Implementar validação de plano Premium (`can('USE_RECRUITMENT_KANBAN')`) no serviço `KanbanService`
+- [x] 6.3 Implementar registro de auditoria em `kanban_card_histories` a cada transição de etapa
+- [x] 6.4 Criar testes unitários para movimentação, ordenação e permissões do Kanban
 
 ## 7. Motor de Busca de Candidatos e Facetas
 
