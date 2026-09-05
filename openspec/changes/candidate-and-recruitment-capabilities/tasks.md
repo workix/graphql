@@ -14,10 +14,10 @@
 
 ## 3. Regras de Negócio e APIs: Currículo Normalizado em Markdown
 
-- [ ] 3.1 Criar schema GraphQL para `NormalizedResume`, `NormalizedResumeInput` e mutation `saveNormalizedResume`
-- [ ] 3.2 Implementar serviço de normalização automática (`ResumeNormalizationService`) para compilar Markdown a partir de dados do perfil
-- [ ] 3.3 Implementar sanitização server-side anti-XSS no salvamento do Markdown
-- [ ] 3.4 Criar testes unitários para sanitização, parsing e persistência do currículo normalizado
+- [x] 3.1 Criar schema GraphQL para `NormalizedResume`, `NormalizedResumeInput` e mutation `saveNormalizedResume`
+- [x] 3.2 Implementar serviço de normalização automática (`ResumeNormalizationService`) para compilar Markdown a partir de dados do perfil
+- [x] 3.3 Implementar sanitização server-side anti-XSS no salvamento do Markdown
+- [x] 3.4 Criar testes unitários para sanitização, parsing e persistência do currículo normalizado
 
 ## 4. Regras de Negócio e APIs: Vagas Confidenciais (Premium)
 

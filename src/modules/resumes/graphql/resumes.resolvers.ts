@@ -20,6 +20,32 @@ const resumesResolvers = {
         allResumesPaginated: async (parent, args, ctx, info) => {
             const paginatedList = await resumesRepository(ctx.orm).findAllPaginated(info, args)
             return paginatedList;
+        },
+        getNormalizedResume: async (parent, args, ctx, info) => {
+            const { NormalizedResume } = require('../../../models');
+            const resume = await NormalizedResume.findOne({ where: { candidate_id: args.candidateId } });
+            if (!resume) return null;
+            let skillsArray = [];
+            try {
+                skillsArray = Array.isArray(resume.skills) ? resume.skills : JSON.parse(resume.skills || '[]');
+            } catch {
+                skillsArray = typeof resume.skills === 'string' ? resume.skills.split(',').map((s: string) => s.trim()) : [];
+            }
+            return {
+                id: resume.id,
+                candidateId: resume.candidate_id,
+                rawMarkdown: resume.raw_markdown,
+                summary: resume.summary,
+                skills: skillsArray,
+                careerGoals: resume.career_goals,
+                completenessScore: resume.completeness_score,
+                createdAt: resume.created_at,
+                updatedAt: resume.updated_at
+            };
+        },
+        compileNormalizedResume: async (parent, args, ctx, info) => {
+            const { resumeNormalizationService } = require('../../../services/resume_normalization.service');
+            return await resumeNormalizationService.compileFromCandidateProfile(Number(args.candidateId));
         }
     },
     Mutation: {
@@ -34,6 +60,27 @@ const resumesResolvers = {
         updateResume: async (parent, args, ctx, info) => {
             const resume = await resumesRepository(ctx.orm).update(args)
             return new ResumeDTO(resume);
+        },
+        saveNormalizedResume: async (parent, args, ctx, info) => {
+            const { resumeNormalizationService } = require('../../../services/resume_normalization.service');
+            const record = await resumeNormalizationService.saveNormalizedResume(Number(args.candidateId), args.rawMarkdown);
+            let skillsArray = [];
+            try {
+                skillsArray = Array.isArray(record.skills) ? record.skills : JSON.parse(record.skills || '[]');
+            } catch {
+                skillsArray = typeof record.skills === 'string' ? record.skills.split(',').map((s: string) => s.trim()) : [];
+            }
+            return {
+                id: record.id,
+                candidateId: record.candidate_id,
+                rawMarkdown: record.raw_markdown,
+                summary: record.summary,
+                skills: skillsArray,
+                careerGoals: record.career_goals,
+                completenessScore: record.completeness_score,
+                createdAt: record.created_at,
+                updatedAt: record.updated_at
+            };
         }
     },
     Resume: {

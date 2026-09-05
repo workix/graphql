@@ -4,6 +4,8 @@ scalar DateTime
 type Query {
     allResumes(start: Int, max: Int): [Resume]  
     getResumeById(id: ID!): Resume
+    getNormalizedResume(candidateId: ID!): NormalizedResume
+    compileNormalizedResume(candidateId: ID!): String
     allResumesPaginated(page: Int!, limit: Int!): PaginatedListResume  
 }
 
@@ -11,6 +13,19 @@ type Mutation {
     createResume(input: ResumeInput!): Resume
     deleteResume(id: ID!) : Boolean
     updateResume(id: ID!, input: ResumeInput!): Resume
+    saveNormalizedResume(candidateId: ID!, rawMarkdown: String!): NormalizedResume
+}
+
+type NormalizedResume {
+    id: ID
+    candidateId: ID
+    rawMarkdown: String
+    summary: String
+    skills: [String]
+    careerGoals: String
+    completenessScore: Int
+    createdAt: DateTime
+    updatedAt: DateTime
 }
 
 type Resume {
