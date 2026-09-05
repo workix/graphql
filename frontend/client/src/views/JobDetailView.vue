@@ -147,7 +147,11 @@ async function handleApply() {
   submitting.value = true;
   errorMessage.value = '';
   try {
-    const candidateId = authStore.user?.id || 1;
+    const candidateId = authStore.user?.candidateId || authStore.user?.id;
+    if (!candidateId) {
+      errorMessage.value = 'É necessário estar autenticado como candidato para se candidatar.';
+      return;
+    }
     await jobsService.subscribe(job.value.id, candidateId);
     applied.value = true;
     successMessage.value = 'Sua candidatura foi enviada com sucesso pelo GraphQL!';

@@ -195,12 +195,6 @@ async function seedAll() {
     if (db.JobPosting) {
       await db.JobPosting.create({ company_id: company.id, title: 'Desenvolvedor Frontend Vue.js / TypeScript', description: 'Oportunidade para frontend em Vue.js', location: 'São Paulo', work_type: 'REMOTE' });
     }
-    if (db.JobApplication) {
-      await db.JobApplication.create({ job_id: job1.id, candidate_id: candidate.id, status: 'SUBMITTED' });
-    }
-    if (db.JobCandidate) {
-      await db.JobCandidate.create({ job_id: job1.id, candidate_id: candidate.id });
-    }
 
     const sp = await db.SelectiveProcess.create({
       activated: true,
@@ -208,11 +202,7 @@ async function seedAll() {
       job_id: job1.id
     });
 
-    if (db.SelectiveProcessCandidate) {
-      await db.SelectiveProcessCandidate.create({ sp_id: sp.id, candidate_id: candidate.id });
-    }
-
-    console.log('💼 Vagas de Emprego, Candidaturas e Processo Seletivo criados.');
+    console.log('💼 Vagas de Emprego e Processo Seletivo criados.');
 
     // 5. Currículo, Experiências, Educação, Habilidades e Recomendações
     const resume1 = await db.Resume.create({

@@ -84,14 +84,21 @@ async function loadMyApplications() {
   try {
     const res = await jobsService.getAll();
     const allJobsList = res.data || [];
-    const currentCandidateId = authStore.user?.id || 1;
+    const currentCandidateId = authStore.user?.candidateId || authStore.user?.id;
+    if (!currentCandidateId) {
+      applications.value = [];
+      return;
+    }
 
     // Filtra vagas onde o candidato logado está inscrito
     const mySubscribedJobs = allJobsList.filter((job: any) => {
       if (!job.candidates || job.candidates.length === 0) {
         return false;
       }
-      return job.candidates.some((c: any) => String(c.id) === String(currentCandidateId));
+      return job.candidates.some((c: any) => 
+        String(c.id) === String(currentCandidateId) ||
+        (c.userId && String(c.userId) === String(authStore.user?.id))
+      );
     });
 
     applications.value = mySubscribedJobs;
