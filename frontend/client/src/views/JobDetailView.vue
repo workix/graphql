@@ -13,9 +13,15 @@
               <div class="banner-title-row">
                 <h1 class="job-detail-title">{{ job.title }}</h1>
                 <span v-if="job.featured" class="badge-featured">DESTAQUE</span>
+                <span v-if="job.isConfidential || job.is_confidential" class="badge-confidential-pill">
+                  <i class="fa fa-lock"></i> PROCESSO CONFIDENCIAL
+                </span>
               </div>
               <div class="banner-meta">
-                <span><i class="fa fa-building-o"></i> {{ job.company?.name || job.company_name || 'Tech Corp Brasil' }}</span>
+                <span>
+                  <i :class="(job.isConfidential || job.is_confidential) ? 'fa fa-shield' : 'fa fa-building-o'"></i>
+                  {{ (job.isConfidential || job.is_confidential) ? 'Empresa Confidencial' : (job.company?.name || job.company_name || 'Tech Corp Brasil') }}
+                </span>
                 <span><i class="fa fa-map-marker"></i> {{ job.city || 'São Paulo, SP' }}</span>
                 <span class="badge-type">{{ job.jobType || job.contract_type || 'FULLTIME' }}</span>
               </div>
@@ -36,6 +42,16 @@
       <div class="container section-padding">
         <div class="row">
           <div class="col-md-8">
+            <div v-if="job.isConfidential || job.is_confidential" class="confidential-notice-box mb-4">
+              <div class="d-flex align-items-center gap-3">
+                <i class="fa fa-user-secret confidential-notice-icon"></i>
+                <div>
+                  <h4 class="mb-1 text-white">Processo Seletivo Confidencial</h4>
+                  <p class="mb-0 text-muted-light small">A identidade da empresa contratante é protegida e será revelada aos candidatos selecionados nas etapas finais de entrevista.</p>
+                </div>
+              </div>
+            </div>
+
             <div v-if="successMessage" class="alert alert-success"><i class="fa fa-check-circle"></i> {{ successMessage }}</div>
             <div v-if="errorMessage" class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> {{ errorMessage }}</div>
 
@@ -280,6 +296,36 @@ onMounted(() => {
   margin-bottom: 15px;
   padding-bottom: 8px;
   border-bottom: 2px solid #f1f5f9;
+}
+
+.badge-confidential-pill {
+  background: #334155;
+  color: #f8fafc;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.confidential-notice-box {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: #ffffff;
+}
+
+.confidential-notice-icon {
+  font-size: 28px;
+  color: #38bdf8;
+}
+
+.text-muted-light {
+  color: #94a3b8;
 }
 
 .section-text, .job-description-text {

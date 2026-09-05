@@ -56,9 +56,9 @@
 
 ## 9. Frontend Web: Vagas Confidenciais e Gestão de Vagas
 
-- [ ] 9.1 Adicionar switch de "Vaga Confidencial" com checagem visual de plano Premium no formulário de vagas do Admin e Cliente
-- [ ] 9.2 Atualizar cards e página de detalhes de vagas para renderizar a identidade mascarada para candidatos
-- [ ] 9.3 Garantir que o recrutador dono da vaga visualize a identificação real no painel de gestão
+- [x] 9.1 Adicionar switch de "Vaga Confidencial" com checagem visual de plano Premium no formulário de vagas do Admin e Cliente
+- [x] 9.2 Atualizar cards e página de detalhes de vagas para renderizar a identidade mascarada para candidatos
+- [x] 9.3 Garantir que o recrutador dono da vaga visualize a identificação real no painel de gestão
 
 ## 10. Frontend Web: Agenda de Entrevistas
 

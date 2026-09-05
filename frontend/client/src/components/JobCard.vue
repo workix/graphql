@@ -2,8 +2,8 @@
   <div class="job-card">
     <div class="job-card-main">
       <!-- Company Icon / Avatar -->
-      <div class="company-icon-box">
-        <i class="fa fa-briefcase"></i>
+      <div class="company-icon-box" :class="{ 'confidential-box': job.isConfidential || job.is_confidential }">
+        <i :class="(job.isConfidential || job.is_confidential) ? 'fa fa-user-secret' : 'fa fa-briefcase'"></i>
       </div>
 
       <!-- Job Info -->
@@ -13,12 +13,15 @@
             <router-link :to="`/jobs/${job.id}`">{{ job.title }}</router-link>
           </h4>
           <span v-if="job.featured || job.is_featured" class="badge-featured">DESTAQUE</span>
+          <span v-if="job.isConfidential || job.is_confidential" class="badge-confidential">
+            <i class="fa fa-lock"></i> CONFIDENCIAL
+          </span>
         </div>
 
         <div class="job-meta">
           <span class="meta-item">
-            <i class="fa fa-building-o"></i>
-            {{ job.company?.name || job.company_name || 'Tech Corp Brasil' }}
+            <i :class="(job.isConfidential || job.is_confidential) ? 'fa fa-shield' : 'fa fa-building-o'"></i>
+            {{ (job.isConfidential || job.is_confidential) ? 'Empresa Confidencial' : (job.company?.name || job.company_name || 'Tech Corp Brasil') }}
           </span>
           <span class="meta-item">
             <i class="fa fa-map-marker"></i>
@@ -63,6 +66,8 @@ interface Job {
   maxPayment?: number;
   featured?: boolean;
   is_featured?: boolean;
+  isConfidential?: boolean;
+  is_confidential?: boolean;
   company?: {
     id?: string | number;
     name?: string;
@@ -109,6 +114,23 @@ function formatCategory(cat: string): string {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   border-color: #38bdf8;
+}
+
+.company-icon-box.confidential-box {
+  background: #334155;
+  color: #f8fafc;
+}
+
+.badge-confidential {
+  background: #475569;
+  color: #f8fafc;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .job-card-main {

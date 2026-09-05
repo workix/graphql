@@ -76,7 +76,25 @@
                 <textarea v-model="requirements" class="form-control" rows="4" placeholder="Tecnologias, conhecimentos técnicos e diferenciais..." required></textarea>
               </div>
 
-              <button type="submit" class="btn btn-primary btn-lg btn-block" :disabled="loading">
+              <!-- Switch Vaga Confidencial (Premium) -->
+              <div class="confidential-job-switch-box">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="switch-label-area">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="fa fa-user-secret text-purple"></i>
+                      <strong class="text-dark">Publicar como Vaga Confidencial</strong>
+                      <span class="badge-premium-pill">PREMIUM</span>
+                    </div>
+                    <p class="mb-0 text-muted small mt-1">O nome e a logo da sua empresa serão ocultados dos candidatos nas buscas públicas.</p>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" v-model="isConfidential" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg btn-block mt-4" :disabled="loading">
                 <span v-if="loading"><i class="fa fa-spinner fa-spin"></i> Publicando...</span>
                 <span v-else>Publicar Vaga</span>
               </button>
@@ -105,6 +123,7 @@ const city = ref('');
 const state = ref('');
 const description = ref('');
 const requirements = ref('');
+const isConfidential = ref(false);
 
 const availableCategories = [
   { value: 'MEIO_PERIODO', label: 'Meio Período' },
@@ -135,7 +154,8 @@ async function handleSubmit() {
       city: city.value,
       state: state.value,
       description: description.value,
-      requirements: requirements.value
+      requirements: requirements.value,
+      isConfidential: isConfidential.value,
     });
     successMessage.value = 'Vaga publicada com sucesso!';
     setTimeout(() => {
@@ -164,5 +184,26 @@ async function handleSubmit() {
   border-radius: 8px;
   padding: 30px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+.confidential-job-switch-box {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-top: 20px;
+}
+
+.badge-premium-pill {
+  background: #8b5cf6;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.text-purple {
+  color: #8b5cf6;
 }
 </style>
