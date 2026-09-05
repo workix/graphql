@@ -151,13 +151,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _from, next) => {
-  const enableAuthGuard = import.meta.env.VITE_ENABLE_AUTH_GUARD === 'true';
+  const enableAuthGuard = import.meta.env.VITE_ENABLE_AUTH_GUARD !== 'false';
   if (!enableAuthGuard) {
     return next();
   }
   const adminAuthStore = useAdminAuthStore();
   if (to.meta.requiresAuth && !adminAuthStore.isAuthenticated) {
     next({ name: 'AdminLogin', query: { redirect: to.fullPath } });
+  } else if (to.name === 'AdminLogin' && adminAuthStore.isAuthenticated) {
+    next({ name: 'AdminDashboard' });
   } else {
     next();
   }

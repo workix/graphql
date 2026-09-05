@@ -197,13 +197,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _from, next) => {
-  const enableAuthGuard = import.meta.env.VITE_ENABLE_AUTH_GUARD === 'true';
+  const enableAuthGuard = import.meta.env.VITE_ENABLE_AUTH_GUARD !== 'false';
   if (!enableAuthGuard) {
     return next();
   }
   const authStore = useAuthStore();
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'Login', query: { redirect: to.fullPath } });
+  } else if ((to.name === 'Login' || to.name === 'Register') && authStore.isAuthenticated) {
+    next({ name: 'Home' });
   } else {
     next();
   }

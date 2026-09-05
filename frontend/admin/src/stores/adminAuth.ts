@@ -83,16 +83,20 @@ export const useAdminAuthStore = defineStore('adminAuth', () => {
       setAdminAuth(authToken, adminUser);
       return adminUser;
     } catch (err) {
-      // Fallback gracioso para ambiente de desenvolvimento local
-      const fallbackAdmin: AdminUser = {
-        id: 1,
-        email,
-        name: 'Administrador Local',
-        role: 'ROLE_ADMIN',
-        firebase_uuid: firebaseUid
-      };
-      setAdminAuth(`admin-fb-token-${firebaseUid}`, fallbackAdmin);
-      return fallbackAdmin;
+      // Fallback permitido estritamente em ambiente de desenvolvimento local
+      if (import.meta.env.DEV) {
+        console.warn('Backend indisponível no admin. Ativando sessão de fallback local para desenvolvimento:', err);
+        const fallbackAdmin: AdminUser = {
+          id: 1,
+          email,
+          name: 'Administrador Local (Dev)',
+          role: 'ROLE_ADMIN',
+          firebase_uuid: firebaseUid
+        };
+        setAdminAuth(`admin-fb-token-${firebaseUid}`, fallbackAdmin);
+        return fallbackAdmin;
+      }
+      throw new Error('Falha na autenticação administrativa contra o backend.');
     }
   }
 
@@ -118,7 +122,8 @@ export const useAdminAuthStore = defineStore('adminAuth', () => {
       const fbUser = userCredential.user;
       return await syncAdminBackendSession(fbUser.uid, fbUser.email || email);
     } catch (fbErr: any) {
-      if (isFirebaseDevOrNetworkError(fbErr)) {
+      if (import.meta.env.DEV && isFirebaseDevOrNetworkError(fbErr)) {
+        console.warn('Firebase auth bypass ativo exclusivamente para DEV:', fbErr);
         const dummyUid = `admin-uid-${btoa(email).replace(/=/g, '')}`;
         return await syncAdminBackendSession(dummyUid, email);
       }
