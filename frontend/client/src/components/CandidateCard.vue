@@ -39,6 +39,9 @@
           <span v-if="candidate.acceptsEntryLevel || candidate.candidate?.acceptsEntryLevel" class="meta-badge entry-level">
             <i class="fa fa-bolt"></i> Aceita Júnior/Entrada
           </span>
+          <div class="mt-2" @click.stop>
+            <CandidateActiveProcessesBadge :candidate-id="candidate.candidate?.id || candidate.id" />
+          </div>
         </div>
       </div>
     </div>
@@ -53,6 +56,8 @@
 </template>
 
 <script setup lang="ts">
+import CandidateActiveProcessesBadge from './CandidateActiveProcessesBadge.vue';
+
 interface Candidate {
   id: string | number;
   name?: string;

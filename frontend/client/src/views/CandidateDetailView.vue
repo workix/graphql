@@ -29,6 +29,7 @@
                 <span v-if="candidate.acceptsEntryLevel || candidate.candidate?.acceptsEntryLevel" class="badge-status-pill entry-level">
                   <i class="fa fa-bolt"></i> Aceita Júnior / Entrada
                 </span>
+                <CandidateActiveProcessesBadge :candidate-id="candidate.candidate?.id || candidate.id" />
               </div>
               <div class="banner-meta">
                 <span>
@@ -116,6 +117,22 @@
 
           <!-- Sidebar -->
           <div class="col-md-4">
+            <!-- Inteligência Competitiva / Processos Seletivos Ativos (Premium) -->
+            <div class="sidebar-box mb-4 highlight-premium-box">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <h4 class="sidebar-heading mb-0 text-primary">
+                  <i class="fa fa-line-chart"></i> Mercado & Processos
+                </h4>
+                <span class="badge-premium-pill">PREMIUM</span>
+              </div>
+              <p class="premium-box-desc">
+                Acompanhe a participação deste candidato em outros processos ativos da plataforma para tomar decisões ágeis.
+              </p>
+              <div class="mt-3">
+                <CandidateActiveProcessesBadge :candidate-id="candidate.candidate?.id || candidate.id" />
+              </div>
+            </div>
+
             <div class="sidebar-box">
               <h4 class="sidebar-heading">Informações Gerais</h4>
               <ul class="info-list">
@@ -158,6 +175,7 @@ import { useRoute } from 'vue-router';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 import LoadingOverlay from '../components/LoadingOverlay.vue';
+import CandidateActiveProcessesBadge from '../components/CandidateActiveProcessesBadge.vue';
 import { resumesService } from '../services/resumes';
 
 const route = useRoute();

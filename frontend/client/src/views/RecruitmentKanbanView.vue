@@ -74,6 +74,10 @@
               <div v-if="card.tags && card.tags.length > 0" class="card-tags-list">
                 <span v-for="tag in card.tags" :key="tag" class="tag-badge">{{ tag }}</span>
               </div>
+
+              <div class="mt-2" @click.stop>
+                <CandidateActiveProcessesBadge :candidate-id="card.candidateId" :compact="true" />
+              </div>
             </div>
 
             <!-- Empty Drop Target Area -->
@@ -90,7 +94,10 @@
       <div class="modal-dialog-custom modal-lg">
         <div class="modal-header-custom">
           <h4><i class="fa fa-user"></i> Detalhes da Triagem — {{ selectedCard?.candidate?.name || 'Candidato' }}</h4>
-          <button type="button" class="btn-close" @click="showDetailModal = false">&times;</button>
+          <div class="d-flex align-items-center gap-2">
+            <CandidateActiveProcessesBadge v-if="selectedCard" :candidate-id="selectedCard.candidateId" />
+            <button type="button" class="btn-close" @click="showDetailModal = false">&times;</button>
+          </div>
         </div>
         <div class="modal-body-custom">
           <div class="row">
@@ -199,6 +206,7 @@ import { useRoute } from 'vue-router';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 import LoadingOverlay from '../components/LoadingOverlay.vue';
+import CandidateActiveProcessesBadge from '../components/CandidateActiveProcessesBadge.vue';
 import { kanbanService, KanbanBoardModel, KanbanCardModel } from '../services/kanban';
 import { useAuthStore } from '../stores/auth';
 
