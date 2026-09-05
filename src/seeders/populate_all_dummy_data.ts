@@ -453,8 +453,12 @@ async function seedAll() {
       if (db.PostAnalytics) {
         await db.PostAnalytics.create({ post_id: post1.id, views_count: 142, impressions_count: 320 });
       }
+      let comment1: any;
       if (db.PostComment) {
-        await db.PostComment.create({ post_id: post1.id, author_id: userComp.id, content: 'Parabéns pela grande conquista!' });
+        comment1 = await db.PostComment.create({ post_id: post1.id, author_id: userComp.id, content: 'Parabéns pela grande conquista!' });
+        if (comment1) {
+          await db.PostComment.create({ post_id: post1.id, author_id: userCand.id, content: 'Muito obrigado, Tech Corp! Vamos juntos! 🚀', parent_id: comment1.id });
+        }
       }
       if (db.PostReaction) {
         await db.PostReaction.create({ post_id: post1.id, user_id: userComp.id, type: 'LIKE' });
@@ -492,18 +496,80 @@ async function seedAll() {
       }
     }
 
-    // 10. Cursos, Eventos, Membros e Formulários
+    // 10. Cursos LMS, Eventos, Membros e Formulários
     if (db.Course) {
-      const course = await db.Course.create({ title: 'Arquitetura de Software Nativa para Android', description: 'Aprenda Kotlin Coroutines, Retrofit, ViewModel e MVVM.', instructor_id: userAdmin.id });
+      const course1 = await db.Course.create({
+        title: 'Arquitetura de Software Nativa para Android & Kotlin',
+        description: 'Domine Clean Architecture, Coroutines, Flow, Jetpack e GraphQL no ecossistema Android moderno.',
+        instructor_id: userAdmin.id,
+        level: 'INTERMEDIATE',
+        category: 'Mobile',
+        provider_type: 'PLATFORM',
+        duration_hours: 18,
+        requirements: 'Conhecimentos básicos de orientação a objetos e sintaxe Kotlin.',
+        what_you_will_learn: 'Arquitetura MVVM limpa; Consumo GraphQL e REST; Testes automatizados Espresso; Boas práticas de UI/UX.'
+      });
+
+      const course2 = await db.Course.create({
+        title: 'Formação Frontend Vue 3, Pinia e TypeScript para Empresas',
+        description: 'Capacitação completa corporativa fornecida pela Tech Corp Brasil para desenvolvimento web escalável.',
+        instructor_id: userComp.id,
+        company_id: company.id,
+        level: 'ADVANCED',
+        category: 'Frontend',
+        provider_type: 'COMPANY',
+        duration_hours: 24,
+        requirements: 'Experiência com JavaScript moderno ou TypeScript.',
+        what_you_will_learn: 'Composition API avançada; Gerenciamento de estado reativo com Pinia; Componentização e Design Systems corporativos.'
+      });
+
       if (db.CourseLesson) {
-        await db.CourseLesson.create({ course_id: course.id, title: 'Introdução às Coroutines', video_url: 'https://youtube.com/watch?v=example' });
+        await db.CourseLesson.create({
+          course_id: course1.id,
+          title: 'Introdução e Visão Geral da Arquitetura',
+          section_name: 'Módulo 1: Fundamentos e Setup',
+          content_type: 'VIDEO',
+          video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+          duration_minutes: 15,
+          order_index: 1,
+          attachment_name: 'slides_modulo1.pdf',
+          attachment_url: 'https://example.com/materials/slides_modulo1.pdf',
+          description: 'Apresentação detalhada da estrutura e objetivos do curso.'
+        });
+
+        await db.CourseLesson.create({
+          course_id: course1.id,
+          title: 'Kotlin Coroutines e Flow na Prática',
+          section_name: 'Módulo 2: Programação Reativa',
+          content_type: 'VIDEO',
+          video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+          duration_minutes: 25,
+          order_index: 2,
+          attachment_name: 'exemplos_coroutines.zip',
+          attachment_url: 'https://example.com/materials/exemplos_coroutines.zip',
+          description: 'Conceitos de concorrência assíncrona, builders e tratamento de erros com Flow.'
+        });
+
+        await db.CourseLesson.create({
+          course_id: course2.id,
+          title: 'Setup do Projeto Vue 3 com Vite e Pinia',
+          section_name: 'Seção 1: Arquitetura Frontend',
+          content_type: 'VIDEO',
+          video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+          duration_minutes: 20,
+          order_index: 1,
+          attachment_name: 'guia_boas_praticas.pdf',
+          attachment_url: 'https://example.com/materials/guia_boas_praticas.pdf',
+          description: 'Configuração do ambiente corporativo e estrutura de pastas modular.'
+        });
       }
+
       let enrollment: any;
       if (db.CourseEnrollment) {
-        enrollment = await db.CourseEnrollment.create({ course_id: course.id, user_id: userCand.id });
+        enrollment = await db.CourseEnrollment.create({ course_id: course1.id, user_id: userCand.id });
       }
       if (db.CourseCompletion && enrollment) {
-        await db.CourseCompletion.create({ enrollment_id: enrollment.id, certificate_url: 'https://certificados.exemplo.com/12345' });
+        await db.CourseCompletion.create({ enrollment_id: enrollment.id, certificate_url: 'https://certificados.workix.com/cert/12345' });
       }
     }
 
