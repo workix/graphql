@@ -14,7 +14,14 @@ export const usePremiumStore = defineStore('premium', {
   }),
 
   getters: {
-    isPremiumActive: (state) => state.mySubscription?.status === 'ACTIVE',
+    isPremiumActive: (state) => {
+      const authStore = useAuthStore();
+      if (!authStore.isAuthenticated || !authStore.user?.id) return false;
+      if (!state.mySubscription || state.mySubscription.status !== 'ACTIVE') return false;
+      // Plano Free tem id 1 ou 101 e 0 créditos. Premium ativo requer plano pago ou créditos > 0
+      const planId = String(state.mySubscription.planId);
+      return planId !== '1' && planId !== '101' && (state.mySubscription.inmailCreditsRemaining ?? 0) > 0;
+    },
     inmailCredits: (state) => state.mySubscription?.inmailCreditsRemaining ?? 0,
     candidatePlans: (state) => {
       const filtered = state.plansList.filter(
@@ -147,32 +154,33 @@ export const usePremiumStore = defineStore('premium', {
 
     async fetchMySubscription() {
       const authStore = useAuthStore();
-      const userId = authStore.user?.id || 1;
+      const userId = authStore.user?.id;
+      if (!userId) {
+        this.mySubscription = null;
+        return;
+      }
 
       try {
         const sub = await premiumService.getMySubscription(userId);
         this.mySubscription = sub;
       } catch (err: any) {
         console.warn('Erro ao carregar assinatura do usuário:', err);
+        this.mySubscription = null;
       }
     },
 
     async subscribe(planId: string | number) {
       const authStore = useAuthStore();
-      const userId = authStore.user?.id || 1;
+      const userId = authStore.user?.id;
+      if (!userId) {
+        throw new Error('Você precisa estar autenticado para assinar um plano.');
+      }
       this.isLoading = true;
       this.error = null;
 
       try {
         const sub = await premiumService.subscribeToPlan(userId, planId);
-        this.mySubscription = sub || {
-          id: '1',
-          userId,
-          planId,
-          status: 'ACTIVE',
-          inmailCreditsRemaining: 10,
-          startedAt: new Date().toISOString()
-        };
+        this.mySubscription = sub;
         return this.mySubscription;
       } catch (err: any) {
         this.error = err.message || 'Erro ao assinar plano.';

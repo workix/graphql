@@ -40,7 +40,7 @@
     </div>
 
     <div class="container section-padding">
-      <!-- Active Subscription Alert -->
+      <!-- Active Subscription Alert (Only shown for authenticated users with active paid premium) -->
       <div
         v-if="premiumStore.isPremiumActive && activeTab === 'candidates'"
         class="active-sub-banner d-flex justify-content-between align-items-center flex-wrap gap-16 margin-bottom-32"
@@ -482,12 +482,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import usePremiumStore from '../stores/premium';
+import { useAuthStore } from '../stores/auth';
 import { SubscriptionPlanModel } from '../services/premium.service';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 
+const router = useRouter();
 const premiumStore = usePremiumStore();
+const authStore = useAuthStore();
 
 const activeTab = ref<'candidates' | 'companies'>('candidates');
 const showModal = ref(false);
@@ -549,6 +553,10 @@ function getCheckoutDescription(plan: SubscriptionPlanModel) {
 }
 
 function openSubscribeModal(plan: SubscriptionPlanModel) {
+  if (!authStore.isAuthenticated || !authStore.user?.id) {
+    router.push('/login?redirect=/premium');
+    return;
+  }
   selectedPlan.value = plan;
   subscribeError.value = '';
   showModal.value = true;
@@ -940,4 +948,3 @@ function formatPrice(val: number) {
   line-height: 1.4;
 }
 </style>
-
