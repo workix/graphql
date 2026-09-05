@@ -129,6 +129,16 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       defaultValue: '[]'
     },
+    categories: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: '[]'
+    },
+    employment_type: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      defaultValue: 'CLT'
+    },
     company_id: {
       type: DataTypes.BIGINT,
       allowNull: false,

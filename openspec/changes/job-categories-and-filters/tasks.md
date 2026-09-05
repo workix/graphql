@@ -18,9 +18,9 @@
 
 ## 4. Persistência de Dados
 
-- [ ] 4.1 Criar migration Sequelize para adicionar colunas `categories` e `employment_type` na tabela `jobs`
-- [ ] 4.2 Atualizar modelo `Job` (`src/models/job.ts`) com getters, setters e defaults seguros (`categories = []`, `employment_type = 'CLT'`)
-- [ ] 4.3 Implementar testes de persistência garantindo compatibilidade com registros existentes
+- [x] 4.1 Criar migration Sequelize para adicionar colunas `categories` e `employment_type` na tabela `jobs`
+- [x] 4.2 Atualizar modelo `Job` (`src/models/job.ts`) com getters, setters e defaults seguros (`categories = []`, `employment_type = 'CLT'`)
+- [x] 4.3 Implementar testes de persistência garantindo compatibilidade com registros existentes
 
 ## 5. API GraphQL: Cadastro e Edição
 

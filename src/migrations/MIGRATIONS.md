@@ -14,6 +14,8 @@
  [x] - JAAS Roles
  [x] - JAAS User
  [x] - Job
+ [x] - Job (Add PCD and Remote Fields)
+ [x] - Job (Add Categories and Employment Type)
  [x] - Job Candidates
  [x] - Member
  [x] - Member Medias
