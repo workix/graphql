@@ -116,6 +116,8 @@ import LoadingOverlay from '../components/LoadingOverlay.vue';
 import { jobsService } from '../services/jobs';
 import graphqlClient from '../services/graphql';
 
+const router = useRouter();
+
 const searchQuery = ref('');
 const searchLocation = ref('');
 const featuredJobs = ref<any[]>([]);

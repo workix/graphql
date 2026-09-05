@@ -129,6 +129,8 @@ async function seedAll() {
       benefits: 'Vale Refeição, Vale Transporte, Plano de Saúde, Seguro de Vida.',
       job_category: 'MANAGEMENT',
       job_type: 'FULLTIME',
+      employment_type: 'CLT',
+      categories: JSON.stringify(['FREELANCE', 'PRIMEIRA_OPORTUNIDADE']),
       min_payment: 8500.00,
       max_payment: 11000.00,
       activated: true,
@@ -143,6 +145,8 @@ async function seedAll() {
       benefits: 'Horário Flexível, Home Office, Gympass, Plano de Saúde.',
       job_category: 'OPERATOR',
       job_type: 'FULLTIME',
+      employment_type: 'PJ',
+      categories: JSON.stringify(['MEIO_PERIODO']),
       min_payment: 10000.00,
       max_payment: 14000.00,
       activated: true,
@@ -157,6 +161,8 @@ async function seedAll() {
       benefits: 'PLR, Auxílio Creche, Plano Odontológico, Plano de Saúde.',
       job_category: 'MANAGEMENT',
       job_type: 'FULLTIME',
+      employment_type: 'PJ',
+      categories: JSON.stringify(['FREELANCE']),
       min_payment: 12000.00,
       max_payment: 16000.00,
       activated: true,
@@ -165,30 +171,114 @@ async function seedAll() {
     });
 
     const job4 = await db.Job.create({
-      title: 'Tech Lead / Arquiteto de Software Fullstack',
-      description: 'Responsável técnico por guiar times de engenharia, arquitetar soluções escaláveis e boas práticas.',
-      requirement: 'Experiência prévia como Lead Engineer ou Arquiteto em sistemas distribuídos.',
-      benefits: 'Salário Competitivo, Stock Options, Plano de Saúde Internacional.',
-      job_category: 'MANAGEMENT',
-      job_type: 'FULLTIME',
-      min_payment: 18000.00,
-      max_payment: 25000.00,
+      title: 'Estágio em Desenvolvimento de Software & Web',
+      description: 'Programa de estágio para estudantes de Tecnologia. Oportunidade prática com mentoria em JavaScript, Vue.js e Node.js.',
+      requirement: 'Estar cursando Ciência da Computação, Análise de Sistemas ou áreas correlatas.',
+      benefits: 'Bolsa Auxílio, Vale Transporte, Vale Refeição, Seguro de Vida, Recesso Remunerado.',
+      job_category: 'OPERATOR',
+      job_type: 'INTERNSHIP',
+      employment_type: 'CLT',
+      categories: JSON.stringify(['ESTAGIO', 'PRIMEIRA_OPORTUNIDADE']),
+      min_payment: 2000.00,
+      max_payment: 2800.00,
       activated: true,
       featured: true,
       company_id: company.id
     });
 
     const job5 = await db.Job.create({
-      title: 'Product Designer (UI/UX) - Mobile & Web',
-      description: 'Criação de fluxos de experiência do usuário, wireframes de alta fidelidade e testes de usabilidade.',
-      requirement: 'Figma, Design Systems, Protótipos interativos e pesquisa com usuários.',
-      benefits: 'Horário Flexível, Vale Alimentação, TotalPass.',
+      title: 'Engenheiro de Confiabilidade & Suporte DevOps Noturno',
+      description: 'Monitoramento de servidores, alertas e resposta a incidentes críticos em período noturno com adicional assegurado.',
+      requirement: 'Conhecimentos em Linux, Docker, Kubernetes e observabilidade (Prometheus/Grafana).',
+      benefits: 'Adicional Noturno, Plano de Saúde, Vale Alimentação, Auxílio Internet.',
       job_category: 'OPERATOR',
-      job_type: 'FULLTIME',
-      min_payment: 8000.00,
-      max_payment: 12000.00,
+      job_type: 'PARTTIME',
+      employment_type: 'CLT',
+      categories: JSON.stringify(['NOTURNO', 'MEIO_PERIODO']),
+      min_payment: 6500.00,
+      max_payment: 9000.00,
       activated: true,
       featured: true,
+      company_id: company.id
+    });
+
+    const job6 = await db.Job.create({
+      title: 'Técnico de Infraestrutura de Redes em Alta Tensão',
+      description: 'Atividades presenciais em subestações elétricas e data centers com adicional de periculosidade de 30% garantido por lei.',
+      requirement: 'Curso técnico em Eletrotécnica ou Telecomunicações, NR-10 e NR-35 em dia.',
+      benefits: 'Adicional de Periculosidade 30%, Vale Refeição, Seguro de Vida, Cesta Básica.',
+      job_category: 'OPERATOR',
+      job_type: 'TEMPORARY',
+      employment_type: 'CONTRATO_TEMPORARIO',
+      categories: JSON.stringify(['PERICULOSIDADE', 'TEMPORARIO']),
+      min_payment: 5500.00,
+      max_payment: 8000.00,
+      activated: true,
+      featured: false,
+      company_id: company.id
+    });
+
+    const job7 = await db.Job.create({
+      title: 'Desenvolvedor Fullstack Vue & Node.js Freelancer',
+      description: 'Desenvolvimento sob demanda para novos módulos de plataforma web, com atuação 100% remota e flexibilidade total de horários.',
+      requirement: 'Portfólio com projetos Vue.js e backend Node.js, disponibilidade para entregas por sprint.',
+      benefits: 'Flexibilidade de horário, 100% Remoto, Pagamento quinzenal por demanda.',
+      job_category: 'OPERATOR',
+      job_type: 'FREELANCE',
+      employment_type: 'PJ',
+      categories: JSON.stringify(['FREELANCE']),
+      min_payment: 8000.00,
+      max_payment: 13000.00,
+      activated: true,
+      featured: false,
+      company_id: company.id
+    });
+
+    const job8 = await db.Job.create({
+      title: 'Analista de Suporte Técnico Júnior (Primeiro Emprego)',
+      description: 'Oportunidade de entrada na área de TI para candidatos sem experiência prévia. Treinamento completo oferecido pela empresa.',
+      requirement: 'Ensino Médio completo, boa comunicação e facilidade com informática.',
+      benefits: 'Vale Transporte, Vale Refeição, Convênio Médico, Plano de Carreira.',
+      job_category: 'OPERATOR',
+      job_type: 'PARTTIME',
+      employment_type: 'CLT',
+      categories: JSON.stringify(['PRIMEIRA_OPORTUNIDADE', 'MEIO_PERIODO']),
+      min_payment: 3200.00,
+      max_payment: 4500.00,
+      activated: true,
+      featured: false,
+      company_id: company.id
+    });
+
+    const job9 = await db.Job.create({
+      title: 'Operador de Datacenter e Instalações Críticas Noturno',
+      description: 'Manutenção e operação de geradores e nobreaks de grande porte no turno da noite. Adicionais noturno e de periculosidade inclusos.',
+      requirement: 'Experiência com manutenção predial e elétrica em data centers.',
+      benefits: 'Adicional Noturno, Adicional de Periculosidade, Plano de Saúde, Vale Alimentação.',
+      job_category: 'OPERATOR',
+      job_type: 'FULLTIME',
+      employment_type: 'CLT',
+      categories: JSON.stringify(['NOTURNO', 'PERICULOSIDADE']),
+      min_payment: 7200.00,
+      max_payment: 9800.00,
+      activated: true,
+      featured: false,
+      company_id: company.id
+    });
+
+    const job10 = await db.Job.create({
+      title: 'Desenvolvedor Frontend Temporário (Projeto 6 Meses)',
+      description: 'Contrato temporário para refatoração e lançamento de novo portal de e-commerce de grande porte.',
+      requirement: 'Sólida experiência com Vue.js, Pinia, TypeScript e CSS responsivo.',
+      benefits: 'Salário compatível com mercado, Equipamento fornecido pela empresa, Atuação Híbrida/Remota.',
+      job_category: 'OPERATOR',
+      job_type: 'TEMPORARY',
+      employment_type: 'CONTRATO_TEMPORARIO',
+      categories: JSON.stringify(['TEMPORARIO', 'FREELANCE']),
+      min_payment: 9000.00,
+      max_payment: 12500.00,
+      activated: true,
+      featured: false,
       company_id: company.id
     });
 
