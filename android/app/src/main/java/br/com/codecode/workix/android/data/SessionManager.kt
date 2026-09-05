@@ -13,6 +13,7 @@ class SessionManager private constructor(context: Context) {
         private const val PREF_NAME = "workix_prefs"
         private const val KEY_TOKEN = "auth_token"
         private const val KEY_USER = "user_data"
+        private const val KEY_FCM_TOKEN = "fcm_token"
 
         @Volatile
         private var instance: SessionManager? = null
@@ -46,11 +47,23 @@ class SessionManager private constructor(context: Context) {
         }
     }
 
+    fun saveFcmToken(token: String) {
+        prefs.edit().putString(KEY_FCM_TOKEN, token).apply()
+    }
+
+    fun getFcmToken(): String? {
+        return prefs.getString(KEY_FCM_TOKEN, null)
+    }
+
     fun isLoggedIn(): Boolean {
         return getAuthToken() != null
     }
 
     fun logout() {
         prefs.edit().clear().apply()
+    }
+
+    fun clearSession() {
+        logout()
     }
 }

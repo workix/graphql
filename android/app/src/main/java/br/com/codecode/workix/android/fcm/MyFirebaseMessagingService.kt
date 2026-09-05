@@ -27,7 +27,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        // Envia o novo token FCM ao backend se necessário
+        val sessionManager = br.com.codecode.workix.android.data.SessionManager.getInstance(this)
+        sessionManager.saveFcmToken(token)
+        android.util.Log.d("WorkixFCM", "Novo token FCM registrado e persistido com sucesso: $token")
     }
 
     private fun showNotification(title: String, body: String) {

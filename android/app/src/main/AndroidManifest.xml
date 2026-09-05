@@ -57,6 +57,8 @@
         <activity android:name="br.com.codecode.workix.android.ui.learning.LessonPlayerActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.premium.PremiumPlansActivity" />
         <activity android:name="br.com.codecode.workix.android.ui.support.ContactActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.kanban.RecruitmentKanbanActivity" />
+        <activity android:name="br.com.codecode.workix.android.ui.interviews.InterviewsActivity" />
 
     </application>
 
