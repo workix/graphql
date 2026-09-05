@@ -62,9 +62,9 @@
 
 ## 11. Aplicativo Android: Modelos e Consumo de API
 
-- [ ] 11.1 Atualizar queries/mutations GraphQL e modelos de dados de vagas no app Android
-- [ ] 11.2 Implementar mapeamento de `categories` e `employmentType` nos DTOs e repositórios Kotlin
-- [ ] 11.3 Criar testes unitários para os novos modelos no Android
+- [x] 11.1 Atualizar queries/mutations GraphQL e modelos de dados de vagas no app Android
+- [x] 11.2 Implementar mapeamento de `categories` e `employmentType` nos DTOs e repositórios Kotlin
+- [x] 11.3 Criar testes unitários para os novos modelos no Android
 
 ## 12. Aplicativo Android: Filtros de Busca
 

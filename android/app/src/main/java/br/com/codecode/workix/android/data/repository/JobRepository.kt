@@ -25,6 +25,10 @@ class JobRepository {
                                 requirement
                                 jobCategory
                                 jobType
+                                categories
+                                employmentType
+                                isPcd
+                                isRemote
                                 minPayment
                                 maxPayment
                                 featured
@@ -75,6 +79,10 @@ class JobRepository {
                             requirement
                             jobCategory
                             jobType
+                            categories
+                            employmentType
+                            isPcd
+                            isRemote
                             minPayment
                             maxPayment
                             featured

@@ -8,10 +8,14 @@ data class JobGraphQL(
     val requirement: String?,
     val jobCategory: String?,
     val jobType: String?,
+    val categories: List<String>? = emptyList(),
+    val employmentType: String? = "CLT",
     val minPayment: Double?,
     val maxPayment: Double?,
     val featured: Boolean?,
     val activated: Boolean?,
+    val isPcd: Boolean? = false,
+    val isRemote: Boolean? = false,
     val createdAt: String?,
     val company: CompanyGraphQL?
 )

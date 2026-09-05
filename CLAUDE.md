@@ -1,4 +1,5 @@
 # Regras Gerais
+ - Você está em um ambiente Windows
  - Você deve se comunicar em Português Brasil
  - Você deve sempre usar o git com mensagens em Português Brasil
  - Você deve sempre commitar as modificações feitas em baby-steps
