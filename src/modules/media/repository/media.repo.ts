@@ -36,7 +36,18 @@ const mediaRepository = (db: any) => {
     return mediaAsset;
   };
 
-  return { requestUploadUrl, confirmUpload, findById };
+  const findAll = async (args: any = {}) => {
+    const limit = args.limit || 50;
+    const offset = args.offset || 0;
+    const assets = await MediaAsset.findAll({
+      limit,
+      offset,
+      order: [['created_at', 'DESC']]
+    });
+    return assets;
+  };
+
+  return { requestUploadUrl, confirmUpload, findById, findAll };
 };
 
 export default mediaRepository;

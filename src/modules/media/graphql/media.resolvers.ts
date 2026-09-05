@@ -6,6 +6,10 @@ const mediaResolvers = {
     getMediaById: async (parent: any, args: any, ctx: any, info: any) => {
       const media = await mediaRepository(ctx.orm).findById(args);
       return media ? new MediaAssetDTO(media) : null;
+    },
+    allMediaAssets: async (parent: any, args: any, ctx: any, info: any) => {
+      const list = await mediaRepository(ctx.orm).findAll(args);
+      return list.map((item: any) => new MediaAssetDTO(item));
     }
   },
   Mutation: {

@@ -3,6 +3,7 @@ scalar DateTime
 
 type Query {
     getMediaById(id: ID!): MediaAsset
+    allMediaAssets(limit: Int, offset: Int): [MediaAsset]
 }
 
 type Mutation {
