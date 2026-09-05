@@ -136,6 +136,73 @@ export const endorsementsService = {
     return data.createRecommendation || null;
   },
 
+  async getUserSkillsWithEndorsements(userId: string | number, currentUserId?: string | number): Promise<SkillWithEndorsements[]> {
+    const query = `
+      query UserSkillsWithEndorsements($userId: ID!, $currentUserId: ID) {
+        userSkillsWithEndorsements(userId: $userId, currentUserId: $currentUserId) {
+          id
+          name
+          endorsementsCount
+          isEndorsedByMe
+        }
+      }
+    `;
+
+    try {
+      const data = await graphqlClient.request<{ userSkillsWithEndorsements: SkillWithEndorsements[] }>(query, {
+        userId: String(userId),
+        currentUserId: currentUserId ? String(currentUserId) : null
+      });
+      return data.userSkillsWithEndorsements || [];
+    } catch (err) {
+      console.warn('Erro ao carregar competências do usuário:', err);
+      return [];
+    }
+  },
+
+  async addUserSkill(userId: string | number, skillName: string): Promise<SkillWithEndorsements | null> {
+    const mutation = `
+      mutation AddUserSkill($userId: ID!, $skillName: String!) {
+        addUserSkill(userId: $userId, skillName: $skillName) {
+          id
+          name
+          endorsementsCount
+          isEndorsedByMe
+        }
+      }
+    `;
+
+    try {
+      const data = await graphqlClient.request<{ addUserSkill: SkillWithEndorsements }>(mutation, {
+        userId: String(userId),
+        skillName
+      });
+      return data.addUserSkill || null;
+    } catch (err) {
+      console.warn('Erro ao adicionar competência:', err);
+      return null;
+    }
+  },
+
+  async removeUserSkill(userId: string | number, skillId: string | number): Promise<boolean> {
+    const mutation = `
+      mutation RemoveUserSkill($userId: ID!, $skillId: ID!) {
+        removeUserSkill(userId: $userId, skillId: $skillId)
+      }
+    `;
+
+    try {
+      const data = await graphqlClient.request<{ removeUserSkill: boolean }>(mutation, {
+        userId: String(userId),
+        skillId: String(skillId)
+      });
+      return !!data.removeUserSkill;
+    } catch (err) {
+      console.warn('Erro ao remover competência:', err);
+      return false;
+    }
+  },
+
   async respondToRecommendation(
     recommendationId: string | number,
     recipientId: string | number,

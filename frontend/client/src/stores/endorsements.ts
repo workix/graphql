@@ -7,14 +7,7 @@ import { useAuthStore } from './auth';
 
 export const useEndorsementsStore = defineStore('endorsements', {
   state: () => ({
-    skills: [
-      { id: 1, name: 'TypeScript & JavaScript', endorsementsCount: 14, isEndorsedByMe: false },
-      { id: 2, name: 'Vue.js & Pinia', endorsementsCount: 19, isEndorsedByMe: false },
-      { id: 3, name: 'GraphQL & Apollo', endorsementsCount: 12, isEndorsedByMe: false },
-      { id: 4, name: 'Node.js & Express / Nest', endorsementsCount: 11, isEndorsedByMe: false },
-      { id: 5, name: 'Kotlin & Android Nativo', endorsementsCount: 8, isEndorsedByMe: false },
-      { id: 6, name: 'Docker & Microservices', endorsementsCount: 7, isEndorsedByMe: false }
-    ] as SkillWithEndorsements[],
+    skills: [] as SkillWithEndorsements[],
     recommendations: [] as RecommendationModel[],
     isLoading: false,
     error: null as string | null
@@ -28,6 +21,46 @@ export const useEndorsementsStore = defineStore('endorsements', {
   },
 
   actions: {
+    async fetchSkills(userId: string | number) {
+      const authStore = useAuthStore();
+      const currentUserId = authStore.user?.id;
+      try {
+        const list = await endorsementsService.getUserSkillsWithEndorsements(userId, currentUserId);
+        this.skills = list;
+      } catch (err: any) {
+        console.warn('Erro ao carregar competências:', err);
+      }
+    },
+
+    async addSkill(userId: string | number, skillName: string) {
+      try {
+        const created = await endorsementsService.addUserSkill(userId, skillName);
+        if (created) {
+          const exists = this.skills.find(s => s.name.toLowerCase() === created.name.toLowerCase());
+          if (!exists) {
+            this.skills.push(created);
+          }
+        }
+        return created;
+      } catch (err: any) {
+        console.warn('Erro ao adicionar competência:', err);
+        return null;
+      }
+    },
+
+    async removeSkill(userId: string | number, skillId: string | number) {
+      try {
+        const ok = await endorsementsService.removeUserSkill(userId, skillId);
+        if (ok) {
+          this.skills = this.skills.filter(s => String(s.id) !== String(skillId));
+        }
+        return ok;
+      } catch (err: any) {
+        console.warn('Erro ao remover competência:', err);
+        return false;
+      }
+    },
+
     async fetchRecommendations(userId: string | number) {
       this.isLoading = true;
       this.error = null;

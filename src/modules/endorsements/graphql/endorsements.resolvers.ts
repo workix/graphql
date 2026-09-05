@@ -12,6 +12,13 @@ const endorsementsResolvers = {
     userRecommendations: async (parent: any, args: any, ctx: any, info: any) => {
       const list = await endorsementsRepository(ctx.orm).getRecommendations(args.userId);
       return list.map((r: any) => new RecommendationDTO(r));
+    },
+    userSkillsWithEndorsements: async (parent: any, args: any, ctx: any, info: any) => {
+      const list = await endorsementsRepository(ctx.orm).getUserSkillsWithEndorsements(
+        args.userId,
+        args.currentUserId || ctx.user?.id
+      );
+      return list;
     }
   },
   Mutation: {
@@ -21,6 +28,14 @@ const endorsementsResolvers = {
     },
     unendorseSkill: async (parent: any, args: any, ctx: any, info: any) => {
       const res = await endorsementsRepository(ctx.orm).unendorseSkill(args.skillId, args.endorserId);
+      return res;
+    },
+    addUserSkill: async (parent: any, args: any, ctx: any, info: any) => {
+      const res = await endorsementsRepository(ctx.orm).addUserSkill(args.userId, args.skillName);
+      return res;
+    },
+    removeUserSkill: async (parent: any, args: any, ctx: any, info: any) => {
+      const res = await endorsementsRepository(ctx.orm).removeUserSkill(args.userId, args.skillId);
       return res;
     },
     createRecommendation: async (parent: any, args: any, ctx: any, info: any) => {

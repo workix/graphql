@@ -4,6 +4,7 @@ scalar DateTime
 type Query {
     skillEndorsements(skillId: ID!): [SkillEndorsement]
     userRecommendations(userId: ID!): [Recommendation]
+    userSkillsWithEndorsements(userId: ID!, currentUserId: ID): [SkillWithEndorsementInfo]
 }
 
 type Mutation {
@@ -11,6 +12,15 @@ type Mutation {
     unendorseSkill(skillId: ID!, endorserId: ID!): Boolean
     createRecommendation(recommenderId: ID!, recipientId: ID!, content: String!): Recommendation
     respondToRecommendation(recommendationId: ID!, recipientId: ID!, accept: Boolean!): Recommendation
+    addUserSkill(userId: ID!, skillName: String!): SkillWithEndorsementInfo
+    removeUserSkill(userId: ID!, skillId: ID!): Boolean
+}
+
+type SkillWithEndorsementInfo {
+    id: ID!
+    name: String!
+    endorsementsCount: Int!
+    isEndorsedByMe: Boolean
 }
 
 type SkillEndorsement {

@@ -2,7 +2,7 @@ import endorsementsRepository from '../../../src/modules/endorsements/repository
 import endorsementsResolvers from '../../../src/modules/endorsements/graphql/endorsements.resolvers';
 import SkillEndorsementDTO from '../../../src/dtos/SkillEndorsementDTO';
 import RecommendationDTO from '../../../src/dtos/RecommendationDTO';
-import { SkillEndorsement, Recommendation } from '../../../src/models';
+import { SkillEndorsement, Recommendation, Candidate, Resume, ResumeSkill, NormalizedResume } from '../../../src/models';
 
 jest.mock('../../../src/models', () => ({
   SkillEndorsement: {
@@ -14,6 +14,22 @@ jest.mock('../../../src/models', () => ({
     create: jest.fn(),
     findOne: jest.fn(),
     findAll: jest.fn()
+  },
+  Candidate: {
+    findOne: jest.fn(),
+    findByPk: jest.fn()
+  },
+  Resume: {
+    findOne: jest.fn(),
+    create: jest.fn()
+  },
+  ResumeSkill: {
+    findAll: jest.fn(),
+    create: jest.fn(),
+    destroy: jest.fn()
+  },
+  NormalizedResume: {
+    findOne: jest.fn()
   }
 }));
 
@@ -94,12 +110,34 @@ describe('Endorsements Module Unit Tests (TDD)', () => {
       await expect(repo.respondToRecommendation(99, 10, true)).rejects.toThrow('Recommendation 99 not found');
     });
 
-    it('should get accepted recommendations for user', async () => {
-      const mockRecs = [{ id: 1, recipient_id: 10, status: 'ACCEPTED' }];
-      (Recommendation.findAll as jest.Mock).mockResolvedValue(mockRecs);
+    it('should get user skills with endorsements from resume and normalized resume', async () => {
+      (Candidate.findOne as jest.Mock).mockResolvedValue({ id: 100, user_id: 10 });
+      (Resume.findOne as jest.Mock).mockResolvedValue({ id: 200, candidate_id: 100 });
+      (ResumeSkill.findAll as jest.Mock).mockResolvedValue([{ id: 1, skill_name: 'Vue.js' }]);
+      (NormalizedResume.findOne as jest.Mock).mockResolvedValue({ candidate_id: 100, skills: '["TypeScript"]' });
+      (SkillEndorsement.findAll as jest.Mock).mockResolvedValue([{ skill_id: 1, endorser_id: 5 }]);
 
       const repo = endorsementsRepository(mockCtx.orm);
-      expect(await repo.getRecommendations(10)).toEqual(mockRecs);
+      const skills = await repo.getUserSkillsWithEndorsements(10, 5);
+
+      expect(skills.length).toBe(2);
+      const vueSkill = skills.find(s => s.name === 'Vue.js');
+      expect(vueSkill?.endorsementsCount).toBe(1);
+      expect(vueSkill?.isEndorsedByMe).toBe(true);
+    });
+
+    it('should add and remove user skills', async () => {
+      (Candidate.findOne as jest.Mock).mockResolvedValue({ id: 100, user_id: 10 });
+      (Resume.findOne as jest.Mock).mockResolvedValue({ id: 200, candidate_id: 100 });
+      (ResumeSkill.create as jest.Mock).mockResolvedValue({ id: 300, skill_name: 'Node.js' });
+      (ResumeSkill.destroy as jest.Mock).mockResolvedValue(1);
+
+      const repo = endorsementsRepository(mockCtx.orm);
+      const added = await repo.addUserSkill(10, 'Node.js');
+      expect(added.name).toBe('Node.js');
+
+      const removed = await repo.removeUserSkill(10, 300);
+      expect(removed).toBe(true);
     });
   });
 
