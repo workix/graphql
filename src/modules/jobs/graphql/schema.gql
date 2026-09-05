@@ -125,6 +125,7 @@ type Job {
     skills: [String]
     categories: [JobCategory]
     employmentType: JobEmploymentType
+    isConfidential: Boolean
     workplaceType: String
     seniorityLevel: String
     city: String
@@ -155,6 +156,7 @@ input JobInput {
     skills: [String]
     categories: [JobCategory]
     employmentType: JobEmploymentType
+    isConfidential: Boolean
     workplaceType: String
     seniorityLevel: String
     city: String

@@ -53,6 +53,9 @@ export default class JobDTO {
         this.isRemote = job.is_remote !== undefined ? Boolean(job.is_remote) : (job.workplace_type === 'REMOTE');
         this.pcdDetails = job.pcd_details || null;
 
+        // Campo de Confidencialidade (Vagas Premium)
+        this.isConfidential = Boolean(job.is_confidential);
+
         let parsedAccessibility: string[] = [];
         if (Array.isArray(job.accessibility_features)) {
             parsedAccessibility = job.accessibility_features;

@@ -21,10 +21,10 @@
 
 ## 4. Regras de Negócio e APIs: Vagas Confidenciais (Premium)
 
-- [ ] 4.1 Adicionar campo `isConfidential: Boolean` em `Job` e `JobInput` no schema GraphQL
-- [ ] 4.2 Adicionar validação de plano Premium (`can('POST_CONFIDENTIAL_JOBS')`) na criação e edição de vagas confidenciais
-- [ ] 4.3 Implementar mascaramento dinâmico em `JobDTO` e resolvers GraphQL para omitir dados da empresa para candidatos
-- [ ] 4.4 Criar testes unitários de permissão e mascaramento de vagas confidenciais
+- [x] 4.1 Adicionar campo `isConfidential: Boolean` em `Job` e `JobInput` no schema GraphQL
+- [x] 4.2 Adicionar validação de plano Premium (`can('POST_CONFIDENTIAL_JOBS')`) na criação e edição de vagas confidenciais
+- [x] 4.3 Implementar mascaramento dinâmico em `JobDTO` e resolvers GraphQL para omitir dados da empresa para candidatos
+- [x] 4.4 Criar testes unitários de permissão e mascaramento de vagas confidenciais
 
 ## 5. Regras de Negócio e APIs: Agenda de Entrevistas (Premium)
 

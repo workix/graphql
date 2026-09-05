@@ -39,6 +39,7 @@ export class CreateJobDTO {
         const categories = normalizeJobCategories(input.categories)
         this.categories = JSON.stringify(categories)
         this.employment_type = normalizeJobEmploymentType(input.employmentType, JobEmploymentType.CLT)
+        this.is_confidential = Boolean(input.isConfidential)
     }
 }
 
@@ -88,6 +89,9 @@ export class UpdateJobDTO {
         }
         if (input.employmentType !== undefined) {
             this.employment_type = normalizeJobEmploymentType(input.employmentType, JobEmploymentType.CLT)
+        }
+        if (input.isConfidential !== undefined) {
+            this.is_confidential = Boolean(input.isConfidential)
         }
     }
 }

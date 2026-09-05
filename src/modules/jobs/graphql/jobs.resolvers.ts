@@ -9,6 +9,8 @@ import JobDTO from '../../../dtos/JobDTO'
 import CandidateDTO from '../../../dtos/CandidateDTO'
 import CompanyDTO from '../../../dtos/CompanyDTO'
 
+import { entitlementsService } from '../../premium/services/entitlements.service';
+
 const authGuard = [authResolver, verifyTokenResolver]
 
 const jobsResolvers = {
@@ -20,7 +22,7 @@ const jobsResolvers = {
         },
         getJobById: async (parent, args, ctx, info) => {
             const job = await jobsRepository(ctx.orm).findById(info, args)
-            return new JobDTO(job);
+            return job ? new JobDTO(job) : null;
         },
         allJobsPaginated: async (parent, args, ctx, info) => {
             const paginatedList = await jobsRepository(ctx.orm).findAllPaginated(info, args)
@@ -93,7 +95,7 @@ const jobsResolvers = {
         },
         getJobByIdAndCompanyId: async (parent, args, ctx, info) => {
             const job = await jobsRepository(ctx.orm).findByIdAndCompanyId(info, args)
-            return new JobDTO(job);
+            return job ? new JobDTO(job) : null;
         },
         myJobs: compose(...authGuard)(async (parent, args, ctx, info) => {
             let jobs = await jobsRepository(ctx.orm, ctx.rabbitmqClient).findMyJobs(info, args, ctx)
@@ -129,6 +131,18 @@ const jobsResolvers = {
     },
     Mutation: {
         createJob: async (parent, args, ctx, info) => {
+            if (args.input && args.input.isConfidential) {
+                const companyId = args.input.companyId;
+                if (companyId) {
+                    const canPost = await entitlementsService.can(companyId, 'POST_CONFIDENTIAL_JOBS');
+                    if (!canPost.allow) {
+                        const canAlt = await entitlementsService.can(companyId, 'confidential_jobs');
+                        if (!canAlt.allow) {
+                            throw new Error(canPost.reason || 'A publicação de vagas confidenciais é exclusiva para planos Premium.');
+                        }
+                    }
+                }
+            }
             const job = await jobsRepository(ctx.orm, ctx.rabbitmqClient).create(args)
             return new JobDTO(job);
         },
@@ -137,6 +151,22 @@ const jobsResolvers = {
             return deleted;
         },
         updateJob: async (parent, args, ctx, info) => {
+            if (args.input && args.input.isConfidential) {
+                let companyId = args.input.companyId;
+                if (!companyId && args.id) {
+                    const existingJob = await Job.findByPk(args.id);
+                    companyId = existingJob?.company_id;
+                }
+                if (companyId) {
+                    const canPost = await entitlementsService.can(companyId, 'POST_CONFIDENTIAL_JOBS');
+                    if (!canPost.allow) {
+                        const canAlt = await entitlementsService.can(companyId, 'confidential_jobs');
+                        if (!canAlt.allow) {
+                            throw new Error(canPost.reason || 'A publicação de vagas confidenciais é exclusiva para planos Premium.');
+                        }
+                    }
+                }
+            }
             const job = await jobsRepository(ctx.orm, ctx.rabbitmqClient).update(args)
             return new JobDTO(job);
         },
@@ -177,8 +207,34 @@ const jobsResolvers = {
     },
     Job: {
         company: async (parent, args, ctx, info) => {
+            const isOwner = ctx?.user && (
+                (parent.companyId && (ctx.user.companyId === parent.companyId || ctx.user.company_id === parent.companyId)) ||
+                (ctx.user.role === 'ADMIN')
+            );
+
+            if (parent.isConfidential && !isOwner) {
+                return {
+                    id: null,
+                    name: 'Empresa Confidencial',
+                    business_name: 'Empresa Confidencial',
+                    logo: null,
+                    cover: null,
+                    site: null,
+                    email: null,
+                    phone: null,
+                    description: 'Esta oportunidade é ofertada por uma empresa em processo seletivo confidencial.',
+                    isConfidential: true
+                };
+            }
+
+            if (!ctx?.dataloaders?.companiesLoader) {
+                const { Company } = require('../../../models');
+                const company = await Company.findByPk(parent.companyId);
+                return company ? new CompanyDTO(company) : null;
+            }
+
             const companies = await ctx.dataloaders.companiesLoader.load({ key: parent.companyId, info })
-            return new CompanyDTO(companies[0]);
+            return companies && companies[0] ? new CompanyDTO(companies[0]) : null;
         },
         candidates: async (parent, args, ctx, info) => {
 
