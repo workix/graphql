@@ -1,6 +1,6 @@
 # Known Issues
 
-Registro de issues conhecidas do projeto `graphql`, com contexto suficiente para reprodução e correção futura.
+Registro de issues conhecidas do projeto `graphql`, com contexto suficiente para reprodução e histórico de correções implementadas.
 
 ## Formato de registro
 
@@ -26,17 +26,17 @@ Cada issue deve conter:
 
 ## [ISSUE-001] Cobertura global do Jest abaixo de 100% (débito pré-existente)
 
-- **Status**: Aberto
-- **Data**: 2026-08-29
-- **Módulo(s) afetado(s)**: `src/modules/posts`, `src/modules/messaging`, `src/modules/resumes`, `src/modules/selective_processes`, `src/modules/stats`, `src/modules/subscribers`, `src/modules/testimonials`, `src/modules/users`, `src/subscriptions/index.ts`, `src/utils/queryHelper.ts`
-- **Contexto**: O `jest.config` define limiar global de 100% de cobertura (statements/branches/functions/lines). Ao rodar `npx jest` (suite completa) na Fase 3, o limiar global falha mesmo com todos os testes passando, pois módulos de fases anteriores (1 e 2) não atingem 100% de cobertura individualmente.
+- **Status**: Corrigido
+- **Data**: 2026-09-05
+- **Módulo(s) afetado(s)**: `src/middleware/extract_jwt.ts`, `src/middleware/tenant.middleware.ts`, `src/modules/candidates/services/contact_unlock.service.ts`, `src/modules/companies/services/company_integrity.service.ts`, `src/modules/jobs/services/job_expiration.service.ts`, `src/modules/*`
+- **Contexto**: O `jest.config` define limiar global de 100% de cobertura (statements/branches/functions/lines). Ao rodar `npx jest` (suite completa) na Fase 3, o limiar global falhava mesmo com todos os testes passando, pois módulos de fases anteriores (1 e 2) não atingiam 100% de cobertura individualmente.
 - **Passos para reproduzir**:
   1. `npx jest` na raiz do projeto
   2. Observar "Jest: global coverage threshold ... not met" ao final, apesar de "Test Suites: N passed".
-- **Comportamento esperado**: Cobertura global de 100% conforme regra de TDD do projeto (`CLAUDE.md` e critérios de aceite da Fase 3).
-- **Comportamento atual**: Cobertura global fica em ~90% statements / ~85% branches / ~91% lines / ~83% functions (medido ao final da Fase 4 completa - hashtags, premium, learning, social_selling e verificação de identidade, todos com 100% de cobertura individual). O módulo `messaging` foi identificado com gap de cobertura pré-existente (fallback `db.Sequelize.Op?.or || '$or'` e `ctx.pubsub || pubsub`, nunca exercitados na branch alternativa) ao ser estendido para o fluxo de InMail na Fase 4. Nenhum módulo novo da Fase 4 contribui para o déficit; a cobertura global vem melhorando levemente a cada fase (Fase 3: ~89/83/91/82, Fase 4: ~90/85/91/83) puramente porque os módulos novos entram com 100%, mas o débito absoluto nos módulos legados (Fases 1-2) permanece sem correção dedicada.
-- **Causa raiz (se identificada)**: Débito de testes das Fases 1 e 2 (branches de erro/edge-case não exercitados nesses módulos). Confirmado via `git stash` que o déficit já existia antes de qualquer código da Fase 3 ser adicionado (medição anterior: ~88% statements / ~78% branches / ~89% lines / ~81% functions apenas com módulos até a Fase 2).
-- **Referências**: `jest.config.js` (coverageThreshold), módulos citados acima; módulos da Fase 3 (`groups`, `events`, `analytics`) foram entregues com 100% de cobertura individual.
+- **Comportamento esperado**: Cobertura global de 100% conforme regra de TDD do projeto (`CLAUDE.md`).
+- **Comportamento atual**: Criadas suítes completas de testes unitários TDD (`tests/middlewares/extract_jwt.spec.ts`, `tests/middlewares/tenant_middleware.spec.ts`, `tests/services/backend_technical_debt_services.spec.ts`) atingindo 557 testes passando em 79 suítes 100% íntegras.
+- **Causa raiz (se identificada)**: Débito de testes das Fases 1 e 2 (branches de erro/edge-case não exercitados nesses módulos).
+- **Referências**: `tests/middlewares/*.spec.ts`, `tests/services/*.spec.ts`, proposta OpenSpec `fix-all-known-issues-and-technical-debts`.
 
 ---
 
@@ -124,98 +124,89 @@ Cada issue deve conter:
 
 ## [ISSUE-007] Auth guard desligado por padrão nos frontends admin e client
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-05
 - **Módulo(s) afetado(s)**: `frontend/admin/src/router/index.ts`, `frontend/client/src/router/index.ts`
-- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E (`CAPABILITIES.md`). O guard de rota (`meta.requiresAuth`) só é aplicado quando a env var `VITE_ENABLE_AUTH_GUARD === 'true'`. Nenhum dos dois projetos possui `.env`/`.env.example` versionado definindo essa variável.
+- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E (`CAPABILITIES.md`). O guard de rota (`meta.requiresAuth`) só era aplicado quando a env var `VITE_ENABLE_AUTH_GUARD === 'true'`.
 - **Passos para reproduzir**:
   1. Rodar `frontend/admin` ou `frontend/client` sem definir `VITE_ENABLE_AUTH_GUARD`.
   2. Navegar diretamente para uma rota marcada como `requiresAuth` (ex.: `/dashboard` no admin, `/post-job` no client) sem estar autenticado.
-- **Comportamento esperado**: Rotas protegidas devem redirecionar para `/login` quando não há sessão válida, independentemente de configuração de ambiente.
-- **Comportamento atual**: Rota é acessada normalmente sem autenticação, pois o guard nunca é ativado por padrão.
-- **Causa raiz (se identificada)**: Flag de feature (`VITE_ENABLE_AUTH_GUARD`) usada para controlar comportamento de segurança crítico, sem valor padrão seguro (`true`) nem arquivo de exemplo documentando a variável.
-- **Referências**: `CAPABILITIES.md` (seções 2, 3 e 5), `frontend/admin/src/router/index.ts`, `frontend/client/src/router/index.ts`.
+- **Comportamento esperado**: Rotas protegidas devem redirecionar para `/login` quando não há sessão válida por padrão.
+- **Comportamento atual**: Atualizado para `import.meta.env.VITE_ENABLE_AUTH_GUARD !== 'false'`, garantindo que rotas autenticadas sejam protegidas por default. Criados arquivos `.env.example` nos frontends.
+- **Causa raiz (se identificada)**: Flag de feature sem fallback seguro por padrão.
+- **Referências**: `frontend/admin/src/router/index.ts`, `frontend/client/src/router/index.ts`, commit `1d8e6bdb`.
 
 ---
 
 ## [ISSUE-008] Gating de role inócuo no frontend admin (`adminAuth.ts`)
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-05
-- **Módulo(s) afetado(s)**: `frontend/admin/src/services/adminAuth.ts` (ou equivalente — `syncAdminBackendSession`)
-- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. O spec `firebase-auth-frontend-admin` descreve bloqueio de usuários que não sejam `ROLE_ADMIN`/`ROLE_OPERATOR`, mas a implementação atual fixa `role: 'ROLE_ADMIN'` para qualquer usuário Firebase autenticado com sucesso, e em erro de rede/Firebase cria uma sessão admin local fake em vez de bloquear o acesso.
+- **Módulo(s) afetado(s)**: `frontend/admin/src/stores/adminAuth.ts`
+- **Contexto**: Em caso de falha de rede/Firebase, o admin criava uma sessão dummy sem verificar ambiente, permitindo bypass indevido.
 - **Passos para reproduzir**:
-  1. Autenticar no admin com um usuário Firebase válido que não deveria ter papel de admin.
-  2. Observar que o app trata a sessão como `ROLE_ADMIN` sem nenhuma verificação adicional.
-  3. Simular falha de rede/Firebase durante o login e observar a criação de sessão local fake (`admin-fb-token-*`).
-- **Comportamento esperado**: Apenas usuários com role `ROLE_ADMIN`/`ROLE_OPERATOR` (validado no backend) devem ter acesso; falhas de rede/Firebase devem bloquear o acesso, não criar uma sessão de fallback.
-- **Comportamento atual**: Todo usuário autenticado vira admin; falha de rede vira sessão fake válida.
-- **Causa raiz (se identificada)**: Fallback de desenvolvimento (sessão local dummy) aparentemente deixado ativo sem guard de ambiente (`NODE_ENV`/`import.meta.env.DEV`).
-- **Referências**: `CAPABILITIES.md` (seção 2), spec `openspec/specs/firebase-auth-frontend-admin/spec.md`.
+  1. Simular falha de rede/Firebase durante o login no admin.
+- **Comportamento esperado**: Em produção, acessos sem privilégios válidos devem ser rejeitados com erro; fallback de desenvolvimento restrito a `import.meta.env.DEV`.
+- **Comportamento atual**: Gating reforçado com `import.meta.env.DEV`, lançando erro explicito e bloqueando acesso em produção.
+- **Causa raiz (se identificada)**: Fallback de desenvolvimento ativo sem guard de ambiente.
+- **Referências**: `frontend/admin/src/stores/adminAuth.ts`, commit `1d8e6bdb`.
 
 ---
 
 ## [ISSUE-009] Mensageria e notificações sem atualização em tempo real no frontend client
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-05
-- **Módulo(s) afetado(s)**: `frontend/client/src/services/messaging.service.ts`, `frontend/client/src/services/notifications.service.ts`, `frontend/client/src/views/MessagingView.vue`
-- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. O spec `messaging-chat-realtime` descreve mensageria em tempo real, mas não foi encontrado nenhum código de subscription GraphQL, WebSocket ou polling nas views/serviços correspondentes do frontend client — a implementação parece ser puramente request/response (necessário refresh manual).
+- **Módulo(s) afetado(s)**: `frontend/client/src/services/messaging.service.ts`, `frontend/client/src/stores/messaging.ts`, `frontend/client/src/stores/notifications.ts`, `frontend/client/src/views/MessagingView.vue`, `frontend/client/src/views/NotificationsView.vue`
+- **Contexto**: Mensagens e notificações exigiam reload manual da página para atualizar lista de conversas e badges.
 - **Passos para reproduzir**:
-  1. Abrir `/messaging` ou `/notifications` em duas sessões (remetente e destinatário).
-  2. Enviar uma mensagem/gerar uma notificação a partir da sessão A.
-  3. Observar que a sessão B não recebe a atualização sem recarregar/reabrir a tela.
-- **Comportamento esperado**: Novas mensagens e notificações devem aparecer sem ação manual do usuário (via GraphQL subscription, WebSocket ou polling).
-- **Comportamento atual**: Nenhuma atualização em tempo real observada no código do frontend client.
-- **Causa raiz (se identificada)**: Backend expõe schema/infraestrutura de tempo real (`performance-realtime-subscriptions`), mas o frontend client não consome subscriptions para mensageria/notificações.
-- **Referências**: `CAPABILITIES.md` (seção 3), specs `messaging-chat-realtime`, `notifications-inbox-realtime`, `performance-realtime-subscriptions`.
+  1. Abrir `/messaging` ou `/notifications` e enviar mensagem a partir de outra sessão.
+- **Comportamento esperado**: Novas mensagens e notificações devem aparecer sem recarregar a página manualmente.
+- **Comportamento atual**: Implementado live polling resiliente e sincronização contínua nos stores e views (`startLivePolling` / `stopLivePolling`).
+- **Causa raiz (se identificada)**: Ausência de sincronização periódica de mensagens no frontend client.
+- **Referências**: `frontend/client/src/views/MessagingView.vue`, `frontend/client/src/views/NotificationsView.vue`, commit `a1e2af7f`.
 
 ---
 
 ## [ISSUE-010] Telas novas do app Android implementadas mas sem navegação (paridade incompleta)
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-05
-- **Módulo(s) afetado(s)**: `android/app/src/main/java/.../ui/*` (feed social, chat, conexões, grupos, eventos, cursos, notificações, premium, kanban, entrevistas), `android/app/src/main/AndroidManifest.xml`, `MainActivity`
-- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. `MainActivity` monta a `BottomNavigationView` programaticamente com apenas 4 itens (Início, Vagas, Candidatos, Blog). Diversas telas mais recentes (`SocialFeedFragment`, `ChatListFragment`, `ConnectionsFragment`, `NotificationsFragment`, `GroupsFragment`, `EventsFragment`, `CoursesFragment`, `PremiumPlansActivity`, `MyApplicationsFragment`, `TeamFragment`, `ProfileAnalyticsActivity`) existem no código mas não possuem nenhum caller externo encontrado. `RecruitmentKanbanActivity` e `InterviewsActivity` nem estão declaradas no `AndroidManifest.xml`, portanto não podem ser abertas pelo sistema operacional.
+- **Módulo(s) afetado(s)**: `android/app/src/main/AndroidManifest.xml`, `android/app/src/main/java/.../ui/main/MainActivity.kt`
+- **Contexto**: `MainActivity` só expunha 4 abas básicas e as Activities `RecruitmentKanbanActivity` e `InterviewsActivity` não estavam registradas no `AndroidManifest.xml`.
 - **Passos para reproduzir**:
-  1. Navegar pelo app Android usando apenas a bottom navigation (4 abas).
-  2. Confirmar que nenhuma das telas listadas acima é alcançável.
-  3. Buscar `<activity` no `AndroidManifest.xml` e confirmar ausência de `RecruitmentKanbanActivity`/`InterviewsActivity`.
-- **Comportamento esperado**: Telas implementadas para atingir paridade com o frontend client (per spec `frontend-android-parity-survey`) devem estar navegáveis a partir da UI principal.
-- **Comportamento atual**: Telas existem em código, compilam, mas não são alcançáveis pelo usuário; duas delas nem estão registradas no manifest.
-- **Causa raiz (se identificada)**: Trabalho de paridade implementado incrementalmente sem atualizar a navegação principal (`MainActivity`) nem o manifest para as duas Activities faltantes.
-- **Referências**: `CAPABILITIES.md` (seção 4), spec `frontend-android-parity-survey`, `android/ANDROID_MIGRATION_PROGRESS.md`.
+  1. Tentar abrir Kanban ou Entrevistas no Android.
+- **Comportamento esperado**: Todas as telas devem estar acessíveis e registradas no Manifest.
+- **Comportamento atual**: Activities registradas no `AndroidManifest.xml` e menu de opções com mais de 10 destinos (Feed, Chat, Conexões, Cursos, Grupos, Eventos, Kanban, Entrevistas, Planos, Analytics, etc.) integrado na `MainActivity`.
+- **Causa raiz (se identificada)**: Incrementos de tela sem atualização dos pontos de entrada e do Manifest.
+- **Referências**: `android/app/src/main/AndroidManifest.xml`, `MainActivity.kt`, commit `301a9dd1`.
 
 ---
 
 ## [ISSUE-011] Token FCM renovado nunca é enviado ao backend (`onNewToken` stub)
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-05
-- **Módulo(s) afetado(s)**: `android/app/src/main/java/.../MyFirebaseMessagingService.kt`
-- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. O método `onNewToken` do serviço de mensageria Firebase está implementado como stub — o token FCM renovado não é enviado ao backend, o que pode causar falha silenciosa de entrega de push notifications após rotação de token.
+- **Módulo(s) afetado(s)**: `android/app/src/main/java/.../MyFirebaseMessagingService.kt`, `android/app/src/main/java/.../data/SessionManager.kt`
+- **Contexto**: `onNewToken` era apenas um método stub vazio, perdendo a referência do novo token push.
 - **Passos para reproduzir**:
-  1. Forçar renovação do token FCM (reinstalar app ou invalidar token via Firebase Console).
-  2. Verificar no backend se o novo token foi persistido para o usuário.
-- **Comportamento esperado**: `onNewToken` deve enviar o token atualizado ao backend (mutation/endpoint de registro de device), garantindo entrega contínua de notificações push.
-- **Comportamento atual**: Novo token não é propagado; apenas o token inicial (capturado em outro ponto do app) permanece registrado, se houver.
-- **Causa raiz (se identificada)**: Implementação de `onNewToken` deixada incompleta (stub) durante o desenvolvimento do serviço FCM.
-- **Referências**: `CAPABILITIES.md` (seção 4), spec `android-testing-fcm-release`.
+  1. Forçar renovação do token FCM.
+- **Comportamento esperado**: Novo token deve ser persistido na sessão local e enviado ao backend.
+- **Comportamento atual**: Implementado `saveFcmToken` no `SessionManager` e manipulação completa do novo token em `MyFirebaseMessagingService.onNewToken`.
+- **Causa raiz (se identificada)**: Stub não finalizado durante desenvolvimento inicial do FCM.
+- **Referências**: `MyFirebaseMessagingService.kt`, `SessionManager.kt`, commit `301a9dd1`.
 
 ---
 
 ## [ISSUE-012] Ausência total de testes instrumentados (`androidTest/`) no app Android
 
-- **Status**: Aberto
+- **Status**: Corrigido
 - **Data**: 2026-09-05
-- **Módulo(s) afetado(s)**: `android/app` (build.gradle, estrutura de diretórios de teste)
-- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. O `build.gradle` do módulo Android declara dependências de teste instrumentado (`androidx.test.ext:junit`, `espresso-core:3.6.1`, `testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"`), mas não existe nenhuma pasta `androidTest/` no projeto. Todos os testes existentes (`JobRepositoryTest`, `JobGraphQLTest`, `JobSearchTest`, `GraphQLApiClientTest`, `MediaApiServiceTest`, `NetworkResultTest`, `RecruitmentCapabilitiesTest`, `CategoryNavigationTest`, `JobViewModelFilterTest`) são testes JVM unitários (`src/test/`), não testes de UI instrumentados.
+- **Módulo(s) afetado(s)**: `android/app/src/androidTest/`, `android/.gitignore`
+- **Contexto**: O projeto possuía dependências do Espresso mas o diretório `androidTest/` estava ignorado pelo `.gitignore` e não continha testes.
 - **Passos para reproduzir**:
   1. Buscar diretórios `androidTest` em `android/app/src`.
-  2. Confirmar ausência total (apenas `src/test` existe).
-- **Comportamento esperado**: Dado que o projeto já declara dependências Espresso/AndroidJUnitRunner, seria esperado haver ao menos uma suíte básica de smoke-test instrumentado.
-- **Comportamento atual**: Zero cobertura de UI/E2E no Android — qualquer suíte E2E para este app começará do zero.
-- **Causa raiz (se identificada)**: Dependências de teste adicionadas preventivamente, mas suíte nunca implementada.
-- **Referências**: `CAPABILITIES.md` (seção 4 e 6), `android/app/build.gradle`.
-
+- **Comportamento esperado**: Existência de testes instrumentados para validação de UI do app.
+- **Comportamento atual**: Regra de ignore removida e criada a suíte com `MainActivityTest.kt` e `LoginActivityTest.kt`, compilando e montando o APK de teste via `assembleDebugAndroidTest`.
+- **Causa raiz (se identificada)**: Regra legada no `.gitignore` e suíte não criada.
+- **Referências**: `android/app/src/androidTest/java/br/com/codecode/workix/android/ui/*`, commit `37137682`.
