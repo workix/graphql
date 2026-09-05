@@ -111,8 +111,12 @@ class JobsListFragment : Fragment() {
 
         setupObservers()
 
-        // Carrega as vagas iniciais via busca
-        viewModel.searchJobs()
+        val initialCategory = arguments?.getString(ARG_INITIAL_CATEGORY)
+        if (!initialCategory.isNullOrBlank()) {
+            viewModel.setCategory(initialCategory)
+        } else {
+            viewModel.searchJobs()
+        }
 
         return root
     }
@@ -274,4 +278,19 @@ class JobsListFragment : Fragment() {
             }
         }
     }
+
+    companion object {
+        const val ARG_INITIAL_CATEGORY = "arg_initial_category"
+
+        fun newInstance(category: String? = null): JobsListFragment {
+            return JobsListFragment().apply {
+                arguments = Bundle().apply {
+                    if (category != null) {
+                        putString(ARG_INITIAL_CATEGORY, category)
+                    }
+                }
+            }
+        }
+    }
 }
+

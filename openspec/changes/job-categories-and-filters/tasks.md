@@ -74,9 +74,9 @@
 
 ## 13. Aplicativo Android: Navegação por Categorias
 
-- [ ] 13.1 Criar carrossel/grid de categorias na tela inicial de vagas do Android
-- [ ] 13.2 Configurar navegação para listagem de vagas pré-filtrada por categoria
-- [ ] 13.3 Testar fluxos de navegação e transições de tela no Android
+- [x] 13.1 Criar carrossel/grid de categorias na tela inicial de vagas do Android
+- [x] 13.2 Configurar navegação para listagem de vagas pré-filtrada por categoria
+- [x] 13.3 Testar fluxos de navegação e transições de tela no Android
 
 ## 14. Testes e Regressão
 
