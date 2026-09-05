@@ -169,19 +169,32 @@ export const usePostsStore = defineStore('posts', () => {
     }
   }
 
-  async function addComment(postId: string | number, content: string) {
+  async function addComment(postId: string | number, content: string, parentId?: string | number | null) {
     const authStore = useAuthStore();
     const authorId = authStore.user?.id || 1;
     const key = String(postId);
 
     try {
-      const comment = await postsService.commentOnPost(postId, authorId, content);
+      const comment = await postsService.commentOnPost(postId, authorId, content, parentId);
       if (comment) {
         comment.authorName = authStore.user?.name || 'Você';
+        comment.authorRole = authStore.user?.role === 'COMPANY' ? 'Empresa' : 'Especialista';
+        
         if (!commentsMap.value[key]) {
           commentsMap.value[key] = [];
         }
-        commentsMap.value[key].push(comment);
+
+        if (parentId) {
+          const parent = commentsMap.value[key].find((c) => String(c.id) === String(parentId));
+          if (parent) {
+            if (!parent.replies) parent.replies = [];
+            parent.replies.push(comment);
+          } else {
+            commentsMap.value[key].push(comment);
+          }
+        } else {
+          commentsMap.value[key].push(comment);
+        }
 
         const targetPost = feed.value.find((p) => String(p.id) === key);
         if (targetPost) {

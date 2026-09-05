@@ -10,7 +10,7 @@ type Query {
 type Mutation {
     createPost(authorId: ID!, content: String!, mediaIds: [ID], mentionedUserIds: [ID]): Post
     reactToPost(postId: ID!, userId: ID!, type: String!): PostReaction
-    commentOnPost(postId: ID!, authorId: ID!, content: String!): PostComment
+    commentOnPost(postId: ID!, authorId: ID!, content: String!, parentId: ID): PostComment
 }
 
 type Post {
@@ -21,6 +21,11 @@ type Post {
     mediaIds: [ID]
     createdAt: DateTime
     updatedAt: DateTime
+    reactionsCount: Int
+    commentsCount: Int
+    userReaction(userId: ID): String
+    reactions: [PostReaction]
+    comments: [PostComment]
 }
 
 type PostReaction {
@@ -38,6 +43,10 @@ type PostComment {
     authorId: ID
     author: User
     content: String
+    parentId: ID
+    parent: PostComment
+    replies: [PostComment]
     createdAt: DateTime
 }
+
 

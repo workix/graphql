@@ -210,3 +210,23 @@ Cada issue deve conter:
 - **Comportamento atual**: Regra de ignore removida e criada a suíte com `MainActivityTest.kt` e `LoginActivityTest.kt`, compilando e montando o APK de teste via `assembleDebugAndroidTest`.
 - **Causa raiz (se identificada)**: Regra legada no `.gitignore` e suíte não criada.
 - **Referências**: `android/app/src/androidTest/java/br/com/codecode/workix/android/ui/*`, commit `37137682`.
+
+---
+
+## [ISSUE-013] Contagem de likes e suporte a comentários filhos (nested comments) no Feed Social
+
+- **Status**: Corrigido
+- **Data**: 2026-09-05
+- **Módulo(s) afetado(s)**: `src/modules/posts/*`, `src/models/post_comments.ts`, `src/migrations/20260905220000-add_parent_id_to_post_comments.ts`, `frontend/client/src/components/PostCard.vue`, `frontend/client/src/components/PostCommentsSection.vue`, `frontend/client/src/stores/posts.ts`, `frontend/client/src/services/posts.service.ts`
+- **Contexto**: Na aba Feed Social (`/feed`), ao curtir ou criar publicações, a contagem de reações não era atualizada nem recuperada pelo GraphQL (`reactionsCount` e `commentsCount` ausentes no schema de `Post`). Além disso, não havia suporte a respostas a comentários (comentários filhos / aninhados), pois a tabela `post_comments` não possuía o campo `parent_id` e a UI não fornecia opção para responder a comentários existentes.
+- **Passos para reproduzir**:
+  1. Acessar `/feed` no frontend client.
+  2. Publicar um post e clicar no botão "Curtir" (ou reagir com emoji).
+  3. Observar que a contagem de reações não persiste nem exibe o total agregado vindo do servidor.
+  4. Abrir a seção de comentários e verificar que não há opção de responder a um comentário específico (comentários filhos).
+- **Comportamento esperado**: Posts devem exibir a contagem precisa e reativa de reações e comentários, e os comentários devem suportar respostas aninhadas (comentários filhos com `parent_id`).
+- **Comportamento atual**: Adicionada a coluna `parent_id` via migration e model `post_comments`, expandidos schema e resolvers GraphQL para resolver `reactionsCount`, `commentsCount`, `userReaction` e `replies`, e implementada árvore hierárquica e botão "Responder" em `PostCommentsSection.vue` com 100% de cobertura de testes.
+- **Causa raiz (se identificada)**: Schema GraphQL incompleto para o tipo `Post`, falta de coluna `parent_id` na tabela `post_comments` e componente `PostCommentsSection.vue` sem suporte a aninhamento.
+- **Referências**: `src/modules/posts/graphql/schema.gql`, `src/models/post_comments.ts`, `src/migrations/20260905220000-add_parent_id_to_post_comments.ts`, `frontend/client/src/components/PostCommentsSection.vue`.
+
+

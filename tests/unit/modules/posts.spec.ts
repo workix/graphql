@@ -14,11 +14,13 @@ jest.mock('../../../src/models', () => ({
   PostReaction: {
     create: jest.fn(),
     findOne: jest.fn(),
-    findAll: jest.fn()
+    findAll: jest.fn(),
+    count: jest.fn()
   },
   PostComment: {
     create: jest.fn(),
-    findAll: jest.fn()
+    findAll: jest.fn(),
+    count: jest.fn()
   },
   Connection: {
     findAll: jest.fn()
@@ -98,22 +100,38 @@ describe('Posts Module Unit Tests (TDD)', () => {
       expect(resNew).toEqual(mockExisting);
     });
 
-    it('should comment on post and query reactions/comments', async () => {
-      const mockComment = { id: 1, post_id: 1, author_id: 10, content: 'Nice!' };
+    it('should comment on post and query reactions/comments/replies/counts', async () => {
+      const mockComment = { id: 1, post_id: 1, author_id: 10, content: 'Nice!', parent_id: null };
+      const mockReply = { id: 2, post_id: 1, author_id: 20, content: 'Thanks!', parent_id: 1 };
       (PostComment.create as jest.Mock).mockResolvedValue(mockComment);
-      (PostComment.findAll as jest.Mock).mockResolvedValue([mockComment]);
+      (PostComment.findAll as jest.Mock).mockResolvedValue([mockComment, mockReply]);
       (PostReaction.findAll as jest.Mock).mockResolvedValue([{ id: 1, type: 'LIKE' }]);
+      (PostReaction.count as jest.Mock).mockResolvedValue(1);
+      (PostComment.count as jest.Mock).mockResolvedValue(2);
+      (PostReaction.findOne as jest.Mock).mockResolvedValue({ type: 'LIKE' });
 
       const repo = postsRepository(mockCtx.orm);
 
-      const createdComment = await repo.commentOnPost(1, 10, 'Nice!');
+      const createdComment = await repo.commentOnPost(1, 10, 'Nice!', undefined);
       expect(createdComment).toEqual(mockComment);
 
-      const comments = await repo.getPostComments(1);
-      expect(comments).toEqual([mockComment]);
+      const createdReply = await repo.commentOnPost(1, 20, 'Thanks!', 1);
+      expect(createdReply).toBeDefined();
 
-      const reactions = await repo.getPostReactions(1);
-      expect(reactions).toHaveLength(1);
+      const comments = await repo.getPostComments(1);
+      expect(comments).toHaveLength(2);
+
+      const replies = await repo.getCommentReplies(1);
+      expect(replies).toBeDefined();
+
+      const rCount = await repo.getReactionsCount(1);
+      expect(rCount).toBe(1);
+
+      const cCount = await repo.getCommentsCount(1);
+      expect(cCount).toBe(2);
+
+      const uReaction = await repo.getUserReaction(1, 10);
+      expect(uReaction).toBe('LIKE');
     });
   });
 
@@ -121,16 +139,19 @@ describe('Posts Module Unit Tests (TDD)', () => {
     it('should resolve queries and mutations for posts', async () => {
       const mockPost = { id: 1, author_id: 10, content: 'Test', media_ids: null };
       const mockReaction = { id: 1, post_id: 1, user_id: 10, type: 'LIKE' };
-      const mockComment = { id: 1, post_id: 1, author_id: 10, content: 'Comment' };
+      const mockComment = { id: 1, post_id: 1, author_id: 10, content: 'Comment', parent_id: null };
+      const mockReply = { id: 2, post_id: 1, author_id: 20, content: 'Reply', parent_id: 1 };
 
       (Connection.findAll as jest.Mock).mockResolvedValue([]);
       (Post.findAll as jest.Mock).mockResolvedValue([mockPost]);
       (Post.create as jest.Mock).mockResolvedValue(mockPost);
       (PostReaction.findAll as jest.Mock).mockResolvedValue([mockReaction]);
-      (PostComment.findAll as jest.Mock).mockResolvedValue([mockComment]);
+      (PostComment.findAll as jest.Mock).mockResolvedValue([mockComment, mockReply]);
       (PostComment.create as jest.Mock).mockResolvedValue(mockComment);
       (PostReaction.findOne as jest.Mock).mockResolvedValue(null);
       (PostReaction.create as jest.Mock).mockResolvedValue(mockReaction);
+      (PostReaction.count as jest.Mock).mockResolvedValue(5);
+      (PostComment.count as jest.Mock).mockResolvedValue(3);
 
       const q = postsResolvers.Query;
       const m = postsResolvers.Mutation;
@@ -151,8 +172,27 @@ describe('Posts Module Unit Tests (TDD)', () => {
       const reacted = await m.reactToPost(null, { postId: 1, userId: 10, type: 'LIKE' }, mockCtx, {});
       expect(reacted).toBeInstanceOf(PostReactionDTO);
 
-      const commented = await m.commentOnPost(null, { postId: 1, authorId: 10, content: 'Comment' }, mockCtx, {});
+      const commented = await m.commentOnPost(null, { postId: 1, authorId: 10, content: 'Comment', parentId: 1 }, mockCtx, {});
       expect(commented).toBeInstanceOf(PostCommentDTO);
+
+      // Field resolvers
+      const rCount = await (postsResolvers as any).Post.reactionsCount({ id: 1 }, {}, mockCtx, {});
+      expect(rCount).toBe(5);
+
+      const cCount = await (postsResolvers as any).Post.commentsCount({ id: 1 }, {}, mockCtx, {});
+      expect(cCount).toBe(3);
+
+      const postReactions = await (postsResolvers as any).Post.reactions({ id: 1 }, {}, mockCtx, {});
+      expect(postReactions[0]).toBeInstanceOf(PostReactionDTO);
+
+      const postComments = await (postsResolvers as any).Post.comments({ id: 1 }, {}, mockCtx, {});
+      expect(postComments[0]).toBeInstanceOf(PostCommentDTO);
+
+      const commentReplies = await (postsResolvers as any).PostComment.replies({ id: 1 }, {}, mockCtx, {});
+      expect(commentReplies).toBeDefined();
+
+      const commentParent = await (postsResolvers as any).PostComment.parent({ id: 2, postId: 1, parentId: 1 }, {}, mockCtx, {});
+      expect(commentParent).toBeInstanceOf(PostCommentDTO);
     });
 
     it('should forward content, mentionedUserIds and mqserver to hashtagsRepository on createPost', async () => {

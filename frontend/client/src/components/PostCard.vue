@@ -121,8 +121,12 @@ async function toggleComments() {
   }
 }
 
-async function handleAddComment(content: string) {
-  await postsStore.addComment(props.post.id, content);
+async function handleAddComment(payload: { content: string; parentId?: string | number | null } | string) {
+  if (typeof payload === 'string') {
+    await postsStore.addComment(props.post.id, payload);
+  } else {
+    await postsStore.addComment(props.post.id, payload.content, payload.parentId);
+  }
 }
 
 function formatTimestamp(dateStr?: string) {

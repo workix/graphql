@@ -62,11 +62,12 @@ const postsRepository = (db: any) => {
     return reaction;
   };
 
-  const commentOnPost = async (postId: number, authorId: number, content: string) => {
+  const commentOnPost = async (postId: number, authorId: number, content: string, parentId?: number) => {
     const comment = await PostComment.create({
       post_id: postId,
       author_id: authorId,
-      content
+      content,
+      parent_id: parentId || null
     });
     return comment;
   };
@@ -82,13 +83,37 @@ const postsRepository = (db: any) => {
     });
   };
 
+  const getCommentReplies = async (commentId: number) => {
+    return await PostComment.findAll({
+      where: { parent_id: commentId },
+      order: [['created_at', 'ASC']]
+    });
+  };
+
+  const getReactionsCount = async (postId: number) => {
+    return await PostReaction.count({ where: { post_id: postId } });
+  };
+
+  const getCommentsCount = async (postId: number) => {
+    return await PostComment.count({ where: { post_id: postId } });
+  };
+
+  const getUserReaction = async (postId: number, userId: number) => {
+    const reaction = await PostReaction.findOne({ where: { post_id: postId, user_id: userId } });
+    return reaction ? reaction.type : null;
+  };
+
   return {
     createPost,
     getFeed,
     reactToPost,
     commentOnPost,
     getPostReactions,
-    getPostComments
+    getPostComments,
+    getCommentReplies,
+    getReactionsCount,
+    getCommentsCount,
+    getUserReaction
   };
 };
 

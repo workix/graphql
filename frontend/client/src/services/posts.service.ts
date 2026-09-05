@@ -29,7 +29,11 @@ export interface PostCommentModel {
   postId: string | number;
   authorId: string | number;
   authorName?: string;
+  authorRole?: string;
+  authorAvatar?: string;
   content: string;
+  parentId?: string | number | null;
+  replies?: PostCommentModel[];
   createdAt?: string;
 }
 
@@ -40,8 +44,17 @@ export const postsService = {
         socialFeed(userId: $userId, limit: $limit, offset: $offset) {
           id
           authorId
+          author {
+            id
+            name
+            role
+            photoUrl
+          }
           content
           mediaIds
+          reactionsCount
+          commentsCount
+          userReaction(userId: $userId)
           createdAt
           updatedAt
         }
@@ -49,12 +62,26 @@ export const postsService = {
     `;
 
     try {
-      const data = await graphqlClient.request<{ socialFeed: PostModel[] }>(query, {
+      const data = await graphqlClient.request<{ socialFeed: any[] }>(query, {
         userId: String(userId),
         limit,
         offset
       });
-      return data.socialFeed || [];
+
+      return (data.socialFeed || []).map((p) => ({
+        id: p.id,
+        authorId: p.authorId,
+        authorName: p.author?.name,
+        authorRole: p.author?.role,
+        authorAvatar: p.author?.photoUrl,
+        content: p.content,
+        mediaIds: p.mediaIds,
+        reactionsCount: p.reactionsCount || 0,
+        commentsCount: p.commentsCount || 0,
+        userReaction: p.userReaction || null,
+        createdAt: p.createdAt,
+        updatedAt: p.updatedAt
+      }));
     } catch (err) {
       console.warn('Erro ao carregar socialFeed do GraphQL:', err);
       return [];
@@ -67,8 +94,17 @@ export const postsService = {
         rankedSocialFeed(userId: $userId, limit: $limit, offset: $offset) {
           id
           authorId
+          author {
+            id
+            name
+            role
+            photoUrl
+          }
           content
           mediaIds
+          reactionsCount
+          commentsCount
+          userReaction(userId: $userId)
           createdAt
           updatedAt
         }
@@ -76,12 +112,30 @@ export const postsService = {
     `;
 
     try {
-      const data = await graphqlClient.request<{ rankedSocialFeed: PostModel[] }>(query, {
+      const data = await graphqlClient.request<{ rankedSocialFeed: any[] }>(query, {
         userId: String(userId),
         limit,
         offset
       });
-      return data.rankedSocialFeed || [];
+
+      if (!data.rankedSocialFeed) {
+        return this.getSocialFeed(userId, limit, offset);
+      }
+
+      return data.rankedSocialFeed.map((p) => ({
+        id: p.id,
+        authorId: p.authorId,
+        authorName: p.author?.name,
+        authorRole: p.author?.role,
+        authorAvatar: p.author?.photoUrl,
+        content: p.content,
+        mediaIds: p.mediaIds,
+        reactionsCount: p.reactionsCount || 0,
+        commentsCount: p.commentsCount || 0,
+        userReaction: p.userReaction || null,
+        createdAt: p.createdAt,
+        updatedAt: p.updatedAt
+      }));
     } catch (err) {
       console.warn('Fallback para socialFeed ao falhar rankedSocialFeed:', err);
       return this.getSocialFeed(userId, limit, offset);
@@ -119,17 +173,85 @@ export const postsService = {
           id
           postId
           authorId
+          author {
+            id
+            name
+            role
+            photoUrl
+          }
           content
+          parentId
+          replies {
+            id
+            postId
+            authorId
+            author {
+              id
+              name
+              role
+              photoUrl
+            }
+            content
+            parentId
+            createdAt
+          }
           createdAt
         }
       }
     `;
 
     try {
-      const data = await graphqlClient.request<{ postComments: PostCommentModel[] }>(query, {
+      const data = await graphqlClient.request<{ postComments: any[] }>(query, {
         postId: String(postId)
       });
-      return data.postComments || [];
+
+      const rawComments = data.postComments || [];
+      const commentsMap = new Map<string, PostCommentModel>();
+      const topLevel: PostCommentModel[] = [];
+
+      for (const c of rawComments) {
+        const item: PostCommentModel = {
+          id: c.id,
+          postId: c.postId,
+          authorId: c.authorId,
+          authorName: c.author?.name,
+          authorRole: c.author?.role,
+          authorAvatar: c.author?.photoUrl,
+          content: c.content,
+          parentId: c.parentId || null,
+          replies: (c.replies || []).map((r: any) => ({
+            id: r.id,
+            postId: r.postId,
+            authorId: r.authorId,
+            authorName: r.author?.name,
+            authorRole: r.author?.role,
+            authorAvatar: r.author?.photoUrl,
+            content: r.content,
+            parentId: r.parentId,
+            createdAt: r.createdAt
+          })),
+          createdAt: c.createdAt
+        };
+        commentsMap.set(String(c.id), item);
+      }
+
+      for (const c of commentsMap.values()) {
+        if (!c.parentId) {
+          topLevel.push(c);
+        } else {
+          const parent = commentsMap.get(String(c.parentId));
+          if (parent) {
+            if (!parent.replies) parent.replies = [];
+            if (!parent.replies.some((r) => String(r.id) === String(c.id))) {
+              parent.replies.push(c);
+            }
+          } else {
+            topLevel.push(c);
+          }
+        }
+      }
+
+      return topLevel;
     } catch (err) {
       console.warn('Erro ao obter comentários do post:', err);
       return [];
@@ -149,6 +271,8 @@ export const postsService = {
           authorId
           content
           mediaIds
+          reactionsCount
+          commentsCount
           createdAt
           updatedAt
         }
@@ -194,27 +318,50 @@ export const postsService = {
   async commentOnPost(
     postId: string | number,
     authorId: string | number,
-    content: string
+    content: string,
+    parentId?: string | number | null
   ): Promise<PostCommentModel | null> {
     const mutation = `
-      mutation CommentOnPost($postId: ID!, $authorId: ID!, $content: String!) {
-        commentOnPost(postId: $postId, authorId: $authorId, content: $content) {
+      mutation CommentOnPost($postId: ID!, $authorId: ID!, $content: String!, $parentId: ID) {
+        commentOnPost(postId: $postId, authorId: $authorId, content: $content, parentId: $parentId) {
           id
           postId
           authorId
+          author {
+            id
+            name
+            role
+            photoUrl
+          }
           content
+          parentId
           createdAt
         }
       }
     `;
 
-    const data = await graphqlClient.request<{ commentOnPost: PostCommentModel }>(mutation, {
+    const data = await graphqlClient.request<{ commentOnPost: any }>(mutation, {
       postId: String(postId),
       authorId: String(authorId),
-      content
+      content,
+      parentId: parentId ? String(parentId) : null
     });
 
-    return data.commentOnPost;
+    if (!data.commentOnPost) return null;
+
+    const c = data.commentOnPost;
+    return {
+      id: c.id,
+      postId: c.postId,
+      authorId: c.authorId,
+      authorName: c.author?.name,
+      authorRole: c.author?.role,
+      authorAvatar: c.author?.photoUrl,
+      content: c.content,
+      parentId: c.parentId || null,
+      replies: [],
+      createdAt: c.createdAt
+    };
   }
 };
 

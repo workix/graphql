@@ -36,7 +36,7 @@ const postsResolvers = {
       return reaction ? new PostReactionDTO(reaction) : null;
     },
     commentOnPost: async (parent: any, args: any, ctx: any, info: any) => {
-      const comment = await postsRepository(ctx.orm).commentOnPost(args.postId, args.authorId, args.content);
+      const comment = await postsRepository(ctx.orm).commentOnPost(args.postId, args.authorId, args.content, args.parentId);
       return new PostCommentDTO(comment);
     }
   },
@@ -45,6 +45,30 @@ const postsResolvers = {
       if (!parent.authorId) return null;
       const users = await ctx.dataloaders.usersLoader.load({ key: parent.authorId, info });
       return users && users[0] ? new UserDTO(users[0]) : null;
+    },
+    reactionsCount: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.id) return 0;
+      return await postsRepository(ctx.orm).getReactionsCount(parent.id);
+    },
+    commentsCount: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.id) return 0;
+      return await postsRepository(ctx.orm).getCommentsCount(parent.id);
+    },
+    userReaction: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.id) return null;
+      const userId = args.userId || (ctx.user ? ctx.user.id : null);
+      if (!userId) return null;
+      return await postsRepository(ctx.orm).getUserReaction(parent.id, userId);
+    },
+    reactions: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.id) return [];
+      const reactions = await postsRepository(ctx.orm).getPostReactions(parent.id);
+      return reactions.map((r: any) => new PostReactionDTO(r));
+    },
+    comments: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.id) return [];
+      const comments = await postsRepository(ctx.orm).getPostComments(parent.id);
+      return comments.map((c: any) => new PostCommentDTO(c));
     }
   },
   PostReaction: {
@@ -59,6 +83,17 @@ const postsResolvers = {
       if (!parent.authorId) return null;
       const users = await ctx.dataloaders.usersLoader.load({ key: parent.authorId, info });
       return users && users[0] ? new UserDTO(users[0]) : null;
+    },
+    parent: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.parentId) return null;
+      const comments = await postsRepository(ctx.orm).getPostComments(parent.postId);
+      const found = comments.find((c: any) => c.id === parent.parentId);
+      return found ? new PostCommentDTO(found) : null;
+    },
+    replies: async (parent: any, args: any, ctx: any, info: any) => {
+      if (!parent.id) return [];
+      const replies = await postsRepository(ctx.orm).getCommentReplies(parent.id);
+      return replies.map((r: any) => new PostCommentDTO(r));
     }
   }
 };
