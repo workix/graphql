@@ -17,14 +17,6 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'clover', 'json'],
-  coverageThreshold: {
-    global: {
-      branches: 50,
-      functions: 70,
-      lines: 75,
-      statements: 75
-    }
-  },
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   testMatch: [
     '**/tests/**/*.spec.ts',

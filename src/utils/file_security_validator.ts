@@ -74,8 +74,10 @@ export class FileSecurityValidator {
       return `upload-${Date.now()}`;
     }
 
-    // Remove qualquer path traversal e caracteres de separação de diretório
-    let clean = path.basename(filename);
+    // Normaliza separadores de caminho (converte backslashes para slashes)
+    const normalized = filename.replace(/\\/g, '/');
+    // Remove qualquer path traversal e extrai apenas o nome base
+    let clean = path.posix.basename(normalized);
     clean = clean.replace(/\0/g, ''); // Remove null bytes
     clean = clean.replace(/[^a-zA-Z0-9._-]/g, '_'); // Permite apenas alfanumérico, ponto, underline e hífen
     clean = clean.replace(/\.{2,}/g, '.'); // Remove múltiplos pontos consecutivos (ex: ..)
