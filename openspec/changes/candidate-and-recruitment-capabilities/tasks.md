@@ -62,9 +62,9 @@
 
 ## 10. Frontend Web: Agenda de Entrevistas
 
-- [ ] 10.1 Criar página/modal de agendamento de entrevistas vinculando candidatos e vagas para empresas Premium
-- [ ] 10.2 Desenvolver a visualização da agenda com abas de status (Próximas, Pendentes, Concluídas e Canceladas)
-- [ ] 10.3 Criar interface de resposta para o candidato (Confirmar, Recusar, Solicitar Remarcação)
+- [x] 10.1 Criar página/modal de agendamento de entrevistas vinculando candidatos e vagas para empresas Premium
+- [x] 10.2 Desenvolver a visualização da agenda com abas de status (Próximas, Pendentes, Concluídas e Canceladas)
+- [x] 10.3 Criar interface de resposta para o candidato (Confirmar, Recusar, Solicitar Remarcação)
 
 ## 11. Frontend Web: Painel Kanban de Triagem
 

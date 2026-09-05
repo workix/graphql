@@ -153,6 +153,18 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/HashtagFeedView.vue')
   },
   {
+    path: '/interviews',
+    name: 'InterviewsSchedule',
+    component: () => import('../views/InterviewsScheduleView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/kanban/:jobId?',
+    name: 'RecruitmentKanban',
+    component: () => import('../views/RecruitmentKanbanView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/premium',
     name: 'PremiumPlans',
     component: () => import('../views/PremiumPlansView.vue')
