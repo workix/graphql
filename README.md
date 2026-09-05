@@ -2,7 +2,7 @@
 
 # 🚀 Workix GraphQL API
 
-### O motor por trás da plataforma de empregos 100% gratuita do Brasil
+### O motor por trás da melhor plataforma de empregos do Brasil
 
 **Backend de gestão de vagas, candidatos, currículos e processos seletivos — projetado para acabar de vez com o *over-fetching* e o *under-fetching*.**
 
