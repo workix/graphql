@@ -1,9 +1,4 @@
-# learning-lms-courses-core Specification
-
-## Purpose
-Especifica o comportamento, regras de exibição, player de aulas e fluxo de conclusão de cursos e certificados LMS no ecossistema Workix, suportando cursos oficiais da plataforma e cursos corporativos de empresas parceiras premium com anexos, vídeos e seções estruturadas.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Catálogo e Detalhes de Cursos Profissionais
 O sistema SHALL permitir que o usuário consulte cursos disponíveis via query `courses` e `course(id)`, exibindo título, descrição, instrutor, imagem de capa, nível (Iniciante/Intermediário/Avançado), provedor (`PLATFORM` ou `COMPANY`), empresa associada, requisitos prévios e objetivos de aprendizado ("O que você aprenderá").
@@ -31,13 +26,6 @@ O sistema SHALL estruturar a grade curricular em seções/módulos e lições or
 - **WHEN** o usuário visualiza o currículo do curso
 - **THEN** o sistema exibe cada seção com seu título e a lista de lições numeradas com duração, tipo de mídia (vídeo/arquivo/artigo) e status de conclusão.
 
-### Requirement: Matrícula e Inscrição em Curso
-O sistema SHALL permitir que usuários autenticados se matriculem em cursos via mutation `enrollInCourse(courseId, userId)`.
-
-#### Scenario: Matrícula em curso
-- **WHEN** o usuário clica em "Iniciar Curso / Matricular-se"
-- **THEN** uma matrícula `CourseEnrollment` é criada e o usuário é redirecionado para a primeira aula.
-
 ### Requirement: Player de Aulas e Emissão de Certificado
 O sistema SHALL fornecer um player de aprendizagem interativo estilo Udemy (`LessonPlayerView.vue`), contendo área principal de reprodução (vídeo ou leitor de material), menu lateral expansível com todas as seções e lições, checkbox de lição concluída, aba de recursos e arquivos anexos para download, e emissão de certificado digital após 100% de conclusão.
 
@@ -53,6 +41,8 @@ O sistema SHALL fornecer um player de aprendizagem interativo estilo Udemy (`Les
 - **WHEN** o aluno assiste todas as lições e atinge 100% de progresso
 - **THEN** o sistema atualiza o status para concluído e habilita a emissão e download do certificado digital com código de autenticidade.
 
+## ADDED Requirements
+
 ### Requirement: Criação e Gestão de Cursos por Empresas Premium
 O sistema SHALL permitir que empresas com plano ativo e privilégios premium criem, editem, organizem seções, anexem arquivos e publiquem seus próprios cursos corporativos através de mutations dedicadas (`createCourse`, `updateCourse`, `createCourseLesson`).
 
@@ -63,10 +53,3 @@ O sistema SHALL permitir que empresas com plano ativo e privilégios premium cri
 #### Scenario: Empresa sem plano premium tenta criar curso
 - **WHEN** uma empresa sem plano premium tenta cadastrar um curso
 - **THEN** o sistema bloqueia a ação informando que a funcionalidade é exclusiva para empresas parceiras premium.
-
-### Requirement: Interface Mobile de Cursos no Android
-O sistema SHALL disponibilizar catálogo e player de cursos no app Android através do `CoursesFragment.kt` e `LessonPlayerActivity.kt`.
-
-#### Scenario: Acesso aos cursos no Android
-- **WHEN** o usuário navega na aba Cursos no app Android
-- **THEN** ele pode navegar nas lições e acompanhar o progresso de aprendizado.

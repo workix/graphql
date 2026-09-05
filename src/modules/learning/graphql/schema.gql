@@ -2,14 +2,51 @@ scalar Date
 scalar DateTime
 
 type Query {
+    courses(category: String, level: String, providerType: String, search: String): [Course]
+    companyCourses(companyId: ID!): [Course]
     course(id: ID!): Course
     courseLessons(courseId: ID!): [CourseLesson]
     courseCompletion(enrollmentId: ID!): CourseCompletion
 }
 
 type Mutation {
-    createCourse(instructorId: ID!, title: String!, description: String, mediaId: ID): Course
-    addCourseLesson(courseId: ID!, title: String!, mediaId: ID, orderIndex: Int): CourseLesson
+    createCourse(
+        instructorId: ID!
+        title: String!
+        description: String
+        mediaId: ID
+        companyId: ID
+        providerType: String
+        level: String
+        category: String
+        requirements: String
+        whatYouWillLearn: String
+        durationHours: Float
+    ): Course
+    updateCourse(
+        id: ID!
+        title: String
+        description: String
+        mediaId: ID
+        level: String
+        category: String
+        requirements: String
+        whatYouWillLearn: String
+        durationHours: Float
+    ): Course
+    addCourseLesson(
+        courseId: ID!
+        title: String!
+        mediaId: ID
+        orderIndex: Int
+        sectionName: String
+        contentType: String
+        videoUrl: String
+        attachmentUrl: String
+        attachmentName: String
+        durationMinutes: Int
+        description: String
+    ): CourseLesson
     enrollInCourse(courseId: ID!, userId: ID!): CourseEnrollment
     completeCourse(enrollmentId: ID!): CourseCompletion
 }
@@ -20,10 +57,24 @@ type Course {
     description: String
     instructorId: ID
     instructor: User
+    companyId: ID
+    company: Company
+    providerType: String
+    level: String
+    category: String
+    requirements: String
+    whatYouWillLearn: String
+    durationHours: Float
     lessons: [CourseLesson]
+    sections: [CourseSection]
     mediaId: ID
     createdAt: DateTime
     updatedAt: DateTime
+}
+
+type CourseSection {
+    name: String
+    lessons: [CourseLesson]
 }
 
 type CourseLesson {
@@ -33,6 +84,13 @@ type CourseLesson {
     title: String
     mediaId: ID
     orderIndex: Int
+    sectionName: String
+    contentType: String
+    videoUrl: String
+    attachmentUrl: String
+    attachmentName: String
+    durationMinutes: Int
+    description: String
     createdAt: DateTime
 }
 
