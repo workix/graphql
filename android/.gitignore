@@ -50,5 +50,4 @@ app/libs/
 app/src/debug/res/drawable/
 app/src/main/res/layout/deprecated/
 /app/build.gradle
-app/src/androidTest/
 projectFilesBackup/
