@@ -30,7 +30,7 @@ graph TD
 | Recurso / Entitlement | Free (`free_v1`) | Starter (`starter_v1`) | Pro (`pro_v1`) | Business (`business_v1`) |
 | :--- | :---: | :---: | :---: | :---: |
 | **Investimento Mensal** | R$ 0 | R$ 79,00/mês | R$ 249,00/mês | R$ 699,00/mês |
-| **Vagas Ativas Simultâneas** (`max_active_jobs`) | 1 vaga | **3 vagas** | **10 vagas** | **30 vagas** |
+| **Vagas Ativas Simultâneas** (`max_active_jobs`) | **1 vaga** | **3 vagas** | **10 vagas** | **30 vagas** |
 | **Usuários / Recrutadores** (`max_users`) | 1 usuário | 1 usuário | **3 usuários** | **10 usuários** |
 | **Créditos de Desbloqueio de Contato/Mês** (`contact_credits`) | 0 | **10 créditos** | **60 créditos** | **250 créditos** |
 | **Créditos de Vagas Patrocinadas/Mês** (`boost_credits_monthly`) | 0 | **1 crédito** | **5 créditos** | **20 créditos** |
@@ -43,6 +43,15 @@ graph TD
 | **Acesso a API / Webhooks** (`has_api`) | Não | Não | **Sim** | **Sim** |
 | **Retenção Histórica de Dados** (`retention_days`) | 60 dias | 365 dias (1 ano) | 730 dias (2 anos) | **Ilimitado** |
 | **Suporte e Atendimento** | Comunidade | E-mail standard | E-mail prioritário | **Gerente de Contas Dedicado** |
+
+### 2.1. Provisionamento Automático & Regras do Plano Free (`free_v1`)
+
+* **Ativação Automática**: Toda nova empresa cadastrada no Workix (`createCompany`) é automaticamente provisionada com uma assinatura ativa do plano **Free Corporativo** (`free_v1`), sem necessidade de inserir cartão de crédito ou dados bancários.
+* **Limite Estrito de 1 Vaga Ativa (`max_active_jobs = 1`)**:
+  * O plano Free permite manter exatamente **1 vaga ativa simultânea** no sistema (`activated: true`, `outcome_status: 'OPEN'`).
+  * Tentativas de publicação de uma 2ª vaga através da mutation `createJob` são bloqueadas pelo servidor com a mensagem de erro: `"Limite de 1 vagas ativas simultâneas atingido no plano Plano Gratuito Empresa."` e sugestão de upgrade para `starter_v1`.
+  * Para publicar uma nova oportunidade sem realizar upgrade, a empresa deve encerrar/fechar o processo seletivo da vaga anterior (`closeJobWithOutcome` ou `updateJob(activated: false)`).
+* **Recursos Exclusivos de Planos Pagos**: Vagas confidenciais, impulsionamentos patrocinados (boosts), desbloqueio de contatos InMail e módulo avançado ATS/JaaS exigem migração para os planos *Starter*, *Pro* ou *Business*.
 
 ---
 

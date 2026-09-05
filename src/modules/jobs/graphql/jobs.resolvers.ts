@@ -131,8 +131,8 @@ const jobsResolvers = {
     },
     Mutation: {
         createJob: async (parent, args, ctx, info) => {
+            const companyId = args.input?.companyId || args.input?.company_id;
             if (args.input && args.input.isConfidential) {
-                const companyId = args.input.companyId;
                 if (companyId) {
                     const canPost = await entitlementsService.can(companyId, 'POST_CONFIDENTIAL_JOBS');
                     if (!canPost.allow) {
@@ -141,6 +141,13 @@ const jobsResolvers = {
                             throw new Error(canPost.reason || 'A publicação de vagas confidenciais é exclusiva para planos Premium.');
                         }
                     }
+                }
+            }
+
+            if (companyId && entitlementsService?.can) {
+                const canPostJob = await entitlementsService.can(companyId, 'max_active_jobs', 1);
+                if (canPostJob && !canPostJob.allow) {
+                    throw new Error(canPostJob.reason || 'Limite de vagas ativas simultâneas atingido para o plano da empresa.');
                 }
             }
             const job = await jobsRepository(ctx.orm, ctx.rabbitmqClient).create(args)

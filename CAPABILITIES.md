@@ -58,6 +58,8 @@ Arquitetura: GraphQL (`/graphql`) é a superfície primária e atual. Os endpoin
 
 ### Monetização / Billing / Entitlements
 - `entitlements-plans-engine`: tabelas `plans`/`plan_features`; autorização centralizada `can(organization, feature_key, quantity)`; downgrade gracioso (arquiva excedente, preserva histórico).
+- `company-free-plan`: Toda empresa criada (`createCompany`) recebe automaticamente assinatura ativa do plano Free (`free_v1`), permitindo a publicação de exatamente **1 vaga ativa simultânea** (`max_active_jobs: 1`). A criação de uma 2ª vaga ativa simultânea é bloqueada no resolver `createJob` pelo `entitlementsService.can(companyId, 'max_active_jobs', 1)`.
+- `candidate-free-plan`: Todo candidato/usuário criado (`createUser`) recebe automaticamente assinatura ativa do plano Free (`UserSubscription` com `status: 'ACTIVE'`, `inmail_credits_remaining: 0`).
 - `premium-subscriptions-core`: `subscriptionPlans`, `mySubscription(organizationId)`, `subscribeToPlan` (trial 14 dias, desconto fundador); status trialing/active/past_due/paused/canceled.
 - `billing-gateway-integration`: Asaas/Iugu (Pix/Cartão/Boleto), NFS-e automática, processamento idempotente de webhooks via `webhook_events`+`gateway_event_id`.
 - `recruitment-kanban-board-premium`: gated por `can('USE_RECRUITMENT_KANBAN')`; colunas customizáveis por vaga; `moveKanbanCard` com histórico auditado.
