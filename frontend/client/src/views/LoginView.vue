@@ -14,24 +14,9 @@
         <div class="col-md-6 col-md-offset-3">
           <div class="auth-box">
             <h2 class="auth-title text-center">Acessar Minha Conta</h2>
-            <p class="text-center auth-subtitle">Entre com suas credenciais ou escolha um perfil de acesso rápido</p>
+            <p class="text-center auth-subtitle">Entre com seu e-mail e senha para acessar sua conta</p>
             
             <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-
-            <!-- Quick Access Buttons -->
-            <div class="quick-access-box mb-4">
-              <span class="quick-access-label">Acesso Rápido de Demonstração:</span>
-              <div class="quick-btns">
-                <button type="button" class="btn btn-outline-primary btn-sm" @click="quickLogin('candidate')">
-                  <i class="fa fa-user"></i> Entrar como Candidato
-                </button>
-                <button type="button" class="btn btn-outline-success btn-sm" @click="quickLogin('company')">
-                  <i class="fa fa-building"></i> Entrar como Empresa
-                </button>
-              </div>
-            </div>
-
-            <div class="divider-text"><span>ou com seu e-mail</span></div>
 
             <form @submit.prevent="handleLogin">
               <div class="form-group">
@@ -40,7 +25,7 @@
                   type="email"
                   v-model="email"
                   class="form-control"
-                  placeholder="ex: candidato@workix.com ou empresa@workix.com"
+                  placeholder="Seu e-mail cadastrado"
                   required
                 />
               </div>
@@ -87,25 +72,6 @@ const errorMessage = ref('');
 const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
-
-async function quickLogin(type: 'candidate' | 'company') {
-  loading.value = true;
-  errorMessage.value = '';
-  try {
-    if (type === 'company') {
-      await authStore.syncBackendSession('fb-uuid-company-001', 'empresa@workix.com', 'COMPANY', 'Tech Corp Brasil');
-      router.push('/post-job');
-    } else {
-      await authStore.syncBackendSession('fb-uuid-candidate-001', 'candidato@workix.com', 'CANDIDATE', 'Carlos Candidato Silva');
-      router.push('/post-resume');
-    }
-  } catch (err: any) {
-    console.error('Erro no login rápido:', err);
-    errorMessage.value = 'Falha ao autenticar com a conta demonstrativa.';
-  } finally {
-    loading.value = false;
-  }
-}
 
 async function handleLogin() {
   loading.value = true;
@@ -193,65 +159,6 @@ async function handleLogin() {
   color: #64748b;
   font-size: 14px;
   margin-bottom: 22px;
-}
-
-.quick-access-box {
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  border-radius: 8px;
-  padding: 14px;
-  text-align: center;
-}
-
-.quick-access-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 700;
-  color: #475569;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-}
-
-.quick-btns {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.quick-btns .btn {
-  font-weight: 600;
-  font-size: 13px;
-  padding: 8px 14px;
-  border-radius: 6px;
-}
-
-.divider-text {
-  position: relative;
-  text-align: center;
-  margin: 24px 0 20px 0;
-}
-
-.divider-text::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: #e2e8f0;
-  z-index: 1;
-}
-
-.divider-text span {
-  position: relative;
-  z-index: 2;
-  background: #ffffff;
-  padding: 0 12px;
-  color: #94a3b8;
-  font-size: 13px;
-  font-weight: 500;
 }
 
 .form-group {
