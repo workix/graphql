@@ -235,7 +235,7 @@ async function handleSubmit() {
     });
     successMessage.value = 'Currículo salvo com sucesso via GraphQL!';
     setTimeout(() => {
-      router.push('/candidates');
+      router.push('/profile/edit');
     }, 1500);
   } catch (err: any) {
     errorMessage.value = err.message || 'Erro ao salvar currículo.';

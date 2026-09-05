@@ -52,29 +52,40 @@
             <li><router-link to="/groups">Grupos</router-link></li>
             <li><router-link to="/events">Eventos</router-link></li>
             <li><router-link to="/learning">{{ $t('nav.learning') }}</router-link></li>
-            <li><router-link to="/messaging">{{ $t('nav.messaging') }}</router-link></li>
-            <li>
-              <router-link to="/notifications" class="nav-notif-link">
-                {{ $t('nav.notifications') }}
-                <span v-if="notificationsStore.unreadCount > 0" class="header-notif-badge">
-                  {{ notificationsStore.unreadCount }}
-                </span>
-              </router-link>
-            </li>
+
+            <template v-if="authStore.isAuthenticated">
+              <li><router-link to="/messaging">{{ $t('nav.messaging') }}</router-link></li>
+              <li>
+                <router-link to="/notifications" class="nav-notif-link">
+                  {{ $t('nav.notifications') }}
+                  <span v-if="notificationsStore.unreadCount > 0" class="header-notif-badge">
+                    {{ notificationsStore.unreadCount }}
+                  </span>
+                </router-link>
+              </li>
+            </template>
+
             <li><router-link to="/premium" class="premium-nav-highlight"><i class="fa fa-diamond"></i> Premium</router-link></li>
-            <li><router-link to="/jobs">{{ $t('nav.jobs') }}</router-link></li>
-            <li><router-link to="/candidates">Candidatos</router-link></li>
+
+            <!-- Itens exclusivos para perfil Empresa / Recrutador -->
             <template v-if="authStore.isCompany">
+              <li><router-link to="/candidates">Candidatos</router-link></li>
               <li><router-link to="/my-jobs">Minhas Vagas</router-link></li>
               <li><router-link to="/post-job">Publicar Vaga</router-link></li>
             </template>
+
+            <!-- Itens exclusivos para perfil Candidato Logado -->
             <template v-else-if="authStore.isAuthenticated">
+              <li><router-link to="/jobs">{{ $t('nav.jobs') }}</router-link></li>
               <li><router-link to="/profile/edit">{{ $t('nav.profile') }}</router-link></li>
               <li><router-link to="/analytics/ssi">Analytics</router-link></li>
               <li><router-link to="/my-applications">Minhas Candidaturas</router-link></li>
               <li><router-link to="/post-resume">Meu Currículo</router-link></li>
             </template>
+
+            <!-- Itens para Visitante (Não Autenticado) -->
             <template v-else>
+              <li><router-link to="/jobs">{{ $t('nav.jobs') }}</router-link></li>
               <li><router-link to="/post-resume">Enviar Currículo</router-link></li>
             </template>
           </ul>

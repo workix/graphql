@@ -12,8 +12,15 @@
           <div class="footer-widget">
             <h3>Links Rápidos</h3>
             <ul class="footer-links">
-              <li><router-link to="/jobs">Buscar Vagas</router-link></li>
-              <li><router-link to="/candidates">Buscar Currículos</router-link></li>
+              <template v-if="isCompany">
+                <li><router-link to="/candidates">Buscar Currículos</router-link></li>
+                <li><router-link to="/my-jobs">Minhas Vagas</router-link></li>
+                <li><router-link to="/post-job">Publicar Vaga</router-link></li>
+              </template>
+              <template v-else>
+                <li><router-link to="/jobs">Buscar Vagas</router-link></li>
+                <li><router-link to="/post-resume">Cadastrar Currículo</router-link></li>
+              </template>
               <li><router-link to="/team">Nossa Equipe</router-link></li>
               <li><router-link to="/contact">Fale Conosco</router-link></li>
             </ul>
@@ -55,10 +62,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useAuthStore } from '../stores/auth';
 
 const email = ref('');
 const subscribedMessage = ref('');
+
+const isCompany = computed(() => {
+  try {
+    const authStore = useAuthStore();
+    return !!authStore?.isCompany;
+  } catch {
+    return false;
+  }
+});
 
 function handleSubscribe() {
   if (email.value) {
