@@ -103,9 +103,41 @@ export const mediaService = {
   },
 
   /**
-   * Fluxo completo: requisita URL, envia binário e confirma no backend.
+   * Fluxo completo: envia binário para o endpoint de upload direto ou assinado no backend.
    */
   async uploadFile(file: File, context: 'AVATAR' | 'BANNER' | 'POST_ATTACHMENT' | 'RESUME_PDF', userId?: string | number): Promise<MediaAsset> {
+    const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    const uploadEndpoints = [
+      '/api/v1/media/direct-upload',
+      `${backendUrl}/api/v1/media/direct-upload`
+    ];
+
+    let lastError: any = null;
+
+    for (const endpoint of uploadEndpoints) {
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: file,
+          headers: {
+            'Content-Type': file.type || 'application/octet-stream',
+            'x-file-name': encodeURIComponent(file.name),
+            'x-file-context': context
+          }
+        });
+
+        if (response.ok) {
+          const resData = await response.json();
+          if (resData.mediaAsset) {
+            return resData.mediaAsset;
+          }
+        }
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    // Fallback: Tenta via GraphQL pre-signed URL
     try {
       const req = await this.requestUploadUrl({
         fileName: file.name,
@@ -114,7 +146,7 @@ export const mediaService = {
         userId
       });
 
-      if (req.uploadUrl) {
+      if (req && req.uploadUrl) {
         await fetch(req.uploadUrl, {
           method: 'POST',
           body: file,
@@ -122,29 +154,13 @@ export const mediaService = {
             'Content-Type': file.type || 'application/octet-stream'
           }
         });
+        return await this.confirmUpload(req.mediaAsset.id);
       }
-
-      return await this.confirmUpload(req.mediaAsset.id);
     } catch (err) {
-      // Direct upload fallback via REST endpoint
-      const uploadEndpoint = '/api/v1/media/direct-upload';
-      const response = await fetch(uploadEndpoint, {
-        method: 'POST',
-        body: file,
-        headers: {
-          'Content-Type': file.type || 'application/octet-stream',
-          'x-file-name': encodeURIComponent(file.name),
-          'x-file-context': context
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`Falha no upload do arquivo: ${response.statusText}`);
-      }
-
-      const resData = await response.json();
-      return resData.mediaAsset;
+      lastError = err;
     }
+
+    throw new Error(lastError?.message || 'Não foi possível processar o upload do arquivo.');
   }
 };
 
