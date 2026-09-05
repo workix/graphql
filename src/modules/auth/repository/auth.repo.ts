@@ -8,14 +8,19 @@ const authRepository = (db?: any) => {
     const resumeModel = db?.Resume || Resume;
 
     const findByFirebaseUUIDAndEmail = async (firebaseUUID: string, email: string) => {
+        if (!firebaseUUID || !email) return null;
+
+        const cleanEmail = email.trim().toLowerCase();
+        const cleanUuid = firebaseUUID.trim();
+
         let user = await userModel.findOne({
-            where: { firebase_uuid: firebaseUUID, email }
+            where: { firebase_uuid: cleanUuid, email: cleanEmail }
         });
 
-        if (!user && email) {
-            user = await userModel.findOne({ where: { email } });
-            if (user && firebaseUUID) {
-                await user.update({ firebase_uuid: firebaseUUID });
+        if (!user) {
+            user = await userModel.findOne({ where: { email: cleanEmail } });
+            if (user && typeof user.update === 'function') {
+                await user.update({ firebase_uuid: cleanUuid });
             }
         }
 
