@@ -152,6 +152,8 @@ export class ElasticsearchSearchDriver implements JobSearchDriver {
       const facets: JobSearchFacets = {
         workplaceTypes: (aggs.workplaceTypes?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
         jobTypes: (aggs.jobTypes?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
+        categories: (aggs.categories?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
+        employmentTypes: (aggs.employmentTypes?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
         levels: (aggs.levels?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
         states: (aggs.states?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
         topSkills: (aggs.topSkills?.buckets || []).map((b: any) => ({ key: b.key, count: b.doc_count })),
@@ -182,6 +184,8 @@ export class ElasticsearchSearchDriver implements JobSearchDriver {
     return result.facets || {
       workplaceTypes: [],
       jobTypes: [],
+      categories: [],
+      employmentTypes: [],
       levels: [],
       states: [],
       topSkills: [],

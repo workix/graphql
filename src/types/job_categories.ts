@@ -51,7 +51,9 @@ export function normalizeJobCategories(raw: any): JobCategory[] {
     }
   }
 
-  return parsed
+  const validCategories = parsed
     .map(cat => (typeof cat === 'string' ? cat.trim().toUpperCase() : ''))
     .filter(isValidJobCategory);
+
+  return Array.from(new Set(validCategories));
 }

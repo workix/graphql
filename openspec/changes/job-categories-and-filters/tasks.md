@@ -80,9 +80,9 @@
 
 ## 14. Testes e Regressão
 
-- [ ] 14.1 Executar suíte de testes de regressão no Backend (Cadastro, Edição, Consulta, Busca, Vagas Antigas)
-- [ ] 14.2 Executar testes de integração com filtros individuais e combinados (ex.: Estágio + Noturno + CLT)
-- [ ] 14.3 Validar build e testes do Frontend Web e Aplicativo Android
+- [x] 14.1 Executar suíte de testes de regressão no Backend (Cadastro, Edição, Consulta, Busca, Vagas Antigas)
+- [x] 14.2 Executar testes de integração com filtros individuais e combinados (ex.: Estágio + Noturno + CLT)
+- [x] 14.3 Validar build e testes do Frontend Web e Aplicativo Android
 
 ## 15. Revisão Final e Fechamento
 

@@ -130,6 +130,16 @@ export class PostgresSearchDriver implements JobSearchDriver {
     let remoteCount = 0;
     let pcdRemoteCount = 0;
 
+    const categoryCounts: Record<string, number> = {};
+    const employmentTypeCounts: Record<string, number> = {};
+
+    for (const cat of ['MEIO_PERIODO', 'PRIMEIRA_OPORTUNIDADE', 'ESTAGIO', 'NOTURNO', 'TEMPORARIO', 'FREELANCE', 'PERICULOSIDADE']) {
+      categoryCounts[cat] = 0;
+    }
+    for (const emp of ['CLT', 'PJ', 'CONTRATO_TEMPORARIO']) {
+      employmentTypeCounts[emp] = 0;
+    }
+
     for (const job of jobs) {
       const isJobPcd = Boolean(job.is_pcd);
       const isJobRemote = Boolean(job.is_remote) || job.workplace_type === 'REMOTE';
@@ -164,11 +174,32 @@ export class PostgresSearchDriver implements JobSearchDriver {
           }
         }
       }
+      if (job.categories) {
+        let cats: string[] = [];
+        try {
+          cats = Array.isArray(job.categories) ? job.categories : JSON.parse(job.categories);
+        } catch {
+          cats = typeof job.categories === 'string' ? job.categories.split(',').map((s: string) => s.trim()) : [];
+        }
+        for (const cat of cats) {
+          if (categoryCounts[cat] !== undefined) {
+            categoryCounts[cat]++;
+          }
+        }
+      }
+      if (job.employment_type) {
+        const emp = job.employment_type.toUpperCase();
+        if (employmentTypeCounts[emp] !== undefined) {
+          employmentTypeCounts[emp]++;
+        }
+      }
     }
 
     return {
       workplaceTypes: Object.entries(workplaceCounts).map(([key, count]) => ({ key, count })),
       jobTypes: Object.entries(jobTypeCounts).map(([key, count]) => ({ key, count })),
+      categories: Object.entries(categoryCounts).map(([key, count]) => ({ key, count })),
+      employmentTypes: Object.entries(employmentTypeCounts).map(([key, count]) => ({ key, count })),
       levels: Object.entries(levelCounts).map(([key, count]) => ({ key, count })),
       states: Object.entries(stateCounts).map(([key, count]) => ({ key, count })),
       topSkills: Object.entries(skillCounts)
