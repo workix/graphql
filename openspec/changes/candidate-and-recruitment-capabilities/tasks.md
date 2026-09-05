@@ -74,28 +74,28 @@
 
 ## 12. Aplicativo Android: Modelos, Repositórios e ViewModels
 
-- [ ] 12.1 Criar data classes Kotlin para `Interview`, `KanbanBoard`, `KanbanStage`, `KanbanCard`, `ResumeMarkdown` e filtros de busca
-- [ ] 12.2 Estender `CandidateRepository` e `JobRepository` com as novas operações GraphQL
-- [ ] 12.3 Implementar `InterviewViewModel`, `KanbanViewModel` e estender `CandidateViewModel`
-- [ ] 12.4 Criar testes unitários em Kotlin para os novos modelos e repositórios
+- [x] 12.1 Criar data classes Kotlin para `Interview`, `KanbanBoard`, `KanbanStage`, `KanbanCard`, `ResumeMarkdown` e filtros de busca
+- [x] 12.2 Estender `CandidateRepository` e `JobRepository` com as novas operações GraphQL
+- [x] 12.3 Implementar `InterviewViewModel`, `KanbanViewModel` e estender `CandidateViewModel`
+- [x] 12.4 Criar testes unitários em Kotlin para os novos modelos e repositórios
 
 ## 13. Aplicativo Android: Visualização de Markdown e Status de Carreira
 
-- [ ] 13.1 Implementar tela e bottom sheet de edição de status de carreira e visualização do currículo em Markdown no Android
-- [ ] 13.2 Exibir badges de "Procurando Emprego" e "Em Transição de Carreira" nos perfis de candidatos
-- [ ] 13.3 Conectar filtros de candidatos no app Android com as novas opções de busca
+- [x] 13.1 Implementar tela e bottom sheet de edição de status de carreira e visualização do currículo em Markdown no Android
+- [x] 13.2 Exibir badges de "Procurando Emprego" e "Em Transição de Carreira" nos perfis de candidatos
+- [x] 13.3 Conectar filtros de candidatos no app Android com as novas opções de busca
 
 ## 14. Aplicativo Android: Vagas Confidenciais e Agenda de Entrevistas
 
-- [ ] 14.1 Implementar suporte a vagas confidenciais no Android garantindo mascaramento seguro
-- [ ] 14.2 Criar tela de agenda de entrevistas no app Android com ações de confirmação e recusa para candidatos
-- [ ] 14.3 Adicionar notificações e alertas para entrevistas agendadas
+- [x] 14.1 Implementar suporte a vagas confidenciais no Android garantindo mascaramento seguro
+- [x] 14.2 Criar tela de agenda de entrevistas no app Android com ações de confirmação e recusa para candidatos
+- [x] 14.3 Adicionar notificações e alertas para entrevistas agendadas
 
 ## 15. Aplicativo Android: Painel Kanban Adaptado
 
-- [ ] 15.1 Implementar visualização do pipeline da vaga com abas deslizáveis por etapa no Android
-- [ ] 15.2 Adicionar ações rápidas de transição de etapa para recrutadores em dispositivos móveis
-- [ ] 15.3 Criar testes unitários para a lógica de transição e filtros do Kanban no Android
+- [x] 15.1 Implementar visualização do pipeline da vaga com abas deslizáveis por etapa no Android
+- [x] 15.2 Adicionar ações rápidas de transição de etapa para recrutadores em dispositivos móveis
+- [x] 15.3 Criar testes unitários para a lógica de transição e filtros do Kanban no Android
 
 ## 16. Testes Integrados e Suíte de Regressão
 

@@ -16,6 +16,7 @@ data class JobGraphQL(
     val activated: Boolean?,
     val isPcd: Boolean? = false,
     val isRemote: Boolean? = false,
+    val isConfidential: Boolean? = false,
     val createdAt: String?,
     val company: CompanyGraphQL?
 )
