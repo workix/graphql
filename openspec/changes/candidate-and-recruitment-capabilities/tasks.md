@@ -28,10 +28,10 @@
 
 ## 5. Regras de Negócio e APIs: Agenda de Entrevistas (Premium)
 
-- [ ] 5.1 Criar schema GraphQL com types `Interview`, enums (`InterviewStatus`, `InterviewFormat`), inputs e mutations (`createInterview`, `updateInterview`, `respondInterview`, `cancelInterview`)
-- [ ] 5.2 Implementar validação de plano Premium (`can('SCHEDULE_INTERVIEWS')`) no serviço `InterviewService`
-- [ ] 5.3 Implementar queries de listagem e detalhes de entrevistas para empresas e candidatos
-- [ ] 5.4 Criar testes unitários para o ciclo de vida completo de agendamento e respostas de entrevistas
+- [x] 5.1 Criar schema GraphQL com types `Interview`, enums (`InterviewStatus`, `InterviewFormat`), inputs e mutations (`createInterview`, `updateInterview`, `respondInterview`, `cancelInterview`)
+- [x] 5.2 Implementar validação de plano Premium (`can('SCHEDULE_INTERVIEWS')`) no serviço `InterviewService`
+- [x] 5.3 Implementar queries de listagem e detalhes de entrevistas para empresas e candidatos
+- [x] 5.4 Criar testes unitários para o ciclo de vida completo de agendamento e respostas de entrevistas
 
 ## 6. Regras de Negócio e APIs: Kanban de Triagem de Recrutamento (Premium)
 

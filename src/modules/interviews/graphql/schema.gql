@@ -1,0 +1,88 @@
+enum InterviewStatus {
+    SCHEDULED
+    CONFIRMED
+    REJECTED
+    RESCHEDULE_REQUESTED
+    COMPLETED
+    CANCELLED
+}
+
+enum InterviewFormat {
+    ONLINE
+    IN_PERSON
+    PHONE
+}
+
+type Interview {
+    id: ID!
+    uuid: String!
+    companyId: ID!
+    candidateId: ID!
+    jobId: ID
+    title: String!
+    description: String
+    scheduledAt: DateTime!
+    durationMinutes: Int!
+    format: InterviewFormat!
+    meetingLink: String
+    locationAddress: String
+    status: InterviewStatus!
+    rescheduleReason: String
+    feedbackNotes: String
+    candidateFeedback: String
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    company: Company
+    candidate: Candidate
+    job: Job
+}
+
+input CreateInterviewInput {
+    companyId: ID!
+    candidateId: ID!
+    jobId: ID
+    title: String!
+    description: String
+    scheduledAt: DateTime!
+    durationMinutes: Int
+    format: InterviewFormat!
+    meetingLink: String
+    locationAddress: String
+}
+
+input UpdateInterviewInput {
+    title: String
+    description: String
+    scheduledAt: DateTime
+    durationMinutes: Int
+    format: InterviewFormat
+    meetingLink: String
+    locationAddress: String
+    feedbackNotes: String
+}
+
+input RespondInterviewInput {
+    status: InterviewStatus!
+    rescheduleReason: String
+    candidateFeedback: String
+}
+
+input InterviewFilterInput {
+    status: InterviewStatus
+    jobId: ID
+    from: DateTime
+    to: DateTime
+}
+
+type Query {
+    getInterviewById(id: ID!): Interview
+    listInterviewsByCompany(companyId: ID!, filter: InterviewFilterInput): [Interview!]!
+    listInterviewsByCandidate(candidateId: ID!, filter: InterviewFilterInput): [Interview!]!
+}
+
+type Mutation {
+    createInterview(input: CreateInterviewInput!): Interview!
+    updateInterview(id: ID!, input: UpdateInterviewInput!): Interview!
+    respondInterview(id: ID!, input: RespondInterviewInput!): Interview!
+    cancelInterview(id: ID!, reason: String): Interview!
+}
