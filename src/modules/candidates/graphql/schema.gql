@@ -10,6 +10,8 @@ type Query {
     myVisibilitySettings(candidateId: ID!): VisibilitySettings
     searchCandidates(query: String, filter: CandidateSearchFilterInput, page: Int, limit: Int): CandidateSearchResult!
     candidateSearchFacets(query: String, filter: CandidateSearchFilterInput): CandidateSearchFacets!
+    candidateActiveProcesses(candidateId: ID!): CandidateActiveProcessesResponse
+    candidateActiveProcessesSummary(candidateId: ID!): CandidateActiveProcessesSummary
 }
 
 type Mutation {
@@ -47,6 +49,38 @@ type Candidate {
     inCareerTransition: Boolean
     careerTransitionTarget: String
     acceptsEntryLevel: Boolean
+    activeProcessesSummary: CandidateActiveProcessesSummary
+    activeProcesses: [CandidateActiveProcess]
+}
+
+type CandidateActiveProcess {
+    id: ID!
+    selectiveProcessId: ID
+    jobId: ID
+    jobTitle: String
+    companyId: ID
+    companyName: String
+    companyLogo: String
+    isConfidential: Boolean
+    status: String
+    currentStage: String
+    subscribedAt: DateTime
+    updatedAt: DateTime
+}
+
+type CandidateActiveProcessesSummary {
+    hasActiveProcesses: Boolean!
+    totalCount: Int!
+    isRestricted: Boolean!
+    restrictionReason: String
+}
+
+type CandidateActiveProcessesResponse {
+    candidateId: ID!
+    hasActiveProcesses: Boolean!
+    totalCount: Int!
+    isRestricted: Boolean!
+    processes: [CandidateActiveProcess!]!
 }
 
 type NormalizedResume {
@@ -74,12 +108,14 @@ type VisibilitySettings {
     searchableByRecruiters: Boolean
     openToWorkVisible: Boolean
     showAsViewed: Boolean
+    shareActiveProcessesWithRecruiters: Boolean
 }
 
 input VisibilitySettingsInput {
     searchableByRecruiters: Boolean
     openToWorkVisible: Boolean
     showAsViewed: Boolean
+    shareActiveProcessesWithRecruiters: Boolean
 }
 
 type Contact {

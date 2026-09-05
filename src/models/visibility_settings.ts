@@ -32,6 +32,11 @@ module.exports = function(sequelize: any, DataTypes: any) {
       allowNull: false,
       defaultValue: true
     },
+    share_active_processes_with_recruiters: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,

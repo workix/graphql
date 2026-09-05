@@ -20,5 +20,7 @@ export default class CandidateDTO {
         this.inCareerTransition = Boolean(candidate.in_career_transition)
         this.careerTransitionTarget = candidate.career_transition_target || null
         this.acceptsEntryLevel = Boolean(candidate.accepts_entry_level)
+        this.activeProcessesSummary = candidate.activeProcessesSummary || null
+        this.activeProcesses = candidate.activeProcesses || null
     }
 }

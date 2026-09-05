@@ -5,6 +5,7 @@ export interface VisibilitySettingsData {
   searchable_by_recruiters?: boolean;
   open_to_work_visible?: boolean;
   show_as_viewed?: boolean;
+  share_active_processes_with_recruiters?: boolean;
 }
 
 export interface RevealResult {
@@ -23,14 +24,15 @@ export class VisibilityService {
         candidate_id: candidateId,
         searchable_by_recruiters: true,
         open_to_work_visible: false,
-        show_as_viewed: true
+        show_as_viewed: true,
+        share_active_processes_with_recruiters: true
       });
     }
     return settings;
   }
 
   /**
-   * Atualiza as 3 chaves de visibilidade do candidato
+   * Atualiza as chaves de visibilidade do candidato
    */
   async updateSettings(candidateId: number, data: VisibilitySettingsData) {
     let settings = await VisibilitySetting.findOne({ where: { candidate_id: candidateId } });
@@ -39,13 +41,15 @@ export class VisibilityService {
         candidate_id: candidateId,
         searchable_by_recruiters: data.searchable_by_recruiters ?? true,
         open_to_work_visible: data.open_to_work_visible ?? false,
-        show_as_viewed: data.show_as_viewed ?? true
+        show_as_viewed: data.show_as_viewed ?? true,
+        share_active_processes_with_recruiters: data.share_active_processes_with_recruiters ?? true
       });
     } else {
       await settings.update({
         searchable_by_recruiters: data.searchable_by_recruiters ?? settings.searchable_by_recruiters,
         open_to_work_visible: data.open_to_work_visible ?? settings.open_to_work_visible,
         show_as_viewed: data.show_as_viewed ?? settings.show_as_viewed,
+        share_active_processes_with_recruiters: data.share_active_processes_with_recruiters ?? (settings.share_active_processes_with_recruiters ?? true),
         updated_at: new Date()
       });
     }
@@ -58,7 +62,7 @@ export class VisibilityService {
   async reveal(
     candidateId: number,
     viewerOrganizationId: number | null,
-    dataScope: 'summary' | 'contact' | 'full_profile' = 'summary',
+    dataScope: 'summary' | 'contact' | 'full_profile' | 'active_processes' = 'summary',
     isCandidateSelf: boolean = false
   ): Promise<RevealResult> {
     if (isCandidateSelf) {
@@ -75,7 +79,18 @@ export class VisibilityService {
       };
     }
 
-    // 2. Dados de contato e currículo desanonimizado
+    // 2. Chave de processos ativos
+    if (dataScope === 'active_processes') {
+      if (settings.share_active_processes_with_recruiters === false) {
+        return {
+          allow: false,
+          reason: 'O candidato optou por não compartilhar sua participação em processos seletivos ativos.'
+        };
+      }
+      return { allow: true };
+    }
+
+    // 3. Dados de contato e currículo desanonimizado
     if (dataScope === 'contact' || dataScope === 'full_profile') {
       if (!viewerOrganizationId) {
         return {

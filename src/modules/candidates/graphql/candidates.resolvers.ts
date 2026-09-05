@@ -68,6 +68,58 @@ const candidatesResolvers = {
     candidateSearchFacets: async (parent, args, ctx, info) => {
       const { candidateSearchEngineService } = require('../services/candidate_search_engine.service');
       return await candidateSearchEngineService.getFacets(args.query, args.filter);
+    },
+    candidateActiveProcesses: async (parent, args, ctx, info) => {
+      const { candidateActiveProcessesService } = require('../services/candidate_active_processes.service');
+      let viewerCompanyId = ctx.user?.company_id || ctx.user?.companyId || null;
+      if (!viewerCompanyId && ctx.user?.id) {
+        const { CompanyAdmin, Company } = require('../../../models');
+        if (CompanyAdmin) {
+          const compAdmin = await CompanyAdmin.findOne({ where: { user_id: ctx.user.id } });
+          if (compAdmin) viewerCompanyId = compAdmin.company_id;
+        }
+        if (!viewerCompanyId && Company) {
+          const comp = await Company.findOne({ where: { user_id: ctx.user.id } });
+          if (comp) viewerCompanyId = comp.id;
+        }
+      }
+
+      let isCandidateSelf = false;
+      if (ctx.user?.id) {
+        const { Candidate } = require('../../../models');
+        const cand = await Candidate.findByPk(args.candidateId);
+        if (cand && cand.user_id === ctx.user.id) {
+          isCandidateSelf = true;
+        }
+      }
+
+      return await candidateActiveProcessesService.getActiveProcesses(args.candidateId, viewerCompanyId, isCandidateSelf);
+    },
+    candidateActiveProcessesSummary: async (parent, args, ctx, info) => {
+      const { candidateActiveProcessesService } = require('../services/candidate_active_processes.service');
+      let viewerCompanyId = ctx.user?.company_id || ctx.user?.companyId || null;
+      if (!viewerCompanyId && ctx.user?.id) {
+        const { CompanyAdmin, Company } = require('../../../models');
+        if (CompanyAdmin) {
+          const compAdmin = await CompanyAdmin.findOne({ where: { user_id: ctx.user.id } });
+          if (compAdmin) viewerCompanyId = compAdmin.company_id;
+        }
+        if (!viewerCompanyId && Company) {
+          const comp = await Company.findOne({ where: { user_id: ctx.user.id } });
+          if (comp) viewerCompanyId = comp.id;
+        }
+      }
+
+      let isCandidateSelf = false;
+      if (ctx.user?.id) {
+        const { Candidate } = require('../../../models');
+        const cand = await Candidate.findByPk(args.candidateId);
+        if (cand && cand.user_id === ctx.user.id) {
+          isCandidateSelf = true;
+        }
+      }
+
+      return await candidateActiveProcessesService.getActiveProcessesSummary(args.candidateId, viewerCompanyId, isCandidateSelf);
     }
   },
   Mutation: {
@@ -102,14 +154,16 @@ const candidatesResolvers = {
       const settings = await visibilityService.updateSettings(args.candidateId, {
         searchable_by_recruiters: args.input.searchableByRecruiters,
         open_to_work_visible: args.input.openToWorkVisible,
-        show_as_viewed: args.input.showAsViewed
+        show_as_viewed: args.input.showAsViewed,
+        share_active_processes_with_recruiters: args.input.shareActiveProcessesWithRecruiters
       });
       return {
         id: settings.id,
         candidateId: settings.candidate_id,
         searchableByRecruiters: settings.searchable_by_recruiters,
         openToWorkVisible: settings.open_to_work_visible,
-        showAsViewed: settings.show_as_viewed
+        showAsViewed: settings.show_as_viewed,
+        shareActiveProcessesWithRecruiters: settings.share_active_processes_with_recruiters
       };
     },
     notifyCandidate: async (parent, args, ctx, info) => {
@@ -188,8 +242,44 @@ const candidatesResolvers = {
         candidateId: settings.candidate_id,
         searchableByRecruiters: settings.searchable_by_recruiters,
         openToWorkVisible: settings.open_to_work_visible,
-        showAsViewed: settings.show_as_viewed
+        showAsViewed: settings.show_as_viewed,
+        shareActiveProcessesWithRecruiters: settings.share_active_processes_with_recruiters
       };
+    },
+    activeProcessesSummary: async (parent, args, ctx, info) => {
+      const { candidateActiveProcessesService } = require('../services/candidate_active_processes.service');
+      let viewerCompanyId = ctx.user?.company_id || ctx.user?.companyId || null;
+      if (!viewerCompanyId && ctx.user?.id) {
+        const { CompanyAdmin, Company } = require('../../../models');
+        if (CompanyAdmin) {
+          const compAdmin = await CompanyAdmin.findOne({ where: { user_id: ctx.user.id } });
+          if (compAdmin) viewerCompanyId = compAdmin.company_id;
+        }
+        if (!viewerCompanyId && Company) {
+          const comp = await Company.findOne({ where: { user_id: ctx.user.id } });
+          if (comp) viewerCompanyId = comp.id;
+        }
+      }
+      const isCandidateSelf = Boolean(ctx.user?.id && parent.userId === ctx.user.id);
+      return await candidateActiveProcessesService.getActiveProcessesSummary(parent.id, viewerCompanyId, isCandidateSelf);
+    },
+    activeProcesses: async (parent, args, ctx, info) => {
+      const { candidateActiveProcessesService } = require('../services/candidate_active_processes.service');
+      let viewerCompanyId = ctx.user?.company_id || ctx.user?.companyId || null;
+      if (!viewerCompanyId && ctx.user?.id) {
+        const { CompanyAdmin, Company } = require('../../../models');
+        if (CompanyAdmin) {
+          const compAdmin = await CompanyAdmin.findOne({ where: { user_id: ctx.user.id } });
+          if (compAdmin) viewerCompanyId = compAdmin.company_id;
+        }
+        if (!viewerCompanyId && Company) {
+          const comp = await Company.findOne({ where: { user_id: ctx.user.id } });
+          if (comp) viewerCompanyId = comp.id;
+        }
+      }
+      const isCandidateSelf = Boolean(ctx.user?.id && parent.userId === ctx.user.id);
+      const result = await candidateActiveProcessesService.getActiveProcesses(parent.id, viewerCompanyId, isCandidateSelf);
+      return result.processes;
     }
   }
 }
