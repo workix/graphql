@@ -706,11 +706,307 @@ async function seedAll() {
       await db.MediaAsset.create({ user_id: userCand.id, file_name: 'banner_tech.jpg', file_type: 'image/jpeg', context: 'BANNER', url: 'https://via.placeholder.com/800x400' });
     }
 
-    // 11. Planos de Assinatura e Inscrições
+    // 11. Planos (plans), Capacidades (plan_features), Vitrine (subscription_plans) e Assinaturas
+    if (db.Plan && db.PlanFeature) {
+      const now = new Date();
+
+      // 11.1 Planos no catálogo geral (db.Plan)
+      const planFree = await db.Plan.create({
+        id: 1,
+        code: 'free_v1',
+        name: 'Plano Gratuito Empresa',
+        price_cents: 0,
+        currency: 'BRL',
+        interval: 'month',
+        active: true,
+        created_at: now,
+        updated_at: now
+      });
+
+      const planStarter = await db.Plan.create({
+        id: 2,
+        code: 'starter_v1',
+        name: 'Workix Starter (Empresas)',
+        price_cents: 7900,
+        currency: 'BRL',
+        interval: 'month',
+        active: true,
+        created_at: now,
+        updated_at: now
+      });
+
+      const planPro = await db.Plan.create({
+        id: 3,
+        code: 'pro_v1',
+        name: 'Workix Pro (Empresas)',
+        price_cents: 24900,
+        currency: 'BRL',
+        interval: 'month',
+        active: true,
+        created_at: now,
+        updated_at: now
+      });
+
+      const planBusiness = await db.Plan.create({
+        id: 4,
+        code: 'business_v1',
+        name: 'Workix Business (Empresas)',
+        price_cents: 69900,
+        currency: 'BRL',
+        interval: 'month',
+        active: true,
+        created_at: now,
+        updated_at: now
+      });
+
+      const planCandFree = await db.Plan.create({
+        id: 5,
+        code: 'candidate_free_v1',
+        name: 'Workix Free (Candidato)',
+        price_cents: 0,
+        currency: 'BRL',
+        interval: 'month',
+        active: true,
+        created_at: now,
+        updated_at: now
+      });
+
+      const planCandPremium = await db.Plan.create({
+        id: 6,
+        code: 'candidate_premium_v1',
+        name: 'Workix Premium Mensal (Candidato)',
+        price_cents: 1990,
+        currency: 'BRL',
+        interval: 'month',
+        active: true,
+        created_at: now,
+        updated_at: now
+      });
+
+      const planCandPremiumAnnual = await db.Plan.create({
+        id: 7,
+        code: 'candidate_premium_annual_v1',
+        name: 'Workix Premium Anual (Candidato)',
+        price_cents: 19900,
+        currency: 'BRL',
+        interval: 'year',
+        active: true,
+        created_at: now,
+        updated_at: now
+      });
+
+      // 11.2 Capacidades e Entitlements por Plano (db.PlanFeature)
+      const featuresToInsert = [
+        // Free Empresa (Plan 1)
+        { plan_id: planFree.id, feature_key: 'max_active_jobs', limit_value: 1, enabled: true },
+        { plan_id: planFree.id, feature_key: 'max_users', limit_value: 1, enabled: true },
+        { plan_id: planFree.id, feature_key: 'contact_credits', limit_value: 0, enabled: true },
+        { plan_id: planFree.id, feature_key: 'boost_credits_monthly', limit_value: 0, enabled: true },
+        { plan_id: planFree.id, feature_key: 'has_api', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'retention_days', limit_value: 60, enabled: true },
+        { plan_id: planFree.id, feature_key: 'USE_RECRUITMENT_KANBAN', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'recruitment_kanban', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'POST_CONFIDENTIAL_JOBS', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'confidential_jobs', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'SCHEDULE_INTERVIEWS', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'interview_scheduler', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'VIEW_CANDIDATE_ACTIVE_PROCESSES', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'candidate_active_processes', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'CREATE_LMS_COURSES', limit_value: 0, enabled: false },
+        { plan_id: planFree.id, feature_key: 'MANAGE_GROUPS', limit_value: 0, enabled: false },
+
+        // Starter Empresa (Plan 2)
+        { plan_id: planStarter.id, feature_key: 'max_active_jobs', limit_value: 3, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'max_users', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'contact_credits', limit_value: 10, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'boost_credits_monthly', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'has_api', limit_value: 0, enabled: false },
+        { plan_id: planStarter.id, feature_key: 'retention_days', limit_value: 365, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'USE_RECRUITMENT_KANBAN', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'recruitment_kanban', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'POST_CONFIDENTIAL_JOBS', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'confidential_jobs', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'SCHEDULE_INTERVIEWS', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'interview_scheduler', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'VIEW_CANDIDATE_ACTIVE_PROCESSES', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'candidate_active_processes', limit_value: 1, enabled: true },
+        { plan_id: planStarter.id, feature_key: 'CREATE_LMS_COURSES', limit_value: 0, enabled: false },
+        { plan_id: planStarter.id, feature_key: 'MANAGE_GROUPS', limit_value: 1, enabled: true },
+
+        // Pro Empresa (Plan 3)
+        { plan_id: planPro.id, feature_key: 'max_active_jobs', limit_value: 10, enabled: true },
+        { plan_id: planPro.id, feature_key: 'max_users', limit_value: 3, enabled: true },
+        { plan_id: planPro.id, feature_key: 'contact_credits', limit_value: 60, enabled: true },
+        { plan_id: planPro.id, feature_key: 'boost_credits_monthly', limit_value: 5, enabled: true },
+        { plan_id: planPro.id, feature_key: 'has_api', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'retention_days', limit_value: 730, enabled: true },
+        { plan_id: planPro.id, feature_key: 'USE_RECRUITMENT_KANBAN', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'recruitment_kanban', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'POST_CONFIDENTIAL_JOBS', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'confidential_jobs', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'SCHEDULE_INTERVIEWS', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'interview_scheduler', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'VIEW_CANDIDATE_ACTIVE_PROCESSES', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'candidate_active_processes', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'CREATE_LMS_COURSES', limit_value: 1, enabled: true },
+        { plan_id: planPro.id, feature_key: 'MANAGE_GROUPS', limit_value: 1, enabled: true },
+
+        // Business Empresa (Plan 4)
+        { plan_id: planBusiness.id, feature_key: 'max_active_jobs', limit_value: 30, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'max_users', limit_value: 10, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'contact_credits', limit_value: 250, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'boost_credits_monthly', limit_value: 20, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'has_api', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'retention_days', limit_value: null, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'USE_RECRUITMENT_KANBAN', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'recruitment_kanban', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'POST_CONFIDENTIAL_JOBS', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'confidential_jobs', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'SCHEDULE_INTERVIEWS', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'interview_scheduler', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'VIEW_CANDIDATE_ACTIVE_PROCESSES', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'candidate_active_processes', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'CREATE_LMS_COURSES', limit_value: 1, enabled: true },
+        { plan_id: planBusiness.id, feature_key: 'MANAGE_GROUPS', limit_value: 1, enabled: true },
+
+        // Free Candidato (Plan 5)
+        { plan_id: planCandFree.id, feature_key: 'contact_credits', limit_value: 0, enabled: true },
+        { plan_id: planCandFree.id, feature_key: 'profile_boost_enabled', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'retention_days', limit_value: 7, enabled: true },
+        { plan_id: planCandFree.id, feature_key: 'VIEW_DETAILED_PROFILE_ANALYTICS', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'view_detailed_profile_analytics', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'SEARCH_APPEARANCES_TRACKING', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'search_appearances_tracking', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'ACCESS_ALL_LMS_COURSES', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'access_all_lms_courses', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'SSI_DIAGNOSTIC_REPORT', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'ssi_diagnostic_report', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'ACTIVE_PROCESSES_PRIVACY_CONTROL', limit_value: 1, enabled: true },
+        { plan_id: planCandFree.id, feature_key: 'active_processes_privacy_control', limit_value: 1, enabled: true },
+        { plan_id: planCandFree.id, feature_key: 'INTERVIEW_JAAS_ACCESS', limit_value: 0, enabled: false },
+        { plan_id: planCandFree.id, feature_key: 'MARKDOWN_RESUME_AI_SCORE', limit_value: 0, enabled: false },
+
+        // Premium Candidato Mensal (Plan 6)
+        { plan_id: planCandPremium.id, feature_key: 'contact_credits', limit_value: 5, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'profile_boost_enabled', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'retention_days', limit_value: 365, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'VIEW_DETAILED_PROFILE_ANALYTICS', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'view_detailed_profile_analytics', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'SEARCH_APPEARANCES_TRACKING', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'search_appearances_tracking', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'ACCESS_ALL_LMS_COURSES', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'access_all_lms_courses', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'SSI_DIAGNOSTIC_REPORT', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'ssi_diagnostic_report', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'ACTIVE_PROCESSES_PRIVACY_CONTROL', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'active_processes_privacy_control', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'INTERVIEW_JAAS_ACCESS', limit_value: 1, enabled: true },
+        { plan_id: planCandPremium.id, feature_key: 'MARKDOWN_RESUME_AI_SCORE', limit_value: 1, enabled: true },
+
+        // Premium Candidato Anual (Plan 7)
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'contact_credits', limit_value: 5, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'profile_boost_enabled', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'retention_days', limit_value: 365, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'VIEW_DETAILED_PROFILE_ANALYTICS', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'view_detailed_profile_analytics', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'SEARCH_APPEARANCES_TRACKING', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'search_appearances_tracking', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'ACCESS_ALL_LMS_COURSES', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'access_all_lms_courses', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'SSI_DIAGNOSTIC_REPORT', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'ssi_diagnostic_report', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'ACTIVE_PROCESSES_PRIVACY_CONTROL', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'active_processes_privacy_control', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'INTERVIEW_JAAS_ACCESS', limit_value: 1, enabled: true },
+        { plan_id: planCandPremiumAnnual.id, feature_key: 'MARKDOWN_RESUME_AI_SCORE', limit_value: 1, enabled: true }
+      ];
+
+      for (const feat of featuresToInsert) {
+        await db.PlanFeature.create({
+          ...feat,
+          created_at: now,
+          updated_at: now
+        });
+      }
+
+      // 11.3 Assinatura Ativa de Demonstração para a Empresa Tech Corp Brasil (Plano Pro)
+      if (db.Subscription) {
+        await db.Subscription.create({
+          organization_id: company.id,
+          plan_id: planPro.id,
+          status: 'active',
+          current_period_start: now,
+          current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+          founder_discount_pct: 0.0,
+          created_at: now,
+          updated_at: now
+        });
+      }
+    }
+
+    // 11.4 Catálogo de Planos de Assinatura para Venda (db.SubscriptionPlan)
     if (db.SubscriptionPlan) {
-      const plan = await db.SubscriptionPlan.create({ name: 'Plano Premium Recrutador', price: 199.90, billing_period: 'MONTHLY', inmail_credits_per_month: 30 });
+      const subPlanCandFree = await db.SubscriptionPlan.create({
+        name: 'Workix Free (Candidato)',
+        price: 0.00,
+        billing_period: 'MONTHLY',
+        inmail_credits_per_month: 0
+      });
+
+      const subPlanCandMonthly = await db.SubscriptionPlan.create({
+        name: 'Workix Premium Mensal (Candidato)',
+        price: 19.90,
+        billing_period: 'MONTHLY',
+        inmail_credits_per_month: 5
+      });
+
+      const subPlanCandYearly = await db.SubscriptionPlan.create({
+        name: 'Workix Premium Anual (Candidato)',
+        price: 199.00,
+        billing_period: 'YEARLY',
+        inmail_credits_per_month: 5
+      });
+
+      const subPlanStarter = await db.SubscriptionPlan.create({
+        name: 'Workix Starter (Empresas)',
+        price: 79.00,
+        billing_period: 'MONTHLY',
+        inmail_credits_per_month: 10
+      });
+
+      const subPlanPro = await db.SubscriptionPlan.create({
+        name: 'Workix Pro (Empresas)',
+        price: 249.00,
+        billing_period: 'MONTHLY',
+        inmail_credits_per_month: 60
+      });
+
+      const subPlanBusiness = await db.SubscriptionPlan.create({
+        name: 'Workix Business (Empresas)',
+        price: 699.00,
+        billing_period: 'MONTHLY',
+        inmail_credits_per_month: 250
+      });
+
+      // 11.5 Assinatura Ativa de Demonstração para o Candidato Carlos Silva
       if (db.UserSubscription) {
-        await db.UserSubscription.create({ user_id: userComp.id, plan_id: plan.id, status: 'ACTIVE', expires_at: new Date(Date.now() + 30*24*60*60*1000) });
+        await db.UserSubscription.create({
+          user_id: userCand.id,
+          plan_id: subPlanCandMonthly.id,
+          status: 'ACTIVE',
+          inmail_credits_remaining: 5,
+          started_at: new Date(),
+          expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        });
+
+        await db.UserSubscription.create({
+          user_id: userComp.id,
+          plan_id: subPlanPro.id,
+          status: 'ACTIVE',
+          inmail_credits_remaining: 60,
+          started_at: new Date(),
+          expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        });
       }
     }
 
