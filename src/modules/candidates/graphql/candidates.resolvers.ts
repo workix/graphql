@@ -48,6 +48,26 @@ const candidatesResolvers = {
         openToWorkVisible: settings.open_to_work_visible,
         showAsViewed: settings.show_as_viewed
       };
+    },
+    searchCandidates: async (parent, args, ctx, info) => {
+      const { candidateSearchEngineService } = require('../services/candidate_search_engine.service');
+      const result = await candidateSearchEngineService.search({
+        query: args.query,
+        filter: args.filter,
+        page: args.page,
+        limit: args.limit
+      });
+      return {
+        candidates: result.candidates.map(c => new CandidateDTO(c)),
+        totalCount: result.totalCount,
+        page: result.page,
+        totalPages: result.totalPages,
+        facets: result.facets
+      };
+    },
+    candidateSearchFacets: async (parent, args, ctx, info) => {
+      const { candidateSearchEngineService } = require('../services/candidate_search_engine.service');
+      return await candidateSearchEngineService.getFacets(args.query, args.filter);
     }
   },
   Mutation: {

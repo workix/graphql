@@ -8,6 +8,8 @@ type Query {
     findCandidateByUserId(userId: ID!): Candidate
     allCandidatesPaginated(page: Int!, limit: Int!): PaginatedListCandidate
     myVisibilitySettings(candidateId: ID!): VisibilitySettings
+    searchCandidates(query: String, filter: CandidateSearchFilterInput, page: Int, limit: Int): CandidateSearchResult!
+    candidateSearchFacets(query: String, filter: CandidateSearchFilterInput): CandidateSearchFacets!
 }
 
 type Mutation {
@@ -132,3 +134,38 @@ enum NotificationType {
     MAIL,
     PUSH
 }
+
+type CandidateFacetItem {
+    key: String!
+    count: Int!
+}
+
+type CandidateSearchFacets {
+    lookingForJobCount: Int!
+    inCareerTransitionCount: Int!
+    acceptsEntryLevelCount: Int!
+    states: [CandidateFacetItem!]!
+    skills: [CandidateFacetItem!]!
+    careerTransitionTargets: [CandidateFacetItem!]!
+}
+
+type CandidateSearchResult {
+    candidates: [Candidate!]!
+    totalCount: Int!
+    page: Int!
+    totalPages: Int!
+    facets: CandidateSearchFacets
+}
+
+input CandidateSearchFilterInput {
+    lookingForJob: Boolean
+    inCareerTransition: Boolean
+    careerTransitionTarget: String
+    acceptsEntryLevel: Boolean
+    state: String
+    city: String
+    skills: [String]
+    keywords: String
+    minCompletenessScore: Int
+}
+

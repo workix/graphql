@@ -42,10 +42,10 @@
 
 ## 7. Motor de Busca de Candidatos e Facetas
 
-- [ ] 7.1 Estender `CandidateSearchFilterInput` no schema GraphQL com filtros por `lookingForJob`, `inCareerTransition`, `careerTransitionTarget` e palavras-chave de currículo
-- [ ] 7.2 Atualizar search drivers (`AdaptiveSearchDriver`, `PostgresSearchDriver`, `ElasticsearchSearchDriver`) para indexar e ponderar os termos do currículo Markdown
-- [ ] 7.3 Implementar contagem de facetas para status de busca e transição de carreira
-- [ ] 7.4 Criar testes unitários para a busca avançada de candidatos com filtros combinados
+- [x] 7.1 Estender `CandidateSearchFilterInput` no schema GraphQL com filtros por `lookingForJob`, `inCareerTransition`, `careerTransitionTarget` e palavras-chave de currículo
+- [x] 7.2 Atualizar search drivers (`AdaptiveSearchDriver`, `PostgresSearchDriver`, `ElasticsearchSearchDriver`) para indexar e ponderar os termos do currículo Markdown
+- [x] 7.3 Implementar contagem de facetas para status de busca e transição de carreira
+- [x] 7.4 Criar testes unitários para a busca avançada de candidatos com filtros combinados
 
 ## 8. Frontend Web: Status do Candidato e Currículo Markdown
 
