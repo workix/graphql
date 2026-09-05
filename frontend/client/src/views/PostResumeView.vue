@@ -52,11 +52,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 import { resumesService } from '../services/resumes';
+import { useAuthStore } from '../stores/auth';
+
+const authStore = useAuthStore();
+const router = useRouter();
 
 const title = ref('');
 const summary = ref('');
@@ -69,19 +73,43 @@ const loading = ref(false);
 const successMessage = ref('');
 const errorMessage = ref('');
 
-const router = useRouter();
+onMounted(async () => {
+  const currentCandidateId = authStore.user?.candidateId || authStore.user?.id || 1;
+  try {
+    const res = await resumesService.getAll();
+    const myResume = (res.data || []).find((r: any) => 
+      String(r.candidate?.id || r.candidateId) === String(currentCandidateId)
+    );
+    if (myResume) {
+      title.value = myResume.objective || '';
+      summary.value = myResume.content || '';
+      if (myResume.carrerLevel) carrerLevel.value = myResume.carrerLevel;
+      if (myResume.presence) presence.value = myResume.presence;
+      if (myResume.experiences && myResume.experiences.length > 0) {
+        experience.value = myResume.experiences.map((e: any) => `${e.jobTitle || ''} - ${e.employerName || ''}\n${e.description || ''}`.trim()).join('\n\n');
+      }
+      if (myResume.educations && myResume.educations.length > 0) {
+        education.value = myResume.educations.map((e: any) => `${e.schoolName || ''} - ${e.qualification || ''}`.trim()).join('\n\n');
+      }
+    }
+  } catch (e) {
+    console.warn('Erro ao carregar currículo prévio:', e);
+  }
+});
 
 async function handleSubmit() {
   loading.value = true;
   errorMessage.value = '';
   successMessage.value = '';
+  const currentCandidateId = authStore.user?.candidateId || authStore.user?.id || 1;
+
   try {
     await resumesService.create({
       objective: title.value,
       content: summary.value,
       carrerLevel: carrerLevel.value,
       presence: presence.value,
-      candidateId: 1
+      candidateId: currentCandidateId
     });
     successMessage.value = 'Currículo salvo com sucesso via GraphQL!';
     setTimeout(() => {

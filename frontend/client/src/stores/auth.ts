@@ -16,6 +16,8 @@ export interface UserProfile {
   name?: string;
   role?: string;
   firebase_uuid?: string;
+  candidateId?: number;
+  companyId?: number;
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -91,7 +93,9 @@ export const useAuthStore = defineStore('auth', () => {
         email,
         name: resolvedName,
         role: resolvedRole,
-        firebase_uuid: firebaseUid
+        firebase_uuid: firebaseUid,
+        candidateId: about?.candidate?.id ? Number(about.candidate.id) : (about?.user?.id ? Number(about.user.id) : 1),
+        companyId: about?.company?.id ? Number(about.company.id) : undefined
       };
 
       setAuth(authToken, userProfile);

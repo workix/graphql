@@ -41,9 +41,27 @@ const resumesRepository = db => {
         if (args.input.skills) {
             options.include.push({ model: ResumeSkill, as: "skills" })
         }
-        const resume = await Resume.create(new CreateResumeDTO(args.input), options)
-        await resume.reload()
-        return resume;
+        try {
+            const resume = await Resume.create(new CreateResumeDTO(args.input), options)
+            if (resume && typeof resume.reload === 'function') {
+                await resume.reload()
+            }
+            return resume;
+        } catch (err: any) {
+            if (err.name === 'SequelizeUniqueConstraintError' || err.name === 'SequelizeValidationError' || (err.message || '').toLowerCase().includes('unique') || (err.message || '').toLowerCase().includes('validation error')) {
+                const existing = await Resume.findOne({ where: { candidate_id: args.input.candidateId } });
+                if (existing) {
+                    if (typeof existing.update === 'function') {
+                        await existing.update(new UpdateResumeDTO(args.input));
+                    }
+                    if (typeof existing.reload === 'function') {
+                        await existing.reload();
+                    }
+                    return existing;
+                }
+            }
+            throw err;
+        }
     }
 
     const destroy = async args => {
