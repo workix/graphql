@@ -86,11 +86,14 @@ export interface JAASRoleAttributes {
   updated_at?: Date;
 }
 
+import { JobCategory } from './job_categories';
+
 export interface JobAttributes {
   id?: number;
   company_id: number;
   title: string;
   description: string;
+  categories?: JobCategory[];
   requirements?: string;
   salary_range?: string;
   location?: string;

@@ -6,9 +6,9 @@
 
 ## 2. Modelagem das Categorias no Backend
 
-- [ ] 2.1 Criar enum e constantes para categorias de vagas (`MEIO_PERIODO`, `PRIMEIRA_OPORTUNIDADE`, `ESTAGIO`, `NOTURNO`, `TEMPORARIO`, `FREELANCE`, `PERICULOSIDADE`)
-- [ ] 2.2 Adicionar testes unitários para validação das novas categorias
-- [ ] 2.3 Atualizar interfaces e tipos TypeScript de vagas com suporte a múltiplas categorias
+- [x] 2.1 Criar enum e constantes para categorias de vagas (`MEIO_PERIODO`, `PRIMEIRA_OPORTUNIDADE`, `ESTAGIO`, `NOTURNO`, `TEMPORARIO`, `FREELANCE`, `PERICULOSIDADE`)
+- [x] 2.2 Adicionar testes unitários para validação das novas categorias
+- [x] 2.3 Atualizar interfaces e tipos TypeScript de vagas com suporte a múltiplas categorias
 
 ## 3. Tipo de Contratação no Backend
 
