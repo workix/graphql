@@ -74,15 +74,18 @@ export const useAnalyticsStore = defineStore('analytics', {
 
     async fetchProfileViews() {
       const authStore = useAuthStore();
-      const currentUserId = authStore.user?.id || 1;
-      if (!currentUserId) return;
+      const currentUserId = authStore.user?.id;
+      if (!currentUserId) {
+        this.profileViews = [];
+        return;
+      }
 
       this.isLoading = true;
       this.error = null;
 
       try {
         const views = await analyticsService.getWhoViewedMyProfile(currentUserId);
-        this.profileViews = views;
+        this.profileViews = views || [];
       } catch (err: any) {
         this.error = err.message || 'Erro ao carregar visualizadores de perfil.';
       } finally {

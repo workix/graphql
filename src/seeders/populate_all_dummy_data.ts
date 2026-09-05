@@ -480,9 +480,6 @@ async function seedAll() {
     if (db.ConnectionRequest) {
       await db.ConnectionRequest.create({ requester_id: userCand.id, recipient_id: userAdmin.id, status: 'PENDING' });
     }
-    if (db.ProfileView) {
-      await db.ProfileView.create({ viewer_id: userComp.id, viewed_id: userCand.id });
-    }
 
     // 9. Grupos e Atividades de Comunidade
     if (db.Group) {
