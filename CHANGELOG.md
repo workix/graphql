@@ -7,6 +7,15 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo s
 ## [Unreleased]
 
 ### Added
+- **Capabilities de Candidatos e Recrutamento Avançado (Multi-Plataforma)**:
+  - **Currículo Normalizado em Markdown**: Suporte completo a editor de Markdown com sanitização server-side anti-XSS, geração automática a partir de dados estruturados e pontuação de completude.
+  - **Status de Carreira e Visibilidade**: Novos campos `looking_for_job`, `in_career_transition`, `career_transition_target` e `accepts_entry_level` com integração total ao `VisibilityService` / `reveal()`.
+  - **Vagas Confidenciais (Premium)**: Criação de vagas com `isConfidential`, validação de plano `POST_CONFIDENTIAL_JOBS` e mascaramento dinâmico no resolver `Job.company`.
+  - **Agenda de Entrevistas (Premium)**: Agendamento, confirmação, recusa, remarcação e cancelamento de entrevistas (Presencial, Remota, Híbrida) com validação `SCHEDULE_INTERVIEWS`.
+  - **Quadro Kanban de Triagem (Premium)**: Pipeline de recrutamento visual e drag-and-drop com múltiplos estágios, transições auditáveis (`kanban_card_histories`) e permissão `USE_RECRUITMENT_KANBAN`.
+  - **Motor de Busca Avançada de Candidatos**: `CandidateSearchEngineService` com suporte a filtros combinados por carreira, transição e termos de currículo Markdown.
+  - **Frontend Web Cliente & Admin**: Editor Markdown interativo com live preview, switch de vaga confidencial, painel de agenda com modais de resposta e quadro Kanban drag-and-drop.
+  - **Aplicativo Android**: Modelos Apollo/GraphQL em Kotlin, repositórios, `InterviewViewModel`, `KanbanViewModel`, `CandidateViewModel` e telas nativas para currículo Markdown, agenda de entrevistas e pipeline Kanban.
 - **Novas Categorias de Vagas & Tipos de Contratação (Multi-Plataforma)**:
   - Suporte completo às 7 novas categorias de vagas: `MEIO_PERIODO`, `PRIMEIRA_OPORTUNIDADE`, `ESTAGIO`, `NOTURNO`, `TEMPORARIO`, `FREELANCE`, `PERICULOSIDADE`.
   - Suporte a múltiplos tipos de contratação: `CLT`, `PJ`, `CONTRATO_TEMPORARIO`.

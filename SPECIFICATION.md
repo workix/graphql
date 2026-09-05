@@ -39,10 +39,13 @@ Toda a auditoria técnica de paridade de recursos e estrutura entre os 4 projeto
 
 ### Incluído
 - Gestão de Usuários e Autenticação (JWT + Firebase UUID com e-mail verificado).
-- Módulo de Candidatos com chaves de visibilidade (`visibility_settings`) e autorização server-side `reveal()`.
-- Módulo de Currículos (Resumes) com Histórico Profissional, Formação Acadêmica e Habilidades.
+- Módulo de Candidatos com chaves de visibilidade (`visibility_settings`), status de carreira (`looking_for_job`, `in_career_transition`, etc.) e autorização server-side `reveal()`.
+- Módulo de Currículos Normalizados em Markdown (`normalized_resumes`) com sanitização anti-XSS e pontuação de completude.
+- Módulo de Agenda de Entrevistas (`interviews`) com suporte a modalidades, reagendamentos e autorização `SCHEDULE_INTERVIEWS`.
+- Módulo de Quadro Kanban de Triagem (`kanban_stages`, `kanban_cards`, `kanban_card_histories`) com auditoria e autorização `USE_RECRUITMENT_KANBAN`.
 - Módulo de Empresas (Companies), cálculo de taxa de resposta (`response_rate_90d`) e Selo Verificado.
-- Módulo de Vagas (Jobs) com expiração compulsória (`expires_at`), desfecho de candidatos e impulsionamento rotulado (`job_boosts`, `is_sponsored`).
+- Módulo de Vagas (Jobs) com expiração compulsória (`expires_at`), desfecho de candidatos, suporte a vagas confidenciais (`is_confidential`, `POST_CONFIDENTIAL_JOBS`) com mascaramento dinâmico e impulsionamento rotulado (`job_boosts`, `is_sponsored`).
+- Motor de Busca Avançada de Candidatos e Vagas com drivers adaptativo, PostgreSQL e Elasticsearch com facetas dinâmicas.
 - Módulo de Entitlements e Planos Versionados (`plans`, `plan_features`, `subscriptions`, `usage_counters`) com autorização server-side `can()`.
 - Módulo de Desbloqueio de Contato com notificação compulsória ao candidato (`contact_unlocks`).
 - Módulo de Faturamento e Webhooks Idempotentes (`invoices`, `purchases`, `webhook_events`, `billing_audit_log`).
@@ -784,6 +787,8 @@ Feature: Autenticação e Consulta de Perfil do Usuário
 | Versão | Data | Autor | Alterações Realizadas |
 | :--- | :--- | :--- | :--- |
 | **1.0.0** | 29/08/2026 | Arquiteto de Software Sênior / Agente IA | Criação inicial da Especificação Mestra SDD (SPECIFICATION.md) cobrindo integralmente o ecossistema Workix GraphQL API. |
+| **1.1.0** | 04/09/2026 | Tech Lead & Agente IA | Suporte a Novas Categorias de Vagas, Tipos de Contratação e Filtros Multiplataforma. |
+| **1.2.0** | 05/09/2026 | Tech Lead & Agente IA | Implementação das Novas Capabilities: Currículo Markdown, Agenda de Entrevistas Premium, Kanban de Triagem, Vagas Confidenciais e Status de Carreira. |
 
 ---
 

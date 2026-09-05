@@ -99,11 +99,11 @@
 
 ## 16. Testes Integrados e Suíte de Regressão
 
-- [ ] 16.1 Executar suíte completa de testes no Backend cobrindo todas as novas mutations, queries e regras Premium
-- [ ] 16.2 Validar build e testes do Frontend Web Cliente (`npm run build`) e Admin (`npm run build`)
-- [ ] 16.3 Executar testes unitários do Android e verificar compilação geral
+- [x] 16.1 Executar suíte completa de testes no Backend cobrindo todas as novas mutations, queries e regras Premium
+- [x] 16.2 Validar build e testes do Frontend Web Cliente (`npm run build`) e Admin (`npm run build`)
+- [x] 16.3 Executar testes unitários do Android e verificar compilação geral
 
 ## 17. Documentação e Fechamento
 
-- [ ] 17.1 Atualizar `ARCHITECTURE.md`, `SPECIFICATION.md` e `CHANGELOG.md` com as novas capabilities
-- [ ] 17.2 Realizar auditoria cruzada de segurança e integridade de dados entre Backend, Web e Android
+- [x] 17.1 Atualizar `ARCHITECTURE.md`, `SPECIFICATION.md` e `CHANGELOG.md` com as novas capabilities
+- [x] 17.2 Realizar auditoria cruzada de segurança e integridade de dados entre Backend, Web e Android

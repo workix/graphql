@@ -83,3 +83,12 @@ A plataforma adota um modelo em camadas (*Layered Architecture*) com separação
    - Compatibilidade retroativa garantida para vagas legadas (defaults defensivos e sanitização em DTOs).
    - Suporte a filtros compostos no motor de busca e facetas em tempo real para navegação e descoberta de oportunidades.
 
+7. **Capabilities de Candidatos e Recrutamento Avançado**:
+   - **Currículo Normalizado em Markdown**: Armazenamento estruturado, sanitização anti-XSS e pontuação de completude automática (`NormalizedResume`).
+   - **Status de Carreira e Visibilidade**: Gestão de `looking_for_job`, `in_career_transition`, `career_transition_target` e `accepts_entry_level` com respeito rigoroso às chaves de visibilidade em `VisibilityService`.
+   - **Vagas Confidenciais (Premium)**: Mascaramento dinâmico e seguro no resolver GraphQL `Job.company` com autorização server-side `POST_CONFIDENTIAL_JOBS`.
+   - **Agenda de Entrevistas (Premium)**: Gestão completa do ciclo de vida de entrevistas (Presencial, Remota, Híbrida) e respostas de candidatos com autorização `SCHEDULE_INTERVIEWS`.
+   - **Quadro Kanban de Triagem (Premium)**: Pipeline visual de candidatos com ordenação customizável, transições auditáveis em `kanban_card_histories` e autorização `USE_RECRUITMENT_KANBAN`.
+   - **Motor de Busca Avançada de Candidatos**: `CandidateSearchEngineService` com filtros combinados por status profissional, transição de carreira e termos de currículo Markdown.
+
+
