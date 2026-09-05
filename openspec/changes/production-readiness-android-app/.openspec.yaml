@@ -1,0 +1,6 @@
+schema: spec-driven
+version: 1.0.0
+change:
+  name: production-readiness-android-app
+  title: "Prontidão de Produção do Aplicativo Android Workix"
+  description: "Elimina mocks, conecta o pipeline de upload binário e multipart real de mídia, e assegura integridade de 100% dos fluxos de dados GraphQL e REST no Android."
