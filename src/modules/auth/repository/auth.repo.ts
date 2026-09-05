@@ -8,9 +8,18 @@ const authRepository = (db?: any) => {
     const resumeModel = db?.Resume || Resume;
 
     const findByFirebaseUUIDAndEmail = async (firebaseUUID: string, email: string) => {
-        return await userModel.findOne({
+        let user = await userModel.findOne({
             where: { firebase_uuid: firebaseUUID, email }
         });
+
+        if (!user && email) {
+            user = await userModel.findOne({ where: { email } });
+            if (user && firebaseUUID) {
+                await user.update({ firebase_uuid: firebaseUUID });
+            }
+        }
+
+        return user;
     };
 
     const getAboutMe = async (firebaseUUID: string, email: string) => {
