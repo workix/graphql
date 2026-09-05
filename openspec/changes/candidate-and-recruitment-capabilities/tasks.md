@@ -68,9 +68,9 @@
 
 ## 11. Frontend Web: Painel Kanban de Triagem
 
-- [ ] 11.1 Desenvolver o componente de quadro Kanban com colunas customizáveis e ordenação visual
-- [ ] 11.2 Implementar drag-and-drop de cards de candidatos com atualização otimista e sincronização GraphQL
-- [ ] 11.3 Criar modal de detalhes do card com histórico de movimentações e notas do recrutador
+- [x] 11.1 Desenvolver o componente de quadro Kanban com colunas customizáveis e ordenação visual
+- [x] 11.2 Implementar drag-and-drop de cards de candidatos com atualização otimista e sincronização GraphQL
+- [x] 11.3 Criar modal de detalhes do card com histórico de movimentações e notas do recrutador
 
 ## 12. Aplicativo Android: Modelos, Repositórios e ViewModels
 
