@@ -1,0 +1,6 @@
+schema: spec-driven
+version: 1.0.0
+change:
+  name: full-test-coverage-frontends
+  title: "Cobertura Completa de Testes Unitários para os Frontends Web (Client e Admin)"
+  description: "Configura Vitest e Vue Test Utils em ambos os frontends, implementa testes unitários para todas as stores, serviços GraphQL/REST, formatadores e componentes, garantindo 100% de confiabilidade e commits incrementais arquivo por arquivo."
