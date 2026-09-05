@@ -12,9 +12,9 @@
 
 ## 3. Tipo de Contratação no Backend
 
-- [ ] 3.1 Criar enum e constantes para tipos de contratação (`CLT`, `PJ`, `CONTRATO_TEMPORARIO`)
-- [ ] 3.2 Adicionar testes unitários para validação dos tipos de contratação
-- [ ] 3.3 Integrar o tipo de contratação nas definições de tipos TypeScript de vagas
+- [x] 3.1 Criar enum e constantes para tipos de contratação (`CLT`, `PJ`, `CONTRATO_TEMPORARIO`)
+- [x] 3.2 Adicionar testes unitários para validação dos tipos de contratação
+- [x] 3.3 Integrar o tipo de contratação nas definições de tipos TypeScript de vagas
 
 ## 4. Persistência de Dados
 

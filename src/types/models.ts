@@ -87,6 +87,7 @@ export interface JAASRoleAttributes {
 }
 
 import { JobCategory } from './job_categories';
+import { JobEmploymentType } from './job_employment_types';
 
 export interface JobAttributes {
   id?: number;
@@ -94,6 +95,7 @@ export interface JobAttributes {
   title: string;
   description: string;
   categories?: JobCategory[];
+  employment_type?: JobEmploymentType;
   requirements?: string;
   salary_range?: string;
   location?: string;
