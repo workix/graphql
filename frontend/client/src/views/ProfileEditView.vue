@@ -97,6 +97,13 @@
                     </div>
                   </div>
                   <div class="toggle-switch">
+                    <label class="switch">
+                      <input type="checkbox" v-model="form.openToWork" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+
                 <!-- Career Status Controls -->
                 <div class="career-status-box">
                   <h4 class="sub-heading"><i class="fa fa-id-card-o"></i> Status Profissional e de Carreira</h4>

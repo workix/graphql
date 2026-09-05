@@ -2,8 +2,7 @@ package br.com.codecode.workix.android.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.codecode.workix.android.data.model.JobGraphQL
-import br.com.codecode.workix.android.data.model.PaginatedListJobData
+import br.com.codecode.workix.android.data.model.*
 import br.com.codecode.workix.android.data.repository.JobRepository
 import br.com.codecode.workix.android.network.NetworkResult
 import kotlinx.coroutines.flow.MutableStateFlow

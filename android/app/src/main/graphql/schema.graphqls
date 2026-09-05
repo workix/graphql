@@ -1,0 +1,168 @@
+scalar Date
+scalar DateTime
+
+enum JobCategory {
+    MEIO_PERIODO
+    PRIMEIRA_OPORTUNIDADE
+    ESTAGIO
+    NOTURNO
+    TEMPORARIO
+    FREELANCE
+    PERICULOSIDADE
+    MANAGEMENT
+    OPERATOR
+}
+
+enum JobEmploymentType {
+    CLT
+    PJ
+    CONTRATO_TEMPORARIO
+}
+
+enum JobType {
+    FREELANCE
+    FULLTIME
+    INTERNSHIP
+    PARTTIME
+    TEMPORARY
+    VOLUNTEER
+}
+
+enum InterviewStatus {
+    SCHEDULED
+    CONFIRMED
+    REJECTED
+    RESCHEDULE_REQUESTED
+    COMPLETED
+    CANCELLED
+}
+
+enum InterviewFormat {
+    ONLINE
+    IN_PERSON
+    PHONE
+}
+
+type Company {
+    id: ID
+    name: String
+    description: String
+    logo: String
+}
+
+type NormalizedResume {
+    id: ID
+    candidateId: ID
+    rawMarkdown: String
+    summary: String
+    skills: [String]
+    careerGoals: String
+    completenessScore: Int
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type Candidate {
+    id: ID
+    uuid: String
+    name: String
+    birthDate: Date
+    city: String
+    state: String
+    lookingForJob: Boolean
+    inCareerTransition: Boolean
+    careerTransitionTarget: String
+    acceptsEntryLevel: Boolean
+    normalizedResume: NormalizedResume
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type Job {
+    id: ID
+    title: String
+    description: String
+    benefits: String
+    requirement: String
+    jobCategory: JobCategory
+    jobType: JobType
+    categories: [JobCategory]
+    employmentType: JobEmploymentType
+    isConfidential: Boolean
+    isPcd: Boolean
+    isRemote: Boolean
+    minPayment: Float
+    maxPayment: Float
+    featured: Boolean
+    activated: Boolean
+    company: Company
+    createdAt: DateTime
+}
+
+type Interview {
+    id: ID!
+    uuid: String!
+    companyId: ID!
+    candidateId: ID!
+    jobId: ID
+    title: String!
+    description: String
+    scheduledAt: DateTime!
+    durationMinutes: Int!
+    format: InterviewFormat!
+    meetingLink: String
+    locationAddress: String
+    status: InterviewStatus!
+    rescheduleReason: String
+    company: Company
+    candidate: Candidate
+    job: Job
+}
+
+type KanbanCardHistory {
+    id: ID!
+    cardId: ID!
+    fromStageId: ID
+    toStageId: ID!
+    notes: String
+    createdAt: DateTime!
+}
+
+type KanbanCard {
+    id: ID!
+    uuid: String!
+    stageId: ID!
+    candidateId: ID!
+    jobId: ID
+    orderPosition: Int!
+    rating: Int
+    notes: String
+    tags: [String!]!
+    candidate: Candidate
+    histories: [KanbanCardHistory!]!
+    createdAt: DateTime!
+}
+
+type KanbanStage {
+    id: ID!
+    uuid: String!
+    companyId: ID!
+    jobId: ID
+    name: String!
+    color: String!
+    orderPosition: Int!
+    isSystemStage: Boolean!
+    cards: [KanbanCard!]!
+}
+
+type KanbanBoard {
+    jobId: ID!
+    companyId: ID!
+    stages: [KanbanStage!]!
+}
+
+type Query {
+    getJobById(id: ID!): Job
+    getInterviewById(id: ID!): Interview
+    getRecruitmentBoard(jobId: ID!, companyId: ID!): KanbanBoard!
+}

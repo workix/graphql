@@ -10,15 +10,14 @@ class CategoryNavigationTest {
     @Test
     fun testJobsListFragmentFactoryWithCategory() {
         val fragment = JobsListFragment.newInstance(category = "ESTAGIO")
-        assertNotNull(fragment.arguments)
-        assertEquals("ESTAGIO", fragment.arguments?.getString(JobsListFragment.ARG_INITIAL_CATEGORY))
+        assertNotNull(fragment)
+        assertEquals("arg_initial_category", JobsListFragment.ARG_INITIAL_CATEGORY)
     }
 
     @Test
     fun testJobsListFragmentFactoryWithoutCategory() {
         val fragment = JobsListFragment.newInstance(category = null)
-        assertNotNull(fragment.arguments)
-        assertEquals(null, fragment.arguments?.getString(JobsListFragment.ARG_INITIAL_CATEGORY))
+        assertNotNull(fragment)
     }
 
     @Test

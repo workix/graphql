@@ -125,7 +125,7 @@ class HomeFragment : Fragment() {
     private fun navigateToCategory(categoryCode: String) {
         val fragment = JobsListFragment.newInstance(category = categoryCode)
         parentFragmentManager.beginTransaction()
-            .replace(R.id.container, fragment)
+            .replace(R.id.container_body, fragment)
             .addToBackStack(null)
             .commit()
     }

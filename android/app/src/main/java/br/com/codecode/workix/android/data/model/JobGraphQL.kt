@@ -4,21 +4,21 @@ data class JobGraphQL(
     val id: String?,
     val title: String?,
     val description: String?,
-    val benefits: String?,
-    val requirement: String?,
-    val jobCategory: String?,
-    val jobType: String?,
+    val benefits: String? = null,
+    val requirement: String? = null,
+    val jobCategory: String? = null,
+    val jobType: String? = null,
     val categories: List<String>? = emptyList(),
     val employmentType: String? = "CLT",
-    val minPayment: Double?,
-    val maxPayment: Double?,
-    val featured: Boolean?,
-    val activated: Boolean?,
+    val minPayment: Double? = null,
+    val maxPayment: Double? = null,
+    val featured: Boolean? = false,
+    val activated: Boolean? = true,
     val isPcd: Boolean? = false,
     val isRemote: Boolean? = false,
     val isConfidential: Boolean? = false,
-    val createdAt: String?,
-    val company: CompanyGraphQL?
+    val createdAt: String? = null,
+    val company: CompanyGraphQL? = null
 )
 
 data class CompanyGraphQL(
