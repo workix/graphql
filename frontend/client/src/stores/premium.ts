@@ -15,7 +15,72 @@ export const usePremiumStore = defineStore('premium', {
 
   getters: {
     isPremiumActive: (state) => state.mySubscription?.status === 'ACTIVE',
-    inmailCredits: (state) => state.mySubscription?.inmailCreditsRemaining ?? 0
+    inmailCredits: (state) => state.mySubscription?.inmailCreditsRemaining ?? 0,
+    candidatePlans: (state) => {
+      const filtered = state.plansList.filter(
+        (p) => p.name.toLowerCase().includes('candidato') || (!p.name.toLowerCase().includes('empresa') && p.price < 200)
+      );
+      if (filtered.length > 0) return filtered;
+      return [
+        {
+          id: 1,
+          name: 'Workix Free (Candidato)',
+          price: 0,
+          billingPeriod: 'MONTHLY',
+          inmailCreditsPerMonth: 0
+        },
+        {
+          id: 2,
+          name: 'Workix Premium Mensal (Candidato)',
+          price: 19.90,
+          billingPeriod: 'MONTHLY',
+          inmailCreditsPerMonth: 5
+        },
+        {
+          id: 3,
+          name: 'Workix Premium Anual (Candidato)',
+          price: 199.00,
+          billingPeriod: 'YEARLY',
+          inmailCreditsPerMonth: 15
+        }
+      ];
+    },
+    companyPlans: (state) => {
+      const filtered = state.plansList.filter(
+        (p) => p.name.toLowerCase().includes('empresa') || p.name.toLowerCase().includes('starter') || p.name.toLowerCase().includes('pro') || p.name.toLowerCase().includes('business')
+      );
+      if (filtered.length > 0) return filtered;
+      return [
+        {
+          id: 101,
+          name: 'Workix Free (Empresas)',
+          price: 0,
+          billingPeriod: 'MONTHLY',
+          inmailCreditsPerMonth: 0
+        },
+        {
+          id: 4,
+          name: 'Workix Starter (Empresas)',
+          price: 79.00,
+          billingPeriod: 'MONTHLY',
+          inmailCreditsPerMonth: 10
+        },
+        {
+          id: 5,
+          name: 'Workix Pro (Empresas)',
+          price: 249.00,
+          billingPeriod: 'MONTHLY',
+          inmailCreditsPerMonth: 60
+        },
+        {
+          id: 6,
+          name: 'Workix Business (Empresas)',
+          price: 699.00,
+          billingPeriod: 'MONTHLY',
+          inmailCreditsPerMonth: 250
+        }
+      ];
+    }
   },
 
   actions: {
@@ -28,28 +93,48 @@ export const usePremiumStore = defineStore('premium', {
         if (plans.length > 0) {
           this.plansList = plans;
         } else {
-          // Fallback realistic subscription tiers
           this.plansList = [
             {
               id: 1,
-              name: 'Workix Free',
+              name: 'Workix Free (Candidato)',
               price: 0,
               billingPeriod: 'MONTHLY',
               inmailCreditsPerMonth: 0
             },
             {
               id: 2,
-              name: 'Premium Career',
-              price: 49.90,
+              name: 'Workix Premium Mensal (Candidato)',
+              price: 19.90,
               billingPeriod: 'MONTHLY',
               inmailCreditsPerMonth: 5
             },
             {
               id: 3,
-              name: 'Recruiter & Business Pro',
-              price: 149.90,
+              name: 'Workix Premium Anual (Candidato)',
+              price: 199.00,
+              billingPeriod: 'YEARLY',
+              inmailCreditsPerMonth: 15
+            },
+            {
+              id: 4,
+              name: 'Workix Starter (Empresas)',
+              price: 79.00,
               billingPeriod: 'MONTHLY',
-              inmailCreditsPerMonth: 20
+              inmailCreditsPerMonth: 10
+            },
+            {
+              id: 5,
+              name: 'Workix Pro (Empresas)',
+              price: 249.00,
+              billingPeriod: 'MONTHLY',
+              inmailCreditsPerMonth: 60
+            },
+            {
+              id: 6,
+              name: 'Workix Business (Empresas)',
+              price: 699.00,
+              billingPeriod: 'MONTHLY',
+              inmailCreditsPerMonth: 250
             }
           ];
         }
