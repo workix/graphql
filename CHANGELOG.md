@@ -7,6 +7,15 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo s
 ## [Unreleased]
 
 ### Added
+- **Novas Categorias de Vagas & Tipos de Contratação (Multi-Plataforma)**:
+  - Suporte completo às 7 novas categorias de vagas: `MEIO_PERIODO`, `PRIMEIRA_OPORTUNIDADE`, `ESTAGIO`, `NOTURNO`, `TEMPORARIO`, `FREELANCE`, `PERICULOSIDADE`.
+  - Suporte a múltiplos tipos de contratação: `CLT`, `PJ`, `CONTRATO_TEMPORARIO`.
+  - **Backend GraphQL**: Schema SDL atualizado com enums `JobCategory`, `JobEmploymentType`, campos em `Job`, `JobInput`, `JobSearchFilterInput` e `JobSearchFacets`.
+  - **Persistência**: Migration Sequelize segura com retrocompatibilidade (`categories` serializado em JSON, `employment_type` default `CLT`).
+  - **Motor de Busca**: Drivers Adaptativo, PostgreSQL e Elasticsearch com suporte a filtros combinados e facetas dinâmicas por categoria e tipo de contratação.
+  - **Frontend Web Admin**: Seleção de categorias e tipo de contratação na criação/edição de vagas.
+  - **Frontend Web Cliente**: Filtros interativos na busca, chips de filtros ativos, badges nos cards de vagas e seção de navegação por categorias na Home.
+  - **Aplicativo Android**: Modelos Kotlin (`JobGraphQL`, `JobFilterInput`, `JobSearchData`), repositório GraphQL, ViewModel reativo, BottomSheet de filtros e navegação por categorias na tela inicial.
 - **White Label Multi-Tenant Architecture**:
   - Modelo `WhiteLabelConfig`, migração e seeder com tenant default e TechCorp.
   - `TenantResolverService` com cache em memória, suporte a domínios customizados, `Host` header, `x-tenant-slug` e `x-tenant-id`.

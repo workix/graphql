@@ -77,3 +77,9 @@ A plataforma adota um modelo em camadas (*Layered Architecture*) com separação
 5. **Proteção e Idempotência**:
    - Suporte ao cabeçalho `Idempotency-Key` em operações críticas.
    - Formatação segura de erros sem vazamento de stack traces ou detalhes técnicos de banco em produção.
+
+6. **Categorias de Vagas & Filtros Multiplataforma**:
+   - Categorização flexível (`categories`) e tipo de contratação (`employment_type`) integrados de ponta a ponta no Backend GraphQL, Frontend Web e Aplicativo Android.
+   - Compatibilidade retroativa garantida para vagas legadas (defaults defensivos e sanitização em DTOs).
+   - Suporte a filtros compostos no motor de busca e facetas em tempo real para navegação e descoberta de oportunidades.
+

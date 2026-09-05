@@ -86,6 +86,7 @@
 
 ## 15. Revisão Final e Fechamento
 
-- [ ] 15.1 Realizar auditoria cruzada entre Backend, Frontend Web, Android e Banco de Dados
-- [ ] 15.2 Atualizar documentações (`ARCHITECTURE.md`, `SPECIFICATION.md`, changelog)
-- [ ] 15.3 Validar critérios de aceite completos do projeto
+- [x] 15.1 Realizar auditoria cruzada entre Backend, Frontend Web, Android e Banco de Dados
+- [x] 15.2 Atualizar documentações (`ARCHITECTURE.md`, `SPECIFICATION.md`, changelog)
+- [x] 15.3 Validar critérios de aceite completos do projeto
+
