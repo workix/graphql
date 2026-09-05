@@ -41,16 +41,18 @@ jobs:
           NODE_ENV: test
           JWT_SECRET: test_jwt_secret_key_for_ci_pipeline_1234567890
 
-      - name: Build Frontend Client
+      - name: Build & Test Frontend Client
         run: |
           cd frontend/client
           npm ci
+          npm test
           npm run build
 
-      - name: Build Frontend Admin
+      - name: Build & Test Frontend Admin
         run: |
           cd frontend/admin
           npm ci
+          npm test
           npm run build
 
       - name: Security Vulnerability Scan
