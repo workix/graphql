@@ -86,9 +86,10 @@ export const useAuthStore = defineStore('auth', () => {
       const about = profileData?.aboutMe;
       const isComp = !!about?.company || roleHint === 'COMPANY' || email.includes('empresa');
       const resolvedRole = isComp ? 'COMPANY' : 'CANDIDATE';
-      const resolvedName = about?.company?.name || fallbackName || (isComp ? 'Empresa Parceira' : 'Candidato Workix');
+      const resolvedName = about?.company?.name || about?.candidate?.name || fallbackName || (isComp ? 'Empresa Parceira' : 'Candidato Workix');
       const resolvedId = about?.user?.id ? Number(about.user.id) : (knownUserId || (user.value?.id ? user.value.id : 0));
-      const resolvedCandidateId = about?.candidate?.id ? Number(about.candidate.id) : (resolvedId || undefined);
+      const resolvedCandidateId = about?.candidate?.id ? Number(about.candidate.id) : undefined;
+      const resolvedCompanyId = about?.company?.id ? Number(about.company.id) : undefined;
 
       const userProfile: UserProfile = {
         id: resolvedId,
@@ -97,7 +98,7 @@ export const useAuthStore = defineStore('auth', () => {
         role: resolvedRole,
         firebase_uuid: firebaseUid,
         candidateId: resolvedCandidateId,
-        companyId: about?.company?.id ? Number(about.company.id) : undefined
+        companyId: resolvedCompanyId
       };
 
       setAuth(authToken, userProfile);
@@ -190,20 +191,27 @@ export const useAuthStore = defineStore('auth', () => {
         }
       `;
       try {
-        await graphqlClient.request(CREATE_CANDIDATE_MUTATION, {
+        const candRes = await graphqlClient.request<{ createCandidate: { id: string | number; name: string } }>(CREATE_CANDIDATE_MUTATION, {
           input: {
-            name,
-            birthDate: '1990-01-01',
+            name: name.trim(),
+            birthDate: '2000-01-01',
             city: 'São Paulo',
             state: 'SP',
             neighborhood: 'Centro',
-            street: 'Av. Paulista',
-            number: '1000',
-            zipCode: 1310000,
+            street: 'Av. Principal',
+            number: '1',
+            zipCode: 1000000,
             mobilePhone: 11999999999,
             userId: userProfile.id
           }
         });
+        if (candRes?.createCandidate?.id) {
+          userProfile.candidateId = Number(candRes.createCandidate.id);
+          userProfile.name = candRes.createCandidate.name || name;
+          if (token.value) {
+            setAuth(token.value, userProfile);
+          }
+        }
       } catch (candErr) {
         console.warn('Candidato já cadastrado ou erro opcional:', candErr);
       }

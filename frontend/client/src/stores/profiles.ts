@@ -16,7 +16,13 @@ export const useProfilesStore = defineStore('profiles', {
   actions: {
     async fetchMyProfile() {
       const authStore = useAuthStore();
-      const currentUserId = authStore.user?.id || 1;
+      const currentUserId = authStore.user?.id;
+
+      if (!currentUserId) {
+        this.myProfile = null;
+        this.myFeaturedItems = [];
+        return;
+      }
 
       this.isLoading = true;
       this.error = null;
@@ -35,7 +41,7 @@ export const useProfilesStore = defineStore('profiles', {
           industry: '',
           openToWork: false
         };
-        this.myFeaturedItems = featured;
+        this.myFeaturedItems = featured || [];
       } catch (err: any) {
         this.error = err.message || 'Erro ao carregar dados do perfil.';
       } finally {
@@ -45,7 +51,11 @@ export const useProfilesStore = defineStore('profiles', {
 
     async updateProfile(input: ProfileInput) {
       const authStore = useAuthStore();
-      const currentUserId = authStore.user?.id || 1;
+      const currentUserId = authStore.user?.id;
+
+      if (!currentUserId) {
+        throw new Error('Usuário não autenticado.');
+      }
 
       this.isSaving = true;
       this.error = null;
@@ -75,7 +85,7 @@ export const useProfilesStore = defineStore('profiles', {
         ]);
 
         this.currentViewingProfile = profile;
-        this.currentViewingFeatured = featured;
+        this.currentViewingFeatured = featured || [];
       } catch (err: any) {
         this.error = err.message || 'Erro ao carregar perfil público.';
       } finally {
@@ -85,7 +95,11 @@ export const useProfilesStore = defineStore('profiles', {
 
     async addFeatured(type: string, title: string, url?: string) {
       const authStore = useAuthStore();
-      const currentUserId = authStore.user?.id || 1;
+      const currentUserId = authStore.user?.id;
+
+      if (!currentUserId) {
+        throw new Error('Usuário não autenticado.');
+      }
 
       try {
         const newItem = await profilesService.addFeaturedItem(currentUserId, type, title, url);
@@ -101,7 +115,11 @@ export const useProfilesStore = defineStore('profiles', {
 
     async deleteFeatured(id: string | number) {
       const authStore = useAuthStore();
-      const currentUserId = authStore.user?.id || 1;
+      const currentUserId = authStore.user?.id;
+
+      if (!currentUserId) {
+        throw new Error('Usuário não autenticado.');
+      }
 
       try {
         const success = await profilesService.removeFeaturedItem(id, currentUserId);

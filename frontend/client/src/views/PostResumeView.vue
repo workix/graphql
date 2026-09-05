@@ -181,12 +181,31 @@ function parseEducations(text: string) {
 }
 
 onMounted(async () => {
-  const currentCandidateId = authStore.user?.candidateId || authStore.user?.id || 1;
+  const currentUserId = authStore.user?.id;
+  const currentCandidateId = authStore.user?.candidateId;
+  const currentUserEmail = authStore.user?.email?.trim().toLowerCase();
+
+  // Limpa os campos por padrão para novos cadastros
+  title.value = '';
+  summary.value = '';
+  experience.value = '';
+  education.value = '';
+
+  if (!currentUserId && !currentCandidateId && !currentUserEmail) {
+    return;
+  }
+
   try {
     const res = await resumesService.getAll();
-    const myResume = (res.data || []).find((r: any) => 
-      String(r.candidate?.id || r.candidateId) === String(currentCandidateId)
-    );
+    const myResume = (res.data || []).find((r: any) => {
+      const cand = r.candidate;
+      if (!cand) return false;
+      if (currentCandidateId && String(cand.id) === String(currentCandidateId)) return true;
+      if (currentUserId && String(cand.user?.id) === String(currentUserId)) return true;
+      if (currentUserEmail && cand.user?.email && cand.user.email.trim().toLowerCase() === currentUserEmail) return true;
+      return false;
+    });
+
     if (myResume) {
       title.value = myResume.objective || '';
       summary.value = myResume.content || '';
@@ -218,7 +237,63 @@ async function handleSubmit() {
   loading.value = true;
   errorMessage.value = '';
   successMessage.value = '';
-  const currentCandidateId = authStore.user?.candidateId || authStore.user?.id || 1;
+
+  let candidateId = authStore.user?.candidateId;
+
+  if (!candidateId && authStore.user?.id) {
+    try {
+      const graphqlClient = (await import('../services/graphql')).default;
+      const FIND_CAND_QUERY = `
+        query FindCandidateByUserId($userId: ID!) {
+          findCandidateByUserId(userId: $userId) {
+            id
+          }
+        }
+      `;
+      const candData = await graphqlClient.request<{ findCandidateByUserId: { id: string | number } }>(FIND_CAND_QUERY, {
+        userId: String(authStore.user.id)
+      });
+      if (candData?.findCandidateByUserId?.id) {
+        candidateId = Number(candData.findCandidateByUserId.id);
+        authStore.user.candidateId = candidateId;
+      }
+    } catch (e) {
+      console.warn('Busca de candidato por userId:', e);
+    }
+  }
+
+  if (!candidateId && authStore.user?.id) {
+    try {
+      const graphqlClient = (await import('../services/graphql')).default;
+      const CREATE_CAND_MUTATION = `
+        mutation CreateCandidate($input: CandidateInput!) {
+          createCandidate(input: $input) {
+            id
+          }
+        }
+      `;
+      const createRes = await graphqlClient.request<{ createCandidate: { id: string | number } }>(CREATE_CAND_MUTATION, {
+        input: {
+          name: authStore.user.name || 'Candidato',
+          birthDate: '2000-01-01',
+          city: 'São Paulo',
+          state: 'SP',
+          neighborhood: 'Centro',
+          street: 'Av. Principal',
+          number: '1',
+          zipCode: 1000000,
+          mobilePhone: 11999999999,
+          userId: authStore.user.id
+        }
+      });
+      if (createRes?.createCandidate?.id) {
+        candidateId = Number(createRes.createCandidate.id);
+        authStore.user.candidateId = candidateId;
+      }
+    } catch (createErr) {
+      console.warn('Criação sob demanda de candidato:', createErr);
+    }
+  }
 
   const parsedExperiences = parseExperiences(experience.value);
   const parsedEducations = parseEducations(education.value);
@@ -229,7 +304,7 @@ async function handleSubmit() {
       content: summary.value,
       carrerLevel: carrerLevel.value,
       presence: presence.value,
-      candidateId: currentCandidateId,
+      candidateId: candidateId || authStore.user?.id,
       experiences: parsedExperiences,
       educations: parsedEducations
     });

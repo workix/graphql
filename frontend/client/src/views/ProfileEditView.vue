@@ -178,7 +178,7 @@
                   :candidate-profile="{
                     ...form,
                     name: authStore.user?.name,
-                    candidateId: authStore.user?.candidateId || authStore.user?.id || 1
+                    candidateId: authStore.user?.candidateId || authStore.user?.id
                   }"
                   @score-change="handleResumeScoreChange"
                 />
@@ -189,7 +189,7 @@
                     <i v-else class="fa fa-save"></i>
                     {{ profilesStore.isSaving ? 'Salvando...' : 'Salvar Alterações' }}
                   </button>
-                  <router-link :to="`/in/${authStore.user?.id || 1}`" class="btn btn-default btn-view">
+                  <router-link v-if="authStore.user?.id" :to="`/in/${authStore.user.id}`" class="btn btn-default btn-view">
                     <i class="fa fa-external-link"></i> Ver Perfil Público
                   </router-link>
                 </div>
@@ -264,17 +264,17 @@
           </div>
 
           <!-- Skills & Endorsements Section -->
-          <div class="margin-top-30">
+          <div v-if="authStore.user?.id" class="margin-top-30">
             <SkillEndorsementsSection
-              :user-id="authStore.user?.id || 1"
+              :user-id="authStore.user.id"
               :is-own-profile="true"
             />
           </div>
 
           <!-- Recommendations Section -->
-          <div class="margin-top-30">
+          <div v-if="authStore.user?.id" class="margin-top-30">
             <RecommendationsSection
-              :user-id="authStore.user?.id || 1"
+              :user-id="authStore.user.id"
               :is-own-profile="true"
             />
           </div>
