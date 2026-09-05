@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [20.x, 22.x]
 
     steps:
       - name: Checkout Source Code
@@ -29,17 +29,29 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Install Dependencies
+      - name: Install Root Dependencies
         run: npm ci
 
-      - name: Check TypeScript Compilation & Build
+      - name: Check TypeScript Compilation & Build Backend
         run: npm run build
 
-      - name: Run Full Test Suite (Jest)
+      - name: Run Full Backend Test Suite (Jest)
         run: npm test -- --runInBand --no-cache
         env:
           NODE_ENV: test
           JWT_SECRET: test_jwt_secret_key_for_ci_pipeline_1234567890
+
+      - name: Build Frontend Client
+        run: |
+          cd frontend/client
+          npm ci
+          npm run build
+
+      - name: Build Frontend Admin
+        run: |
+          cd frontend/admin
+          npm ci
+          npm run build
 
       - name: Security Vulnerability Scan
         run: npm audit --audit-level=high
