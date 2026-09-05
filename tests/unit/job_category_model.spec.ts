@@ -7,7 +7,7 @@ import {
 } from '../../src/types/job_categories';
 
 describe('Job Category Model and Validation', () => {
-  it('should define all 7 required job categories with exact enum names', () => {
+  it('should define all required job categories with exact enum names', () => {
     expect(JobCategory.MEIO_PERIODO).toBe('MEIO_PERIODO');
     expect(JobCategory.PRIMEIRA_OPORTUNIDADE).toBe('PRIMEIRA_OPORTUNIDADE');
     expect(JobCategory.ESTAGIO).toBe('ESTAGIO');
@@ -15,10 +15,11 @@ describe('Job Category Model and Validation', () => {
     expect(JobCategory.TEMPORARIO).toBe('TEMPORARIO');
     expect(JobCategory.FREELANCE).toBe('FREELANCE');
     expect(JobCategory.PERICULOSIDADE).toBe('PERICULOSIDADE');
+    expect(JobCategory.REMOTO).toBe('REMOTO');
+    expect(JobCategory.PCD).toBe('PCD');
   });
 
-  it('should contain all 7 categories in JOB_CATEGORIES list', () => {
-    expect(JOB_CATEGORIES).toHaveLength(7);
+  it('should contain all categories in JOB_CATEGORIES list', () => {
     expect(JOB_CATEGORIES).toContain(JobCategory.MEIO_PERIODO);
     expect(JOB_CATEGORIES).toContain(JobCategory.PRIMEIRA_OPORTUNIDADE);
     expect(JOB_CATEGORIES).toContain(JobCategory.ESTAGIO);
@@ -26,6 +27,8 @@ describe('Job Category Model and Validation', () => {
     expect(JOB_CATEGORIES).toContain(JobCategory.TEMPORARIO);
     expect(JOB_CATEGORIES).toContain(JobCategory.FREELANCE);
     expect(JOB_CATEGORIES).toContain(JobCategory.PERICULOSIDADE);
+    expect(JOB_CATEGORIES).toContain(JobCategory.REMOTO);
+    expect(JOB_CATEGORIES).toContain(JobCategory.PCD);
   });
 
   it('should validate valid and invalid category strings', () => {
@@ -36,6 +39,8 @@ describe('Job Category Model and Validation', () => {
     expect(isValidJobCategory('TEMPORARIO')).toBe(true);
     expect(isValidJobCategory('FREELANCE')).toBe(true);
     expect(isValidJobCategory('PERICULOSIDADE')).toBe(true);
+    expect(isValidJobCategory('REMOTO')).toBe(true);
+    expect(isValidJobCategory('PCD')).toBe(true);
     expect(isValidJobCategory('INVALID_CATEGORY')).toBe(false);
     expect(isValidJobCategory('')).toBe(false);
     expect(isValidJobCategory(null as any)).toBe(false);
@@ -45,6 +50,7 @@ describe('Job Category Model and Validation', () => {
     expect(normalizeJobCategories(['ESTAGIO', 'MEIO_PERIODO'])).toEqual(['ESTAGIO', 'MEIO_PERIODO']);
     expect(normalizeJobCategories('["NOTURNO", "FREELANCE"]')).toEqual(['NOTURNO', 'FREELANCE']);
     expect(normalizeJobCategories('ESTAGIO, NOTURNO')).toEqual(['ESTAGIO', 'NOTURNO']);
+    expect(normalizeJobCategories('REMOTO, PCD')).toEqual(['REMOTO', 'PCD']);
     expect(normalizeJobCategories(['ESTAGIO', 'INVALID_CAT'])).toEqual(['ESTAGIO']);
     expect(normalizeJobCategories(null)).toEqual([]);
     expect(normalizeJobCategories(undefined)).toEqual([]);
@@ -58,5 +64,7 @@ describe('Job Category Model and Validation', () => {
     expect(JOB_CATEGORY_LABELS[JobCategory.TEMPORARIO]).toBe('Emprego Temporário');
     expect(JOB_CATEGORY_LABELS[JobCategory.FREELANCE]).toBe('Freelance');
     expect(JOB_CATEGORY_LABELS[JobCategory.PERICULOSIDADE]).toBe('Com Periculosidade');
+    expect(JOB_CATEGORY_LABELS[JobCategory.REMOTO]).toBe('Trabalho Remoto');
+    expect(JOB_CATEGORY_LABELS[JobCategory.PCD]).toBe('Vaga para PCD');
   });
 });

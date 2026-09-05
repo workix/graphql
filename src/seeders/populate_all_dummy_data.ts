@@ -282,6 +282,92 @@ async function seedAll() {
       company_id: company.id
     });
 
+    const job11 = await db.Job.create({
+      title: 'Engenheiro de Software Backend Golang / Cloud (100% Remoto)',
+      description: 'Buscamos desenvolvedor Backend para atuar em microsserviços distribuídos de alta escala. Trabalho 100% home office com flexibilidade geográfica total.',
+      requirement: 'Experiência sólida com Go (Golang), microsserviços, gRPC, Docker, Kubernetes e mensageria RabbitMQ/Kafka.',
+      benefits: '100% Remoto, Auxílio Home Office R$ 500/mês, Plano de Saúde Nacional Bradesco Top, Acesso a Cursos e Certificações Cloud, Gympass.',
+      job_category: 'OPERATOR',
+      job_type: 'FULLTIME',
+      employment_type: 'CLT',
+      workplace_type: 'REMOTE',
+      is_remote: true,
+      categories: JSON.stringify(['REMOTO', 'FREELANCE']),
+      min_payment: 13000.00,
+      max_payment: 18000.00,
+      activated: true,
+      featured: true,
+      company_id: company.id
+    });
+
+    const job12 = await db.Job.create({
+      title: 'Analista de Dados & Business Intelligence (Vaga Afirmativa para PCD)',
+      description: 'Oportunidade afirmativa e inclusiva para profissionais com deficiência. Atuação na modelagem de dashboards gerenciais, pipelines de dados e suporte à tomada de decisão.',
+      requirement: 'Conhecimento em SQL, Power BI, Python para análise de dados e estatística básica. Apresentação de laudo médico comprobatório na fase final.',
+      benefits: 'Ambiente 100% acessível, Flexibilidade de horários para consultas e terapias, Vale Refeição R$ 1.200, Plano de Saúde e Odontológico sem coparticipação, Previdência Privada.',
+      job_category: 'OPERATOR',
+      job_type: 'FULLTIME',
+      employment_type: 'CLT',
+      workplace_type: 'HYBRID',
+      is_pcd: true,
+      pcd_details: 'Vaga exclusiva para pessoas com deficiência física, auditiva, visual ou neurodivergência com equipe dedicada de suporte e inclusão.',
+      accessibility_features: JSON.stringify([
+        'Leitor de tela e softwares de acessibilidade homologados',
+        'Ambiente adaptado com rampas e elevadores acessíveis',
+        'Horário flexível para acompanhamento de saúde',
+        'Equipe capacitada em Libras e diversidade'
+      ]),
+      categories: JSON.stringify(['PCD', 'PRIMEIRA_OPORTUNIDADE']),
+      min_payment: 7500.00,
+      max_payment: 9800.00,
+      activated: true,
+      featured: true,
+      company_id: company.id
+    });
+
+    const job13 = await db.Job.create({
+      title: 'Especialista em QA & Testes de Acessibilidade Digital (PCD - 100% Remoto)',
+      description: 'Vaga afirmativa para pessoa com deficiência com atuação 100% remota em todo o Brasil. Foco em garantir padrões WCAG, usabilidade e testes em nossas aplicações Web e Mobile.',
+      requirement: 'Experiência com testes manuais e automatizados (Cypress, Jest), conhecimento das diretrizes WCAG 2.1 e leitores de tela (NVDA, TalkBack, VoiceOver).',
+      benefits: '100% Remoto, Equipamentos ergonômicos e tecnologias assistivas custeadas pela empresa, Auxílio Internet, TotalPass, Horário Flexível.',
+      job_category: 'OPERATOR',
+      job_type: 'FULLTIME',
+      employment_type: 'CLT',
+      workplace_type: 'REMOTE',
+      is_pcd: true,
+      is_remote: true,
+      pcd_details: 'Vaga 100% remota aberta para todo o Brasil destinada exclusivamente a candidatos com deficiência.',
+      accessibility_features: JSON.stringify([
+        'Trabalho 100% em home office sem deslocamento',
+        'Tecnologias assistivas fornecidas pela empresa',
+        'Comunicação assíncrona acessível'
+      ]),
+      categories: JSON.stringify(['PCD', 'REMOTO']),
+      min_payment: 8000.00,
+      max_payment: 11500.00,
+      activated: true,
+      featured: true,
+      company_id: company.id
+    });
+
+    const job14 = await db.Job.create({
+      title: 'Product Designer Sênior UI/UX (Trabalho Remoto)',
+      description: 'Design de interfaces limpas, acessíveis e intuitivas para o ecossistema Workix. Atuação com squads multidisciplinares e pesquisa com usuários.',
+      requirement: 'Domínio de Figma, Design Systems, Design Tokens e prototipação de alta fidelidade.',
+      benefits: '100% Home Office, Bônus anual, Gympass, Convênio médico nacional.',
+      job_category: 'OPERATOR',
+      job_type: 'FULLTIME',
+      employment_type: 'PJ',
+      workplace_type: 'REMOTE',
+      is_remote: true,
+      categories: JSON.stringify(['REMOTO', 'FREELANCE']),
+      min_payment: 11000.00,
+      max_payment: 15000.00,
+      activated: true,
+      featured: false,
+      company_id: company.id
+    });
+
     if (db.JobPosting) {
       await db.JobPosting.create({ company_id: company.id, title: 'Desenvolvedor Frontend Vue.js / TypeScript', description: 'Oportunidade para frontend em Vue.js', location: 'São Paulo', work_type: 'REMOTE' });
     }

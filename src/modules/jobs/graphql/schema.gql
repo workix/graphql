@@ -178,6 +178,8 @@ enum JobCategory {
     TEMPORARIO,
     FREELANCE,
     PERICULOSIDADE,
+    REMOTO,
+    PCD,
     MANAGEMENT,
     OPERATOR
 }

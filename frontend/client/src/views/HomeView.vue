@@ -130,6 +130,8 @@ const loading = ref(false);
 
 const categoryCards = [
   { code: 'ESTAGIO', title: 'Estágio', desc: 'Inicie sua carreira com bolsas e aprendizado prático', icon: 'fa-id-badge', bg: '#eff6ff', color: '#2563eb' },
+  { code: 'REMOTO', title: 'Trabalho Remoto', desc: 'Vagas 100% home office para trabalhar de qualquer lugar', icon: 'fa-globe', bg: '#ecfdf5', color: '#059669' },
+  { code: 'PCD', title: 'Vagas para PCD', desc: 'Oportunidades afirmativas e inclusivas com acessibilidade', icon: 'fa-wheelchair', bg: '#fdf4ff', color: '#a21caf' },
   { code: 'MEIO_PERIODO', title: 'Meio Período', desc: 'Jornadas flexíveis para conciliar com estudos', icon: 'fa-clock-o', bg: '#f0fdf4', color: '#16a34a' },
   { code: 'PRIMEIRA_OPORTUNIDADE', title: 'Primeira Oportunidade', desc: 'Vagas para quem está buscando o primeiro emprego', icon: 'fa-graduation-cap', bg: '#fef3c7', color: '#d97706' },
   { code: 'NOTURNO', title: 'Noturno', desc: 'Oportunidades em turnos noturnos e adicionais', icon: 'fa-moon-o', bg: '#ede9fe', color: '#7c3aed' },

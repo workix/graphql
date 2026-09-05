@@ -4,6 +4,7 @@ import cors from "cors";
 import { graphqlHTTP } from "express-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 
+// Workix GraphQL Server - Reloaded for Job Categories (REMOTO & PCD)
 import resolvers from "./resolvers";
 import typeDefs from "./schemas";
 

@@ -8,5 +8,15 @@ package br.com.codecode.workix.core.enums;
  * @version 1.0
  */
 public enum JobCategory {
-    MANAGEMENT, OPERATOR
+    MEIO_PERIODO,
+    PRIMEIRA_OPORTUNIDADE,
+    ESTAGIO,
+    NOTURNO,
+    TEMPORARIO,
+    FREELANCE,
+    PERICULOSIDADE,
+    REMOTO,
+    PCD,
+    MANAGEMENT,
+    OPERATOR
 }

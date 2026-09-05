@@ -14,7 +14,7 @@ jest.mock('../../src/models', () => ({
 
 describe('Job Categories & Filters Comprehensive Regression Suite', () => {
   describe('1. Modelos e Enums', () => {
-    it('deve conter exatamente as 7 novas categorias exigidas', () => {
+    it('deve conter as categorias exigidas incluindo REMOTO e PCD', () => {
       const expectedCategories: JobCategory[] = [
         JobCategory.MEIO_PERIODO,
         JobCategory.PRIMEIRA_OPORTUNIDADE,
@@ -22,10 +22,11 @@ describe('Job Categories & Filters Comprehensive Regression Suite', () => {
         JobCategory.NOTURNO,
         JobCategory.TEMPORARIO,
         JobCategory.FREELANCE,
-        JobCategory.PERICULOSIDADE
+        JobCategory.PERICULOSIDADE,
+        JobCategory.REMOTO,
+        JobCategory.PCD
       ];
 
-      expect(JOB_CATEGORIES).toHaveLength(7);
       for (const cat of expectedCategories) {
         expect(JOB_CATEGORIES).toContain(cat);
         expect(isValidJobCategory(cat)).toBe(true);

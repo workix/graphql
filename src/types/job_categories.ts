@@ -5,7 +5,11 @@ export enum JobCategory {
   NOTURNO = 'NOTURNO',
   TEMPORARIO = 'TEMPORARIO',
   FREELANCE = 'FREELANCE',
-  PERICULOSIDADE = 'PERICULOSIDADE'
+  PERICULOSIDADE = 'PERICULOSIDADE',
+  REMOTO = 'REMOTO',
+  PCD = 'PCD',
+  MANAGEMENT = 'MANAGEMENT',
+  OPERATOR = 'OPERATOR'
 }
 
 export const JOB_CATEGORIES: JobCategory[] = [
@@ -15,7 +19,11 @@ export const JOB_CATEGORIES: JobCategory[] = [
   JobCategory.NOTURNO,
   JobCategory.TEMPORARIO,
   JobCategory.FREELANCE,
-  JobCategory.PERICULOSIDADE
+  JobCategory.PERICULOSIDADE,
+  JobCategory.REMOTO,
+  JobCategory.PCD,
+  JobCategory.MANAGEMENT,
+  JobCategory.OPERATOR
 ];
 
 export const JOB_CATEGORY_LABELS: Record<JobCategory, string> = {
@@ -25,7 +33,11 @@ export const JOB_CATEGORY_LABELS: Record<JobCategory, string> = {
   [JobCategory.NOTURNO]: 'Noturno',
   [JobCategory.TEMPORARIO]: 'Emprego Temporário',
   [JobCategory.FREELANCE]: 'Freelance',
-  [JobCategory.PERICULOSIDADE]: 'Com Periculosidade'
+  [JobCategory.PERICULOSIDADE]: 'Com Periculosidade',
+  [JobCategory.REMOTO]: 'Trabalho Remoto',
+  [JobCategory.PCD]: 'Vaga para PCD',
+  [JobCategory.MANAGEMENT]: 'Gestão / Liderança',
+  [JobCategory.OPERATOR]: 'Operacional'
 };
 
 export function isValidJobCategory(value: any): value is JobCategory {

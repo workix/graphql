@@ -211,7 +211,9 @@ const availableCategories = [
   { value: 'NOTURNO', title: 'Noturno' },
   { value: 'TEMPORARIO', title: 'Emprego Temporário' },
   { value: 'FREELANCE', title: 'Freelance' },
-  { value: 'PERICULOSIDADE', title: 'Com Periculosidade' }
+  { value: 'PERICULOSIDADE', title: 'Com Periculosidade' },
+  { value: 'REMOTO', title: 'Trabalho Remoto' },
+  { value: 'PCD', title: 'Vaga para PCD' }
 ];
 
 const availableEmploymentTypes = [

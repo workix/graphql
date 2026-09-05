@@ -86,7 +86,9 @@ const categoryLabels: Record<string, string> = {
   NOTURNO: 'Noturno',
   TEMPORARIO: 'Temporário',
   FREELANCE: 'Freelance',
-  PERICULOSIDADE: 'Com Periculosidade'
+  PERICULOSIDADE: 'Com Periculosidade',
+  REMOTO: 'Trabalho Remoto',
+  PCD: 'Vaga para PCD'
 };
 
 function formatCategory(cat: string): string {

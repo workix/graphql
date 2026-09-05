@@ -170,7 +170,9 @@ const availableCategories = [
   { value: 'NOTURNO', label: 'Noturno' },
   { value: 'TEMPORARIO', label: 'Emprego Temporário' },
   { value: 'FREELANCE', label: 'Freelance' },
-  { value: 'PERICULOSIDADE', label: 'Com Periculosidade' }
+  { value: 'PERICULOSIDADE', label: 'Com Periculosidade' },
+  { value: 'REMOTO', label: 'Trabalho Remoto' },
+  { value: 'PCD', label: 'Vaga para PCD' }
 ];
 
 function getCategoryLabel(catVal: string): string {
