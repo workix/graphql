@@ -22,6 +22,9 @@ import { formatGraphQLError, expressErrorHandler } from './utils/error_formatter
 import RabbitmqServer from './factory/rabbitmq_server';
 import { createWebSocketSubscriptionServer } from './subscriptions';
 
+import path from "path";
+import { createMediaRouter } from './modules/media/media.router';
+
 (async () => {
   
   const app = express();
@@ -48,24 +51,30 @@ import { createWebSocketSubscriptionServer } from './subscriptions';
       'x-tenant-domain',
       'x-trace-id',
       'x-correlation-id',
+      'x-file-name',
+      'x-file-context',
       'idempotency-key'
     ],
     exposedHeaders: ['x-trace-id', 'x-idempotent-replay']
   }));
   app.options('*', cors());
 
+  app.use(express.raw({ type: ['image/*', 'application/pdf', 'application/octet-stream', 'multipart/form-data'], limit: '25mb' }));
   app.use(express.json());
   app.use(traceMiddleware());
   app.use(tenantMiddleware());
   app.use(idempotencyMiddleware());
   
+  // Serving estático de uploads de mídia
+  const uploadDir = path.join(process.cwd(), 'uploads', 'media');
+  app.use('/uploads/media', express.static(uploadDir));
   
   const schema = makeExecutableSchema({
     resolvers,
     typeDefs,
   });
   
-  
+  app.use('/api/v1/media', createMediaRouter());
   
   app.use("/graphql",
     extractJWTMiddleware(),
@@ -86,7 +95,7 @@ import { createWebSocketSubscriptionServer } from './subscriptions';
   );
   
   app.use('/health', createHealthRouter(db, mqserver));
-  app.use('/', (req, res) => res.send({ msg: "Workix Graphql" }))
+  app.get('/', (req, res) => res.send({ msg: "Workix Graphql" }));
   
   app.use(expressErrorHandler());
   

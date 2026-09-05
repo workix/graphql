@@ -2,6 +2,7 @@ export interface UploadUrlOptions {
   fileName: string;
   fileType: string;
   context: string;
+  assetId?: string | number;
 }
 
 export interface UploadUrlResult {
