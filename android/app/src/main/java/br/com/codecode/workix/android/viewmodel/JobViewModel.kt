@@ -27,11 +27,60 @@ class JobViewModel(
     private val _applyState = MutableStateFlow<NetworkResult<Boolean>?>(null)
     val applyState: StateFlow<NetworkResult<Boolean>?> = _applyState.asStateFlow()
 
+    private val _searchState = MutableStateFlow<NetworkResult<JobSearchData>?>(null)
+    val searchState: StateFlow<NetworkResult<JobSearchData>?> = _searchState.asStateFlow()
+
+    private val _filterState = MutableStateFlow(JobFilterInput())
+    val filterState: StateFlow<JobFilterInput> = _filterState.asStateFlow()
+
     fun loadJobs(page: Int = 1, limit: Int = 10) {
         viewModelScope.launch {
             _jobsState.value = NetworkResult.Loading
             _jobsState.value = repository.getJobsPaginated(page, limit)
         }
+    }
+
+    fun searchJobs(
+        filter: JobFilterInput = _filterState.value,
+        page: Int = 1,
+        limit: Int = 10
+    ) {
+        viewModelScope.launch {
+            _searchState.value = NetworkResult.Loading
+            _searchState.value = repository.searchJobs(filter, page, limit)
+        }
+    }
+
+    fun updateKeyword(keyword: String?) {
+        _filterState.value = _filterState.value.copy(keyword = keyword)
+        searchJobs()
+    }
+
+    fun toggleCategory(category: String) {
+        val currentCategories = _filterState.value.categories?.toMutableList() ?: mutableListOf()
+        if (currentCategories.contains(category)) {
+            currentCategories.remove(category)
+        } else {
+            currentCategories.add(category)
+        }
+        _filterState.value = _filterState.value.copy(categories = currentCategories)
+        searchJobs()
+    }
+
+    fun setCategory(category: String?) {
+        val list = if (category.isNullOrBlank()) null else listOf(category)
+        _filterState.value = _filterState.value.copy(categories = list)
+        searchJobs()
+    }
+
+    fun setEmploymentType(employmentType: String?) {
+        _filterState.value = _filterState.value.copy(employmentType = employmentType)
+        searchJobs()
+    }
+
+    fun clearFilters() {
+        _filterState.value = JobFilterInput()
+        searchJobs()
     }
 
     fun loadJobDetail(jobId: String) {

@@ -68,9 +68,9 @@
 
 ## 12. Aplicativo Android: Filtros de Busca
 
-- [ ] 12.1 Implementar tela/bottom sheet de filtros com seleção de categorias e tipo de contratação
-- [ ] 12.2 Conectar os filtros à busca consumindo a query GraphQL `searchJobs`
-- [ ] 12.3 Exibir badges e filtros ativos na listagem de resultados
+- [x] 12.1 Implementar tela/bottom sheet de filtros com seleção de categorias e tipo de contratação
+- [x] 12.2 Conectar os filtros à busca consumindo a query GraphQL `searchJobs`
+- [x] 12.3 Exibir badges e filtros ativos na listagem de resultados
 
 ## 13. Aplicativo Android: Navegação por Categorias
 

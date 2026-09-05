@@ -148,4 +148,73 @@ class JobRepository {
                 NetworkResult.Error(e.message ?: "Erro ao enviar candidatura para a vaga")
             }
         }
+
+    suspend fun searchJobs(filter: JobFilterInput = JobFilterInput(), page: Int = 1, limit: Int = 10): NetworkResult<JobSearchData> =
+        withContext(Dispatchers.IO) {
+            try {
+                val query = """
+                    query SearchJobs(${'$'}query: String, ${'$'}filter: JobSearchFilterInput, ${'$'}page: Int, ${'$'}limit: Int) {
+                        searchJobs(query: ${'$'}query, filter: ${'$'}filter, page: ${'$'}page, limit: ${'$'}limit) {
+                            jobs {
+                                id
+                                title
+                                description
+                                benefits
+                                requirement
+                                jobCategory
+                                jobType
+                                categories
+                                employmentType
+                                isPcd
+                                isRemote
+                                minPayment
+                                maxPayment
+                                featured
+                                activated
+                                createdAt
+                                company {
+                                    id
+                                    name
+                                    description
+                                    logo
+                                }
+                            }
+                            totalCount
+                            page
+                            totalPages
+                            facets {
+                                categories
+                                employmentTypes
+                            }
+                        }
+                    }
+                """.trimIndent()
+
+                val variables = mutableMapOf<String, Any?>()
+                if (!filter.keyword.isNullOrBlank()) {
+                    variables["query"] = filter.keyword
+                }
+                val filterMap = filter.toMap()
+                if (filterMap.isNotEmpty()) {
+                    variables["filter"] = filterMap
+                }
+                variables["page"] = page
+                variables["limit"] = limit
+
+                val response = GraphQLApiClient.execute(
+                    query = query,
+                    variables = variables,
+                    responseType = JobSearchResponse::class.java
+                )
+
+                val data = response?.searchJobs
+                if (data != null) {
+                    NetworkResult.Success(data)
+                } else {
+                    NetworkResult.Error("Nenhum resultado encontrado para a busca")
+                }
+            } catch (e: Exception) {
+                NetworkResult.Error(e.message ?: "Erro ao buscar vagas")
+            }
+        }
 }
