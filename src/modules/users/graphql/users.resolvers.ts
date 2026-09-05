@@ -27,13 +27,22 @@ const usersResolvers = {
     createUser: async (parent, args, ctx, info) => {
       const user = await usersRepository(ctx.orm).create(args)
 
-      await createIndex(user)
+      try {
+        await createIndex(user)
+      } catch (esErr) {
+        console.warn('[USERS] Aviso ao indexar no ElasticSearch:', esErr);
+      }
 
-      const message = {action: "welcome", user}
-      
-      await ctx.mqserver.publishInQueue('notifications', JSON.stringify(message));
+      try {
+        const message = {action: "welcome", user}
+        if (ctx?.mqserver?.publishInQueue) {
+          await ctx.mqserver.publishInQueue('notifications', JSON.stringify(message));
+        }
+      } catch (mqErr) {
+        console.warn('[USERS] Aviso ao publicar no RabbitMQ:', mqErr);
+      }
 
-      return new UserDTO(user) ;
+      return new UserDTO(user);
     },
     deleteUser: async (parent, args, ctx, info) => {
       const deleted = await usersRepository(ctx.orm).destroy(args)

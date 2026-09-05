@@ -34,6 +34,37 @@ const usersRepository = (db: any) => {
     const create = async (args: any) => {        
         const user = await User.create(new CreateUserDTO(args.input) as any)        
         await user.reload()
+
+        // Atribui automaticamente o plano Free ao novo usuário
+        try {
+            const { SubscriptionPlan, UserSubscription } = require('../../../models');
+            if (SubscriptionPlan && UserSubscription) {
+                let freePlan = null;
+                if (typeof SubscriptionPlan.findOne === 'function') {
+                    freePlan = await SubscriptionPlan.findOne({ where: { price: 0 } });
+                    if (!freePlan) {
+                        freePlan = await SubscriptionPlan.findOne({ where: { name: 'Workix Free (Candidato)' } });
+                    }
+                }
+
+                const now = new Date();
+                const expiresAt = new Date(now.getFullYear() + 10, now.getMonth(), now.getDate());
+
+                if (typeof UserSubscription.create === 'function') {
+                    await UserSubscription.create({
+                        user_id: user.id,
+                        plan_id: freePlan ? freePlan.id : 1,
+                        status: 'ACTIVE',
+                        inmail_credits_remaining: 0,
+                        started_at: now,
+                        expires_at: expiresAt
+                    });
+                }
+            }
+        } catch (subErr) {
+            console.warn('[AUTH] Aviso ao atribuir plano Free padrão ao novo usuário:', subErr);
+        }
+
         return user;
     }
 

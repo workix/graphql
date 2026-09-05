@@ -97,6 +97,7 @@ input CompanyInput {
     industry: String
     location: String
     description: String
+    userId: ID
 }
 
 input CompanyPageInput {

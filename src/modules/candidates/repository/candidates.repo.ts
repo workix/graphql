@@ -47,6 +47,41 @@ const candidatesRepository = (db: any) => {
         try {
             const candidate = await Candidate.create(new CreateCandidateDTO(args.input) as any)
             await candidate.reload()
+
+            // Garante assinatura no plano Free se o usuário ainda não possuir
+            try {
+                const { SubscriptionPlan, UserSubscription } = require('../../../models');
+                if (SubscriptionPlan && UserSubscription && candidate.user_id) {
+                    const existing = typeof UserSubscription.findOne === 'function'
+                        ? await UserSubscription.findOne({ where: { user_id: candidate.user_id } })
+                        : null;
+
+                    if (!existing && typeof UserSubscription.create === 'function') {
+                        let freePlan = null;
+                        if (typeof SubscriptionPlan.findOne === 'function') {
+                            freePlan = await SubscriptionPlan.findOne({ where: { price: 0 } });
+                            if (!freePlan) {
+                                freePlan = await SubscriptionPlan.findOne({ where: { name: 'Workix Free (Candidato)' } });
+                            }
+                        }
+
+                        const now = new Date();
+                        const expiresAt = new Date(now.getFullYear() + 10, now.getMonth(), now.getDate());
+
+                        await UserSubscription.create({
+                            user_id: candidate.user_id,
+                            plan_id: freePlan ? freePlan.id : 1,
+                            status: 'ACTIVE',
+                            inmail_credits_remaining: 0,
+                            started_at: now,
+                            expires_at: expiresAt
+                        });
+                    }
+                }
+            } catch (subErr) {
+                console.warn('[CANDIDATES] Aviso ao atribuir plano Free padrão ao candidato:', subErr);
+            }
+
             return candidate;    
         } catch (error: any) {
             console.error(error)

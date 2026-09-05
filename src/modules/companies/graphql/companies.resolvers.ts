@@ -31,7 +31,7 @@ const companiesResolvers = {
   },
   Mutation: {
     createCompany: async (parent, args, ctx, info) => {
-      const company = await companiesRepository(ctx.orm).create(args)
+      const company = await companiesRepository(ctx.orm).create(args, ctx)
       return new CompanyDTO(company);
     },
     deleteCompany: async (parent, args, ctx, info) => {

@@ -47,11 +47,53 @@ const companiesRepository = db => {
         return company;
     }
 
-    const create = async args => {
+    const create = async (args, ctx?: any) => {
         try {
-            const options: any = args.input.medias ? { include: { model: CompanyMedia, as: "medias" } } : {}
-            const company = await Company.create(new CreateCompanyDTO(args.input), options)
+            const { User } = require('../../../models');
+            const inputData = { ...args.input };
+            
+            if (!inputData.userId && !inputData.user_id) {
+                if (ctx?.user?.id) {
+                    inputData.userId = ctx.user.id;
+                } else if (inputData.email && User && typeof User.findOne === 'function') {
+                    const foundUser = await User.findOne({ where: { email: inputData.email } });
+                    if (foundUser) {
+                        inputData.userId = foundUser.id;
+                    }
+                }
+            }
+
+            const options: any = inputData.medias ? { include: { model: CompanyMedia, as: "medias" } } : {}
+            const company = await Company.create(new CreateCompanyDTO(inputData), options)
             await company.reload()
+
+            // Atribui automaticamente o plano Free corporativo para a nova empresa
+            try {
+                const { Plan, Subscription } = require('../../../models');
+                if (Plan && Subscription) {
+                    let freePlan = null;
+                    if (typeof Plan.findOne === 'function') {
+                        freePlan = await Plan.findOne({ where: { code: 'free_v1' } });
+                    }
+
+                    const now = new Date();
+                    const periodEnd = new Date(now.getFullYear() + 10, now.getMonth(), now.getDate());
+
+                    if (typeof Subscription.create === 'function') {
+                        await Subscription.create({
+                            organization_id: company.id,
+                            plan_id: freePlan ? freePlan.id : 1,
+                            status: 'active',
+                            current_period_start: now,
+                            current_period_end: periodEnd,
+                            founder_discount_pct: 0.0
+                        });
+                    }
+                }
+            } catch (compSubErr) {
+                console.warn('[COMPANIES] Aviso ao atribuir plano Free padrão para a nova empresa:', compSubErr);
+            }
+
             return company;
         } catch (error) {
             console.error(error)
