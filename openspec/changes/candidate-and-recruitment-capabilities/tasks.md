@@ -7,10 +7,10 @@
 
 ## 2. Regras de Negócio e APIs: Status do Candidato e Privacidade
 
-- [ ] 2.1 Adicionar novos campos de status de carreira no schema GraphQL (`Candidate`, `CandidateInput`, `UpdateCandidateProfileInput`)
-- [ ] 2.2 Atualizar resolvers de mutação do candidato (`updateCandidateProfile`) e DTOs correspondentes
-- [ ] 2.3 Atualizar `VisibilityService` / `reveal()` para respeitar as preferências de visibilidade dos status de carreira
-- [ ] 2.4 Criar testes unitários para as mutations e validações dos status de carreira
+- [x] 2.1 Adicionar novos campos de status de carreira no schema GraphQL (`Candidate`, `CandidateInput`, `UpdateCandidateProfileInput`)
+- [x] 2.2 Atualizar resolvers de mutação do candidato (`updateCandidateProfile`) e DTOs correspondentes
+- [x] 2.3 Atualizar `VisibilityService` / `reveal()` para respeitar as preferências de visibilidade dos status de carreira
+- [x] 2.4 Criar testes unitários para as mutations e validações dos status de carreira
 
 ## 3. Regras de Negócio e APIs: Currículo Normalizado em Markdown
 

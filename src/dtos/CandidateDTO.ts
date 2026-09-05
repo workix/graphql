@@ -15,6 +15,10 @@ export default class CandidateDTO {
         this.name = candidate.name
         this.birthDate = candidate.birth_date
         this.cpf = candidate.cpf
-        this.userId = candidate.user_id   
+        this.userId = candidate.user_id
+        this.lookingForJob = Boolean(candidate.looking_for_job)
+        this.inCareerTransition = Boolean(candidate.in_career_transition)
+        this.careerTransitionTarget = candidate.career_transition_target || null
+        this.acceptsEntryLevel = Boolean(candidate.accepts_entry_level)
     }
 }

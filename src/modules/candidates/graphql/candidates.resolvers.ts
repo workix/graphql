@@ -69,6 +69,14 @@ const candidatesResolvers = {
       await setRedis(`candidate-${candidate.id}`, JSON.stringify(candidate));
       return new CandidateDTO(candidate);
     },
+    updateCandidateCareerStatus: async (parent, args, ctx, info) => {
+      const candidate = await candidatesRepository(ctx.orm).update({
+        id: args.candidateId,
+        input: args.input
+      });
+      await setRedis(`candidate-${candidate.id}`, JSON.stringify(candidate));
+      return new CandidateDTO(candidate);
+    },
     updateVisibilitySettings: async (parent, args, ctx, info) => {
       const { visibilityService } = require('../services/visibility.service');
       const settings = await visibilityService.updateSettings(args.candidateId, {
@@ -129,6 +137,28 @@ const candidatesResolvers = {
     resume: async (parent, args, ctx, info) => {
       const resumes = await ctx.dataloaders.resumesLoader.load({ key: parent.id, info })
       return new ResumeDTO(resumes[0]);
+    },
+    normalizedResume: async (parent, args, ctx, info) => {
+      const { NormalizedResume } = require('../../../models');
+      const resume = await NormalizedResume.findOne({ where: { candidate_id: parent.id } });
+      if (!resume) return null;
+      let skillsArray = [];
+      try {
+        skillsArray = Array.isArray(resume.skills) ? resume.skills : JSON.parse(resume.skills || '[]');
+      } catch {
+        skillsArray = typeof resume.skills === 'string' ? resume.skills.split(',').map((s: string) => s.trim()) : [];
+      }
+      return {
+        id: resume.id,
+        candidateId: resume.candidate_id,
+        rawMarkdown: resume.raw_markdown,
+        summary: resume.summary,
+        skills: skillsArray,
+        careerGoals: resume.career_goals,
+        completenessScore: resume.completeness_score,
+        createdAt: resume.created_at,
+        updatedAt: resume.updated_at
+      };
     },
     visibilitySettings: async (parent, args, ctx, info) => {
       const { visibilityService } = require('../services/visibility.service');

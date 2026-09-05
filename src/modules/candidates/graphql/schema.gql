@@ -14,6 +14,7 @@ type Mutation {
     createCandidate(input: CandidateInput!): Candidate
     deleteCandidate(id: ID!) : Boolean
     updateCandidate(id: ID!, input: CandidateInput!): Candidate
+    updateCandidateCareerStatus(candidateId: ID!, input: CandidateCareerStatusInput!): Candidate
     updateVisibilitySettings(candidateId: ID!, input: VisibilitySettingsInput!): VisibilitySettings
     notifyCandidate(input: NotificationInput!): Boolean
     unlockCandidateContact(organizationId: ID!, userId: ID!, candidateId: ID!): ContactUnlockResult
@@ -38,7 +39,31 @@ type Candidate {
     cpf: Float   
     user: User 
     resume: Resume
+    normalizedResume: NormalizedResume
     visibilitySettings: VisibilitySettings
+    lookingForJob: Boolean
+    inCareerTransition: Boolean
+    careerTransitionTarget: String
+    acceptsEntryLevel: Boolean
+}
+
+type NormalizedResume {
+    id: ID
+    candidateId: ID
+    rawMarkdown: String
+    summary: String
+    skills: [String]
+    careerGoals: String
+    completenessScore: Int
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+input CandidateCareerStatusInput {
+    lookingForJob: Boolean
+    inCareerTransition: Boolean
+    careerTransitionTarget: String
+    acceptsEntryLevel: Boolean
 }
 
 type VisibilitySettings {
@@ -79,7 +104,11 @@ input CandidateInput {
     name: String!
     birthDate: Date!
     cpf: Float   
-    userId: Int!    
+    userId: Int!
+    lookingForJob: Boolean
+    inCareerTransition: Boolean
+    careerTransitionTarget: String
+    acceptsEntryLevel: Boolean
 }
 
 type PaginatedListCandidate {
