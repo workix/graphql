@@ -39,6 +39,11 @@ object ApiClient {
             .build()
     }
 
+    val client: OkHttpClient
+        get() = okHttpClient
+
+    fun getBaseUrl(): String = baseUrl
+
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(baseUrl)
