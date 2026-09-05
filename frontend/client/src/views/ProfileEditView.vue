@@ -97,14 +97,65 @@
                     </div>
                   </div>
                   <div class="toggle-switch">
-                    <label class="switch">
-                      <input type="checkbox" v-model="form.openToWork" />
-                      <span class="slider round"></span>
-                    </label>
+                <!-- Career Status Controls -->
+                <div class="career-status-box">
+                  <h4 class="sub-heading"><i class="fa fa-id-card-o"></i> Status Profissional e de Carreira</h4>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="checkbox-option-card" :class="{ 'selected': form.lookingForJob }">
+                        <label>
+                          <input type="checkbox" v-model="form.lookingForJob" />
+                          <div class="opt-label">
+                            <strong><i class="fa fa-dot-circle-o text-success"></i> Procurando Emprego</strong>
+                            <span>Sinaliza disponibilidade imediata para vagas e processos seletivos.</span>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="checkbox-option-card" :class="{ 'selected': form.acceptsEntryLevel }">
+                        <label>
+                          <input type="checkbox" v-model="form.acceptsEntryLevel" />
+                          <div class="opt-label">
+                            <strong><i class="fa fa-bolt text-primary"></i> Aceita Oportunidades Júnior / Entrada</strong>
+                            <span>Aberto a cargos com foco em aprendizado e adaptação acelerada.</span>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="transition-card mt-3" :class="{ 'active': form.inCareerTransition }">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="toggle-text">
+                        <strong><i class="fa fa-exchange text-purple"></i> Em Transição de Carreira</strong>
+                        <p class="mb-0 text-muted small">Ative se você está migrando de área de atuação profissional.</p>
+                      </div>
+                      <label class="switch">
+                        <input type="checkbox" v-model="form.inCareerTransition" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div v-if="form.inCareerTransition" class="transition-target-input mt-3">
+                      <label class="small font-weight-bold">Área / Cargo Alvo da Transição</label>
+                      <input
+                        v-model="form.careerTransitionTarget"
+                        type="text"
+                        class="form-control"
+                        placeholder="Ex: Product Manager, DevOps, Ciência de Dados, UI/UX..."
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div class="form-actions">
+                <!-- Normalized Markdown Resume Editor Section -->
+                <NormalizedResumeEditor
+                  v-model="form.normalizedResume"
+                  :candidate-profile="form"
+                  @score-change="handleResumeScoreChange"
+                />
+
+                <div class="form-actions mt-4">
                   <button type="submit" class="btn btn-primary btn-save" :disabled="profilesStore.isSaving">
                     <i v-if="profilesStore.isSaving" class="fa fa-spinner fa-spin"></i>
                     <i v-else class="fa fa-save"></i>
@@ -240,6 +291,7 @@ import { useAuthStore } from '../stores/auth';
 import useProfilesStore from '../stores/profiles';
 import SkillEndorsementsSection from '../components/SkillEndorsementsSection.vue';
 import RecommendationsSection from '../components/RecommendationsSection.vue';
+import NormalizedResumeEditor from '../components/NormalizedResumeEditor.vue';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 
@@ -256,7 +308,13 @@ const form = reactive({
   bannerUrl: '',
   location: '',
   industry: '',
-  openToWork: false
+  openToWork: false,
+  lookingForJob: false,
+  inCareerTransition: false,
+  careerTransitionTarget: '',
+  acceptsEntryLevel: false,
+  normalizedResume: '',
+  resumeScore: 0,
 });
 
 const newFeatured = reactive({
@@ -264,6 +322,10 @@ const newFeatured = reactive({
   title: '',
   url: ''
 });
+
+function handleResumeScoreChange(score: number) {
+  form.resumeScore = score;
+}
 
 onMounted(async () => {
   await profilesStore.fetchMyProfile();
@@ -274,6 +336,11 @@ onMounted(async () => {
     form.location = profilesStore.myProfile.location || '';
     form.industry = profilesStore.myProfile.industry || '';
     form.openToWork = !!profilesStore.myProfile.openToWork;
+    form.lookingForJob = !!profilesStore.myProfile.lookingForJob;
+    form.inCareerTransition = !!profilesStore.myProfile.inCareerTransition;
+    form.careerTransitionTarget = profilesStore.myProfile.careerTransitionTarget || '';
+    form.acceptsEntryLevel = !!profilesStore.myProfile.acceptsEntryLevel;
+    form.normalizedResume = profilesStore.myProfile.normalizedResume?.rawMarkdown || profilesStore.myProfile.normalizedResume || '';
   }
 });
 
@@ -288,9 +355,14 @@ async function handleSaveProfile() {
       bannerUrl: form.bannerUrl,
       location: form.location,
       industry: form.industry,
-      openToWork: form.openToWork
+      openToWork: form.openToWork,
+      lookingForJob: form.lookingForJob,
+      inCareerTransition: form.inCareerTransition,
+      careerTransitionTarget: form.careerTransitionTarget,
+      acceptsEntryLevel: form.acceptsEntryLevel,
+      normalizedResume: form.normalizedResume,
     });
-    successMessage.value = 'Perfil atualizado com sucesso!';
+    successMessage.value = 'Perfil e currículo atualizados com sucesso!';
     setTimeout(() => {
       successMessage.value = '';
     }, 4000);
@@ -675,5 +747,77 @@ input:checked + .slider:before {
   font-size: 12px;
   color: #64748b;
   margin: 0;
+}
+
+.career-status-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-top: 20px;
+}
+
+.career-status-box .sub-heading {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 14px;
+}
+
+.checkbox-option-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 12px 14px;
+  transition: all 0.2s;
+  height: 100%;
+}
+
+.checkbox-option-card.selected {
+  border-color: #0284c7;
+  background: #f0f9ff;
+}
+
+.checkbox-option-card label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.checkbox-option-card input[type="checkbox"] {
+  margin-top: 4px;
+}
+
+.opt-label strong {
+  display: block;
+  font-size: 13px;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+
+.opt-label span {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.transition-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 14px 16px;
+  transition: all 0.2s;
+}
+
+.transition-card.active {
+  border-color: #8b5cf6;
+  background: #faf5ff;
+}
+
+.text-purple {
+  color: #8b5cf6;
 }
 </style>

@@ -49,10 +49,10 @@
 
 ## 8. Frontend Web: Status do Candidato e Currículo Markdown
 
-- [ ] 8.1 Criar componente de configuração de status de carreira no painel de perfil do candidato (Web Cliente)
-- [ ] 8.2 Desenvolver o editor de Markdown com preview em tempo real e botão de normalização automática do currículo
-- [ ] 8.3 Implementar componente de visualização segura e badges visuais no perfil público do candidato
-- [ ] 8.4 Integrar novos filtros de candidatos na página de busca de talentos
+- [x] 8.1 Criar componente de configuração de status de carreira no painel de perfil do candidato (Web Cliente)
+- [x] 8.2 Desenvolver o editor de Markdown com preview em tempo real e botão de normalização automática do currículo
+- [x] 8.3 Implementar componente de visualização segura e badges visuais no perfil público do candidato
+- [x] 8.4 Integrar novos filtros de candidatos na página de busca de talentos
 
 ## 9. Frontend Web: Vagas Confidenciais e Gestão de Vagas
 

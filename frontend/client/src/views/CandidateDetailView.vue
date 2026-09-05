@@ -20,6 +20,15 @@
                 <span v-if="candidate.carrerLevel" class="badge-level">
                   {{ candidate.carrerLevel }}
                 </span>
+                <span v-if="candidate.lookingForJob || candidate.candidate?.lookingForJob" class="badge-status-pill looking-job">
+                  <i class="fa fa-dot-circle-o"></i> Procurando Emprego
+                </span>
+                <span v-if="candidate.inCareerTransition || candidate.candidate?.inCareerTransition" class="badge-status-pill transition">
+                  <i class="fa fa-exchange"></i> Em Transição de Carreira
+                </span>
+                <span v-if="candidate.acceptsEntryLevel || candidate.candidate?.acceptsEntryLevel" class="badge-status-pill entry-level">
+                  <i class="fa fa-bolt"></i> Aceita Júnior / Entrada
+                </span>
               </div>
               <div class="banner-meta">
                 <span>
@@ -33,6 +42,9 @@
                 <span class="badge-presence">
                   <i class="fa fa-laptop"></i> {{ candidate.presence || 'REMOTE' }}
                 </span>
+                <span v-if="candidate.careerTransitionTarget || candidate.candidate?.careerTransitionTarget" class="badge-target">
+                  <i class="fa fa-bullseye"></i> Alvo: {{ candidate.careerTransitionTarget || candidate.candidate?.careerTransitionTarget }}
+                </span>
               </div>
             </div>
           </div>
@@ -43,7 +55,18 @@
       <div class="container section-padding">
         <div class="row">
           <div class="col-md-8">
-            <!-- Objetivo & Resumo -->
+            <!-- Normalized Markdown Resume Box if Available -->
+            <div v-if="candidate.normalizedResume || candidate.candidate?.normalizedResume" class="content-box resume-markdown-box mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="section-heading mb-0"><i class="fa fa-file-text-o text-primary"></i> Currículo Estruturado (Markdown)</h3>
+                <span v-if="completenessScore" class="score-badge">
+                  <i class="fa fa-check-circle"></i> {{ completenessScore }}% Completo
+                </span>
+              </div>
+              <div class="markdown-rendered-view markdown-body" v-html="renderedMarkdownResume"></div>
+            </div>
+
+            <!-- Objetivo & Resumo Tradicional -->
             <div class="content-box">
               <h3 class="section-heading"><i class="fa fa-user"></i> Resumo Profissional</h3>
               <p class="section-text">
@@ -130,7 +153,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
@@ -140,6 +163,35 @@ import { resumesService } from '../services/resumes';
 const route = useRoute();
 const candidate = ref<any>(null);
 const loading = ref(false);
+
+const completenessScore = computed(() => {
+  const norm = candidate.value?.normalizedResume || candidate.value?.candidate?.normalizedResume;
+  return norm?.completenessScore || norm?.completeness_score || 0;
+});
+
+const renderedMarkdownResume = computed(() => {
+  const norm = candidate.value?.normalizedResume || candidate.value?.candidate?.normalizedResume;
+  const raw = norm?.rawMarkdown || norm?.raw_markdown || (typeof norm === 'string' ? norm : '');
+  if (!raw.trim()) return '';
+
+  let html = raw
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+  html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+  html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+  html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+  html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+  html = html.replace(/\[([^[]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  html = html.replace(/^\- (.*$)/gim, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>)/gims, '<ul>$1</ul>');
+  html = html.replace(/\n\n+/gim, '</p><p>');
+  html = `<p>${html}</p>`;
+
+  return html;
+});
 
 async function loadCandidate() {
   loading.value = true;
@@ -222,6 +274,62 @@ onMounted(() => {
   border-radius: 6px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+}
+
+.badge-status-pill {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.badge-status-pill.looking-job {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.badge-status-pill.transition {
+  background: #8b5cf6;
+  color: #ffffff;
+}
+
+.badge-status-pill.entry-level {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.badge-target {
+  background: rgba(139, 92, 246, 0.2);
+  color: #c4b5fd !important;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+}
+
+.resume-markdown-box {
+  border-left: 4px solid #6366f1;
+}
+
+.score-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.markdown-rendered-view {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px 24px;
 }
 
 .banner-meta {

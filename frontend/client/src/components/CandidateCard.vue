@@ -30,6 +30,15 @@
             <i class="fa fa-laptop"></i>
             {{ candidate.presence || 'Remoto / Híbrido' }}
           </span>
+          <span v-if="candidate.lookingForJob || candidate.candidate?.lookingForJob" class="meta-badge looking-job">
+            <i class="fa fa-dot-circle-o"></i> Procurando Emprego
+          </span>
+          <span v-if="candidate.inCareerTransition || candidate.candidate?.inCareerTransition" class="meta-badge transition">
+            <i class="fa fa-exchange"></i> Transição: {{ candidate.careerTransitionTarget || candidate.candidate?.careerTransitionTarget || 'Nova Carreira' }}
+          </span>
+          <span v-if="candidate.acceptsEntryLevel || candidate.candidate?.acceptsEntryLevel" class="meta-badge entry-level">
+            <i class="fa fa-bolt"></i> Aceita Júnior/Entrada
+          </span>
         </div>
       </div>
     </div>
@@ -53,9 +62,17 @@ interface Candidate {
   carrerLevel?: string;
   objective?: string;
   presence?: string;
+  lookingForJob?: boolean;
+  inCareerTransition?: boolean;
+  careerTransitionTarget?: string;
+  acceptsEntryLevel?: boolean;
   candidate?: {
     name?: string;
     locale?: { city?: string; state?: string };
+    lookingForJob?: boolean;
+    inCareerTransition?: boolean;
+    careerTransitionTarget?: string;
+    acceptsEntryLevel?: boolean;
   };
 }
 
@@ -178,6 +195,45 @@ defineProps<{
 .meta-badge.presence {
   background: #f1f5f9;
   color: #334155;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.meta-badge.looking-job {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.meta-badge.transition {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.meta-badge.entry-level {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
   font-size: 12px;
   font-weight: 600;
   padding: 3px 10px;

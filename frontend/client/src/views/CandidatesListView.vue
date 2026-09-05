@@ -50,18 +50,36 @@
               </div>
             </div>
 
-            <!-- Modalidade / Presença -->
+            <!-- Status de Carreira e Disponibilidade -->
             <div class="filter-group">
-              <label class="filter-label">Modalidade de Trabalho</label>
+              <label class="filter-label">Status & Transição de Carreira</label>
+              <div class="checkbox-filter-list">
+                <label class="checkbox-item">
+                  <input type="checkbox" v-model="filterLookingForJob" />
+                  <span><i class="fa fa-dot-circle-o text-success"></i> Procurando Emprego</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" v-model="filterInTransition" />
+                  <span><i class="fa fa-exchange text-purple"></i> Em Transição de Carreira</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" v-model="filterAcceptsEntryLevel" />
+                  <span><i class="fa fa-bolt text-primary"></i> Aceita Júnior / Entrada</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Cargo Alvo de Transição -->
+            <div v-if="filterInTransition" class="filter-group">
+              <label class="filter-label">Área / Cargo Alvo</label>
               <div class="input-icon-wrap">
-                <i class="fa fa-laptop"></i>
-                <select v-model="presence" class="custom-form-control custom-select">
-                  <option value="">Todas as Modalidades</option>
-                  <option value="REMOTE">Remoto (REMOTE)</option>
-                  <option value="OFFICE">Presencial (OFFICE)</option>
-                  <option value="RELOCATION">Disponível para Mudança</option>
-                  <option value="TRAVEL_A_LOT">Viagens Frequentes</option>
-                </select>
+                <i class="fa fa-bullseye"></i>
+                <input
+                  type="text"
+                  v-model="transitionTarget"
+                  class="custom-form-control"
+                  placeholder="Ex: Product, UX, Dados..."
+                />
               </div>
             </div>
 
@@ -111,25 +129,38 @@ import { resumesService } from '../services/resumes';
 const searchQuery = ref('');
 const carrerLevel = ref('');
 const presence = ref('');
+const filterLookingForJob = ref(false);
+const filterInTransition = ref(false);
+const transitionTarget = ref('');
+const filterAcceptsEntryLevel = ref(false);
 const currentPage = ref(1);
 const pageSize = 10;
 const allCandidatesList = ref<any[]>([]);
 const loading = ref(false);
 
 const hasActiveFilters = computed(() => {
-  return !!(searchQuery.value || carrerLevel.value || presence.value);
+  return !!(
+    searchQuery.value ||
+    carrerLevel.value ||
+    presence.value ||
+    filterLookingForJob.value ||
+    filterInTransition.value ||
+    transitionTarget.value ||
+    filterAcceptsEntryLevel.value
+  );
 });
 
 const filteredCandidates = computed(() => {
   return allCandidatesList.value.filter((cand) => {
-    // 1. Filtro de Palavra-chave (Nome, Objetivo, Conteúdo, Skills)
+    // 1. Filtro de Palavra-chave (Nome, Objetivo, Conteúdo, Skills, Currículo)
     if (searchQuery.value.trim()) {
       const q = searchQuery.value.toLowerCase().trim();
       const nameMatch = (cand.candidate?.name || cand.name || '').toLowerCase().includes(q);
       const objMatch = (cand.objective || '').toLowerCase().includes(q);
       const contentMatch = (cand.content || '').toLowerCase().includes(q);
       const skillMatch = (cand.skills || []).some((s: any) => (s.skillName || '').toLowerCase().includes(q));
-      if (!nameMatch && !objMatch && !contentMatch && !skillMatch) {
+      const resumeMatch = (cand.normalizedResume?.rawMarkdown || '').toLowerCase().includes(q);
+      if (!nameMatch && !objMatch && !contentMatch && !skillMatch && !resumeMatch) {
         return false;
       }
     }
@@ -150,6 +181,29 @@ const filteredCandidates = computed(() => {
       }
     }
 
+    // 4. Filtros de Status de Carreira
+    if (filterLookingForJob.value) {
+      const isLooking = cand.lookingForJob || cand.candidate?.lookingForJob;
+      if (!isLooking) return false;
+    }
+
+    if (filterInTransition.value) {
+      const isTransition = cand.inCareerTransition || cand.candidate?.inCareerTransition;
+      if (!isTransition) return false;
+
+      if (transitionTarget.value.trim()) {
+        const target = (cand.careerTransitionTarget || cand.candidate?.careerTransitionTarget || '').toLowerCase();
+        if (!target.includes(transitionTarget.value.toLowerCase().trim())) {
+          return false;
+        }
+      }
+    }
+
+    if (filterAcceptsEntryLevel.value) {
+      const isEntry = cand.acceptsEntryLevel || cand.candidate?.acceptsEntryLevel;
+      if (!isEntry) return false;
+    }
+
     return true;
   });
 });
@@ -167,6 +221,10 @@ function clearFilters() {
   searchQuery.value = '';
   carrerLevel.value = '';
   presence.value = '';
+  filterLookingForJob.value = false;
+  filterInTransition.value = false;
+  transitionTarget.value = '';
+  filterAcceptsEntryLevel.value = false;
   currentPage.value = 1;
 }
 
@@ -322,6 +380,30 @@ onMounted(() => {
 .custom-select {
   cursor: pointer;
   appearance: auto;
+}
+
+.checkbox-filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #334155;
+  cursor: pointer;
+  margin: 0;
+}
+
+.checkbox-item input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.text-purple {
+  color: #8b5cf6;
 }
 
 .filter-stats {
