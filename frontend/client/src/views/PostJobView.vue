@@ -25,12 +25,11 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Tipo de Contrato *</label>
-                    <select v-model="contractType" class="form-control" required>
+                    <label>Tipo de Contratação *</label>
+                    <select v-model="employmentType" class="form-control" required>
                       <option value="CLT">CLT</option>
                       <option value="PJ">PJ</option>
-                      <option value="ESTAGIO">Estágio</option>
-                      <option value="REMOTO">Remoto</option>
+                      <option value="CONTRATO_TEMPORARIO">Contrato Temporário</option>
                     </select>
                   </div>
                 </div>
@@ -39,6 +38,16 @@
                     <label>Faixa Salarial (R$)</label>
                     <input type="text" v-model="salary" class="form-control" placeholder="Ex: 8.000 - 10.000" />
                   </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Categorias da Vaga (Multi-Seleção)</label>
+                <div class="category-checkboxes">
+                  <label v-for="cat in availableCategories" :key="cat.value" class="checkbox-inline mr-3">
+                    <input type="checkbox" :value="cat.value" v-model="selectedCategories" />
+                    {{ cat.label }}
+                  </label>
                 </div>
               </div>
 
@@ -89,12 +98,23 @@ import TheFooter from '../components/TheFooter.vue';
 import { jobsService } from '../services/jobs';
 
 const title = ref('');
-const contractType = ref('CLT');
+const employmentType = ref('CLT');
+const selectedCategories = ref<string[]>([]);
 const salary = ref('');
 const city = ref('');
 const state = ref('');
 const description = ref('');
 const requirements = ref('');
+
+const availableCategories = [
+  { value: 'MEIO_PERIODO', label: 'Meio Período' },
+  { value: 'PRIMEIRA_OPORTUNIDADE', label: 'Primeira Oportunidade' },
+  { value: 'ESTAGIO', label: 'Estágio' },
+  { value: 'NOTURNO', label: 'Noturno' },
+  { value: 'TEMPORARIO', label: 'Emprego Temporário' },
+  { value: 'FREELANCE', label: 'Freelance' },
+  { value: 'PERICULOSIDADE', label: 'Com Periculosidade' }
+];
 
 const loading = ref(false);
 const successMessage = ref('');
@@ -109,7 +129,8 @@ async function handleSubmit() {
   try {
     const response = await jobsService.create({
       title: title.value,
-      contract_type: contractType.value,
+      employmentType: employmentType.value,
+      categories: selectedCategories.value,
       salary: salary.value,
       city: city.value,
       state: state.value,
@@ -121,7 +142,7 @@ async function handleSubmit() {
       router.push(`/jobs/${response.data.id || ''}`);
     }, 1500);
   } catch (err: any) {
-    errorMessage.value = err.response?.data?.message || 'Erro ao publicar vaga. Tente novamente.';
+    errorMessage.value = err.response?.data?.message || err.message || 'Erro ao publicar vaga. Tente novamente.';
   } finally {
     loading.value = false;
   }

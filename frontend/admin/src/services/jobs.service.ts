@@ -14,6 +14,8 @@ export interface AdminJobModel {
   requirement?: string;
   jobCategory?: string;
   jobType?: string;
+  categories?: string[];
+  employmentType?: string;
   minPayment?: number;
   maxPayment?: number;
   featured?: boolean;
@@ -45,6 +47,8 @@ export const adminJobsService = {
             requirement
             jobCategory
             jobType
+            categories
+            employmentType
             minPayment
             maxPayment
             featured
@@ -79,6 +83,8 @@ export const adminJobsService = {
           description
           jobCategory
           jobType
+          categories
+          employmentType
           minPayment
           maxPayment
           featured
@@ -95,6 +101,8 @@ export const adminJobsService = {
         requirement: data.requirement || 'Ensino Superior / Experiência',
         jobCategory: data.jobCategory || 'MANAGEMENT',
         jobType: data.jobType || 'FULLTIME',
+        categories: data.categories || [],
+        employmentType: data.employmentType || 'CLT',
         minPayment: parseFloat(data.minPayment || 0),
         maxPayment: parseFloat(data.maxPayment || 0),
         featured: Boolean(data.featured),
@@ -115,6 +123,8 @@ export const adminJobsService = {
           description
           jobCategory
           jobType
+          categories
+          employmentType
           minPayment
           maxPayment
           featured
@@ -132,6 +142,8 @@ export const adminJobsService = {
         requirement: data.requirement || '',
         jobCategory: data.jobCategory || 'MANAGEMENT',
         jobType: data.jobType || 'FULLTIME',
+        categories: data.categories || [],
+        employmentType: data.employmentType || 'CLT',
         minPayment: parseFloat(data.minPayment || 0),
         maxPayment: parseFloat(data.maxPayment || 0),
         featured: Boolean(data.featured),

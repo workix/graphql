@@ -16,6 +16,8 @@ export interface JobModel {
   requirement?: string;
   jobCategory?: string;
   jobType?: string;
+  categories?: string[];
+  employmentType?: string;
   minPayment?: number;
   maxPayment?: number;
   featured?: boolean;
@@ -48,6 +50,8 @@ export const jobsService = {
           requirement
           jobCategory
           jobType
+          categories
+          employmentType
           minPayment
           maxPayment
           featured
@@ -82,6 +86,8 @@ export const jobsService = {
             requirement
             jobCategory
             jobType
+            categories
+            employmentType
             minPayment
             maxPayment
             featured
@@ -119,6 +125,8 @@ export const jobsService = {
           requirement
           jobCategory
           jobType
+          categories
+          employmentType
           minPayment
           maxPayment
           featured
@@ -150,6 +158,8 @@ export const jobsService = {
             description
             jobCategory
             jobType
+            categories
+            employmentType
             minPayment
             maxPayment
             featured
@@ -180,6 +190,8 @@ export const jobsService = {
             description
             jobCategory
             jobType
+            categories
+            employmentType
             minPayment
             maxPayment
             featured
@@ -213,6 +225,8 @@ export const jobsService = {
           description
           jobCategory
           jobType
+          categories
+          employmentType
         }
       }
     `;
@@ -225,6 +239,8 @@ export const jobsService = {
         requirement: data.requirement || '',
         jobCategory: data.jobCategory || 'MANAGEMENT',
         jobType: data.jobType || 'FULLTIME',
+        categories: data.categories || [],
+        employmentType: data.employmentType || 'CLT',
         minPayment: parseFloat(data.minPayment || 0),
         maxPayment: parseFloat(data.maxPayment || 0),
         featured: Boolean(data.featured),

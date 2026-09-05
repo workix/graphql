@@ -43,9 +43,9 @@
 
 ## 8. Frontend Web: Cadastro e Edição de Vagas
 
-- [ ] 8.1 Adicionar seleção de múltiplas categorias no formulário de vagas no Frontend Admin
-- [ ] 8.2 Adicionar campo de seleção de tipo de contratação (CLT, PJ, Contrato Temporário)
-- [ ] 8.3 Conectar mutações GraphQL e validar salvamento e edição
+- [x] 8.1 Adicionar seleção de múltiplas categorias no formulário de vagas no Frontend Admin
+- [x] 8.2 Adicionar campo de seleção de tipo de contratação (CLT, PJ, Contrato Temporário)
+- [x] 8.3 Conectar mutações GraphQL e validar salvamento e edição
 
 ## 9. Frontend Web: Filtros do Motor de Busca
 

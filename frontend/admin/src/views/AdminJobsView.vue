@@ -29,11 +29,25 @@
         <template v-slot:item.company="{ item }">
           <span>{{ item.company?.name || 'Empresa Geral' }}</span>
         </template>
+        <template v-slot:item.employmentType="{ item }">
+          <v-chip color="primary" size="small" variant="flat">{{ item.employmentType || 'CLT' }}</v-chip>
+        </template>
+        <template v-slot:item.categories="{ item }">
+          <div class="d-flex flex-wrap gap-1">
+            <v-chip
+              v-for="cat in (item.categories || [])"
+              :key="cat"
+              size="x-small"
+              color="secondary"
+              variant="outlined"
+              class="mr-1 mb-1"
+            >
+              {{ getCategoryLabel(cat) }}
+            </v-chip>
+          </div>
+        </template>
         <template v-slot:item.salary="{ item }">
           <span>{{ item.minPayment && item.maxPayment ? `R$ ${item.minPayment} - ${item.maxPayment}` : 'A combinar' }}</span>
-        </template>
-        <template v-slot:item.jobType="{ item }">
-          <v-chip color="info" size="small">{{ item.jobType || 'FULLTIME' }}</v-chip>
         </template>
         <template v-slot:item.featured="{ item }">
           <v-chip :color="item.featured ? 'warning' : 'grey'" size="small">
@@ -52,7 +66,7 @@
     </v-card>
 
     <!-- Dialog de Cadastro e Edição -->
-    <v-dialog v-model="dialog" max-width="700px" persistent>
+    <v-dialog v-model="dialog" max-width="750px" persistent>
       <v-card>
         <v-card-title class="text-h5 pa-4">
           {{ isEditing ? 'Editar Vaga' : 'Cadastrar Nova Vaga' }}
@@ -78,9 +92,11 @@
             <v-row>
               <v-col cols="12" md="6">
                 <v-select
-                  v-model="formData.jobCategory"
-                  :items="['MANAGEMENT', 'OPERATOR']"
-                  label="Categoria *"
+                  v-model="formData.employmentType"
+                  :items="availableEmploymentTypes"
+                  item-title="title"
+                  item-value="value"
+                  label="Tipo de Contratação *"
                   required
                 ></v-select>
               </v-col>
@@ -88,11 +104,24 @@
                 <v-select
                   v-model="formData.jobType"
                   :items="['FULLTIME', 'PARTTIME', 'FREELANCE', 'INTERNSHIP', 'TEMPORARY', 'VOLUNTEER']"
-                  label="Tipo de Contrato *"
-                  required
+                  label="Modalidade / Carga Horária"
                 ></v-select>
               </v-col>
             </v-row>
+
+            <v-select
+              v-model="formData.categories"
+              :items="availableCategories"
+              item-title="title"
+              item-value="value"
+              label="Categorias da Vaga (Seleção Múltipla)"
+              multiple
+              chips
+              closable-chips
+              hint="Selecione uma ou mais categorias (ex: Estágio, Meio Período, Noturno)"
+              persistent-hint
+              class="mb-4"
+            ></v-select>
 
             <v-row>
               <v-col cols="12" md="6">
@@ -175,6 +204,27 @@ const selectedJob = ref<AdminJobModel | null>(null);
 const successMessage = ref('');
 const errorMessage = ref('');
 
+const availableCategories = [
+  { value: 'MEIO_PERIODO', title: 'Meio Período' },
+  { value: 'PRIMEIRA_OPORTUNIDADE', title: 'Primeira Oportunidade' },
+  { value: 'ESTAGIO', title: 'Estágio' },
+  { value: 'NOTURNO', title: 'Noturno' },
+  { value: 'TEMPORARIO', title: 'Emprego Temporário' },
+  { value: 'FREELANCE', title: 'Freelance' },
+  { value: 'PERICULOSIDADE', title: 'Com Periculosidade' }
+];
+
+const availableEmploymentTypes = [
+  { value: 'CLT', title: 'CLT' },
+  { value: 'PJ', title: 'PJ' },
+  { value: 'CONTRATO_TEMPORARIO', title: 'Contrato Temporário' }
+];
+
+function getCategoryLabel(catKey: string): string {
+  const found = availableCategories.find(c => c.value === catKey);
+  return found ? found.title : catKey;
+}
+
 const formData = ref<any>({
   id: null,
   title: '',
@@ -183,6 +233,8 @@ const formData = ref<any>({
   requirement: '',
   jobCategory: 'MANAGEMENT',
   jobType: 'FULLTIME',
+  categories: [],
+  employmentType: 'CLT',
   minPayment: 3000,
   maxPayment: 7000,
   featured: false,
@@ -193,7 +245,8 @@ const headers = [
   { title: 'ID', key: 'id' },
   { title: 'Título da Vaga', key: 'title' },
   { title: 'Empresa', key: 'company' },
-  { title: 'Tipo', key: 'jobType' },
+  { title: 'Contratação', key: 'employmentType' },
+  { title: 'Categorias', key: 'categories' },
   { title: 'Faixa Salarial', key: 'salary' },
   { title: 'Status', key: 'featured' },
   { title: 'Ações', key: 'actions', sortable: false, align: 'end' as const }
@@ -223,6 +276,8 @@ function openCreateDialog() {
     requirement: 'Formação superior e experiência na área',
     jobCategory: 'MANAGEMENT',
     jobType: 'FULLTIME',
+    categories: [],
+    employmentType: 'CLT',
     minPayment: 3500,
     maxPayment: 8000,
     featured: false,
@@ -241,6 +296,8 @@ function openEditDialog(item: AdminJobModel) {
     requirement: item.requirement || '',
     jobCategory: item.jobCategory || 'MANAGEMENT',
     jobType: item.jobType || 'FULLTIME',
+    categories: item.categories || [],
+    employmentType: item.employmentType || 'CLT',
     minPayment: item.minPayment || 0,
     maxPayment: item.maxPayment || 0,
     featured: Boolean(item.featured),
