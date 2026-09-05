@@ -55,6 +55,29 @@
       </div>
     </section>
 
+    <!-- Categorias de Vagas em Destaque -->
+    <section class="categories-section section-padding">
+      <div class="container">
+        <div class="section-title text-center">
+          <h2>Navegue por Categorias de Vagas</h2>
+          <p>Explore oportunidades segmentadas e encontre a vaga que combina com a sua rotina</p>
+        </div>
+
+        <div class="row">
+          <div v-for="cat in categoryCards" :key="cat.code" class="col-md-3 col-sm-6 col-xs-12 mb-4">
+            <div class="category-card" @click="navigateToCategory(cat.code)">
+              <div class="cat-icon-box" :style="{ backgroundColor: cat.bg }">
+                <i :class="['fa', cat.icon]" :style="{ color: cat.color }"></i>
+              </div>
+              <h4>{{ cat.title }}</h4>
+              <p>{{ cat.desc }}</p>
+              <span class="cat-link">Ver Vagas <i class="fa fa-arrow-right"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Featured Jobs Section -->
     <section class="featured-jobs-section section-padding">
       <div class="container">
@@ -103,7 +126,22 @@ const stats = ref<any>({
 });
 const loading = ref(false);
 
-const router = useRouter();
+const categoryCards = [
+  { code: 'ESTAGIO', title: 'Estágio', desc: 'Inicie sua carreira com bolsas e aprendizado prático', icon: 'fa-id-badge', bg: '#eff6ff', color: '#2563eb' },
+  { code: 'MEIO_PERIODO', title: 'Meio Período', desc: 'Jornadas flexíveis para conciliar com estudos', icon: 'fa-clock-o', bg: '#f0fdf4', color: '#16a34a' },
+  { code: 'PRIMEIRA_OPORTUNIDADE', title: 'Primeira Oportunidade', desc: 'Vagas para quem está buscando o primeiro emprego', icon: 'fa-graduation-cap', bg: '#fef3c7', color: '#d97706' },
+  { code: 'NOTURNO', title: 'Noturno', desc: 'Oportunidades em turnos noturnos e adicionais', icon: 'fa-moon-o', bg: '#ede9fe', color: '#7c3aed' },
+  { code: 'TEMPORARIO', title: 'Temporário', desc: 'Contratos por prazo determinado e sazonais', icon: 'fa-calendar', bg: '#fee2e2', color: '#dc2626' },
+  { code: 'FREELANCE', title: 'Freelance', desc: 'Projetos sob demanda com autonomia total', icon: 'fa-laptop', bg: '#e0f2fe', color: '#0284c7' },
+  { code: 'PERICULOSIDADE', title: 'Com Periculosidade', desc: 'Vagas com adicional de periculosidade assegurado', icon: 'fa-bolt', bg: '#fef9c3', color: '#ca8a04' }
+];
+
+function navigateToCategory(categoryCode: string) {
+  router.push({
+    path: '/jobs',
+    query: { category: categoryCode }
+  });
+}
 
 function handleSearch() {
   router.push({
@@ -211,5 +249,67 @@ onMounted(() => {
 .section-title p {
   color: #64748b;
   margin-bottom: 40px;
+}
+
+.categories-section {
+  background: #ffffff;
+}
+
+.category-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  border-color: #38bdf8;
+}
+
+.cat-icon-box {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.category-card h4 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.category-card p {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.cat-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0284c7;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.category-card:hover .cat-link {
+  color: #0369a1;
 }
 </style>

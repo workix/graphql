@@ -56,9 +56,9 @@
 
 ## 10. Frontend Web: Navegação por Categorias
 
-- [ ] 10.1 Criar seção visual e atalhos de navegação para cada categoria de vaga
-- [ ] 10.2 Configurar rotas e redirecionamento com filtros pré-selecionados
-- [ ] 10.3 Validar responsividade e UX da navegação por categorias
+- [x] 10.1 Criar seção visual e atalhos de navegação para cada categoria de vaga
+- [x] 10.2 Configurar rotas e redirecionamento com filtros pré-selecionados
+- [x] 10.3 Validar responsividade e UX da navegação por categorias
 
 ## 11. Aplicativo Android: Modelos e Consumo de API
 
