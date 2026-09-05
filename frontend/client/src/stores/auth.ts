@@ -40,7 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.setItem('workix_user', JSON.stringify(newUserProfile));
   }
 
-  async function syncBackendSession(firebaseUid: string, email: string, fallbackName?: string, roleHint?: string) {
+  async function syncBackendSession(firebaseUid: string, email: string, fallbackName?: string, roleHint?: string, knownUserId?: number) {
     const LOGIN_MUTATION = `
       mutation DoLogin($input: LoginInput!) {
         doLogin(input: $input)
@@ -87,14 +87,16 @@ export const useAuthStore = defineStore('auth', () => {
       const isComp = !!about?.company || roleHint === 'COMPANY' || email.includes('empresa');
       const resolvedRole = isComp ? 'COMPANY' : 'CANDIDATE';
       const resolvedName = about?.company?.name || fallbackName || (isComp ? 'Empresa Parceira' : 'Candidato Workix');
+      const resolvedId = about?.user?.id ? Number(about.user.id) : (knownUserId || (user.value?.id ? user.value.id : 0));
+      const resolvedCandidateId = about?.candidate?.id ? Number(about.candidate.id) : (resolvedId || undefined);
 
       const userProfile: UserProfile = {
-        id: about?.user?.id ? Number(about.user.id) : 1,
+        id: resolvedId,
         email,
         name: resolvedName,
         role: resolvedRole,
         firebase_uuid: firebaseUid,
-        candidateId: about?.candidate?.id ? Number(about.candidate.id) : (about?.user?.id ? Number(about.user.id) : 1),
+        candidateId: resolvedCandidateId,
         companyId: about?.company?.id ? Number(about.company.id) : undefined
       };
 
@@ -159,22 +161,26 @@ export const useAuthStore = defineStore('auth', () => {
       }
     `;
 
+    let createdUserId: number | undefined;
     try {
-      await graphqlClient.request(CREATE_USER_MUTATION, {
+      const res = await graphqlClient.request<{ createUser: { id: string | number } }>(CREATE_USER_MUTATION, {
         input: {
           email,
           firebaseUUID: fbUid,
           activated: true
         }
       });
+      if (res?.createUser?.id) {
+        createdUserId = Number(res.createUser.id);
+      }
     } catch (createErr) {
       console.warn('Registro de usuário no GraphQL já existente ou em fallback:', createErr);
     }
 
-    const userProfile = await syncBackendSession(fbUid, email, name, role);
+    const userProfile = await syncBackendSession(fbUid, email, name, role, createdUserId);
 
     // Se for candidato e ainda não tiver perfil cadastrado, cria registro de candidato
-    if (role === 'CANDIDATE') {
+    if (role === 'CANDIDATE' && userProfile.id) {
       const CREATE_CANDIDATE_MUTATION = `
         mutation CreateCandidate($input: CandidateInput!) {
           createCandidate(input: $input) {

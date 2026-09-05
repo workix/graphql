@@ -30,6 +30,7 @@ export const useMessagingStore = defineStore('messaging', {
         if (this.activeContactId) {
           const authStore = useAuthStore();
           const currentUserId = authStore.user?.id || 1;
+          if (!currentUserId) return;
           const freshMsgs = await messagingService.getDirectMessages(currentUserId, this.activeContactId);
           if (freshMsgs.length !== this.messages.length) {
             this.messages = freshMsgs;
@@ -48,6 +49,10 @@ export const useMessagingStore = defineStore('messaging', {
     async fetchConversations() {
       const authStore = useAuthStore();
       const currentUserId = authStore.user?.id || 1;
+      if (!currentUserId) {
+        this.recentConversations = [];
+        return;
+      }
 
       this.isLoading = true;
       this.error = null;
@@ -93,6 +98,10 @@ export const useMessagingStore = defineStore('messaging', {
     async fetchMessages(contactId: string | number) {
       const authStore = useAuthStore();
       const currentUserId = authStore.user?.id || 1;
+      if (!currentUserId) {
+        this.messages = [];
+        return;
+      }
 
       this.isLoading = true;
       this.error = null;
@@ -112,6 +121,7 @@ export const useMessagingStore = defineStore('messaging', {
 
       const authStore = useAuthStore();
       const currentUserId = authStore.user?.id || 1;
+      if (!currentUserId) return null;
 
       this.isSending = true;
       this.error = null;

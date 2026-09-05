@@ -400,12 +400,6 @@ async function seedAll() {
     if (db.ConnectionRequest) {
       await db.ConnectionRequest.create({ requester_id: userCand.id, recipient_id: userAdmin.id, status: 'PENDING' });
     }
-    if (db.DirectMessage) {
-      await db.DirectMessage.create({ sender_id: userComp.id, recipient_id: userCand.id, content: 'Olá Carlos, vimos seu currículo e gostamos muito do seu perfil!' });
-    }
-    if (db.Notification) {
-      await db.Notification.create({ user_id: userCand.id, type: 'MESSAGE', title: 'Nova mensagem recebida', body: 'A empresa Tech Corp enviou uma mensagem.' });
-    }
     if (db.ProfileView) {
       await db.ProfileView.create({ viewer_id: userComp.id, viewed_id: userCand.id });
     }
