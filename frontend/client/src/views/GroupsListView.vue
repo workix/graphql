@@ -22,7 +22,7 @@
           />
         </div>
 
-        <button type="button" class="btn btn-primary" @click="showCreateModal = true">
+        <button v-if="authStore.isCompany" type="button" class="btn btn-primary" @click="showCreateModal = true">
           <i class="fa fa-plus-circle"></i> Criar Grupo
         </button>
       </div>
@@ -120,8 +120,9 @@
       <div v-else class="empty-state-box">
         <i class="fa fa-users"></i>
         <h3>Nenhum grupo encontrado</h3>
-        <p>Nenhuma comunidade corresponde à sua pesquisa. Que tal criar a primeira?</p>
-        <button type="button" class="btn btn-primary margin-top-10" @click="showCreateModal = true">
+        <p v-if="authStore.isCompany">Nenhuma comunidade corresponde à sua pesquisa. Que tal criar a primeira?</p>
+        <p v-else>Nenhuma comunidade corresponde à sua pesquisa. Explore outras palavras-chave ou aguarde novos grupos de empresas parceiras.</p>
+        <button v-if="authStore.isCompany" type="button" class="btn btn-primary margin-top-10" @click="showCreateModal = true">
           <i class="fa fa-plus"></i> Criar Grupo Agora
         </button>
       </div>
@@ -134,11 +135,13 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 import useGroupsStore from '../stores/groups';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 
 const router = useRouter();
+const authStore = useAuthStore();
 const groupsStore = useGroupsStore();
 
 const searchQuery = ref('');

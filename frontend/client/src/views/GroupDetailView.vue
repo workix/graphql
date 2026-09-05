@@ -32,12 +32,21 @@
                 :disabled="isJoining"
                 @click="handleJoinGroup"
               >
-                <i class="fa" :class="isJoining ? 'fa-spinner fa-spin' : 'fa-user-plus'"></i>
-                {{ isJoining ? 'Ingressando...' : 'Participar do Grupo' }}
+                <i class="fa" :class="isJoining ? 'fa-spinner fa-spin' : 'fa-bell-o'"></i>
+                {{ isJoining ? 'Subscrevendo...' : 'Subscrever no Grupo' }}
               </button>
-              <span v-else class="badge-member-pill">
-                <i class="fa fa-check-circle"></i> Membro Ativo
-              </span>
+              <div v-else class="d-flex align-items-center gap-10">
+                <span class="badge-member-pill">
+                  <i class="fa fa-check-circle"></i> Inscrito no Grupo
+                </span>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  @click="handleLeaveGroup"
+                >
+                  <i class="fa fa-sign-out"></i> Sair do Grupo
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -47,10 +56,10 @@
         <div class="row">
           <!-- Main Group Feed Column -->
           <div class="col-md-8 col-sm-12">
-            <!-- Create Post Box in Group -->
-            <div class="create-post-card">
+            <!-- Create Post Box in Group (Companies only) -->
+            <div v-if="authStore.isCompany" class="create-post-card">
               <div class="card-header-bar">
-                <h4><i class="fa fa-pencil-square-o"></i> Iniciar uma discussão na comunidade</h4>
+                <h4><i class="fa fa-pencil-square-o"></i> Publicar Comunicado / Discussão (Empresa)</h4>
               </div>
               <div class="card-body">
                 <div v-if="postSuccess" class="alert alert-success">Publicação enviada para a comunidade!</div>
@@ -61,7 +70,7 @@
                     v-model="newPostContent"
                     class="form-control"
                     rows="3"
-                    placeholder="Compartilhe uma dúvida, insight ou novidade com este grupo..."
+                    placeholder="Compartilhe novidades, comunicados, artigos ou oportunidades com os membros deste grupo..."
                     required
                   ></textarea>
 
@@ -75,9 +84,19 @@
               </div>
             </div>
 
+            <!-- Candidate Subscription Notice (Candidates / Guests) -->
+            <div v-else class="candidate-subscription-box mb-4">
+              <div v-if="groupsStore.isMember" class="alert alert-info">
+                <i class="fa fa-check-circle"></i> <strong>Você está inscrito neste grupo.</strong> Acompanhe abaixo as publicações e conteúdos compartilhados pelas empresas moderadoras.
+              </div>
+              <div v-else class="alert alert-warning">
+                <i class="fa fa-info-circle"></i> <strong>Subscreva-se no grupo</strong> pelo botão acima para receber conteúdos, discussões técnicas e oportunidades exclusivas.
+              </div>
+            </div>
+
             <!-- Group Feed List -->
             <div class="group-posts-stream margin-top-24">
-              <h3 class="stream-title"><i class="fa fa-comments"></i> Discussões Recentes</h3>
+              <h3 class="stream-title"><i class="fa fa-comments"></i> Discussões e Publicações da Comunidade</h3>
 
               <div v-if="groupsStore.activeGroupPosts.length > 0" class="posts-list">
                 <div
@@ -87,10 +106,10 @@
                 >
                   <div class="post-item-header d-flex align-items-center gap-12">
                     <div class="author-avatar">
-                      <i class="fa fa-user"></i>
+                      <i class="fa fa-building-o"></i>
                     </div>
                     <div>
-                      <h5 class="author-name">Membro #{{ post.authorId }}</h5>
+                      <h5 class="author-name">Empresa / Moderador #{{ post.authorId }}</h5>
                       <span class="post-time">{{ formatDate(post.createdAt) }}</span>
                     </div>
                   </div>
@@ -104,14 +123,26 @@
               <!-- Empty Posts Feed -->
               <div v-else class="empty-feed-box">
                 <i class="fa fa-commenting-o"></i>
-                <h4>Nenhuma discussão iniciada neste grupo</h4>
-                <p>Seja o primeiro a compartilhar uma pergunta ou dica com os outros membros!</p>
+                <h4>Nenhuma publicação iniciada neste grupo ainda</h4>
+                <p v-if="authStore.isCompany">Seja o primeiro a compartilhar comunicados ou oportunidades com os inscritos!</p>
+                <p v-else>Aguarde novas publicações e comunicados dos moderadores e empresas deste grupo.</p>
               </div>
             </div>
           </div>
 
           <!-- Group Sidebar Right -->
           <div class="col-md-4 col-sm-12">
+            <!-- Company Management Panel -->
+            <div v-if="authStore.isCompany" class="sidebar-box mb-4">
+              <h4><i class="fa fa-cogs"></i> Gestão do Grupo</h4>
+              <p class="small text-muted mb-2">Painel de moderação e métricas da comunidade para empresas.</p>
+              <ul class="management-meta-list">
+                <li><strong>Visibilidade:</strong> {{ groupsStore.activeGroup.privacy === 'PRIVATE' ? 'Privado' : 'Público' }}</li>
+                <li><strong>Publicações:</strong> {{ groupsStore.activeGroupPosts.length }} postagens</li>
+                <li><strong>Status de Membro:</strong> {{ groupsStore.isMember ? 'Moderador Ativo' : 'Não Inscrito' }}</li>
+              </ul>
+            </div>
+
             <div class="sidebar-box">
               <h4><i class="fa fa-shield"></i> Regras da Comunidade</h4>
               <ul class="rules-list">
@@ -146,11 +177,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 import useGroupsStore from '../stores/groups';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
 
 const route = useRoute();
+const authStore = useAuthStore();
 const groupsStore = useGroupsStore();
 
 const newPostContent = ref('');
@@ -174,6 +207,11 @@ async function handleJoinGroup() {
   } finally {
     isJoining.value = false;
   }
+}
+
+async function handleLeaveGroup() {
+  if (!groupsStore.activeGroup) return;
+  await groupsStore.leaveGroup(groupsStore.activeGroup.id);
 }
 
 async function handleCreatePost() {

@@ -135,6 +135,10 @@ export const useGroupsStore = defineStore('groups', {
       }
     },
 
+    async leaveGroup(groupId: string | number) {
+      this.isMember = false;
+    },
+
     async postToGroup(groupId: string | number, content: string) {
       const authStore = useAuthStore();
       const authorId = authStore.user?.id || 1;
