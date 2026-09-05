@@ -120,3 +120,102 @@ Cada issue deve conter:
 - **Causa raiz (se identificada)**: Bloco `pool` ausente no `config.json`.
 - **Referências**: Proposta OpenSpec `perf-db-pooling-query-optimization`, commits `24b4aae` e `10d64bd`, Fases 11 e 25-B.8 do guia de diagnóstico.
 
+---
+
+## [ISSUE-007] Auth guard desligado por padrão nos frontends admin e client
+
+- **Status**: Aberto
+- **Data**: 2026-09-05
+- **Módulo(s) afetado(s)**: `frontend/admin/src/router/index.ts`, `frontend/client/src/router/index.ts`
+- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E (`CAPABILITIES.md`). O guard de rota (`meta.requiresAuth`) só é aplicado quando a env var `VITE_ENABLE_AUTH_GUARD === 'true'`. Nenhum dos dois projetos possui `.env`/`.env.example` versionado definindo essa variável.
+- **Passos para reproduzir**:
+  1. Rodar `frontend/admin` ou `frontend/client` sem definir `VITE_ENABLE_AUTH_GUARD`.
+  2. Navegar diretamente para uma rota marcada como `requiresAuth` (ex.: `/dashboard` no admin, `/post-job` no client) sem estar autenticado.
+- **Comportamento esperado**: Rotas protegidas devem redirecionar para `/login` quando não há sessão válida, independentemente de configuração de ambiente.
+- **Comportamento atual**: Rota é acessada normalmente sem autenticação, pois o guard nunca é ativado por padrão.
+- **Causa raiz (se identificada)**: Flag de feature (`VITE_ENABLE_AUTH_GUARD`) usada para controlar comportamento de segurança crítico, sem valor padrão seguro (`true`) nem arquivo de exemplo documentando a variável.
+- **Referências**: `CAPABILITIES.md` (seções 2, 3 e 5), `frontend/admin/src/router/index.ts`, `frontend/client/src/router/index.ts`.
+
+---
+
+## [ISSUE-008] Gating de role inócuo no frontend admin (`adminAuth.ts`)
+
+- **Status**: Aberto
+- **Data**: 2026-09-05
+- **Módulo(s) afetado(s)**: `frontend/admin/src/services/adminAuth.ts` (ou equivalente — `syncAdminBackendSession`)
+- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. O spec `firebase-auth-frontend-admin` descreve bloqueio de usuários que não sejam `ROLE_ADMIN`/`ROLE_OPERATOR`, mas a implementação atual fixa `role: 'ROLE_ADMIN'` para qualquer usuário Firebase autenticado com sucesso, e em erro de rede/Firebase cria uma sessão admin local fake em vez de bloquear o acesso.
+- **Passos para reproduzir**:
+  1. Autenticar no admin com um usuário Firebase válido que não deveria ter papel de admin.
+  2. Observar que o app trata a sessão como `ROLE_ADMIN` sem nenhuma verificação adicional.
+  3. Simular falha de rede/Firebase durante o login e observar a criação de sessão local fake (`admin-fb-token-*`).
+- **Comportamento esperado**: Apenas usuários com role `ROLE_ADMIN`/`ROLE_OPERATOR` (validado no backend) devem ter acesso; falhas de rede/Firebase devem bloquear o acesso, não criar uma sessão de fallback.
+- **Comportamento atual**: Todo usuário autenticado vira admin; falha de rede vira sessão fake válida.
+- **Causa raiz (se identificada)**: Fallback de desenvolvimento (sessão local dummy) aparentemente deixado ativo sem guard de ambiente (`NODE_ENV`/`import.meta.env.DEV`).
+- **Referências**: `CAPABILITIES.md` (seção 2), spec `openspec/specs/firebase-auth-frontend-admin/spec.md`.
+
+---
+
+## [ISSUE-009] Mensageria e notificações sem atualização em tempo real no frontend client
+
+- **Status**: Aberto
+- **Data**: 2026-09-05
+- **Módulo(s) afetado(s)**: `frontend/client/src/services/messaging.service.ts`, `frontend/client/src/services/notifications.service.ts`, `frontend/client/src/views/MessagingView.vue`
+- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. O spec `messaging-chat-realtime` descreve mensageria em tempo real, mas não foi encontrado nenhum código de subscription GraphQL, WebSocket ou polling nas views/serviços correspondentes do frontend client — a implementação parece ser puramente request/response (necessário refresh manual).
+- **Passos para reproduzir**:
+  1. Abrir `/messaging` ou `/notifications` em duas sessões (remetente e destinatário).
+  2. Enviar uma mensagem/gerar uma notificação a partir da sessão A.
+  3. Observar que a sessão B não recebe a atualização sem recarregar/reabrir a tela.
+- **Comportamento esperado**: Novas mensagens e notificações devem aparecer sem ação manual do usuário (via GraphQL subscription, WebSocket ou polling).
+- **Comportamento atual**: Nenhuma atualização em tempo real observada no código do frontend client.
+- **Causa raiz (se identificada)**: Backend expõe schema/infraestrutura de tempo real (`performance-realtime-subscriptions`), mas o frontend client não consome subscriptions para mensageria/notificações.
+- **Referências**: `CAPABILITIES.md` (seção 3), specs `messaging-chat-realtime`, `notifications-inbox-realtime`, `performance-realtime-subscriptions`.
+
+---
+
+## [ISSUE-010] Telas novas do app Android implementadas mas sem navegação (paridade incompleta)
+
+- **Status**: Aberto
+- **Data**: 2026-09-05
+- **Módulo(s) afetado(s)**: `android/app/src/main/java/.../ui/*` (feed social, chat, conexões, grupos, eventos, cursos, notificações, premium, kanban, entrevistas), `android/app/src/main/AndroidManifest.xml`, `MainActivity`
+- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. `MainActivity` monta a `BottomNavigationView` programaticamente com apenas 4 itens (Início, Vagas, Candidatos, Blog). Diversas telas mais recentes (`SocialFeedFragment`, `ChatListFragment`, `ConnectionsFragment`, `NotificationsFragment`, `GroupsFragment`, `EventsFragment`, `CoursesFragment`, `PremiumPlansActivity`, `MyApplicationsFragment`, `TeamFragment`, `ProfileAnalyticsActivity`) existem no código mas não possuem nenhum caller externo encontrado. `RecruitmentKanbanActivity` e `InterviewsActivity` nem estão declaradas no `AndroidManifest.xml`, portanto não podem ser abertas pelo sistema operacional.
+- **Passos para reproduzir**:
+  1. Navegar pelo app Android usando apenas a bottom navigation (4 abas).
+  2. Confirmar que nenhuma das telas listadas acima é alcançável.
+  3. Buscar `<activity` no `AndroidManifest.xml` e confirmar ausência de `RecruitmentKanbanActivity`/`InterviewsActivity`.
+- **Comportamento esperado**: Telas implementadas para atingir paridade com o frontend client (per spec `frontend-android-parity-survey`) devem estar navegáveis a partir da UI principal.
+- **Comportamento atual**: Telas existem em código, compilam, mas não são alcançáveis pelo usuário; duas delas nem estão registradas no manifest.
+- **Causa raiz (se identificada)**: Trabalho de paridade implementado incrementalmente sem atualizar a navegação principal (`MainActivity`) nem o manifest para as duas Activities faltantes.
+- **Referências**: `CAPABILITIES.md` (seção 4), spec `frontend-android-parity-survey`, `android/ANDROID_MIGRATION_PROGRESS.md`.
+
+---
+
+## [ISSUE-011] Token FCM renovado nunca é enviado ao backend (`onNewToken` stub)
+
+- **Status**: Aberto
+- **Data**: 2026-09-05
+- **Módulo(s) afetado(s)**: `android/app/src/main/java/.../MyFirebaseMessagingService.kt`
+- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. O método `onNewToken` do serviço de mensageria Firebase está implementado como stub — o token FCM renovado não é enviado ao backend, o que pode causar falha silenciosa de entrega de push notifications após rotação de token.
+- **Passos para reproduzir**:
+  1. Forçar renovação do token FCM (reinstalar app ou invalidar token via Firebase Console).
+  2. Verificar no backend se o novo token foi persistido para o usuário.
+- **Comportamento esperado**: `onNewToken` deve enviar o token atualizado ao backend (mutation/endpoint de registro de device), garantindo entrega contínua de notificações push.
+- **Comportamento atual**: Novo token não é propagado; apenas o token inicial (capturado em outro ponto do app) permanece registrado, se houver.
+- **Causa raiz (se identificada)**: Implementação de `onNewToken` deixada incompleta (stub) durante o desenvolvimento do serviço FCM.
+- **Referências**: `CAPABILITIES.md` (seção 4), spec `android-testing-fcm-release`.
+
+---
+
+## [ISSUE-012] Ausência total de testes instrumentados (`androidTest/`) no app Android
+
+- **Status**: Aberto
+- **Data**: 2026-09-05
+- **Módulo(s) afetado(s)**: `android/app` (build.gradle, estrutura de diretórios de teste)
+- **Contexto**: Encontrado durante o levantamento de capabilities para testes E2E. O `build.gradle` do módulo Android declara dependências de teste instrumentado (`androidx.test.ext:junit`, `espresso-core:3.6.1`, `testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"`), mas não existe nenhuma pasta `androidTest/` no projeto. Todos os testes existentes (`JobRepositoryTest`, `JobGraphQLTest`, `JobSearchTest`, `GraphQLApiClientTest`, `MediaApiServiceTest`, `NetworkResultTest`, `RecruitmentCapabilitiesTest`, `CategoryNavigationTest`, `JobViewModelFilterTest`) são testes JVM unitários (`src/test/`), não testes de UI instrumentados.
+- **Passos para reproduzir**:
+  1. Buscar diretórios `androidTest` em `android/app/src`.
+  2. Confirmar ausência total (apenas `src/test` existe).
+- **Comportamento esperado**: Dado que o projeto já declara dependências Espresso/AndroidJUnitRunner, seria esperado haver ao menos uma suíte básica de smoke-test instrumentado.
+- **Comportamento atual**: Zero cobertura de UI/E2E no Android — qualquer suíte E2E para este app começará do zero.
+- **Causa raiz (se identificada)**: Dependências de teste adicionadas preventivamente, mas suíte nunca implementada.
+- **Referências**: `CAPABILITIES.md` (seção 4 e 6), `android/app/build.gradle`.
+
