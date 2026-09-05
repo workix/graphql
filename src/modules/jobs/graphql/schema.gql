@@ -147,12 +147,14 @@ input JobInput {
     pcdDetails: String
     accessibilityFeatures: [String]
     skills: [String]
+    categories: [JobCategory]
+    employmentType: JobEmploymentType
     workplaceType: String
     seniorityLevel: String
     city: String
     state: String
-    jobCategory: JobCategory!
-    jobType: JobType!
+    jobCategory: JobCategory
+    jobType: JobType
     maxPayment: Float!
     minPayment: Float!
     requirement: String!
@@ -161,7 +163,21 @@ input JobInput {
 }
 
 enum JobCategory {
-    MANAGEMENT, OPERATOR
+    MEIO_PERIODO,
+    PRIMEIRA_OPORTUNIDADE,
+    ESTAGIO,
+    NOTURNO,
+    TEMPORARIO,
+    FREELANCE,
+    PERICULOSIDADE,
+    MANAGEMENT,
+    OPERATOR
+}
+
+enum JobEmploymentType {
+    CLT,
+    PJ,
+    CONTRATO_TEMPORARIO
 }
 
 enum JobType {

@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import { normalizeJobCategories } from '../types/job_categories';
+import { normalizeJobEmploymentType, JobEmploymentType } from '../types/job_employment_types';
 
 export class CreateJobDTO {
   [key: string]: any;
@@ -10,8 +12,8 @@ export class CreateJobDTO {
         this.benefits = input.benefits
         this.description = input.description
         this.featured = input.featured
-        this.job_category = input.jobCategory
-        this.job_type = input.jobType
+        this.job_category = input.jobCategory || 'MANAGEMENT'
+        this.job_type = input.jobType || 'FULLTIME'
         this.max_payment = input.maxPayment
         this.min_payment = input.minPayment
         this.requirement = input.requirement
@@ -32,23 +34,28 @@ export class CreateJobDTO {
         this.accessibility_features = input.accessibilityFeatures
             ? (Array.isArray(input.accessibilityFeatures) ? JSON.stringify(input.accessibilityFeatures) : input.accessibilityFeatures)
             : '[]'
+        
+        // Novas Categorias e Tipo de Contratação
+        const categories = normalizeJobCategories(input.categories)
+        this.categories = JSON.stringify(categories)
+        this.employment_type = normalizeJobEmploymentType(input.employmentType, JobEmploymentType.CLT)
     }
 }
 
 export class UpdateJobDTO {
   [key: string]: any;
     constructor(input) {
-        this.activated = input.activated
-        this.benefits = input.benefits
-        this.description = input.description
-        this.featured = input.featured
-        this.job_category = input.jobCategory
-        this.job_type = input.jobType
-        this.max_payment = input.maxPayment
-        this.min_payment = input.minPayment
-        this.requirement = input.requirement
-        this.title = input.title
-        this.company_id = input.companyId
+        if (input.activated !== undefined) this.activated = input.activated
+        if (input.benefits !== undefined) this.benefits = input.benefits
+        if (input.description !== undefined) this.description = input.description
+        if (input.featured !== undefined) this.featured = input.featured
+        if (input.jobCategory !== undefined) this.job_category = input.jobCategory
+        if (input.jobType !== undefined) this.job_type = input.jobType
+        if (input.maxPayment !== undefined) this.max_payment = input.maxPayment
+        if (input.minPayment !== undefined) this.min_payment = input.minPayment
+        if (input.requirement !== undefined) this.requirement = input.requirement
+        if (input.title !== undefined) this.title = input.title
+        if (input.companyId !== undefined) this.company_id = input.companyId
         if (input.expiresAt) this.expires_at = new Date(input.expiresAt)
         if (input.outcomeStatus) this.outcome_status = input.outcomeStatus
         if (input.isSponsored !== undefined) this.is_sponsored = Boolean(input.isSponsored)
@@ -75,6 +82,12 @@ export class UpdateJobDTO {
             this.accessibility_features = Array.isArray(input.accessibilityFeatures)
                 ? JSON.stringify(input.accessibilityFeatures)
                 : input.accessibilityFeatures
+        }
+        if (input.categories !== undefined) {
+            this.categories = JSON.stringify(normalizeJobCategories(input.categories))
+        }
+        if (input.employmentType !== undefined) {
+            this.employment_type = normalizeJobEmploymentType(input.employmentType, JobEmploymentType.CLT)
         }
     }
 }

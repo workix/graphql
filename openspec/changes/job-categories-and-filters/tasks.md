@@ -24,9 +24,9 @@
 
 ## 5. API GraphQL: Cadastro e Edição
 
-- [ ] 5.1 Atualizar `schema.gql` com os enums `JobCategory` e `JobEmploymentType`, e novos campos em `JobInput`
-- [ ] 5.2 Atualizar resolvers de `createJob` e `updateJob` para processar e persistir `categories` e `employmentType`
-- [ ] 5.3 Implementar testes automatizados das mutations `createJob` e `updateJob`
+- [x] 5.1 Atualizar `schema.gql` com os enums `JobCategory` e `JobEmploymentType`, e novos campos em `JobInput`
+- [x] 5.2 Atualizar resolvers de `createJob` e `updateJob` para processar e persistir `categories` e `employmentType`
+- [x] 5.3 Implementar testes automatizados das mutations `createJob` e `updateJob`
 
 ## 6. API GraphQL: Consulta
 
