@@ -49,10 +49,10 @@
 
 ## 9. Frontend Web: Filtros do Motor de Busca
 
-- [ ] 9.1 Adicionar checkboxes de categorias de vagas no painel de filtros do Frontend Cliente
-- [ ] 9.2 Adicionar seleção de tipo de contratação (CLT, PJ, Contrato Temporário)
-- [ ] 9.3 Implementar chips de filtros ativos e botão de limpar filtros
-- [ ] 9.4 Integrar filtros reativos com a query `searchJobs` e facetas
+- [x] 9.1 Adicionar checkboxes de categorias de vagas no painel de filtros do Frontend Cliente
+- [x] 9.2 Adicionar seleção de tipo de contratação (CLT, PJ, Contrato Temporário)
+- [x] 9.3 Implementar chips de filtros ativos e botão de limpar filtros
+- [x] 9.4 Integrar filtros reativos com a query `searchJobs` e facetas
 
 ## 10. Frontend Web: Navegação por Categorias
 

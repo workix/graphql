@@ -25,7 +25,10 @@
             {{ job.city || 'São Paulo, SP' }}
           </span>
           <span class="meta-badge job-type">
-            {{ job.jobType || job.contract_type || 'FULLTIME' }}
+            {{ job.employmentType || job.jobType || job.contract_type || 'CLT' }}
+          </span>
+          <span v-for="cat in (job.categories || [])" :key="cat" class="meta-badge category-badge">
+            {{ formatCategory(cat) }}
           </span>
           <span v-if="job.minPayment || job.maxPayment" class="meta-badge salary">
             <i class="fa fa-money"></i>
@@ -54,6 +57,8 @@ interface Job {
   state?: string;
   contract_type?: string;
   jobType?: string;
+  categories?: string[];
+  employmentType?: string;
   minPayment?: number;
   maxPayment?: number;
   featured?: boolean;
@@ -68,6 +73,20 @@ interface Job {
 defineProps<{
   job: Job;
 }>();
+
+const categoryLabels: Record<string, string> = {
+  MEIO_PERIODO: 'Meio Período',
+  PRIMEIRA_OPORTUNIDADE: 'Primeira Oportunidade',
+  ESTAGIO: 'Estágio',
+  NOTURNO: 'Noturno',
+  TEMPORARIO: 'Temporário',
+  FREELANCE: 'Freelance',
+  PERICULOSIDADE: 'Com Periculosidade'
+};
+
+function formatCategory(cat: string): string {
+  return categoryLabels[cat] || cat;
+}
 </script>
 
 <style scoped>

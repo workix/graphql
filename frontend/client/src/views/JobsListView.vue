@@ -49,33 +49,32 @@
               </div>
             </div>
 
-            <!-- Tipo de Contrato -->
+            <!-- Tipo de Contratação -->
             <div class="filter-group">
-              <label class="filter-label">Tipo de Contrato</label>
+              <label class="filter-label">Tipo de Contratação</label>
               <div class="input-icon-wrap">
-                <i class="fa fa-briefcase"></i>
-                <select v-model="contractType" class="custom-form-control custom-select">
+                <i class="fa fa-file-text-o"></i>
+                <select v-model="employmentType" class="custom-form-control custom-select">
                   <option value="">Todos os Tipos</option>
-                  <option value="FULLTIME">Tempo Integral (Full-time)</option>
-                  <option value="FREELANCE">Freelance</option>
-                  <option value="PARTTIME">Meio Período (Part-time)</option>
-                  <option value="INTERNSHIP">Estágio</option>
-                  <option value="TEMPORARY">Temporário</option>
-                  <option value="VOLUNTEER">Voluntário</option>
+                  <option value="CLT">CLT</option>
+                  <option value="PJ">PJ</option>
+                  <option value="CONTRATO_TEMPORARIO">Contrato Temporário</option>
                 </select>
               </div>
             </div>
 
-            <!-- Categoria -->
+            <!-- Categorias de Vagas -->
             <div class="filter-group">
-              <label class="filter-label">Categoria</label>
-              <div class="input-icon-wrap">
-                <i class="fa fa-tags"></i>
-                <select v-model="category" class="custom-form-control custom-select">
-                  <option value="">Todas as Categorias</option>
-                  <option value="MANAGEMENT">Gestão & Engenharia (MANAGEMENT)</option>
-                  <option value="OPERATOR">Operacional & Técnico (OPERATOR)</option>
-                </select>
+              <label class="filter-label">Categorias de Vagas</label>
+              <div class="category-filter-list">
+                <label v-for="cat in availableCategories" :key="cat.value" class="category-checkbox-item">
+                  <input
+                    type="checkbox"
+                    :value="cat.value"
+                    v-model="selectedCategories"
+                  />
+                  <span>{{ cat.label }}</span>
+                </label>
               </div>
             </div>
 
@@ -88,6 +87,32 @@
         <!-- Jobs Main List -->
         <div class="col-md-8 col-sm-7 position-relative">
           <LoadingOverlay :loading="loading" />
+
+          <!-- Chips de Filtros Ativos -->
+          <div v-if="hasActiveFilters" class="active-filters-bar mb-4">
+            <span class="active-label">Filtros Ativos:</span>
+            <span v-if="searchQuery" class="filter-chip">
+              Termo: "{{ searchQuery }}"
+              <i class="fa fa-times" @click="searchQuery = ''"></i>
+            </span>
+            <span v-if="location" class="filter-chip">
+              Local: "{{ location }}"
+              <i class="fa fa-times" @click="location = ''"></i>
+            </span>
+            <span v-if="employmentType" class="filter-chip">
+              Contratação: {{ employmentType }}
+              <i class="fa fa-times" @click="employmentType = ''"></i>
+            </span>
+            <span
+              v-for="cat in selectedCategories"
+              :key="cat"
+              class="filter-chip category-chip"
+            >
+              {{ getCategoryLabel(cat) }}
+              <i class="fa fa-times" @click="removeCategory(cat)"></i>
+            </span>
+            <button class="btn-clear-all" @click="clearFilters">Limpar Tudo</button>
+          </div>
 
           <div v-if="!loading && paginatedJobs.length === 0" class="empty-state-box text-center">
             <div class="empty-icon"><i class="fa fa-folder-open-o"></i></div>
@@ -114,7 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
@@ -127,20 +152,43 @@ const route = useRoute();
 
 const searchQuery = ref((route.query.q as string) || '');
 const location = ref((route.query.location as string) || '');
+const employmentType = ref((route.query.employmentType as string) || '');
+const selectedCategories = ref<string[]>(
+  route.query.category ? [String(route.query.category)] :
+  route.query.categories ? (Array.isArray(route.query.categories) ? route.query.categories as string[] : [String(route.query.categories)]) : []
+);
 const contractType = ref('');
-const category = ref('');
 const currentPage = ref(1);
 const pageSize = 10;
 const allJobsList = ref<any[]>([]);
 const loading = ref(false);
 
+const availableCategories = [
+  { value: 'MEIO_PERIODO', label: 'Meio Período' },
+  { value: 'PRIMEIRA_OPORTUNIDADE', label: 'Primeira Oportunidade' },
+  { value: 'ESTAGIO', label: 'Estágio' },
+  { value: 'NOTURNO', label: 'Noturno' },
+  { value: 'TEMPORARIO', label: 'Emprego Temporário' },
+  { value: 'FREELANCE', label: 'Freelance' },
+  { value: 'PERICULOSIDADE', label: 'Com Periculosidade' }
+];
+
+function getCategoryLabel(catVal: string): string {
+  const found = availableCategories.find(c => c.value === catVal);
+  return found ? found.label : catVal;
+}
+
+function removeCategory(catVal: string) {
+  selectedCategories.value = selectedCategories.value.filter(c => c !== catVal);
+}
+
 const hasActiveFilters = computed(() => {
-  return !!(searchQuery.value || location.value || contractType.value || category.value);
+  return !!(searchQuery.value || location.value || employmentType.value || selectedCategories.value.length > 0 || contractType.value);
 });
 
 const filteredJobs = computed(() => {
   return allJobsList.value.filter((job) => {
-    // 1. Filtro de Palavra-chave (Título, Descrição, Requisitos, Nome da Empresa)
+    // 1. Filtro de Palavra-chave
     if (searchQuery.value.trim()) {
       const q = searchQuery.value.toLowerCase().trim();
       const titleMatch = (job.title || '').toLowerCase().includes(q);
@@ -152,7 +200,7 @@ const filteredJobs = computed(() => {
       }
     }
 
-    // 2. Filtro de Localização (Cidade ou Estado)
+    // 2. Filtro de Localização
     if (location.value.trim()) {
       const loc = location.value.toLowerCase().trim();
       const cityMatch = (job.city || '').toLowerCase().includes(loc);
@@ -163,18 +211,29 @@ const filteredJobs = computed(() => {
       }
     }
 
-    // 3. Filtro de Tipo de Contrato (Enum GraphQL)
-    if (contractType.value) {
-      const jType = (job.jobType || job.contract_type || '').toUpperCase();
-      if (jType !== contractType.value.toUpperCase()) {
+    // 3. Filtro de Tipo de Contratação
+    if (employmentType.value) {
+      const jEmpType = (job.employmentType || job.jobType || job.contract_type || 'CLT').toUpperCase();
+      if (jEmpType !== employmentType.value.toUpperCase()) {
         return false;
       }
     }
 
-    // 4. Filtro de Categoria (Enum GraphQL)
-    if (category.value) {
-      const jCat = (job.jobCategory || '').toUpperCase();
-      if (jCat !== category.value.toUpperCase()) {
+    // 4. Filtro de Categorias (Multi-seleção combinada: AND)
+    if (selectedCategories.value.length > 0) {
+      let jobCats: string[] = [];
+      if (Array.isArray(job.categories)) {
+        jobCats = job.categories;
+      } else if (typeof job.categories === 'string') {
+        try {
+          jobCats = JSON.parse(job.categories);
+        } catch {
+          jobCats = job.categories.split(',').map((s: string) => s.trim());
+        }
+      }
+      const upperJobCats = jobCats.map((c: string) => c.toUpperCase());
+      const allSelectedMatch = selectedCategories.value.every(cat => upperJobCats.includes(cat.toUpperCase()));
+      if (!allSelectedMatch) {
         return false;
       }
     }
@@ -195,10 +254,20 @@ const paginatedJobs = computed(() => {
 function clearFilters() {
   searchQuery.value = '';
   location.value = '';
+  employmentType.value = '';
+  selectedCategories.value = [];
   contractType.value = '';
-  category.value = '';
   currentPage.value = 1;
 }
+
+watch(() => route.query, (newQuery) => {
+  if (newQuery.category) {
+    selectedCategories.value = [String(newQuery.category)];
+  }
+  if (newQuery.employmentType) {
+    employmentType.value = String(newQuery.employmentType);
+  }
+});
 
 async function fetchJobs() {
   loading.value = true;
@@ -399,5 +468,90 @@ onMounted(() => {
 
 .btn-reset:hover {
   background: #0369a1;
+}
+
+.category-filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.category-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.category-checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #0284c7;
+}
+
+.active-filters-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.active-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #bae6fd;
+}
+
+.filter-chip i {
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.filter-chip i:hover {
+  color: #ef4444;
+}
+
+.category-chip {
+  background: #f1f5f9;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+.btn-clear-all {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0 4px;
 }
 </style>
