@@ -483,9 +483,6 @@ async function seedAll() {
     if (db.ProfileView) {
       await db.ProfileView.create({ viewer_id: userComp.id, viewed_id: userCand.id });
     }
-    if (db.SocialSellingScore) {
-      await db.SocialSellingScore.create({ user_id: userCand.id, score: 78.5, brand_score: 20, network_score: 25, insight_score: 18, relationship_score: 15.5 });
-    }
 
     // 9. Grupos e Atividades de Comunidade
     if (db.Group) {

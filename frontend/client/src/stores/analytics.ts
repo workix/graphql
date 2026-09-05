@@ -26,19 +26,23 @@ export const useAnalyticsStore = defineStore('analytics', {
     async fetchSSI() {
       const authStore = useAuthStore();
       const currentUserId = authStore.user?.id || 1;
+      if (!currentUserId) return;
 
       this.isLoading = true;
       this.error = null;
 
       try {
-        const score = await analyticsService.getMySocialSellingIndex(currentUserId);
+        let score = await analyticsService.getMySocialSellingIndex(currentUserId);
+        if (!score) {
+          score = await analyticsService.recalculateSocialSellingIndex(currentUserId);
+        }
         this.ssiScore = score || {
           userId: currentUserId,
-          score: 72,
-          postsScore: 18,
-          networkScore: 20,
-          engagementScore: 17,
-          relationshipsScore: 17
+          score: 0,
+          postsScore: 0,
+          networkScore: 0,
+          engagementScore: 0,
+          relationshipsScore: 0
         };
       } catch (err: any) {
         this.error = err.message || 'Erro ao carregar SSI.';
@@ -50,6 +54,7 @@ export const useAnalyticsStore = defineStore('analytics', {
     async recalculateSSI() {
       const authStore = useAuthStore();
       const currentUserId = authStore.user?.id || 1;
+      if (!currentUserId) return null;
 
       this.isRecalculating = true;
       this.error = null;
@@ -70,6 +75,7 @@ export const useAnalyticsStore = defineStore('analytics', {
     async fetchProfileViews() {
       const authStore = useAuthStore();
       const currentUserId = authStore.user?.id || 1;
+      if (!currentUserId) return;
 
       this.isLoading = true;
       this.error = null;
