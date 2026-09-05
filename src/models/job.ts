@@ -139,6 +139,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: 'CLT'
     },
+    is_confidential: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     company_id: {
       type: DataTypes.BIGINT,
       allowNull: false,

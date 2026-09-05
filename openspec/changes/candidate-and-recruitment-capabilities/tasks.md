@@ -1,9 +1,9 @@
 ## 1. Modelagem e Migrations de Banco de Dados
 
-- [ ] 1.1 Criar migration Sequelize para adicionar colunas de status de carreira em `candidates` (`looking_for_job`, `in_career_transition`, `career_transition_target`, `accepts_entry_level`)
-- [ ] 1.2 Criar migration Sequelize para adicionar a coluna `is_confidential` em `jobs`
-- [ ] 1.3 Criar migration Sequelize para as tabelas `normalized_resumes`, `interviews`, `kanban_stages`, `kanban_cards` e `kanban_card_histories`
-- [ ] 1.4 Atualizar os modelos Sequelize e interfaces TypeScript com tipagens, associações e defaults seguros
+- [x] 1.1 Criar migration Sequelize para adicionar colunas de status de carreira em `candidates` (`looking_for_job`, `in_career_transition`, `career_transition_target`, `accepts_entry_level`)
+- [x] 1.2 Criar migration Sequelize para adicionar a coluna `is_confidential` em `jobs`
+- [x] 1.3 Criar migration Sequelize para as tabelas `normalized_resumes`, `interviews`, `kanban_stages`, `kanban_cards` e `kanban_card_histories`
+- [x] 1.4 Atualizar os modelos Sequelize e interfaces TypeScript com tipagens, associações e defaults seguros
 
 ## 2. Regras de Negócio e APIs: Status do Candidato e Privacidade
 

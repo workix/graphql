@@ -141,6 +141,11 @@ export const Invoice = db.Invoice;
 export const WebhookEvent = db.WebhookEvent;
 export const BillingAuditLog = db.BillingAuditLog;
 export const WhiteLabelConfig = db.WhiteLabelConfig;
+export const NormalizedResume = db.NormalizedResume;
+export const Interview = db.Interview;
+export const KanbanStage = db.KanbanStage;
+export const KanbanCard = db.KanbanCard;
+export const KanbanCardHistory = db.KanbanCardHistory;
 
 export default db;
 module.exports = db;

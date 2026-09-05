@@ -16,6 +16,11 @@
  [x] - Job
  [x] - Job (Add PCD and Remote Fields)
  [x] - Job (Add Categories and Employment Type)
+ [x] - Job (Add Confidential Posting Field)
+ [x] - Candidate (Add Career Transition and Job Seeking Status)
+ [x] - Normalized Resume
+ [x] - Interview Scheduler
+ [x] - Recruitment Kanban (Stages, Cards, Histories)
  [x] - Job Candidates
  [x] - Member
  [x] - Member Medias

@@ -73,6 +73,25 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       },
       unique: true
+    },
+    looking_for_job: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    in_career_transition: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    career_transition_target: {
+      type: DataTypes.STRING(150),
+      allowNull: true
+    },
+    accepts_entry_level: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     tableName: 'candidates',
