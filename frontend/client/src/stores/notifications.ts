@@ -7,7 +7,8 @@ export const useNotificationsStore = defineStore('notifications', {
     notifications: [] as NotificationModel[],
     unreadCount: 0,
     isLoading: false,
-    error: null as string | null
+    error: null as string | null,
+    pollingIntervalId: null as any
   }),
 
   getters: {
@@ -16,6 +17,20 @@ export const useNotificationsStore = defineStore('notifications', {
   },
 
   actions: {
+    startLivePolling(intervalMs = 6000) {
+      if (this.pollingIntervalId) return;
+      this.pollingIntervalId = setInterval(async () => {
+        await this.fetchUnreadCount();
+      }, intervalMs);
+    },
+
+    stopLivePolling() {
+      if (this.pollingIntervalId) {
+        clearInterval(this.pollingIntervalId);
+        this.pollingIntervalId = null;
+      }
+    },
+
     async fetchNotifications() {
       const authStore = useAuthStore();
       const currentUserId = authStore.user?.id || 1;

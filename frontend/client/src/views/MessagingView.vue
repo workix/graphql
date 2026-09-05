@@ -149,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue';
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import useMessagingStore from '../stores/messaging';
 import TheHeader from '../components/TheHeader.vue';
@@ -178,6 +178,11 @@ onMounted(async () => {
   if (messagingStore.recentConversations.length > 0 && !messagingStore.activeContactId) {
     selectContact(messagingStore.recentConversations[0].contactId);
   }
+  messagingStore.startLivePolling(4000);
+});
+
+onUnmounted(() => {
+  messagingStore.stopLivePolling();
 });
 
 async function selectContact(contactId: string | number) {

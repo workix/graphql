@@ -10,7 +10,8 @@ export const useMessagingStore = defineStore('messaging', {
     recentConversations: [] as ConversationSummary[],
     isLoading: false,
     isSending: false,
-    error: null as string | null
+    error: null as string | null,
+    pollingIntervalId: null as any
   }),
 
   getters: {
@@ -23,6 +24,27 @@ export const useMessagingStore = defineStore('messaging', {
   },
 
   actions: {
+    startLivePolling(intervalMs = 4000) {
+      if (this.pollingIntervalId) return;
+      this.pollingIntervalId = setInterval(async () => {
+        if (this.activeContactId) {
+          const authStore = useAuthStore();
+          const currentUserId = authStore.user?.id || 1;
+          const freshMsgs = await messagingService.getDirectMessages(currentUserId, this.activeContactId);
+          if (freshMsgs.length !== this.messages.length) {
+            this.messages = freshMsgs;
+          }
+        }
+      }, intervalMs);
+    },
+
+    stopLivePolling() {
+      if (this.pollingIntervalId) {
+        clearInterval(this.pollingIntervalId);
+        this.pollingIntervalId = null;
+      }
+    },
+
     async fetchConversations() {
       const authStore = useAuthStore();
       const currentUserId = authStore.user?.id || 1;

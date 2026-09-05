@@ -121,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import useNotificationsStore from '../stores/notifications';
 import TheHeader from '../components/TheHeader.vue';
@@ -133,6 +133,11 @@ const activeFilter = ref<'ALL' | 'UNREAD'>('ALL');
 
 onMounted(async () => {
   await notificationsStore.fetchNotifications();
+  notificationsStore.startLivePolling(5000);
+});
+
+onUnmounted(() => {
+  notificationsStore.stopLivePolling();
 });
 
 const displayedNotifications = computed(() => {
