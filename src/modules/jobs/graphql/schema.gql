@@ -119,6 +119,8 @@ type Job {
     pcdDetails: String
     accessibilityFeatures: [String]
     skills: [String]
+    categories: [JobCategory]
+    employmentType: JobEmploymentType
     workplaceType: String
     seniorityLevel: String
     city: String

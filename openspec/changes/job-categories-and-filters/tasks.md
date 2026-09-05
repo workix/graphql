@@ -30,9 +30,9 @@
 
 ## 6. API GraphQL: Consulta
 
-- [ ] 6.1 Atualizar type `Job` no `schema.gql` expondo `categories: [JobCategory!]!` e `employmentType: JobEmploymentType`
-- [ ] 6.2 Atualizar resolvers de consulta (`getJobById`, `allJobsPaginated`, `allJobsFeatured`, `myJobs`)
-- [ ] 6.3 Implementar testes automatizados para retorno e deserialização dos novos campos nas queries
+- [x] 6.1 Atualizar type `Job` no `schema.gql` expondo `categories: [JobCategory!]!` e `employmentType: JobEmploymentType`
+- [x] 6.2 Atualizar resolvers de consulta (`getJobById`, `allJobsPaginated`, `allJobsFeatured`, `myJobs`)
+- [x] 6.3 Implementar testes automatizados para retorno e deserialização dos novos campos nas queries
 
 ## 7. API GraphQL: Busca e Filtros
 

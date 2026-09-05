@@ -1,3 +1,6 @@
+import { normalizeJobCategories } from '../types/job_categories';
+import { normalizeJobEmploymentType, JobEmploymentType } from '../types/job_employment_types';
+
 export default class JobDTO {
   [key: string]: any;
     constructor(job){
@@ -24,6 +27,10 @@ export default class JobDTO {
         this.isSponsored = Boolean(job.is_sponsored)
         this.sponsorLabel = job.sponsor_label || (job.is_sponsored ? 'Patrocinada' : null)
         
+        // Novas Categorias e Tipo de Contratação
+        this.categories = normalizeJobCategories(job.categories);
+        this.employmentType = normalizeJobEmploymentType(job.employment_type || job.employmentType, JobEmploymentType.CLT);
+
         // Campos de busca estruturada
         let parsedSkills: string[] = [];
         if (Array.isArray(job.skills)) {
