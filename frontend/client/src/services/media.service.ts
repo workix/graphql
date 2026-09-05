@@ -26,7 +26,7 @@ export interface RequestUploadResponse {
 
 export const mediaService = {
   /**
-   * Requisita uma URL assinada para upload direto de mídia no armazenamento em nuvem.
+   * Requisita uma URL assinada para upload direto de mídia no armazenamento em nuvem ou backend local.
    */
   async requestUploadUrl(input: RequestUploadInput): Promise<RequestUploadResponse> {
     const mutation = `
@@ -45,26 +45,10 @@ export const mediaService = {
       }
     `;
 
-    try {
-      const data = await graphqlClient.request<{ requestUploadUrl: RequestUploadResponse }>(mutation, {
-        input
-      });
-      return data.requestUploadUrl;
-    } catch {
-      // Fallback para desenvolvimento local caso storage esteja mockado
-      const fakeId = Date.now();
-      return {
-        mediaAsset: {
-          id: fakeId,
-          fileName: input.fileName,
-          fileType: input.fileType,
-          context: input.context,
-          url: `https://images.unsplash.com/photo-1579389083078-4e7018379f7e?w=800`,
-          status: 'PENDING'
-        },
-        uploadUrl: `http://localhost:4000/upload-mock/${fakeId}`
-      };
-    }
+    const data = await graphqlClient.request<{ requestUploadUrl: RequestUploadResponse }>(mutation, {
+      input
+    });
+    return data.requestUploadUrl;
   },
 
   /**
@@ -84,21 +68,10 @@ export const mediaService = {
       }
     `;
 
-    try {
-      const data = await graphqlClient.request<{ confirmUpload: MediaAsset }>(mutation, {
-        id: String(id)
-      });
-      return data.confirmUpload;
-    } catch {
-      return {
-        id,
-        fileName: 'upload.jpg',
-        fileType: 'image/jpeg',
-        context: 'AVATAR',
-        url: 'https://images.unsplash.com/photo-1579389083078-4e7018379f7e?w=800',
-        status: 'READY'
-      };
-    }
+    const data = await graphqlClient.request<{ confirmUpload: MediaAsset }>(mutation, {
+      id: String(id)
+    });
+    return data.confirmUpload;
   },
 
   /**
@@ -133,26 +106,45 @@ export const mediaService = {
    * Fluxo completo: requisita URL, envia binário e confirma no backend.
    */
   async uploadFile(file: File, context: 'AVATAR' | 'BANNER' | 'POST_ATTACHMENT' | 'RESUME_PDF', userId?: string | number): Promise<MediaAsset> {
-    const req = await this.requestUploadUrl({
-      fileName: file.name,
-      fileType: file.type || 'application/octet-stream',
-      context,
-      userId
-    });
-
     try {
-      await fetch(req.uploadUrl, {
-        method: 'PUT',
+      const req = await this.requestUploadUrl({
+        fileName: file.name,
+        fileType: file.type || 'application/octet-stream',
+        context,
+        userId
+      });
+
+      if (req.uploadUrl) {
+        await fetch(req.uploadUrl, {
+          method: 'POST',
+          body: file,
+          headers: {
+            'Content-Type': file.type || 'application/octet-stream'
+          }
+        });
+      }
+
+      return await this.confirmUpload(req.mediaAsset.id);
+    } catch (err) {
+      // Direct upload fallback via REST endpoint
+      const uploadEndpoint = '/api/v1/media/direct-upload';
+      const response = await fetch(uploadEndpoint, {
+        method: 'POST',
         body: file,
         headers: {
-          'Content-Type': file.type || 'application/octet-stream'
+          'Content-Type': file.type || 'application/octet-stream',
+          'x-file-name': encodeURIComponent(file.name),
+          'x-file-context': context
         }
       });
-    } catch (e) {
-      console.warn('Simulando upload local direto:', e);
-    }
 
-    return await this.confirmUpload(req.mediaAsset.id);
+      if (!response.ok) {
+        throw new Error(`Falha no upload do arquivo: ${response.statusText}`);
+      }
+
+      const resData = await response.json();
+      return resData.mediaAsset;
+    }
   }
 };
 

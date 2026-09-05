@@ -96,18 +96,9 @@ export const useAuthStore = defineStore('auth', () => {
 
       setAuth(authToken, userProfile);
       return userProfile;
-    } catch (err) {
-      // Fallback gracioso caso o backend local esteja em transição de mock
-      const isComp = roleHint === 'COMPANY' || email.includes('empresa');
-      const fallbackProfile: UserProfile = {
-        id: isComp ? 2 : 1,
-        email,
-        name: fallbackName || (isComp ? 'Empresa Parceira' : 'Candidato Workix'),
-        role: isComp ? 'COMPANY' : 'CANDIDATE',
-        firebase_uuid: firebaseUid
-      };
-      setAuth(`fb-token-${firebaseUid}`, fallbackProfile);
-      return fallbackProfile;
+    } catch (err: any) {
+      console.error('Falha na sincronização da sessão com o backend GraphQL:', err);
+      throw new Error(err.message || 'Falha ao autenticar no servidor.');
     }
   }
 

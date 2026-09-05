@@ -75,14 +75,31 @@
                   ></textarea>
                 </div>
 
-                <div class="form-group">
-                  <label>URL da Imagem de Capa (Banner)</label>
-                  <input
-                    v-model="form.bannerUrl"
-                    type="url"
-                    class="form-control"
-                    placeholder="https://exemplo.com/banner.jpg"
-                  />
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Foto de Perfil (Avatar)</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        class="form-control"
+                        @change="handleAvatarUpload"
+                      />
+                      <small class="form-text text-muted">Formatos: JPG, PNG, WebP (máx. 10MB)</small>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Imagem de Capa (Banner)</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        class="form-control"
+                        @change="handleBannerUpload"
+                      />
+                      <small class="form-text text-muted">Envie ou informe a URL da capa</small>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Open To Work Toggle Box -->
@@ -301,6 +318,7 @@ import RecommendationsSection from '../components/RecommendationsSection.vue';
 import NormalizedResumeEditor from '../components/NormalizedResumeEditor.vue';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
+import mediaService from '../services/media.service';
 
 const authStore = useAuthStore();
 const profilesStore = useProfilesStore();
@@ -312,6 +330,7 @@ const showAddFeatured = ref(false);
 const form = reactive({
   headline: '',
   about: '',
+  avatarUrl: '',
   bannerUrl: '',
   location: '',
   industry: '',
@@ -329,6 +348,38 @@ const newFeatured = reactive({
   title: '',
   url: ''
 });
+
+async function handleAvatarUpload(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (!file) return;
+
+  try {
+    const asset = await mediaService.uploadFile(file, 'AVATAR', authStore.user?.id);
+    if (asset.url) {
+      form.avatarUrl = asset.url;
+      successMessage.value = 'Foto de perfil enviada com sucesso!';
+    }
+  } catch (err: any) {
+    errorMessage.value = 'Erro ao enviar foto de perfil: ' + (err.message || 'Falha no upload');
+  }
+}
+
+async function handleBannerUpload(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (!file) return;
+
+  try {
+    const asset = await mediaService.uploadFile(file, 'BANNER', authStore.user?.id);
+    if (asset.url) {
+      form.bannerUrl = asset.url;
+      successMessage.value = 'Imagem de capa enviada com sucesso!';
+    }
+  } catch (err: any) {
+    errorMessage.value = 'Erro ao enviar imagem de capa: ' + (err.message || 'Falha no upload');
+  }
+}
 
 function handleResumeScoreChange(score: number) {
   form.resumeScore = score;

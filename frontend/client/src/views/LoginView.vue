@@ -88,25 +88,22 @@ const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
-function quickLogin(type: 'candidate' | 'company') {
-  if (type === 'company') {
-    authStore.setAuth('token-empresa-dev', {
-      id: 2,
-      email: 'empresa@workix.com',
-      role: 'COMPANY',
-      name: 'Tech Corp Brasil',
-      firebase_uuid: 'fb-empresa-mock'
-    });
-    router.push('/post-job');
-  } else {
-    authStore.setAuth('token-candidato-dev', {
-      id: 1,
-      email: 'candidato@workix.com',
-      role: 'CANDIDATE',
-      name: 'Carlos Candidato Silva',
-      firebase_uuid: 'fb-candidato-mock'
-    });
-    router.push('/post-resume');
+async function quickLogin(type: 'candidate' | 'company') {
+  loading.value = true;
+  errorMessage.value = '';
+  try {
+    if (type === 'company') {
+      await authStore.syncBackendSession('fb-uuid-company-001', 'empresa@workix.com', 'COMPANY', 'Tech Corp Brasil');
+      router.push('/post-job');
+    } else {
+      await authStore.syncBackendSession('fb-uuid-candidate-001', 'candidato@workix.com', 'CANDIDATE', 'Carlos Candidato Silva');
+      router.push('/post-resume');
+    }
+  } catch (err: any) {
+    console.error('Erro no login rápido:', err);
+    errorMessage.value = 'Falha ao autenticar com a conta demonstrativa.';
+  } finally {
+    loading.value = false;
   }
 }
 
