@@ -41,6 +41,14 @@ export const connectionsService = {
           userId2
           createdAt
           updatedAt
+          user1 {
+            id
+            email
+          }
+          user2 {
+            id
+            email
+          }
         }
       }
     `;

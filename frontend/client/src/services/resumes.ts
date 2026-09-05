@@ -39,6 +39,10 @@ export const resumesService = {
           candidate {
             id
             name
+            user {
+              id
+              email
+            }
             locale {
               city
               state

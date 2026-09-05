@@ -7,7 +7,13 @@ const connectionsRepository = (db: any) => {
     }
 
     const existing = await ConnectionRequest.findOne({
-      where: { requester_id: requesterId, recipient_id: recipientId, status: 'PENDING' }
+      where: {
+        [db.Sequelize.Op?.or || '$or']: [
+          { requester_id: requesterId, recipient_id: recipientId },
+          { requester_id: recipientId, recipient_id: requesterId }
+        ],
+        status: 'PENDING'
+      }
     });
 
     if (existing) {

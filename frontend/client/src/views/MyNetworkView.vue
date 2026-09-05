@@ -125,7 +125,7 @@
                     <i class="fa fa-user-circle"></i>
                   </div>
                   <div class="member-info">
-                    <h4 class="member-name">Profissional #{{ getConnectedUserId(conn) }}</h4>
+                    <h4 class="member-name">{{ getConnectedUserName(conn) }}</h4>
                     <p class="member-role">Conexão de 1º Grau</p>
                     <span class="connected-since">Conectado em {{ formatDate(conn.createdAt) }}</span>
                   </div>
@@ -219,9 +219,16 @@ onMounted(async () => {
     const currentUserId = authStore.user?.id || 1;
     const candidates = resumesRes.data || [];
     suggestedUsers.value = candidates
-      .filter((cand: any) => String(cand.candidate?.user_id || cand.candidateId) !== String(currentUserId))
+      .filter((cand: any) => {
+        const candidateUserId = cand.candidate?.user?.id || cand.candidate?.userId || cand.candidate?.user_id || cand.candidateId || cand.id;
+        // Não sugere o próprio usuário logado
+        if (String(candidateUserId) === String(currentUserId)) return false;
+        // Não sugere quem já é conexão ativa
+        if (connectionsStore.isConnection(candidateUserId)) return false;
+        return true;
+      })
       .map((cand: any) => ({
-        id: cand.candidate?.user_id || cand.candidate?.id || cand.id,
+        id: cand.candidate?.user?.id || cand.candidate?.userId || cand.candidate?.user_id || cand.candidateId || cand.id,
         name: cand.candidate?.name || cand.name || `Profissional #${cand.id}`,
         role: cand.objective || (cand.carrerLevel ? `Especialista (${cand.carrerLevel})` : 'Especialista Workix')
       }));
@@ -238,6 +245,17 @@ const filteredConnections = computed(() => {
     return otherId.includes(searchTerm.value.toLowerCase());
   });
 });
+
+function getConnectedUserName(conn: any) {
+  const currentUserId = authStore.user?.id || 1;
+  const otherUser = String(conn.userId1) === String(currentUserId) ? conn.user2 : conn.user1;
+  const otherId = String(conn.userId1) === String(currentUserId) ? conn.userId2 : conn.userId1;
+  if (otherUser?.email) {
+    const cleanEmail = otherUser.email.split('@')[0];
+    return cleanEmail.charAt(0).toUpperCase() + cleanEmail.slice(1);
+  }
+  return `Profissional #${otherId}`;
+}
 
 function getConnectedUserId(conn: any) {
   const currentUserId = authStore.user?.id || 1;
