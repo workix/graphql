@@ -36,10 +36,10 @@
 
 ## 7. API GraphQL: Busca e Filtros
 
-- [ ] 7.1 Atualizar `JobSearchFilterInput` no `schema.gql` com `categories: [JobCategory!]` e `employmentType: JobEmploymentType`
-- [ ] 7.2 Atualizar `types.ts` e drivers de busca (`AdaptiveSearchDriver`, `PostgresSearchDriver`, `ElasticsearchSearchDriver`)
-- [ ] 7.3 Implementar contagem de facetas para categorias e tipos de contratação em `JobSearchFacets`
-- [ ] 7.4 Implementar testes de busca cobrindo filtros individuais, combinados e facetas
+- [x] 7.1 Atualizar `JobSearchFilterInput` no `schema.gql` com `categories: [JobCategory!]` e `employmentType: JobEmploymentType`
+- [x] 7.2 Atualizar `types.ts` e drivers de busca (`AdaptiveSearchDriver`, `PostgresSearchDriver`, `ElasticsearchSearchDriver`)
+- [x] 7.3 Implementar contagem de facetas para categorias e tipos de contratação em `JobSearchFacets`
+- [x] 7.4 Implementar testes de busca cobrindo filtros individuais, combinados e facetas
 
 ## 8. Frontend Web: Cadastro e Edição de Vagas
 

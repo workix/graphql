@@ -2,6 +2,8 @@ export interface JobSearchFilter {
   workplaceType?: string;
   jobType?: string;
   jobCategory?: string;
+  categories?: string[];
+  employmentType?: string;
   seniorityLevel?: string;
   state?: string;
   city?: string;
@@ -31,6 +33,8 @@ export interface FacetCount {
 export interface JobSearchFacets {
   workplaceTypes: FacetCount[];
   jobTypes: FacetCount[];
+  categories: FacetCount[];
+  employmentTypes: FacetCount[];
   levels: FacetCount[];
   states: FacetCount[];
   topSkills: FacetCount[];

@@ -1,5 +1,7 @@
 import { Job, Company } from '../../../models';
 import { JobSearchDriver, JobSearchParams, JobSearchResult, JobSearchFacets, JobSuggestion, JobSearchFilter } from './types';
+import { normalizeJobCategories, JOB_CATEGORIES } from '../../../types/job_categories';
+import { normalizeJobEmploymentType, JOB_EMPLOYMENT_TYPES, JobEmploymentType } from '../../../types/job_employment_types';
 const { Op } = require('sequelize');
 
 export class AdaptiveSearchDriver implements JobSearchDriver {
@@ -57,6 +59,24 @@ export class AdaptiveSearchDriver implements JobSearchDriver {
         }
         const lowerSkills = jobSkills.map(s => s.toLowerCase());
         return requiredSkills.some(req => lowerSkills.includes(req));
+      });
+    }
+
+    // Filter by categories if specified
+    if (filter.categories && filter.categories.length > 0) {
+      const requiredCategories = filter.categories.map(c => String(c).trim().toUpperCase());
+      filteredJobs = filteredJobs.filter((job: any) => {
+        const jobCategories = normalizeJobCategories(job.categories);
+        return requiredCategories.every(req => jobCategories.includes(req as any));
+      });
+    }
+
+    // Filter by employmentType if specified
+    if (filter.employmentType) {
+      const targetType = normalizeJobEmploymentType(filter.employmentType);
+      filteredJobs = filteredJobs.filter((job: any) => {
+        const jobEmpType = normalizeJobEmploymentType(job.employment_type);
+        return jobEmpType === targetType;
       });
     }
 
@@ -160,7 +180,7 @@ export class AdaptiveSearchDriver implements JobSearchDriver {
   async getFacets(query?: string, filter?: JobSearchFilter): Promise<JobSearchFacets> {
     const jobs = await Job.findAll({
       where: { activated: true },
-      attributes: ['workplace_type', 'job_type', 'seniority_level', 'state', 'skills', 'is_pcd', 'is_remote']
+      attributes: ['workplace_type', 'job_type', 'seniority_level', 'state', 'skills', 'is_pcd', 'is_remote', 'categories', 'employment_type']
     });
 
     const workplaceCounts: Record<string, number> = {};
@@ -168,6 +188,16 @@ export class AdaptiveSearchDriver implements JobSearchDriver {
     const levelCounts: Record<string, number> = {};
     const stateCounts: Record<string, number> = {};
     const skillCounts: Record<string, number> = {};
+    const categoryCounts: Record<string, number> = {};
+    const employmentTypeCounts: Record<string, number> = {};
+
+    for (const cat of JOB_CATEGORIES) {
+      categoryCounts[cat] = 0;
+    }
+    for (const emp of JOB_EMPLOYMENT_TYPES) {
+      employmentTypeCounts[emp] = 0;
+    }
+
     let pcdCount = 0;
     let remoteCount = 0;
     let pcdRemoteCount = 0;
@@ -206,11 +236,23 @@ export class AdaptiveSearchDriver implements JobSearchDriver {
           }
         }
       }
+
+      // Contagem de Categorias
+      const cats = normalizeJobCategories(job.categories);
+      for (const cat of cats) {
+        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      }
+
+      // Contagem de Tipos de Contratação
+      const empType = normalizeJobEmploymentType(job.employment_type, JobEmploymentType.CLT);
+      employmentTypeCounts[empType] = (employmentTypeCounts[empType] || 0) + 1;
     }
 
     return {
       workplaceTypes: Object.entries(workplaceCounts).map(([key, count]) => ({ key, count })),
       jobTypes: Object.entries(jobTypeCounts).map(([key, count]) => ({ key, count })),
+      categories: Object.entries(categoryCounts).map(([key, count]) => ({ key, count })),
+      employmentTypes: Object.entries(employmentTypeCounts).map(([key, count]) => ({ key, count })),
       levels: Object.entries(levelCounts).map(([key, count]) => ({ key, count })),
       states: Object.entries(stateCounts).map(([key, count]) => ({ key, count })),
       topSkills: Object.entries(skillCounts)

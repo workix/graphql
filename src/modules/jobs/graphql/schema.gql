@@ -57,6 +57,8 @@ type FacetCount {
 type JobSearchFacets {
     workplaceTypes: [FacetCount!]!
     jobTypes: [FacetCount!]!
+    categories: [FacetCount!]!
+    employmentTypes: [FacetCount!]!
     levels: [FacetCount!]!
     states: [FacetCount!]!
     topSkills: [FacetCount!]!
@@ -90,6 +92,8 @@ input JobSearchFilterInput {
     workplaceType: String
     jobType: String
     jobCategory: String
+    categories: [JobCategory]
+    employmentType: JobEmploymentType
     seniorityLevel: String
     state: String
     city: String
