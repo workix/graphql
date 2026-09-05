@@ -17,3 +17,5 @@ google-services.json
 *.jks
 .artifacts/
 coverage/
+uploads/
+!uploads/.gitkeep
