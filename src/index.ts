@@ -1,36 +1,13 @@
-import 'dotenv/config'
-import express from "express";
-import cors from "cors";
-import { graphqlHTTP } from "express-graphql";
-import { makeExecutableSchema } from "@graphql-tools/schema";
-
-// Workix GraphQL Server - Reloaded for Job Categories (REMOTO & PCD)
-import resolvers from "./resolvers";
-import typeDefs from "./schemas";
-
-
-import "express-async-errors";
+import 'dotenv/config';
+import createApp from './app';
 import db from './models/index';
-
-import { DataLoaderFactory } from './dataloader';
-import { RequestedFields } from './RequestedFields';
-import { extractJWTMiddleware } from './middleware/extract_jwt'
-import { tenantMiddleware } from './middleware/tenant.middleware'
-import { traceMiddleware } from './middleware/trace.middleware'
-import { idempotencyMiddleware } from './utils/idempotency.service'
-import { createHealthRouter } from './utils/health'
-import { formatGraphQLError, expressErrorHandler } from './utils/error_formatter'
 import RabbitmqServer from './factory/rabbitmq_server';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import resolvers from './resolvers';
+import typeDefs from './schemas';
 import { createWebSocketSubscriptionServer } from './subscriptions';
 
-import path from "path";
-import { createMediaRouter } from './modules/media/media.router';
-
 (async () => {
-  
-  const app = express();
-  const requestedFields = new RequestedFields();
-  const dataLoaderFactory = new DataLoaderFactory(db, requestedFields);
   const mqserver = new RabbitmqServer(process.env.RABBITMQ_SERVER_HOST || 'amqp://localhost');
   try {
     await mqserver.start();
@@ -38,74 +15,19 @@ import { createMediaRouter } from './modules/media/media.router';
   } catch (err) {
     console.warn('⚠️ RabbitMQ não conectado (opcional para ambiente local)');
   }
-  
-  // Habilita CORS para todas as origens dos frontends (3000, 3001, 5173, etc.)
-  app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'Accept',
-      'x-tenant-id',
-      'x-tenant-slug',
-      'x-tenant-domain',
-      'x-trace-id',
-      'x-correlation-id',
-      'x-file-name',
-      'x-file-context',
-      'idempotency-key'
-    ],
-    exposedHeaders: ['x-trace-id', 'x-idempotent-replay']
-  }));
-  app.options('*', cors());
 
-  app.use(express.raw({ type: ['image/*', 'application/pdf', 'application/octet-stream', 'multipart/form-data'], limit: '25mb' }));
-  app.use(express.json());
-  app.use(traceMiddleware());
-  app.use(tenantMiddleware());
-  app.use(idempotencyMiddleware());
-  
-  // Serving estático de uploads de mídia
-  const uploadDir = path.join(process.cwd(), 'uploads', 'media');
-  app.use('/uploads/media', express.static(uploadDir));
-  
   const schema = makeExecutableSchema({
     resolvers,
-    typeDefs,
+    typeDefs
   });
-  
-  app.use('/api/v1/media', createMediaRouter());
-  
-  app.use("/graphql",
-    extractJWTMiddleware(),
-    (req, res, next) => {
-      if (!req["context"]) {req["context"] = {}}
-      req["context"]['orm'] = db;
-      req["context"]['dataloaders'] = dataLoaderFactory.getLoaders();
-      req["context"]['requestedFields'] = requestedFields;
-      req["context"]['mqserver'] = mqserver;
-      next();
-    },
-    graphqlHTTP(req => ({
-      schema,
-      graphiql: true,
-      context: req['context'],
-      customFormatErrorFn: (error: any) => formatGraphQLError(error, req['context'])
-    }))
-  );
-  
-  app.use('/health', createHealthRouter(db, mqserver));
-  app.get('/', (req, res) => res.send({ msg: "Workix Graphql" }));
-  
-  app.use(expressErrorHandler());
-  
-  const port = process.env.PORT || 4000
-  
+
+  const app = createApp({ db, mqserver, customSchema: schema });
+  const port = process.env.PORT || 4000;
+
   const server = app.listen(port, () => {
-    console.log(`Server is running at Port ${port}`)
-    console.log(`http://localhost:${port}/graphql`)
+    console.log(`Server is running at Port ${port}`);
+    console.log(`http://localhost:${port}/graphql`);
   });
 
   createWebSocketSubscriptionServer(server, schema);
-})();
+})();
