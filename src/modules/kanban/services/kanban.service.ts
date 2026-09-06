@@ -64,10 +64,14 @@ export class KanbanService {
         uuid: uuidv4(),
         company_id: companyId,
         job_id: jobId || null,
+        title: def.name,
         name: def.name,
         color: def.color,
+        color_hex: def.color,
         order_position: def.order_position,
+        stage_order: def.order_position,
         is_system_stage: def.is_system_stage,
+        is_final: false
       });
       createdStages.push(stage);
     }
@@ -131,17 +135,21 @@ export class KanbanService {
         where: { company_id: input.companyId, job_id: input.jobId || null },
         order: [['order_position', 'DESC']],
       });
-      orderPos = maxStage ? maxStage.order_position + 1 : 1;
+      orderPos = maxStage ? (maxStage.order_position || maxStage.stage_order || 0) + 1 : 1;
     }
 
     return await KanbanStage.create({
       uuid: uuidv4(),
       company_id: input.companyId,
       job_id: input.jobId || null,
+      title: input.name,
       name: input.name,
       color: input.color || '#3B82F6',
+      color_hex: input.color || '#3B82F6',
       order_position: orderPos,
+      stage_order: orderPos,
       is_system_stage: false,
+      is_final: false
     });
   }
 
@@ -155,9 +163,18 @@ export class KanbanService {
     }
 
     const updateData: any = {};
-    if (input.name !== undefined) updateData.name = input.name;
-    if (input.color !== undefined) updateData.color = input.color;
-    if (input.orderPosition !== undefined) updateData.order_position = input.orderPosition;
+    if (input.name !== undefined) {
+      updateData.name = input.name;
+      updateData.title = input.name;
+    }
+    if (input.color !== undefined) {
+      updateData.color = input.color;
+      updateData.color_hex = input.color;
+    }
+    if (input.orderPosition !== undefined) {
+      updateData.order_position = input.orderPosition;
+      updateData.stage_order = input.orderPosition;
+    }
 
     await stage.update(updateData);
     return stage;
@@ -170,7 +187,7 @@ export class KanbanService {
     for (let index = 0; index < stageIdsInOrder.length; index++) {
       const stageId = stageIdsInOrder[index];
       await KanbanStage.update(
-        { order_position: index + 1 },
+        { order_position: index + 1, stage_order: index + 1 },
         { where: { id: stageId, company_id: companyId, job_id: jobId || null } }
       );
     }
@@ -198,17 +215,31 @@ export class KanbanService {
         card_id: card.id,
         from_stage_id: fromStageId,
         to_stage_id: toStageId,
+        user_id: input.movedByUserId || null,
         moved_by_user_id: input.movedByUserId || null,
         notes: input.notes || null,
       });
 
       // 2. Atualizar estágio e posição
-      await card.update({
+      const updatePayload: any = {
         stage_id: toStageId,
-        order_position: input.targetPosition !== undefined ? input.targetPosition : card.order_position,
-      });
-    } else if (input.targetPosition !== undefined) {
-      await card.update({ order_position: input.targetPosition });
+        order_position: input.targetPosition !== undefined ? input.targetPosition : (card.order_position || card.position_order),
+        position_order: input.targetPosition !== undefined ? input.targetPosition : (card.position_order || card.order_position),
+      };
+      if (input.notes) {
+        updatePayload.notes = input.notes;
+      }
+      await card.update(updatePayload);
+    } else if (input.targetPosition !== undefined || input.notes) {
+      const updatePayload: any = {};
+      if (input.targetPosition !== undefined) {
+        updatePayload.order_position = input.targetPosition;
+        updatePayload.position_order = input.targetPosition;
+      }
+      if (input.notes) {
+        updatePayload.notes = input.notes;
+      }
+      await card.update(updatePayload);
     }
 
     return card;
@@ -263,7 +294,7 @@ export class KanbanService {
       where: { stage_id: targetStageId },
       order: [['order_position', 'DESC']],
     });
-    const orderPos = maxCard ? maxCard.order_position + 1 : 1;
+    const orderPos = maxCard ? (maxCard.order_position || maxCard.position_order || 0) + 1 : 1;
 
     const card = await KanbanCard.create({
       uuid: uuidv4(),
@@ -271,6 +302,7 @@ export class KanbanService {
       candidate_id: candidateId,
       job_id: jobId,
       order_position: orderPos,
+      position_order: orderPos,
       rating: null,
       notes: null,
       tags: '[]',
@@ -281,6 +313,7 @@ export class KanbanService {
       card_id: card.id,
       from_stage_id: null,
       to_stage_id: targetStageId,
+      user_id: null,
       moved_by_user_id: null,
       notes: 'Candidato inscrito / adicionado ao pipeline',
     });
