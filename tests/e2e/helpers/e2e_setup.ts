@@ -35,6 +35,27 @@ export async function setupE2EDatabase(): Promise<TestUserTokens> {
   // Garante que as tabelas estejam sincronizadas
   await db.sequelize.sync({ force: false });
 
+  // Adiciona colunas se nao existirem no sqlite de teste
+  try {
+    await db.sequelize.query('ALTER TABLE interviews ADD COLUMN title VARCHAR(255);').catch(() => {});
+    await db.sequelize.query('ALTER TABLE interviews ADD COLUMN description TEXT;').catch(() => {});
+    await db.sequelize.query('ALTER TABLE interviews ADD COLUMN meeting_link VARCHAR(255);').catch(() => {});
+    await db.sequelize.query('ALTER TABLE interviews ADD COLUMN location_address VARCHAR(255);').catch(() => {});
+    await db.sequelize.query('ALTER TABLE interviews ADD COLUMN feedback_notes TEXT;').catch(() => {});
+    await db.sequelize.query('ALTER TABLE interviews ADD COLUMN reschedule_reason TEXT;').catch(() => {});
+
+    await db.sequelize.query('ALTER TABLE kanban_stages ADD COLUMN uuid VARCHAR(36);').catch(() => {});
+    await db.sequelize.query('ALTER TABLE kanban_stages ADD COLUMN company_id BIGINT;').catch(() => {});
+    await db.sequelize.query('ALTER TABLE kanban_stages ADD COLUMN name VARCHAR(100);').catch(() => {});
+    await db.sequelize.query('ALTER TABLE kanban_stages ADD COLUMN color VARCHAR(20);').catch(() => {});
+    await db.sequelize.query('ALTER TABLE kanban_stages ADD COLUMN order_position INTEGER;').catch(() => {});
+    await db.sequelize.query('ALTER TABLE kanban_stages ADD COLUMN is_system_stage BOOLEAN;').catch(() => {});
+
+    await db.sequelize.query('ALTER TABLE kanban_cards ADD COLUMN uuid VARCHAR(36);').catch(() => {});
+    await db.sequelize.query('ALTER TABLE kanban_cards ADD COLUMN order_position INTEGER;').catch(() => {});
+    await db.sequelize.query('ALTER TABLE kanban_cards ADD COLUMN rating INTEGER;').catch(() => {});
+  } catch (_e) {}
+
   // 1. Cria ou recupera Usuário Candidato
   const [candidateUser] = await db.User.findOrCreate({
     where: { email: 'e2e.candidate@workix.com' },
@@ -135,27 +156,31 @@ export async function setupE2EDatabase(): Promise<TestUserTokens> {
       }
     });
 
-    await db.PlanFeature.findOrCreate({
-      where: { plan_id: freePlan.id, feature_key: 'max_active_jobs' },
-      defaults: {
-        plan_id: freePlan.id,
-        feature_key: 'max_active_jobs',
-        value_type: 'INTEGER',
-        value_integer: 10,
-        enabled: true
-      }
-    });
+    const features = [
+      { key: 'max_active_jobs', type: 'INTEGER', intVal: 10, boolVal: true },
+      { key: 'POST_CONFIDENTIAL_JOBS', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'RECRUITMENT_KANBAN', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'USE_RECRUITMENT_KANBAN', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'recruitment_kanban', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'SCHEDULE_INTERVIEWS', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'schedule_interviews', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'interview_scheduler', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'AI_RESUME_PARSING', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'WHITE_LABEL_BRANDING', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'ADVANCED_ANALYTICS', type: 'BOOLEAN', intVal: 0, boolVal: true },
+      { key: 'EXPORT_METRICS', type: 'BOOLEAN', intVal: 0, boolVal: true }
+    ];
 
-    await db.PlanFeature.findOrCreate({
-      where: { plan_id: freePlan.id, feature_key: 'POST_CONFIDENTIAL_JOBS' },
-      defaults: {
-        plan_id: freePlan.id,
-        feature_key: 'POST_CONFIDENTIAL_JOBS',
-        value_type: 'BOOLEAN',
-        value_boolean: true,
-        enabled: true
-      }
-    });
+    for (const feat of features) {
+      await db.PlanFeature.findOrCreate({
+        where: { plan_id: freePlan.id, feature_key: feat.key },
+        defaults: {
+          plan_id: freePlan.id,
+          feature_key: feat.key,
+          enabled: true
+        }
+      });
+    }
   }
 
   // Gera tokens JWT para os perfis
