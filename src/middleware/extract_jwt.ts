@@ -12,7 +12,8 @@ const extractJWTMiddleware = () => {
 
         if (!token) { return next() }
 
-        jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+        const secret = process.env.JWT_SECRET || 'SECRET';
+        jwt.verify(token, secret, async (err, decoded) => {
             if (err) { return next() }
 
             const user = await User.findOne({ where: { firebase_uuid: decoded.id, email: decoded.sub } }, { attributes: ['id', 'email', 'firebase_uuid'] })
