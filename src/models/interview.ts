@@ -38,6 +38,15 @@ module.exports = function(sequelize: any, DataTypes: any) {
         key: 'id'
       }
     },
+    title: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: 'Entrevista'
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
     scheduled_at: {
       type: DataTypes.DATE,
       allowNull: false
@@ -52,11 +61,27 @@ module.exports = function(sequelize: any, DataTypes: any) {
       allowNull: false,
       defaultValue: 'ONLINE'
     },
+    meeting_link: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    location_address: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     location_or_link: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
     notes: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    feedback_notes: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    reschedule_reason: {
       type: DataTypes.TEXT,
       allowNull: true
     },
