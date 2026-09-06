@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = function(sequelize: any, DataTypes: any) {
-  return sequelize.define('KanbanCardHistory', {
+  const KanbanCardHistory = sequelize.define('KanbanCardHistory', {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -41,6 +41,14 @@ module.exports = function(sequelize: any, DataTypes: any) {
     tableName: 'kanban_card_histories',
     timestamps: false
   });
+
+  KanbanCardHistory.associate = function(models: any) {
+    KanbanCardHistory.belongsTo(models.KanbanCard, { foreignKey: 'card_id', as: 'card' });
+    KanbanCardHistory.belongsTo(models.KanbanStage, { foreignKey: 'to_stage_id', as: 'to_stage' });
+    KanbanCardHistory.belongsTo(models.KanbanStage, { foreignKey: 'from_stage_id', as: 'from_stage' });
+  };
+
+  return KanbanCardHistory;
 };
 
 export {};
