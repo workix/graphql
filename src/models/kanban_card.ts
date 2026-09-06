@@ -1,12 +1,17 @@
 const Sequelize = require('sequelize');
 
 module.exports = function(sequelize: any, DataTypes: any) {
-  return sequelize.define('KanbanCard', {
+  const KanbanCard = sequelize.define('KanbanCard', {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
+    },
+    uuid: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: Sequelize.UUIDV4
     },
     stage_id: {
       type: DataTypes.INTEGER,
@@ -32,10 +37,19 @@ module.exports = function(sequelize: any, DataTypes: any) {
         key: 'id'
       }
     },
+    order_position: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
     position_order: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 0
+    },
+    rating: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
     notes: {
       type: DataTypes.TEXT,
@@ -62,6 +76,15 @@ module.exports = function(sequelize: any, DataTypes: any) {
     createdAt: 'created_at',
     updatedAt: 'updated_at'
   });
+
+  KanbanCard.associate = function(models: any) {
+    KanbanCard.belongsTo(models.Candidate, { foreignKey: 'candidate_id', as: 'candidate' });
+    KanbanCard.belongsTo(models.KanbanStage, { foreignKey: 'stage_id', as: 'stage' });
+    KanbanCard.belongsTo(models.Job, { foreignKey: 'job_id', as: 'job' });
+    KanbanCard.hasMany(models.KanbanCardHistory, { foreignKey: 'card_id', as: 'histories' });
+  };
+
+  return KanbanCard;
 };
 
 export {};
