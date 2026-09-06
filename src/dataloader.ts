@@ -452,11 +452,11 @@ export class CourseLoader {
     static async batchLessons(db: any, params: any[], requestedFields: any) {
         const ids = params.map(p => p.key);
         const info = params[0].info;
-        const fields = requestedFields.getFields(info, { keep: ['id', 'course_id', 'courseId'], exclude: [] });
+        const fields = requestedFields.getFields(info, { keep: ['id', 'course_id'], exclude: ['courseId', 'course'] });
 
         const lessons = await db.CourseLesson.findAll({
             where: { course_id: ids },
-            attributes: fields
+            attributes: fields.includes('course_id') ? fields : [...fields, 'course_id']
         });
 
         const map = new Map();
