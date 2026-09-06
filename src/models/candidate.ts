@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Candidate', {
+module.exports = function(sequelize: any, DataTypes: any) {
+  const Candidate = sequelize.define('Candidate', {
     id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -105,6 +105,15 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
+
+  Candidate.associate = function(models: any) {
+    Candidate.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+    Candidate.hasMany(models.JobApplication, { foreignKey: 'candidate_id', as: 'applications' });
+    Candidate.hasMany(models.KanbanCard, { foreignKey: 'candidate_id', as: 'kanban_cards' });
+    Candidate.hasMany(models.Interview, { foreignKey: 'candidate_id', as: 'interviews' });
+  };
+
+  return Candidate;
 };
 
 export {};
