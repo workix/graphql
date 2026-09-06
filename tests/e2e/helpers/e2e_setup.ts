@@ -120,6 +120,44 @@ export async function setupE2EDatabase(): Promise<TestUserTokens> {
     companyInstance = comp;
   }
 
+  // Planos e Features para Entitlements
+  if (db.Plan && db.PlanFeature) {
+    const [freePlan] = await db.Plan.findOrCreate({
+      where: { code: 'free_v1' },
+      defaults: {
+        id: 1,
+        code: 'free_v1',
+        name: 'Plano Gratuito Empresa',
+        price_cents: 0,
+        currency: 'BRL',
+        interval: 'month',
+        active: true
+      }
+    });
+
+    await db.PlanFeature.findOrCreate({
+      where: { plan_id: freePlan.id, feature_key: 'max_active_jobs' },
+      defaults: {
+        plan_id: freePlan.id,
+        feature_key: 'max_active_jobs',
+        value_type: 'INTEGER',
+        value_integer: 10,
+        enabled: true
+      }
+    });
+
+    await db.PlanFeature.findOrCreate({
+      where: { plan_id: freePlan.id, feature_key: 'POST_CONFIDENTIAL_JOBS' },
+      defaults: {
+        plan_id: freePlan.id,
+        feature_key: 'POST_CONFIDENTIAL_JOBS',
+        value_type: 'BOOLEAN',
+        value_boolean: true,
+        enabled: true
+      }
+    });
+  }
+
   // Gera tokens JWT para os perfis
   const candidateToken = generateToken(candidateUser.firebase_uuid, candidateUser.email);
   const companyToken = generateToken(companyUser.firebase_uuid, companyUser.email);
