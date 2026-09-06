@@ -133,6 +133,7 @@ describe('Recruitment Kanban Service (Quadro de Triagem de Candidatos)', () => {
         card_id: 7,
         from_stage_id: 1,
         to_stage_id: 3,
+        user_id: 15,
         moved_by_user_id: 15,
         notes: 'Candidato pré-selecionado pelo recrutador',
       });
@@ -140,6 +141,8 @@ describe('Recruitment Kanban Service (Quadro de Triagem de Candidatos)', () => {
       expect(mockCardInstance.update).toHaveBeenCalledWith({
         stage_id: 3,
         order_position: 2,
+        position_order: 2,
+        notes: 'Candidato pré-selecionado pelo recrutador',
       });
 
       expect(movedCard.stage_id).toBe(3);
