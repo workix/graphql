@@ -22,6 +22,12 @@
     "profile:inspect": "node --inspect=0.0.0.0:9229 dist/index.js",
     "profile:heap": "node --max-old-space-size=2048 --heapsnapshot-near-heap-limit=3 dist/index.js",
     "test": "jest --coverage",
+    "test:e2e": "jest tests/e2e/",
+    "test:e2e:backend": "jest tests/e2e/",
+    "test:e2e:client": "npm --prefix frontend/client test",
+    "test:e2e:admin": "npm --prefix frontend/admin test",
+    "test:e2e:frontend": "npm run test:e2e:client && npm run test:e2e:admin",
+    "test:e2e:all": "npm run test:e2e:backend && npm run test:e2e:frontend",
     "lint": "eslint src/**/*.ts"
   },
   "keywords": [],
